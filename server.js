@@ -11,9 +11,9 @@ app.use(function(err, req, res, next){
   res.status(500).send('Something bad happened!');
 });
 
-app.use(express.static(path.join(__dirname, './view')));
+app.use(express.static(path.join(__dirname, './client/view')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname = './view/index.html'));
+  res.sendFile(path.join(__dirname = './client/view/index.html'));
 });
 
 app.listen(port, ip);
