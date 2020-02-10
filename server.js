@@ -12,10 +12,14 @@ app.use(function(err, req, res, next){
   res.status(500).send('Something bad happened!');
 });
 
-app.use(express.static(path.join(__dirname, './temp')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname = './temp/index.html'));
-});
+app.get('/', (req, res) => {
+  res.send("Hello World")
+})
+
+// app.use(express.static(path.join(__dirname, './temp')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname = './temp/index.html'));
+// });
 
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);

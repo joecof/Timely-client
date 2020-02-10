@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/joecof/Timely-client/issues"
   },
-  "homepage": "https://github.com/joecof/Timely-client#readme"
+  "homepage": "https://github.com/joecof/Timely-client#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7"
+  }
 }
