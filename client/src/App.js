@@ -1,10 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
+class App extends Component {
+
+  componentDidMount() {
+    
+    fetch("http://127.0.0.1:8080/timely/services/token", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: "test",
+        password: "test",
+      })
+    })
+      .then(res => {
+        console.log(res);
+        // return res.json()
+      })
+      // .then(data => {
+      //   console.log(data);
+      // })
+  }
+
+
+  render() {
+    return(
+      <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -20,7 +44,8 @@ function App() {
         </a>
       </header>
     </div>
-  );
+    )
+  }
 }
 
 export default App;
