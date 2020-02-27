@@ -1,0 +1,94 @@
+/* google font */
+@import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
+
+/* css for body */
+body {
+    background-color: #f9f6f2;
+    font-family: Nunito,HelveticaNeue-Light,sans-serif;
+}
+
+/* css for wrapper*/
+.loginWrapper {
+    margin-top: 200px;
+}
+
+/* css for login title */
+.prjMng {
+    text-align: center!important;
+    font-size: 16pt;
+}
+
+/* css for login container */
+.loginContainer {
+    max-width: 340px;
+    margin: 0 auto;
+    padding: 35px!important;
+    background: #fff;
+}
+
+/* css for login hint */
+.loginHint {
+    font-size: 14pt;
+}
+
+/* css for login form */
+.loginForm {
+    margin-top: 20px;
+    padding-left: auto;
+}
+
+/* css for input email */
+.loginEmail {
+    width: 90%;
+}
+
+/* css for input pwd */
+.loginPwd {
+    margin-top: 10px;
+    width: 90%;
+}
+
+/* css for login bottom section */
+.loginBsection {
+    margin-top: 10px;
+}
+
+/* css for forgot pwd link */
+a {
+    font-size: 10pt;
+}
+
+
+
+/* css for button login */
+.loginBtn {
+    color: #fff;
+    font-size: 10pt;
+    background-color: #1ab394;
+    border-color: #1ab394;
+    text-align: center;
+    border: none;
+    outline: none;
+    margin-left: 45%;
+}
+
+/* css for input fields */
+.loginInputs {
+    width: 100%;
+    border: none;
+    height: 30px;
+    font-size: 13px;
+    text-indent: 10px;
+    background-color: #f2f2f2;
+    outline: none;
+}
+
+/* input focus */
+.loginInputs:focus {
+    border: 1px solid #ccc transparent;
+}
+
+/* button hover */
+.loginBtn:hover {
+    background-color: #ccc;
+}

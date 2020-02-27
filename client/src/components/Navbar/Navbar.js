@@ -9,7 +9,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Divider from '@material-ui/core/Divider';
-import Avatar from "@material-ui/core/Avatar";
+import DropDownProfile from "../DropDownProfile/DropDownProfile"
+
 
 const styles = theme => ({
   root: {
@@ -79,14 +80,43 @@ const styles = theme => ({
   divider: {
     marginRight: theme.spacing(3),
     marginLeft: theme.spacing(3)
+  },
+  menu: {
+    paddingRight: theme.spacing(3),
   }
 });
 
 class Navbar extends Component {
 
+  constructor(props) {
+    super(props)
+    this.fetchUserData = this.fetchUserData.bind(this);
+
+
+    this.state = ({
+      loaded_user: {}
+    })
+  }
+
+  componentDidMount(){
+    this.fetchUserData();
+  }
+
+  fetchUserData(){
+    fetch("http://localhost:8080/timely/services/employees/1")
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        this.setState({
+          loaded_user: data
+        })
+      })
+  }
+
   render() {
     const { classes } = this.props;
-
+    
     return(
       <div className={classes.root}>
         <AppBar className={classes.appBar} position="fixed" elevation={0}>
@@ -116,8 +146,8 @@ class Navbar extends Component {
               />
             </div>
             <Divider className = {classes.divider} orientation="vertical" flexItem />
-            <h4 className = {classes.userName}>Kobe Bryant</h4>
-            <Avatar variant="circle" className={classes.avatar}/>
+            <h4 className = {classes.userName}> {this.state.loaded_user.first_name} {this.state.loaded_user.last_name}</h4>
+            <DropDownProfile/>
           </Toolbar>
         </AppBar>
       </div>
