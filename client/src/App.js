@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Navbar from './components/Navbar/Navbar'
-
+import SideMenu from './components/SideMenu/SideMenu'
 
 
 class App extends Component {
@@ -26,6 +26,7 @@ class App extends Component {
     return(
       <div className="App">
       <Navbar/>
+      <SideMenu/>
     </div>
     )
   }
