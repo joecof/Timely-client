@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/joecof/Timely-client#readme",
   "dependencies": {
+    "@date-io/date-fns": "^2.4.0",
     "express": "^4.17.1",
     "path": "^0.12.7"
   }
