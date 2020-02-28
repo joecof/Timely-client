@@ -1,48 +1,80 @@
 import React, { Component } from 'react'
-import './Timesheet.css'
-import TimesheetTitle from '../TimesheetTitle/Timesheettitle'
-import TimesheetRowTitle from '../TimesheetRowTitle/TimesheetRowTitle'
-import TimesheetRow from '../TimesheetRow/TimesheetRow'
-import OtherRow from '../OtherRow/OtherRow'
+import MUIDatatable from "mui-datatables";
+
+const columns = [
+  {name:"project", label:"Project", className:"column"},
+  {name:"wp", label:"WP", className:"column"},
+  {name:"total", label:"Total", className:"column"},
+  {name:"sat", label:"Sat", className:"column"},
+  {name:"sun", label:"Sun", className:"column"},
+  {name:"mon", label:"Mon", className:"column"},
+  {name:"tue", label:"Tue", className:"column"},
+  {name:"wed", label:"Wed", className:"column"},
+  {name:"thur", label:"Thur", className:"column"},
+  {name:"fri", label:"Fri", className:"column"},
+];
+
+const options = {
+  selectableRows: false,
+  search: true,
+  print: false,
+  download: false,
+  filter: false,
+};
+
 
 export default class Timesheet extends Component {
-    constructor(){
-        super();
 
-        this.state = {
-            children: [<TimesheetRow />,
-                <TimesheetRow />,
-                <TimesheetRow />,
-                <TimesheetRow />,
-                <TimesheetRow />,
-            ],
-        }
-    }
-    // add new row event handler
-    appendChild(){
-        this.setState({
-            children: [
-                this.state.children,
-                <TimesheetRow />
-            ]
-        });
+  constructor(props) {
+    super(props);
+
+    this.state = {
+
     }
 
-    render() {
-        return (
-            <div className="timesheet">
-                <TimesheetTitle />
-                <div className="timesheetinfo">
-                    <TimesheetRowTitle />
-                    <div className="timesheetRows">
-                        {this.state.children.map(child => child)}
-                        <OtherRow rowType="Total"/>
-                        <OtherRow rowType="Overtime"/>
-                        <OtherRow rowType="Flextime"/>
-                    </div>
-                    <button className="addRow" onClick={() => this.appendChild()}>Add Row</button>
-                </div>
-            </div>
-        )
-    }
+  }
+
+
+  render() {
+
+    const DemoData = 
+      [{
+        project: '010', 
+        wp: 'SICK', 
+        total: '4.0',
+        sat: '2.0',
+        sun: '2.0',
+        mon: '2.0',
+        tue: '2.0',
+        wed: '2.0',
+        thur: '2.0',
+        fri: '2.0',
+      },
+      {
+        project: '011', 
+        wp: 'WORK', 
+        total: '4.0',
+        sat: '2.0',
+        sun: '2.0',
+        mon: '2.0',
+        tue: '2.0',
+        wed: '2.0',
+        thur: '2.0',
+        fri: '2.0',
+      }]
+    
+
+    return (
+      <>
+        <MUIDatatable 
+            className="datatable"
+            title={<h1> Timesheet </h1>}
+            options={options}
+            columns={columns}
+            data={DemoData}
+        />
+      </>
+    )
+  }
 }
+

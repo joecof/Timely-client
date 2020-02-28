@@ -12,7 +12,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 
 import logo from '../../images/watch.png'
 import Navbar from '../Navbar/Navbar'
-import Timesheet from '../Timesheet/Timesheet_v2'
+import Timesheet from '../Timesheet/Timesheet'
 import Projects from '../ListViews/Projects'
 
 
@@ -189,10 +189,10 @@ const styles = theme => ({
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {
-              this.state.projects == 1 ? <Projects/> : null
+              this.state.projects === 1 ? <Projects/> : null
             }
             {
-              this.state.timesheet == 1 ? <Timesheet/> : null
+              this.state.timesheet === 1 ? <Timesheet/> : null
             }
           </main>
         </div>

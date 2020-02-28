@@ -92,7 +92,6 @@ class Navbar extends Component {
     super(props)
     this.fetchUserData = this.fetchUserData.bind(this);
 
-
     this.state = ({
       loaded_user: {}
     })
@@ -103,7 +102,7 @@ class Navbar extends Component {
   }
 
   fetchUserData(){
-    fetch("http://localhost:8080/timely/services/employees/1")
+    fetch("http://localhost:8080/timely/api/employees/1")
       .then(res => {
         return res.json();
       })

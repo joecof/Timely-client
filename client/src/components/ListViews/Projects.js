@@ -8,11 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-import ProjectCreate from '../ProjectCreate/ProjectCreate'
-
-
-
-
 const useStyles = makeStyles({
   table: {
     minWidth: 650
@@ -63,7 +58,6 @@ export default function Projects() {
           ))}
         </TableBody>
       </Table>
-      <ProjectCreate/>
     </TableContainer>
   );
 }

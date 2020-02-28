@@ -22,7 +22,7 @@ export default class Login extends Component {
     }
 
     handleSubmit() {
-        if(this.state.email == "admin@gmail.com" && this.state.password == "admin") {
+        if(this.state.email === "admin@gmail.com" && this.state.password === "admin") {
             this.props.history.push("/dashboard");
         }
     }
@@ -63,7 +63,7 @@ export default class Login extends Component {
                         <div className="loginBsection">
                             <a href="/timesheet" className="forgetPwd">Forgot Password?</a>
                             <button className="loginBtn" onClick  = {this.handleSubmit}>Login </button>
-                        </div>`
+                        </div>
                         </div>
                     </form>
                 </div>
