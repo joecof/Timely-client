@@ -3,14 +3,15 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import { fade } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Divider from '@material-ui/core/Divider';
 import DropDownProfile from "../DropDownProfile/DropDownProfile"
+import clsx from "clsx";
+import Searchbar from './Searchbar'
 
+const navbarExpandedWidth = 230;
+const navbarShrinkedWidth = 100;
 
 const styles = theme => ({
   root: {
@@ -28,51 +29,6 @@ const styles = theme => ({
     },
     color: 'black'
   },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.black, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.black, 0.15),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'black'
-  },
-  inputRoot: {
-    color: 'black',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: 120,
-      '&:focus': {
-        width: 200,
-      },
-    },
-  },
-  appBar: {
-    backgroundColor: 'white',
-    position: 'fixed',
-    zIndex: theme.zIndex.drawer + 1,
-    flexGrow: 1,
-    width: `calc(100% - ${240}px)`,
-  },
   userName: {
     color: 'black',
     paddingRight: theme.spacing(3),
@@ -81,77 +37,73 @@ const styles = theme => ({
     marginRight: theme.spacing(3),
     marginLeft: theme.spacing(3)
   },
-  menu: {
-    paddingRight: theme.spacing(3),
-  }
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: 'white',
+    position: 'fixed',
+    width: `calc(100% - ${navbarShrinkedWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: { 
+    marginLeft: navbarExpandedWidth,
+    width: `calc(100% - ${navbarExpandedWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
 });
+
 
 class Navbar extends Component {
 
   constructor(props) {
     super(props)
-    this.fetchUserData = this.fetchUserData.bind(this);
 
     this.state = ({
-      loaded_user: {}
+      open: this.props.resize
     })
+
   }
 
-  componentDidMount(){
-    this.fetchUserData();
-  }
-
-  fetchUserData(){
-    fetch("http://localhost:8080/timely/api/employees/1")
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        this.setState({
-          loaded_user: data
-        })
-      })
-  }
-
-  render() {
-    const { classes } = this.props;
-    
+  resizeNavbar(classes) {
     return(
       <div className={classes.root}>
-        <AppBar className={classes.appBar} position="fixed" elevation={0}>
+        <AppBar  
+          position="fixed" elevation={0}         
+          className={clsx(classes.appBar, {[classes.appBarShift]: this.props.resize})}>
           <Toolbar>
             <IconButton
               edge="start"
               className={classes.menuButton}
               color="inherit"
               aria-label="open drawer"
+              onClick = {this.props.resizeDashboard}
             >
-              <ArrowBackIcon />
+              <ArrowBackIcon/>
             </IconButton>
-            <Typography className={classes.title} variant="h6" noWrap>
-              Timely
-            </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
+            <Typography className={classes.title} variant="h6" noWrap> Timely </Typography>
+            <Searchbar/>
             <Divider className = {classes.divider} orientation="vertical" flexItem />
-            <h4 className = {classes.userName}> {this.state.loaded_user.first_name} {this.state.loaded_user.last_name}</h4>
-            <DropDownProfile/>
+            <h4 className = {classes.userName}> {this.props.loadedUser.first_name} {this.props.loadedUser.last_name}</h4>
+            <DropDownProfile logoutHandler = {this.props.logoutHandler}/>
           </Toolbar>
         </AppBar>
       </div>
     )
   }
+
+  render() {
+    const { classes } = this.props; 
+    
+    return(
+      this.resizeNavbar(classes)
+    )
+  }
 }
+
 
 export default withStyles(styles, { withTheme: true })(Navbar);
