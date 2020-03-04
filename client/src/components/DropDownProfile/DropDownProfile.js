@@ -4,9 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
 
-
-
-export default function SimpleMenu() {
+export default function SimpleMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -29,7 +27,7 @@ export default function SimpleMenu() {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <Link to="/" style = {{textDecoration: 'none', color: 'black'}}><MenuItem onClick={handleClose}> Logout </MenuItem> </Link>
+        <Link to="/" style = {{textDecoration: 'none', color: 'black'}}><MenuItem onClick={props.logoutHandler}> Logout </MenuItem> </Link>
       </Menu>
     </div>
   );
