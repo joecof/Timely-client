@@ -1,0 +1,10 @@
+.projects {
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 2%;
+}
+
+th {
+    font-weight: bold !important;
+    font-size: 15pt !important;
+}

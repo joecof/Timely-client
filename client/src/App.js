@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import agent from './api/agent'
 import Login from './components/Login/Login'
 import Dashboard from './components/Dashboard/Dashboard'
-import ProjectsList from './components/ProjectsPortal/ProjectsList';
+import Projects from './components/ProjectsPortal/ProjectsHome/Projects';
 
 class App extends Component {
 
@@ -80,7 +80,7 @@ class App extends Component {
     //   </BrowserRouter>
     // </div>
       <div>
-        <ProjectsList />
+        <Projects />
       </div>
     )
   }
