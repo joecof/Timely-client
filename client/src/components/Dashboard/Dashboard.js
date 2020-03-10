@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import Navbar from '../Navbar/Navbar'
 import SideMenu from '../SideMenu/SideMenu'
 import { withStyles } from '@material-ui/core/styles';
+import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
 import Timesheet from '../Timesheet/Timesheet'
+import HR from '../HR/HR'
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 
 
@@ -46,15 +48,22 @@ class Dashboard extends Component {
           path="/dashboard/timesheet"
           exact
           render = {props => (
-            <Timesheet
+            <TimesheetDetail
               {...props}
-              loginHandler = {this.loginHandler}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/hr"
+          exact
+          render = {props => (
+            <HR
+              {...props}
             />
           )}
         />
       </Switch>
     );
-
 
     return (
       <BrowserRouter>
