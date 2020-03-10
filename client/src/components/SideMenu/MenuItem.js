@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Avatar from "@material-ui/core/Avatar";
 import logo from '../../images/watch.png'
+import { Link } from "react-router-dom";
+
 
 const styles = theme => ({
   
@@ -15,7 +17,10 @@ const styles = theme => ({
   text: {
     marginLeft: 30,
     color: 'black'
-  }
+  }, 
+  link: {
+    textDecoration: 'none',
+  },
 });
 
 
@@ -24,16 +29,18 @@ class MenuItem extends Component {
     const { classes } = this.props;
 
     return (
-      <Grid container direction="row" alignItems="center" className = {classes.menuItem} >
-        <Grid item >
-          {this.props.isMenuLogo ? 
-            <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>}
+      <Link to = {this.props.link} className = {classes.link} >
+        <Grid container direction="row" alignItems="center" className = {classes.menuItem} >
+          <Grid item >
+            {this.props.isMenuLogo ? 
+              <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>}
+          </Grid>
+          <Grid item >
+            {this.props.text && this.props.resize ? 
+              <p className = {classes.text}> {this.props.text} </p> : null}
+          </Grid>
         </Grid>
-        <Grid item >
-          {this.props.text && this.props.resize ? 
-            <p className = {classes.text}> {this.props.text} </p> : null}
-        </Grid>
-      </Grid>
+      </Link>
     )
   }
 }

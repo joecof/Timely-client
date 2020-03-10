@@ -19,10 +19,6 @@ const styles = theme => ({
     width: drawerExpandedWidth,
     height: '100%',
   },
-  content: {
-    flexGrow: 3,
-    padding: theme.spacing(3),
-  },
   divider: {
     backgroundColor: 'light gray',
     width: '90%',
@@ -76,9 +72,9 @@ const styles = theme => ({
                 <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
                 <Divider className={classes.divider}/>
                   <div>
-                    <MenuItem text = "Dashboard" resize = {this.props.resize}/>
-                    <MenuItem text = "Timesheet" resize = {this.props.resize}/>
-                    <MenuItem text = "Projects" resize = {this.props.resize}/>
+                    <MenuItem text = "Dashboard" resize = {this.props.resize} link = "/dashboard"/>
+                    <MenuItem text = "Timesheet" resize = {this.props.resize} link = "/dashboard/timesheet"/>
+                    <MenuItem text = "Projects" resize = {this.props.resize} link = "/dashboard/projects"/>
                   </div>
             </Drawer>
         </div>
