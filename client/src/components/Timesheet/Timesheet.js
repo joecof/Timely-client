@@ -27,11 +27,6 @@ export default class Timesheet extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-
-    }
-
   }
 
 
