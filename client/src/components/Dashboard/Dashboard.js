@@ -4,8 +4,8 @@ import SideMenu from '../SideMenu/SideMenu'
 import { withStyles } from '@material-ui/core/styles';
 import Timesheet from '../Timesheet/Timesheet'
 import HR from '../HR/HR'
+import Profile from '../Profile/Profile'
 import { BrowserRouter, Route, Switch} from "react-router-dom";
-
 
 const styles = theme => ({
   root: {
@@ -57,6 +57,15 @@ class Dashboard extends Component {
           exact
           render = {props => (
             <HR
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/hr/employee/:id"
+          exact
+          render = {props => (
+            <Profile
               {...props}
             />
           )}

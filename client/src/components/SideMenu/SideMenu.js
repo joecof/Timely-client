@@ -48,7 +48,6 @@ const styles = theme => ({
 
     render() {
       const { classes } = this.props;
-
       return(
         <div className={classes.root}>
           <CssBaseline />
@@ -66,16 +65,15 @@ const styles = theme => ({
                 })
               }}
               >
-              <Divider />
               <MenuItem isMenuLogo = {true} />
-              <Divider className={classes.divider} />
+                <Divider className={classes.divider} />
                 <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
                 <Divider className={classes.divider}/>
-                  <div>
-                    <MenuItem text = "Dashboard" resize = {this.props.resize} link = "/dashboard"/>
-                    <MenuItem text = "Timesheet" resize = {this.props.resize} link = "/dashboard/timesheet"/>
-                    <MenuItem text = "Projects" resize = {this.props.resize} link = "/dashboard/projects"/>
-                  </div>
+                <div>
+                  <MenuItem text = "Dashboard" resize = {this.props.resize} link = "/dashboard"/>
+                  <MenuItem text = "Timesheet" resize = {this.props.resize} link = "/dashboard/timesheet"/>
+                  <MenuItem text = "Projects" resize = {this.props.resize} link = "/dashboard/projects"/>
+                </div>
             </Drawer>
         </div>
       )
