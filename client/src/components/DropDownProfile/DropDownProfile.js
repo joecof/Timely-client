@@ -4,13 +4,26 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
 
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: A dropdown component for the profile icon. 
+ * @param {JSON} props 
+ */
 export default function SimpleMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  /**
+   * Opens the drop down menu. 
+   * @param {event} event 
+   */
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
 
+  /**
+   * Closes the drop down menu.
+   */
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -18,13 +31,7 @@ export default function SimpleMenu(props) {
   return (
     <div>
       <Avatar variant="circle" onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <Link to="/" style = {{textDecoration: 'none', color: 'black'}}><MenuItem onClick={props.logoutHandler}> Logout </MenuItem> </Link>

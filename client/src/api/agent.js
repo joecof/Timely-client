@@ -3,7 +3,7 @@ import axios from 'axios';
 /**
  * Define the base axios URL. 
  */
-axios.defaults.baseURL = "http://localhost:8081/timely/api/";
+axios.defaults.baseURL = "http://localhost:8080/timely/api/";
 
 /**
  * Contains the data of the response body 
@@ -21,14 +21,19 @@ const requests = {
   del: (url) => axios.delete(url).then(resBody) 
 }
 
+/**
+ * Prototype to get employee information. Not Currently used. 
+ */
 const employeeInfo = {
   getCurrentUser: () => requests.get('/employees/1'), 
 }
 
+/**
+ * API request for current login.  
+ */
 const authorization = {
   login: (data) => requests.post('/login', data)
 }
-
 
 export default {
   employeeInfo,

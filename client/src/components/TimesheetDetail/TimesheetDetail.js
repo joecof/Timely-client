@@ -62,7 +62,6 @@ function totalTue(items) {
 }
 // calculating total of Wed
 function totalWed(items) {
-  console.log(items);
   return items.map(({ wed }) => wed).reduce((weds, i) => weds + i, 0);
 }
 // calculating total of Thu

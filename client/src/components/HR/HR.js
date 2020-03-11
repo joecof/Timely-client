@@ -27,9 +27,6 @@ const options = (props) => {
     print: false,
     download: false,
     filter: false,
-    onRowClick: (rowData, rowState) =>  {
-      // props.history.push(`/dashboard/hr/employee/${rowData.id}`);
-    },
   }
   
 

@@ -1,24 +1,29 @@
 import React, { Component } from 'react'
+import { BrowserRouter } from "react-router-dom";
+import { withStyles } from '@material-ui/core/styles';
 import Navbar from '../Navbar/Navbar'
 import SideMenu from '../SideMenu/SideMenu'
-import { withStyles } from '@material-ui/core/styles';
-import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
-import Timesheet from '../Timesheet/Timesheet'
-import HR from '../HR/HR'
-import Profile from '../Profile/Profile'
-import { BrowserRouter, Route, Switch} from "react-router-dom";
+import Container from '../Container/Container'
+import Routes from '../Routes/Routes'
 
+
+/**
+ * Material UI styling JSON object. 
+ * @param {JSON} theme 
+ */
 const styles = theme => ({
   root: {
     display: 'flex',
   },
-  content: {
-    flexGrow: 10,
-    padding: theme.spacing(5),
-  },
   toolbar: theme.mixins.toolbar,
 });
 
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: Dashboard component. Home of the dynamic resizing navbar/sidemenu logic. 
+ * Parent component of sidemenu/navbar/container. State is passed from here. 
+ */
 class Dashboard extends Component {
 
   constructor(props) {
@@ -30,9 +35,11 @@ class Dashboard extends Component {
     })
 
     this.resizeDashboard = this.resizeDashboard.bind(this);
-
   }
 
+  /**
+   * Resizes the navbar/sidemenu upon event. 
+   */
   resizeDashboard() {
     this.setState({
       resize: !this.state.resize
@@ -42,63 +49,23 @@ class Dashboard extends Component {
   render() {
     const { classes } = this.props;
 
-    let routes = (
-      <Switch>
-        <Route
-          path="/dashboard/timesheet"
-          exact
-          render = {props => (
-            <Timesheet
-              {...props}
-            />
-          )}
-        />
-        <Route
-          path="/dashboard/timesheet/:id"
-          exact
-          render = {props => (
-            <TimesheetDetail
-              {...props}
-            />
-          )}
-        />
-        <Route
-          path="/dashboard/hr"
-          exact
-          render = {props => (
-            <HR
-              {...props}
-            />
-          )}
-        />
-        <Route
-          path="/dashboard/hr/employee/:id"
-          exact
-          render = {props => (
-            <Profile
-              {...props}
-            />
-          )}
-        />
-      </Switch>
-    );
+    let config = (name) => {
+      return ({
+        option: name,
+      })
+    }
+
+    /**
+     * Defines all routes available to the dashboard.
+     */
+    let routes = <Routes { ...this.props} config = {config('dashboard')} />
 
     return (
       <BrowserRouter>
         <div className={classes.root}>
-          <Navbar 
-            loadedUser = {this.props.loadedUser} 
-            resizeDashboard = {this.resizeDashboard} 
-            resize = {this.state.resize} 
-            logoutHandler = {this.props.logoutHandler}/>
-          <SideMenu 
-            loadedUser = {this.props.loadedUser}  
-            resizeDashboard = {this.resizeDashboard} 
-            resize = {this.state.resize}/>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-              {routes}
-          </main>
+          <Navbar loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize} logoutHandler = {this.props.logoutHandler}/>
+          <SideMenu loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize}/>
+          <Container routes = {routes} />
         </div>   
       </BrowserRouter>
     )
