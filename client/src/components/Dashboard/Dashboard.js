@@ -48,6 +48,15 @@ class Dashboard extends Component {
           path="/dashboard/timesheet"
           exact
           render = {props => (
+            <Timesheet
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/timesheet/:id"
+          exact
+          render = {props => (
             <TimesheetDetail
               {...props}
             />

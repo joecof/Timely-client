@@ -58,22 +58,26 @@ export default class Timesheet extends Component {
     ];
 
     // static options
-    const options = {
-      selectableRows: false,
-      search: true,
-      print: false,
-      download: false,
-      rowHover: true,
-      onRowClick: (rowData, rowState) => {
-        console.log(rowData[0]);
-      },
-      // css can also be here 
-      // link: https://github.com/gregnb/mui-datatables/tree/master/examples
-      setRowProps: () => {
-        return {
-          
+    const options = (props) => {
+      const data = {
+        selectableRows: false,
+        search: true,
+        print: false,
+        download: false,
+        rowHover: true,
+        onRowClick: (rowData, rowState) => {
+          console.log(rowData[0]);
+          props.history.push(`/dashboard/timesheet/${rowData[0]}`);
+        },
+        // css can also be here 
+        // link: https://github.com/gregnb/mui-datatables/tree/master/examples
+        setRowProps: () => {
+          return {
+            
+          }
         }
       }
+      return data;
     };
 
     // demo data
@@ -103,7 +107,7 @@ export default class Timesheet extends Component {
         <MUIDatatable 
             className="datatable"
             title={<h1>Timesheet</h1>}
-            options={options}
+            options={options(this.props)}
             columns={columns}
             data={DemoData} />
       </MuiThemeProvider>

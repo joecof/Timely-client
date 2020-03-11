@@ -120,13 +120,22 @@ class TimesheetDetail extends Component {
     super(props);
 
     this.state = {
-
+      timesheetrows: []
     }
+
+  }
+
+  // onLoad function, where i will be fetch data
+  componentDidMount(){
+    this.setState({
+      timesheetrows: rows
+    })
   }
 
   render() {
     // link css
     const { classes } = this.props;
+  
 
     return (
       <div className="container">
@@ -181,7 +190,7 @@ class TimesheetDetail extends Component {
             <TableBody>
               {/* timesheet row date mapping */}
               {rows.map(row => (
-                <TableRow key={row.id} contentEditable>
+                <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
                     {row.proj}
                   </TableCell>
