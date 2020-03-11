@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Avatar from "@material-ui/core/Avatar";
-import logo from '../../images/watch.png'
+import logo from '../../images/logo.png'
 import { Link } from "react-router-dom";
 
 

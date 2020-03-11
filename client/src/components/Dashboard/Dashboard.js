@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Navbar from '../Navbar/Navbar'
 import SideMenu from '../SideMenu/SideMenu'
 import { withStyles } from '@material-ui/core/styles';
+import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
 import Timesheet from '../Timesheet/Timesheet'
 import HR from '../HR/HR'
 import Profile from '../Profile/Profile'
@@ -48,6 +49,15 @@ class Dashboard extends Component {
           exact
           render = {props => (
             <Timesheet
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/timesheet/:id"
+          exact
+          render = {props => (
+            <TimesheetDetail
               {...props}
             />
           )}
