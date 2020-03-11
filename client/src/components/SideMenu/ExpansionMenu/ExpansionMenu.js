@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import ExpansionMenuItem from './ExpansionMenuItem'
 import ExpansionMenuHeader from './ExpansionMenuHeader'
 
-
-
 //For styling later
 const styles = theme => ({
 

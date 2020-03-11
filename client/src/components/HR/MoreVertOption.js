@@ -1,16 +1,16 @@
 import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 /**
  * Author: Joe 
  * Version: 1.0 
- * Description: A dropdown component for the profile icon. 
+ * Description: A vertical dropdown component for the more icon. 
  * @param {JSON} props 
  */
-export default function SimpleMenu(props) {
+export default function MoreVertOption(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   /**
@@ -30,11 +30,10 @@ export default function SimpleMenu(props) {
 
   return (
     <div>
-      <Avatar variant="circle" onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/>
+      <MoreVertIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <Link to="/" style = {{textDecoration: 'none', color: 'black'}}><MenuItem onClick={props.logoutHandler}> Logout </MenuItem> </Link>
+        <Link to= {props.link} style = {{textDecoration: 'none', color: 'black'}}><MenuItem> Edit </MenuItem> </Link>
+        <MenuItem onClick={handleClose}>Delete</MenuItem>
       </Menu>
     </div>
   );
