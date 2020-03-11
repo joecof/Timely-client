@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
-import Navbar from '../Navbar/Navbar'
-import SideMenu from '../SideMenu/SideMenu'
+import React, { Component } from 'react';
+import Navbar from '../Navbar/Navbar';
+import SideMenu from '../SideMenu/SideMenu';
 import { withStyles } from '@material-ui/core/styles';
-import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
-import Timesheet from '../Timesheet/Timesheet'
-import Projects from './components/ProjectsPortal/ProjectsHome/Projects';
-import HR from '../HR/HR'
+import TimesheetDetail from '../TimesheetDetail/TimesheetDetail';
+import Timesheet from '../Timesheet/Timesheet';
+import Projects from '../ProjectsPortal/ProjectsHome/Projects';
+import ProjectCreate from '../ProjectCreate/ProjectCreate';
+import HR from '../HR/HR';
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 
 
@@ -73,10 +74,19 @@ class Dashboard extends Component {
           )}
         />
         <Route
-          path="/projects"
+          path="/dashboard/projects"
           exact
           render = {props => (
             <Projects
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/createProject"
+          exact
+          render = {props => (
+            <ProjectCreate
               {...props}
             />
           )}

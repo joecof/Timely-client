@@ -10,6 +10,7 @@ import ProjectInfo from "./ProjectInfo";
 import ProjectDesc from "./ProjectDesc";
 import Budget from "./Budget";
 import Schedule from "./Schedule";
+import './ProjectCreate.css'
 
 /**
  * Author: Prabh
@@ -59,7 +60,7 @@ const ProjectCreate = () => {
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
             <StepContent>
-              <React.Fragment>{getStepContent(index)}</React.Fragment>
+              <div className="stepContent">{getStepContent(index)}</div>
               <div className="margin">
                 <div>
                   <Button

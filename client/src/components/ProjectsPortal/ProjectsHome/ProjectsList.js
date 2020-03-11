@@ -8,7 +8,6 @@ import "./ProjectsList.css";
  * Version: 1
  * Desc: List component to list all the projects visible to the user
 */
-
 const columns = ["ID", "Name", "Manager"];
 
 class ProjectsList extends React.Component {
