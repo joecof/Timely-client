@@ -3,6 +3,7 @@ import Navbar from '../Navbar/Navbar'
 import SideMenu from '../SideMenu/SideMenu'
 import { withStyles } from '@material-ui/core/styles';
 import Timesheet from '../Timesheet/Timesheet'
+import Projects from './components/ProjectsPortal/ProjectsHome/Projects';
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 
 
@@ -49,6 +50,15 @@ class Dashboard extends Component {
             <Timesheet
               {...props}
               loginHandler = {this.loginHandler}
+            />
+          )}
+        />
+        <Route
+          path="/projects"
+          exact
+          render = {props => (
+            <Projects
+              {...props}
             />
           )}
         />
