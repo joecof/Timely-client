@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import Navbar from '../Navbar/Navbar'
 import SideMenu from '../SideMenu/SideMenu'
 import { withStyles } from '@material-ui/core/styles';
+import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
 import Timesheet from '../Timesheet/Timesheet'
 import Projects from './components/ProjectsPortal/ProjectsHome/Projects';
+import HR from '../HR/HR'
 import { BrowserRouter, Route, Switch} from "react-router-dom";
 
 
@@ -49,7 +51,24 @@ class Dashboard extends Component {
           render = {props => (
             <Timesheet
               {...props}
-              loginHandler = {this.loginHandler}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/timesheet/:id"
+          exact
+          render = {props => (
+            <TimesheetDetail
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/hr"
+          exact
+          render = {props => (
+            <HR
+              {...props}
             />
           )}
         />
@@ -64,7 +83,6 @@ class Dashboard extends Component {
         />
       </Switch>
     );
-
 
     return (
       <BrowserRouter>

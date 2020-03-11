@@ -9,6 +9,8 @@ import Divider from '@material-ui/core/Divider';
 import DropDownProfile from "../DropDownProfile/DropDownProfile"
 import clsx from "clsx";
 import Searchbar from './Searchbar'
+import MenuIcon from '@material-ui/icons/Menu';
+
 
 const navbarExpandedWidth = 230;
 const navbarShrinkedWidth = 100;
@@ -57,15 +59,10 @@ const styles = theme => ({
   },
 });
 
-
 class Navbar extends Component {
 
   constructor(props) {
     super(props)
-
-    this.state = ({
-      open: this.props.resize
-    })
 
   }
 
@@ -83,7 +80,7 @@ class Navbar extends Component {
               aria-label="open drawer"
               onClick = {this.props.resizeDashboard}
             >
-              <ArrowBackIcon/>
+              {this.props.resize ?  <ArrowBackIcon/>  : <MenuIcon/>  }
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap> Timely </Typography>
             <Searchbar/>
@@ -104,6 +101,5 @@ class Navbar extends Component {
     )
   }
 }
-
 
 export default withStyles(styles, { withTheme: true })(Navbar);

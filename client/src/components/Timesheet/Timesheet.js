@@ -1,80 +1,118 @@
+/**
+ * Author: Kang Wang
+ * Version: 1
+ * Desc: Timesheet Component 
+ */
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
-
-const columns = [
-  {name:"project", label:"Project", className:"column"},
-  {name:"wp", label:"WP", className:"column"},
-  {name:"total", label:"Total", className:"column"},
-  {name:"sat", label:"Sat", className:"column"},
-  {name:"sun", label:"Sun", className:"column"},
-  {name:"mon", label:"Mon", className:"column"},
-  {name:"tue", label:"Tue", className:"column"},
-  {name:"wed", label:"Wed", className:"column"},
-  {name:"thur", label:"Thur", className:"column"},
-  {name:"fri", label:"Fri", className:"column"},
-];
-
-const options = {
-  selectableRows: false,
-  search: true,
-  print: false,
-  download: false,
-  filter: false,
-};
-
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 export default class Timesheet extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-
+  // css here
+  // link: https://github.com/gregnb/mui-datatables/tree/master/examples
+  getMuiTheme = () => createMuiTheme({
+    overrides: {
+      
     }
-
-  }
-
-
+  });
+  
   render() {
 
-    const DemoData = 
-      [{
-        project: '010', 
-        wp: 'SICK', 
-        total: '4.0',
-        sat: '2.0',
-        sun: '2.0',
-        mon: '2.0',
-        tue: '2.0',
-        wed: '2.0',
-        thur: '2.0',
-        fri: '2.0',
+    // static columns
+    const columns = [
+      {
+        name:"timesheetid", 
+        label:"Timesheet ID", 
+        className:"column",
+        options: {
+          filter: false
+        }
       },
       {
-        project: '011', 
-        wp: 'WORK', 
-        total: '4.0',
-        sat: '2.0',
-        sun: '2.0',
-        mon: '2.0',
-        tue: '2.0',
-        wed: '2.0',
-        thur: '2.0',
-        fri: '2.0',
-      }]
-    
+        name:"weeknumber", 
+        label:"Week Number", 
+        className:"column",
+        options: {
+          filter: false
+        }
+      },
+      {
+        name:"weekending", 
+        label:"Week Ending", 
+        className:"column",
+        options: {
+          sort: true,
+          filter: false
+          // display false
+        }
+    },
+      {
+        name:"status", 
+        label:"Status", 
+        className:"column",
+        options: {
+          filter: true
+        }
+      },
+    ];
+
+    // static options
+    const options = (props) => {
+      const data = {
+        selectableRows: false,
+        search: true,
+        print: false,
+        download: false,
+        rowHover: true,
+        onRowClick: (rowData, rowState) => {
+          console.log(rowData[0]);
+          props.history.push(`/dashboard/timesheet/${rowData[0]}`);
+        },
+        // css can also be here 
+        // link: https://github.com/gregnb/mui-datatables/tree/master/examples
+        setRowProps: () => {
+          return {
+            
+          }
+        }
+      }
+      return data;
+    };
+
+    // demo data
+    const DemoData = 
+      [{
+        timesheetid:'T123',
+        weeknumber: '23',
+        weekending:'12/12/2019',
+        status: 'Pending'
+      },
+      {
+        timesheetid:'T122',
+        weeknumber:'22',
+        weekending:'06/12/2019',
+        status: 'Approved'
+      },
+      {
+        timesheetid:'T121',
+        weeknumber:'21',
+        weekending:'30/11/2019',
+        status: 'Rejected'
+      }];
 
     return (
       <>
+      <MuiThemeProvider theme={this.getMuiTheme()}>
         <MUIDatatable 
             className="datatable"
-            title={<h1> Timesheet </h1>}
-            options={options}
+            title={<h1>Timesheet</h1>}
+            options={options(this.props)}
             columns={columns}
-            data={DemoData}
-        />
-      </>
+            data={DemoData} />
+      </MuiThemeProvider>
+    </>
     )
   }
-}
 
+}
