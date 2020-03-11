@@ -3,7 +3,7 @@ import axios from 'axios';
 /**
  * Define the base axios URL. 
  */
-axios.defaults.baseURL = "http://localhost:8081/timely/api/";
+axios.defaults.baseURL = "http://localhost:8080/timely/api/";
 
 /**
  * Contains the data of the response body 
