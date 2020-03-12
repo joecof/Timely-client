@@ -4,6 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import ExpansionMenuItem from './ExpansionMenuItem'
 import ExpansionMenuHeader from './ExpansionMenuHeader'
 
+const styles = () => {
+
+}
 /**
  * Author: Joe 
  * Version: 1.0 
