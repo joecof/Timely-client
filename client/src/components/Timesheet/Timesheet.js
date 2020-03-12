@@ -66,7 +66,6 @@ export default class Timesheet extends Component {
         download: false,
         rowHover: true,
         onRowClick: (rowData, rowState) => {
-          console.log(rowData[0]);
           props.history.push(`/dashboard/timesheet/${rowData[0]}`);
         },
         // css can also be here 

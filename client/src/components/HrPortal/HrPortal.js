@@ -117,7 +117,7 @@ class HrPortal extends Component {
         row.push(lastName);
         row.push(laborGrade);
         row.push(supervisor);
-        row.push(<MoreVertOption link={`/dashboard/hr/employee/${id}`}/>);
+        row.push(<MoreVertOption link={`/dashboard/hr/${id}`}/>);
         resultData.push(row);
     }
     

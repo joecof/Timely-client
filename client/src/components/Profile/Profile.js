@@ -20,7 +20,7 @@ const styles = () => ({
     height: 750,
   },
   divider: {
-    margin: 35,
+    margin: 45,
     height: 690
   }
 });

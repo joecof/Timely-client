@@ -31,11 +31,13 @@ class Dashboard extends Component {
 
     this.state = ({
       loaded_user: {},
-      resize: true
+      resize: true, 
+      breadCrumbs: this.props.location
     })
 
     this.resizeDashboard = this.resizeDashboard.bind(this);
   }
+
 
   /**
    * Resizes the navbar/sidemenu upon event. 
@@ -62,8 +64,8 @@ class Dashboard extends Component {
     return (
       <BrowserRouter>
         <div className={classes.root}>
-          <Navbar loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize} logoutHandler = {this.props.logoutHandler}/>
-          <SideMenu loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize}/>
+          <Navbar {...this.props.location }  loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize} logoutHandler = {this.props.logoutHandler}/>
+          <SideMenu  loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize}/>
           <Container routes = {routes} />
         </div>   
       </BrowserRouter>
