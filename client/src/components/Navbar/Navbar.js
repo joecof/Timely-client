@@ -10,11 +10,19 @@ import DropDownProfile from "../DropDownProfile/DropDownProfile"
 import clsx from "clsx";
 import Searchbar from './Searchbar'
 import MenuIcon from '@material-ui/icons/Menu';
+import constants from '../../constants/contants'
+import BreadCrumb from '../BreadCrumb/BreadCrumb'
 
+/**
+ * Defined breaking points for navbar size upon resizing. 
+ */
+const navbarExpandedWidth = constants.NAVBAR_EXPANDED_WIDTH;
+const navbarShrinkedWidth = constants.NAVBAR_SHRINKED_WIDTH;
 
-const navbarExpandedWidth = 230;
-const navbarShrinkedWidth = 100;
-
+/**
+ * Material UI styling JSON object. 
+ * @param {JSON} theme 
+ */
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -59,13 +67,17 @@ const styles = theme => ({
   },
 });
 
+/**
+ * Author: Joe
+ * Version: 1.0 
+ * Description: Navbar component for dashboard navigation. 
+ */
 class Navbar extends Component {
-
-  constructor(props) {
-    super(props)
-
-  }
-
+  
+  /**
+   * Returns a JSX Navbar component that resizes dynamically. 
+   * @param {JSON} classes 
+   */
   resizeNavbar(classes) {
     return(
       <div className={classes.root}>
@@ -80,13 +92,16 @@ class Navbar extends Component {
               aria-label="open drawer"
               onClick = {this.props.resizeDashboard}
             >
+              {/* Will render a different 'icon' depending on if the user has resized the navbar or not. */}
               {this.props.resize ?  <ArrowBackIcon/>  : <MenuIcon/>  }
             </IconButton>
-            <Typography className={classes.title} variant="h6" noWrap> Timely </Typography>
+            <Typography className={classes.title} variant="h6" noWrap> 
+              <BreadCrumb { ...this.props } />
+            </Typography>
             <Searchbar/>
             <Divider className = {classes.divider} orientation="vertical" flexItem />
             <h4 className = {classes.userName}> {this.props.loadedUser.first_name} {this.props.loadedUser.last_name}</h4>
-            <DropDownProfile logoutHandler = {this.props.logoutHandler}/>
+            <DropDownProfile logoutHandler = {this.props.logoutHandler} loadedUser={this.props.loadedUser}/>
           </Toolbar>
         </AppBar>
       </div>
@@ -95,7 +110,6 @@ class Navbar extends Component {
 
   render() {
     const { classes } = this.props; 
-    
     return(
       this.resizeNavbar(classes)
     )

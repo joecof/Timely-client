@@ -6,17 +6,22 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
-const styles = theme => ({
-  
+/**
+ * Material UI styling JSON object. 
+ */
+const styles = () => ({
   text: {
     marginLeft: 30,
     color: 'black'
-  }
+  },
 });
 
-
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: ExpansionMenuHeader component. Header component for the expansion menu.
+ */
 class ExpansionMenuHeader extends Component {
-
   render() {
     const { classes } = this.props;
 
