@@ -48,46 +48,46 @@ const styles = theme => ({
   }
 });
 
-  /**
-   * Author: Lawrence 
-   * Version: 1.0 
-   * Description: SideMenu component for dashboard navigation. 
-   */
-  class SideMenu extends Component {
+/**
+ * Author: Lawrence 
+ * Version: 1.0 
+ * Description: SideMenu component for dashboard navigation. 
+ */
+class SideMenu extends Component {
 
-    render() {
-      const { classes } = this.props;
+  render() {
+    const { classes } = this.props;
 
-      return(
-        <div className={classes.root}>
-          <CssBaseline />
-          <Drawer 
-            variant="permanent" 
-            open = {true} 
-            className={clsx(classes.drawer, {
+    return(
+      <div className={classes.root}>
+        <CssBaseline />
+        <Drawer 
+          variant="permanent" 
+          open = {true} 
+          className={clsx(classes.drawer, {
+            [classes.drawerOpen]: this.props.resize,
+            [classes.drawerClose]: !this.props.resize
+          })}
+          classes={{
+            paper: clsx({
               [classes.drawerOpen]: this.props.resize,
               [classes.drawerClose]: !this.props.resize
-            })}
-            classes={{
-              paper: clsx({
-                [classes.drawerOpen]: this.props.resize,
-                [classes.drawerClose]: !this.props.resize
-              })
-            }}
-            >
-            <MenuItem isMenuLogo = {true} />
-            <Divider className={classes.divider} />
-            <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
-            <Divider className={classes.divider}/>
-            <div>
-              <MenuItem text = "Dashboard" resize = {this.props.resize} link = "/dashboard"/>
-              <MenuItem text = "Timesheet" resize = {this.props.resize} link = "/dashboard/timesheet"/>
-              <MenuItem text = "Projects" resize = {this.props.resize} link = "/dashboard/projects"/>
-            </div>
-          </Drawer>
-        </div>
-      )
-    }
+            })
+          }}
+          >
+          <MenuItem isMenuLogo = {true} />
+          <Divider className={classes.divider} />
+          <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
+          <Divider className={classes.divider}/>
+          <div>
+            <MenuItem text = "Dashboard" resize = {this.props.resize} link = "/dashboard"/>
+            <MenuItem text = "Timesheet" resize = {this.props.resize} link = "/dashboard/timesheet"/>
+            <MenuItem text = "Projects" resize = {this.props.resize} link = "/dashboard/projects"/>
+          </div>
+        </Drawer>
+      </div>
+    )
   }
+}
 
 export default withStyles(styles, { withTheme: true })(SideMenu);

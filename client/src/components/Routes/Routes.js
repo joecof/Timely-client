@@ -64,6 +64,15 @@ export default class Routes extends Component {
                 />
               )}
             />
+            <Route
+              path="/dashboard/profile/:id"
+              exact
+              render = {props => (
+                <Profile
+                  {...props}
+                />
+              )}
+            />
           </Switch>
         )
         break; 

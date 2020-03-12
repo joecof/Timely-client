@@ -39,9 +39,7 @@ const options = () => {
     download: false,
     filter: false,
     customToolbar: () => {
-      return (
-        <CustomToolbar />
-      );
+      return <CustomToolbar />;
     }
   }
   return data;
@@ -130,11 +128,11 @@ class HrPortal extends Component {
     return (
       <>
       <MUIDatatable 
-          className="datatable"
-          title={<h1> Manage Employees</h1>}
-          options={options(this.props)}
-          columns={columns}
-          data={this.state.data}
+        className="datatable"
+        title={<h1> Manage Employees</h1>}
+        options={options(this.props)}
+        columns={columns}
+        data={this.state.data}
       />
     </>
     )
