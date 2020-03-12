@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Route, Switch} from "react-router-dom";
 import Timesheet from '../Timesheet/Timesheet'
 import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
-import HR from '../HR/HR'
+import HrPortal from '../HrPortal/HrPortal'
 import Profile from '../Profile/Profile'
 import Login from '../Login/Login'
 import Dashboard from '../Dashboard/Dashboard'
@@ -50,7 +50,7 @@ export default class Routes extends Component {
               path="/dashboard/hr"
               exact
               render = {props => (
-                <HR
+                <HrPortal
                   {...props}
                 />
               )}

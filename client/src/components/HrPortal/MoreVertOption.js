@@ -33,7 +33,7 @@ export default function MoreVertOption(props) {
       <MoreVertIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <Link to= {props.link} style = {{textDecoration: 'none', color: 'black'}}><MenuItem> Edit </MenuItem> </Link>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={handleClose}>Archive</MenuItem>
       </Menu>
     </div>
   );
