@@ -51,9 +51,9 @@ class ChangePassword extends Component {
             <Typography className = {classes.title} variant="h6"> Change Password </Typography>
             <TextField
               className = {classes.input}
-              placeholder = {this.props.loadedUser.password}
+              defaultValue = "default"
+              type="password"
               helperText="Old Password"
-              type="password"
               fullWidth
               margin="normal"
               InputLabelProps={{
@@ -62,9 +62,9 @@ class ChangePassword extends Component {
             />
             <TextField
               className = {classes.input}
-              placeholder = {this.props.loadedUser.password}
+              defaultValue = "default"
+              type="password"
               helperText="New Password"
-              type="password"
               fullWidth
               margin="normal"
               InputLabelProps={{
@@ -73,9 +73,9 @@ class ChangePassword extends Component {
             />
             <TextField
               className = {classes.input}
-              placeholder = {this.props.loadedUser.password}
-              helperText="Confirm New Password"
+              defaultValue = "default"
               type="password"
+              helperText="Confirm New Password"
               fullWidth
               margin="normal"
               InputLabelProps={{

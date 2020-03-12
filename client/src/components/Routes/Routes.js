@@ -56,7 +56,7 @@ export default class Routes extends Component {
               )}
             />
             <Route
-              path="/dashboard/hr/employee/:id"
+              path="/dashboard/hr/:id"
               exact
               render = {props => (
                 <Profile
@@ -95,6 +95,7 @@ export default class Routes extends Component {
                   {...props} 
                   logoutHandler = {this.props.config.logoutHandler}
                   loadedUser = {this.props.config.loadedUser}
+                  breadCrumbs = {this.props.config.breadCrumbs}
                 />
               )}
             />

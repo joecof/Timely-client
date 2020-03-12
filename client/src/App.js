@@ -16,12 +16,13 @@ class App extends Component {
 
     this.state = ({
       isAuth: false,
-      loadedUser: null
+      loadedUser: null,
     })
 
     this.loginHandler = this.loginHandler.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
   }
+
 
   /**
    * Login handler. Logs in the user and sets state of application to authenticated. 
@@ -52,6 +53,7 @@ class App extends Component {
   }
   
   render() {
+
     let routes; 
     /**
      * Returns a configuration objection that routes takes in to pass it the developers desired props. 
@@ -62,7 +64,7 @@ class App extends Component {
         option: name,
         loginHandler: this.loginHandler,
         logoutHandler: this.logoutHandler,
-        loadedUser: this.state.loadedUser
+        loadedUser: this.state.loadedUser,
       })
     }
 
