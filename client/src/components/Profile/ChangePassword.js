@@ -5,6 +5,9 @@ import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
+/**
+ * Material UI styling JSON object. 
+ */
 const styles = () => ({
   container: {
     marginTop: 20,
@@ -25,6 +28,11 @@ const styles = () => ({
   }
 });
 
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: ChangePassword component. 
+ */
 class ChangePassword extends Component {
 
   constructor(props) {

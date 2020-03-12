@@ -4,17 +4,15 @@ import { withStyles } from '@material-ui/core/styles';
 import ExpansionMenuItem from './ExpansionMenuItem'
 import ExpansionMenuHeader from './ExpansionMenuHeader'
 
-//For styling later
-const styles = theme => ({
-
-});
-
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: ExpansionMenu component. Handles the expansion menu on the sidemenu.
+ */
 class ExpansionMenu extends Component {
   render() {
-    const { classes } = this.props;
-
     return (
-      <ExpansionPanel className = {classes.expansionPanel} elevation={0}>
+      <ExpansionPanel elevation={0}>
         <ExpansionMenuHeader loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
         <ExpansionMenuItem text="Profile" resize = {this.props.resize} link = "/dashboard/profile"/>
         <ExpansionMenuItem text="Lead Engineer" resize = {this.props.resize} link = "/dashboard/lead"/>

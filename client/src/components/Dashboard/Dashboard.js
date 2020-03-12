@@ -54,12 +54,11 @@ class Dashboard extends Component {
         option: name,
       })
     }
-
     /**
      * Defines all routes available to the dashboard.
      */
     let routes = <Routes { ...this.props} config = {config('dashboard')} />
-
+    
     return (
       <BrowserRouter>
         <div className={classes.root}>

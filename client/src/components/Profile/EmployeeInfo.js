@@ -4,6 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import { Typography } from '@material-ui/core';
 
+/**
+ * Material UI styling JSON object. 
+ */
 const styles = () => ({
   container: {
     marginTop: 20,
@@ -28,7 +31,11 @@ const styles = () => ({
   }
 });
 
-
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: EmployeeInfo component. 
+ */
 class EmployeeInfo extends Component {
   render() {
     const { classes } = this.props;
