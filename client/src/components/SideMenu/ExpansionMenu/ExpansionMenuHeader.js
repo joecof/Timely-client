@@ -11,7 +11,7 @@ const styles = theme => ({
   text: {
     marginLeft: 30,
     color: 'black'
-  }
+  },
 });
 
 
