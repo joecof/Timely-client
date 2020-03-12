@@ -73,6 +73,16 @@ export default class Routes extends Component {
                 />
               )}
             />
+            {/* login employee progile */}
+            <Route
+              path="/dashboard/profile"
+              exact
+              render = {props => (
+                <Profile
+                  {...props}
+                />
+              )}
+            />
           </Switch>
         )
         break; 
