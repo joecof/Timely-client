@@ -32,7 +32,9 @@ export default function SimpleMenu(props) {
     <div>
       <Avatar variant="circle" onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <Link to= {`/dashboard/hr/employee/${props.loadedUser.employee_id}`} style = {{textDecoration: 'none', color: 'black'}}>
+          <MenuItem onClick={handleClose}> Profile </MenuItem> 
+        </Link>
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <Link to="/" style = {{textDecoration: 'none', color: 'black'}}><MenuItem onClick={props.logoutHandler}> Logout </MenuItem> </Link>
       </Menu>

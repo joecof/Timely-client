@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import { withStyles } from '@material-ui/core/styles';
+import CustomToolbar from './CustomToolBar';
+
 import MoreVertOption from './MoreVertOption'
 
-const styles = theme => ({
+const styles = () => ({
   pictureUrl: {
     width: 50
   }
@@ -19,7 +21,7 @@ const columns = [
   {name:"edit", label:"Edit", className:"column"},
 ];
 
-const options = (props) => {
+const options = () => {
 
   const data = {
     selectableRows: false,
@@ -27,8 +29,12 @@ const options = (props) => {
     print: false,
     download: false,
     filter: false,
+    customToolbar: () => {
+      return (
+        <CustomToolbar />
+      );
+    }
   }
-  
 
   return data;
 };
@@ -36,7 +42,7 @@ const options = (props) => {
 const demoData = 
     [{
       pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "A01",
+      employeeId: "1",
       firstName: "John",
       lastName: "Doe", 
       laborGrade: "A",
@@ -44,7 +50,7 @@ const demoData =
     },
     {
       pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "A02",
+      employeeId: "2",
       firstName: "Jane",
       lastName: "Kelly", 
       laborGrade: "A",
@@ -52,14 +58,14 @@ const demoData =
     },
     {
       pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "A03",
+      employeeId: "3",
       firstName: "Henry",
       lastName: "Peter", 
       laborGrade: "A",
       supervisor: "Bruce Link"
     }]
 
-class HR extends Component {
+class HrPortal extends Component {
 
   constructor(props) {
     super(props); 
@@ -73,8 +79,6 @@ class HR extends Component {
 
   componentDidMount() {
     this.fetchData();
-
-    console.log(this.props);
   }
 
   //will use this function to fetch from backend soon 
@@ -107,7 +111,6 @@ class HR extends Component {
   } 
 
   render() {
-
     return (
       <>
       <MUIDatatable 
@@ -122,4 +125,4 @@ class HR extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(HR);
+export default withStyles(styles, { withTheme: true })(HrPortal);

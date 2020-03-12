@@ -98,7 +98,7 @@ class Navbar extends Component {
             <Searchbar/>
             <Divider className = {classes.divider} orientation="vertical" flexItem />
             <h4 className = {classes.userName}> {this.props.loadedUser.first_name} {this.props.loadedUser.last_name}</h4>
-            <DropDownProfile logoutHandler = {this.props.logoutHandler}/>
+            <DropDownProfile logoutHandler = {this.props.logoutHandler} loadedUser={this.props.loadedUser}/>
           </Toolbar>
         </AppBar>
       </div>
