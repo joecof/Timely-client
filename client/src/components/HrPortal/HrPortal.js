@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import { withStyles } from '@material-ui/core/styles';
+import MoreVertOption from './MoreVertOption'
 import CustomToolbar from './CustomToolBar';
 
-import MoreVertOption from './MoreVertOption'
 
+
+/**
+ * Material UI styling JSON object. 
+ */
 const styles = () => ({
   pictureUrl: {
     width: 50
   }
 });
 
+/**
+ * Defines the columns for the HR portal. 
+ */
 const columns = [
   {name:"pictureUrl", label:"Photo", className:"column"},
   {name:"employeeId", label:"Employee ID", className:"column"},
@@ -21,8 +28,10 @@ const columns = [
   {name:"edit", label:"Edit", className:"column"},
 ];
 
+/**
+ * Configuration object for the MUI data table. 
+ */
 const options = () => {
-
   const data = {
     selectableRows: false,
     search: true,
@@ -35,10 +44,12 @@ const options = () => {
       );
     }
   }
-
   return data;
 };
 
+/**
+ * Demo data for now. 
+ */
 const demoData = 
     [{
       pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
@@ -65,6 +76,11 @@ const demoData =
       supervisor: "Bruce Link"
     }]
 
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: HR Portal Component. Portal used by HR employee for editing/adding/archiving employee information. 
+ */
 class HrPortal extends Component {
 
   constructor(props) {

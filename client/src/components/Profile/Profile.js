@@ -8,6 +8,10 @@ import BasicInfo from './BasicInfo'
 import ChangePassword from './ChangePassword'
 import agent from '../../api/agent'
 
+/**
+ * Material UI styling JSON object. 
+ * @param {JSON} theme 
+ */
 const styles = () => ({
   root: {
     flexGrow: 1,
@@ -21,6 +25,11 @@ const styles = () => ({
   }
 });
 
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: Profile Component. Loads the current user data into the profile and allows HR/User to edit their profile.  
+ */
 class Profile extends Component {
 
   constructor(props) {

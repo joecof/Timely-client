@@ -4,8 +4,10 @@ import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
+/**
+ * Material UI styling JSON object. 
+ */
 const styles = () => ({
-
   title: {
     marginBottom: 5
   },
@@ -21,6 +23,11 @@ const styles = () => ({
   }
 });
 
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: BasicInfo component. 
+ */
 class BasicInfo extends Component {
 
   constructor(props) {
