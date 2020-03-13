@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Route, Switch} from "react-router-dom";
-import Timesheet from '../Timesheet/Timesheet'
+import TimesheetPortal from '../TimesheetPortal/TimesheetPortal'
 import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
 import HrPortal from '../HrPortal/HrPortal'
 import Profile from '../Profile/Profile'
@@ -32,7 +32,7 @@ export default class Routes extends Component {
               path="/dashboard/timesheet"
               exact
               render = {props => (
-                <Timesheet
+                <TimesheetPortal
                   {...props}
                 />
               )}

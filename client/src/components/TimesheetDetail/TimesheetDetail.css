@@ -11,6 +11,10 @@
 }
 .timesheetTitle {
     font-size: medium;
+    width: 65%;
+    height: 45px;
+    margin-left: 20px;
+    float: left;
 }
 /* first row  */
 .attributeRow {
@@ -45,7 +49,7 @@
 }
 
 .weekEnd {
-
+    
 }
 /* second row */
 .empNameAttribute {

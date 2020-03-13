@@ -1,13 +1,14 @@
 /**
  * Author: Kang Wang
  * Version: 1
- * Desc: Timesheet Component 
+ * Desc: TimesheetPortal Component 
  */
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import CurrentTimesheetToolBar from './CurrentTimesheetToolBar';
 
-export default class Timesheet extends Component {
+export default class TimesheetPortal extends Component {
 
   // css here
   // link: https://github.com/gregnb/mui-datatables/tree/master/examples
@@ -67,6 +68,9 @@ export default class Timesheet extends Component {
         rowHover: true,
         onRowClick: (rowData, rowState) => {
           props.history.push(`/dashboard/timesheet/${rowData[0]}`);
+        },
+        customToolbar: () => {
+          return <CurrentTimesheetToolBar />
         },
         // css can also be here 
         // link: https://github.com/gregnb/mui-datatables/tree/master/examples
