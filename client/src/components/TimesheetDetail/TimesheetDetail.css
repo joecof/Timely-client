@@ -11,7 +11,7 @@
 }
 .timesheetTitle {
     font-size: medium;
-    width: 65%;
+    min-width: 750px;
     height: 45px;
     margin-left: 20px;
     float: left;

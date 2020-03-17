@@ -188,7 +188,7 @@ class TimesheetDetail extends Component {
                 Week Ending:
             </div>
             <div className="weekEnd">
-                2020-02-23
+              &nbsp;&nbsp;&nbsp;2020-02-23
             </div>
           </div>
           <div className="empNameAttribute">
@@ -201,7 +201,7 @@ class TimesheetDetail extends Component {
           </div>
         </div>
         {/* add row button */}
-        <Button 
+        <Button
           className={classes.button}
           onClick={this.handleClick} 
           color='primary' 

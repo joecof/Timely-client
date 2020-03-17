@@ -6,6 +6,7 @@ import HrPortal from '../HrPortal/HrPortal'
 import Profile from '../Profile/Profile'
 import Login from '../Login/Login'
 import Dashboard from '../Dashboard/Dashboard'
+import DashboardProtal from '../DashboardPortal/DashBoardPortal'
 
 /**
  * Author: Joe 
@@ -28,6 +29,15 @@ export default class Routes extends Component {
       case 'dashboard':
         routes = (
           <Switch>
+            <Route
+              path="/dashboard"
+              exact
+              render = {props => (
+                <DashboardProtal
+                  {...props}
+                />
+              )}
+            />
             <Route
               path="/dashboard/timesheet"
               exact
