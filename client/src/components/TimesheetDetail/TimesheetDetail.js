@@ -28,7 +28,8 @@ const timesheetStyle = theme => ({
       maxHeight: '420px'
     },
     tableTitle: {
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      fontSize: '10pt !important'
     },
     button: {
       margin: '25px 0 0 100px'
@@ -145,7 +146,7 @@ class TimesheetDetail extends Component {
 
   // timesheet row
   timesheetRow = (row, i) => <TableRow key={i}>
-                      <TableCell component="th" scope="row">
+                      <TableCell scope="row">
                           {row.proj}
                       </TableCell>
                       <TableCell align="right">{row.wp}</TableCell>
