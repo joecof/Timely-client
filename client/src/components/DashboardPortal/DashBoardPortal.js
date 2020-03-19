@@ -48,7 +48,7 @@ const styles = () => ({
         color: 'purple'
     },
     CircularProgressbar: {
-      width: '50%',
+      width: '40%',
       marginTop: 10
     }
   });
