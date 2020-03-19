@@ -2,6 +2,7 @@ import React from "react";
 import ProjectsList from "./ProjectsList";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import {Link} from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import "./Projects.css";
 
@@ -46,7 +47,7 @@ class Projects extends React.Component {
             </ButtonGroup>
           </Grid>
           <Grid item>
-            <Button variant="contained" color="secondary">+ Create</Button>
+            <Button variant="contained" color="secondary" component={Link} to="/createProject">+ Create</Button>
           </Grid>
         </Grid>
         <ProjectsList data={this.state.data} type={this.state.type}/>
