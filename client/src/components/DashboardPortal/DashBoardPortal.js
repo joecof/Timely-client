@@ -9,6 +9,7 @@ import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import agent from '../../api/agent'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import Grid from '@material-ui/core/Grid';
 import 'react-circular-progressbar/dist/styles.css';
 import DashboardProtalProjInfo from '../DashboardProtalProjInfo/DashboardProtalProjInfo'
 import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
@@ -22,46 +23,34 @@ const styles = () => ({
       flexGrow: 1,
     },
     leftPaper: {
-      height: 620,
-      width: 350,
-      marginLeft: 35,
-      float: 'left',
+      height: 737,
       overflow: 'auto'
     },
     rightTopPaper: {
-        height: 350,
-        width: 580,
-        marginLeft: 420
+        height: 470,
     }, 
     rightBottomLeftPaper: {
-        marginTop: 20,
-        marginLeft: 35,
-        width: 250,
         height: 250,
-        float: 'left'
+        textAlign: 'center'
     },
     rightBottomRightPaper: {
-        width: 250,
         height: 250,
-        marginLeft: 75,
-        marginTop: 20,
-        float: 'left'
+        textAlign: 'center'
     },
     title: {
         fontWeight: 'bold',
         marginLeft: 10,
-        marginTop: 5
     },
     seperator: {
-        borderTop: '1px solid lightGrey'
+        borderTop: '1px solid lightgray'
     },
     projTitle: {
         marginLeft: 20,
         color: 'purple'
     },
     CircularProgressbar: {
-      width: '80%',
-      marginLeft: 27
+      width: '45%',
+      margin: '0 auto'
     }
   });
 
@@ -109,74 +98,86 @@ class DashBoardPortal extends Component {
   
       return (
         <div className={classes.root}>
+          <Grid container spacing={3} className={classes.container}>
             {/* proj info notification column */}
-            <Paper className = {classes.leftPaper} elevation = {2}>
-              <div className = {classes.title}>{this.currentDate()}</div>
-              <hr className = {classes.seperator} />
-              <div className = {classes.projTitle}>Recent/New Projects</div>
-              <DashboardProtalProjInfo projName="TJ100" dueDate="December 20, 2020" projManagerName="Dick Jones" />
-              <DashboardProtalProjInfo projName="TR311" dueDate="March 20, 2021" projManagerName="Slim Teddy"/>
-              <DashboardProtalProjInfo projName="GY852" dueDate="April 20, 2021" projManagerName="Flower Jones"/>
-              <DashboardProtalProjInfo projName="TY965" dueDate="May 23, 2022" projManagerName="Juice Moon"/>
-              <DashboardProtalProjInfo projName="TG203" dueDate="October 23, 2022" projManagerName="Pie Hook"/>
-            </Paper>
+            <Grid item xs={4}>
+              <Paper className = {classes.leftPaper} elevation = {2}>
+                <div className = {classes.title}>{this.currentDate()}</div>
+                <hr className = {classes.seperator} />
+                <div className = {classes.projTitle}>Recent/New Projects</div>
+                <DashboardProtalProjInfo projName="TJ100" dueDate="December 20, 2020" projManagerName="Dick Jones" />
+                <DashboardProtalProjInfo projName="TR311" dueDate="March 20, 2021" projManagerName="Slim Teddy"/>
+                <DashboardProtalProjInfo projName="GY852" dueDate="April 20, 2021" projManagerName="Flower Jones"/>
+                <DashboardProtalProjInfo projName="TY965" dueDate="May 23, 2022" projManagerName="Juice Moon"/>
+                <DashboardProtalProjInfo projName="TG203" dueDate="October 23, 2022" projManagerName="Pie Hook"/>
+                <DashboardProtalProjInfo projName="TG203" dueDate="October 23, 2022" projManagerName="Pie Hook"/>
+                <DashboardProtalProjInfo projName="TG203" dueDate="October 23, 2022" projManagerName="Pie Hook"/>
+                <DashboardProtalProjInfo projName="TG203" dueDate="October 23, 2022" projManagerName="Pie Hook"/>
 
+              </Paper>
+            </Grid>
             {/* timesheet detail */}
-            <Paper className = {classes.rightTopPaper} elevation = {2}>
-              <div className = {classes.title}>Timesheet</div>
-              <hr className = {classes.seperator} />
-              {/* timesheet here */}
-            </Paper>
+            <Grid item xs={8}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} zeroMinWidth>
 
+                  <Paper className = {classes.rightTopPaper} elevation = {2}>
+                    <div className = {classes.title}>Timesheet</div>
+                    <hr className = {classes.seperator} />
+                    <TimesheetDetail dashboardTimesheet = {true}/>
+                  </Paper>
+
+                </Grid>
             {/* sick days */}
-            <Paper className = {classes.rightBottomLeftPaper} elevation = {2}>
-              <div className = {classes.title}>Sick Days</div>
-              <hr className = {classes.seperator} />
-              <CircularProgressbar className={classes.CircularProgressbar} value={66} text={`${66}%`} 
-                  styles={buildStyles({
-                 
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                    strokeLinecap: 'butt',
-                 
-                    // Text size
-                    textSize: '13px',
-                 
-                    // How long animation takes to go from one percentage to another, in seconds
-                    pathTransitionDuration: 3,
-                 
-                    // Can specify path transition in more detail, or remove it entirely
-                    // pathTransition: 'none',
-                 
-                    // Colors
-                    pathColor: `rgba(62, 152, 199, ${66 / 100})`,
-                    textColor: '#f88',
-                    trailColor: '#d6d6d6',
-                    backgroundColor: '#3e98c7',
-                  })}/>
-            </Paper>
+                <Grid item xs={6}>
+                  <Paper className = {classes.rightBottomLeftPaper} elevation = {2}>
+                    <div className = {classes.title}>Sick Days</div>
+                    <hr className = {classes.seperator} />
+                    <CircularProgressbar className={classes.CircularProgressbar} value={66} text={`${66}%`} 
+                        styles={buildStyles({
+                          // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                          strokeLinecap: 'butt',
+                          // Text size
+                          textSize: '13px',
+                          // How long animation takes to go from one percentage to another, in seconds
+                          pathTransitionDuration: 3,
+                          // Can specify path transition in more detail, or remove it entirely
+                          // pathTransition: 'none',
+                          // Colors
+                          pathColor: `rgba(62, 152, 199, ${66 / 100})`,
+                          textColor: '#f88',
+                          trailColor: '#d6d6d6',
+                          backgroundColor: '#3e98c7',
+                        })}/>
+                  </Paper>
+                </Grid>
 
-            {/* vac days */}
-            <Paper className = {classes.rightBottomRightPaper} elevation = {2}>
-              <div className = {classes.title}>Vacation Days</div>
-              <hr className = {classes.seperator} />
-              <CircularProgressbar  className={classes.CircularProgressbar} value={50} text={`${50}%`} 
-                  styles={buildStyles({
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                    strokeLinecap: 'butt',
-                 
-                    // Text size
-                    textSize: '13px',
-                 
-                    // How long animation takes to go from one percentage to another, in seconds
-                    pathTransitionDuration: 3,
-                 
-                    // Can specify path transition in more detail, or remove it entirely
-                    // pathTransition: 'none',
-                 
-                    // Colors
-                    pathColor: `rgba(62, 152, 199, ${50 / 100})`,
-                  })}/>
-            </Paper>
+                {/* vac days */}
+                <Grid item xs={6}>
+                  <Paper className = {classes.rightBottomRightPaper} elevation = {2}>
+                    <div className = {classes.title}>Vacation Days</div>
+                    <hr className = {classes.seperator} />
+                    <CircularProgressbar  className={classes.CircularProgressbar} value={50} text={`${50}%`} 
+                        styles={buildStyles({
+                          // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+                          strokeLinecap: 'butt',
+                          // Text size
+                          textSize: '13px',
+                      
+                          // How long animation takes to go from one percentage to another, in seconds
+                          pathTransitionDuration: 3,
+                      
+                          // Can specify path transition in more detail, or remove it entirely
+                          // pathTransition: 'none',
+                      
+                          // Colors
+                          pathColor: `rgba(62, 152, 199, ${50 / 100})`,
+                        })}/>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
         </div>
       )
     }

@@ -6,7 +6,7 @@ import HrPortal from '../HrPortal/HrPortal'
 import Profile from '../Profile/Profile'
 import Login from '../Login/Login'
 import Dashboard from '../Dashboard/Dashboard'
-import DashboardProtal from '../DashboardPortal/DashBoardPortal'
+import DashboardPortal from '../DashboardPortal/DashBoardPortal'
 
 /**
  * Author: Joe 
@@ -33,7 +33,7 @@ export default class Routes extends Component {
               path="/dashboard"
               exact
               render = {props => (
-                <DashboardProtal
+                <DashboardPortal
                   {...props}
                 />
               )}
