@@ -25,7 +25,7 @@ const requests = {
  * Prototype to get employee information. Not Currently used. 
  */
 const employeeInfo = {
-  getCurrentUser: () => requests.get('/employees/1'), 
+  getCurrentUser: (id) => requests.get(`/employees/${id}`), 
 }
 
 /**

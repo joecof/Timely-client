@@ -5,8 +5,10 @@ import Avatar from "@material-ui/core/Avatar";
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { Link } from "react-router-dom";
 
-
-const styles = theme => ({
+/**
+ * Material UI styling JSON object. 
+ */
+const styles = () => ({
   text: {
     marginLeft: 30,
     color: 'black'
@@ -16,7 +18,11 @@ const styles = theme => ({
   },
 });
 
-
+/**
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: ExpansionMenuHeader component. Menu item component for each item on the expansion menu. 
+ */
 class ExpansionMenuItem extends Component {
   render() {
     const { classes } = this.props;

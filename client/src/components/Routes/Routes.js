@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import {Route, Switch} from "react-router-dom";
-import Timesheet from '../Timesheet/Timesheet'
+import TimesheetPortal from '../TimesheetPortal/TimesheetPortal'
 import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
-import HR from '../HR/HR'
+import HrPortal from '../HrPortal/HrPortal'
 import Profile from '../Profile/Profile'
 import Login from '../Login/Login'
 import Dashboard from '../Dashboard/Dashboard'
+import Projects from '../ProjectsPortal/ProjectsHome/Projects'
+import ProjectCreate from '../ProjectCreate/ProjectCreate'
+import DashboardPortal from '../DashboardPortal/DashBoardPortal'
 
 /**
  * Author: Joe 
@@ -29,10 +32,19 @@ export default class Routes extends Component {
         routes = (
           <Switch>
             <Route
+              path="/dashboard"
+              exact
+              render = {props => (
+                <DashboardPortal
+                  {...props}
+                />
+              )}
+            />
+            <Route
               path="/dashboard/timesheet"
               exact
               render = {props => (
-                <Timesheet
+                <TimesheetPortal
                   {...props}
                 />
               )}
@@ -50,13 +62,13 @@ export default class Routes extends Component {
               path="/dashboard/hr"
               exact
               render = {props => (
-                <HR
+                <HrPortal
                   {...props}
                 />
               )}
             />
             <Route
-              path="/dashboard/hr/employee/:id"
+              path="/dashboard/hr/:id"
               exact
               render = {props => (
                 <Profile
@@ -64,7 +76,44 @@ export default class Routes extends Component {
                 />
               )}
             />
-          </Switch>
+            <Route
+              path="/dashboard/profile/:id"
+              exact
+              render = {props => (
+                <Profile
+                  {...props}
+                />
+              )}
+            />
+            {/* login employee progile */}
+            <Route
+              path="/dashboard/profile"
+              exact
+              render = {props => (
+                <Profile
+                  {...props}
+                />
+              )}
+            />
+          <Route
+          path="/dashboard/Projects"
+          exact
+          render = {props => (
+            <Projects
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/createProject"
+          exact
+          render = {props => (
+            <ProjectCreate
+              {...props}
+            />
+          )}
+        />
+      </Switch>
         )
         break; 
 
@@ -95,6 +144,7 @@ export default class Routes extends Component {
                   {...props} 
                   logoutHandler = {this.props.config.logoutHandler}
                   loadedUser = {this.props.config.loadedUser}
+                  breadCrumbs = {this.props.config.breadCrumbs}
                 />
               )}
             />
