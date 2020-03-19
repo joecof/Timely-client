@@ -11,7 +11,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import { Button } from '@material-ui/core/';
 import './TimesheetDetail.css';
 
@@ -127,7 +126,6 @@ class TimesheetDetail extends Component {
     this.state = {
       timesheetrows: []
     }
-
   }
 
   // onLoad function, where i will be fetch data
@@ -166,7 +164,6 @@ class TimesheetDetail extends Component {
     // link css
     const { classes } = this.props;
   
-
     return (
       <div className="container">
         {/* employee info header */}
@@ -191,25 +188,32 @@ class TimesheetDetail extends Component {
               &nbsp;&nbsp;&nbsp;2020-02-23
             </div>
           </div>
-          <div className="empNameAttribute">
-            <div className="empNameTitle">
-              Name:
+          {this.dashboardTimesheet ?  
+            <div className="empNameAttribute">
+              <div className="empNameTitle">
+                Name:
+              </div>
+              <div className="empName">
+                Bruce Link
+              </div>
             </div>
-            <div className="empName">
-              Bruce Link
-            </div>
-          </div>
+            :
+            null
+          }
         </div>
         {/* add row button */}
-        <Button
-          className={classes.button}
-          onClick={this.handleClick} 
-          color='primary' 
-          variant='contained'> 
-            Add Row
-        </Button> 
+        {this.props.dashboardTimesheet ? null :
+          <Button
+            className={classes.button}
+            onClick={this.handleClick} 
+            color='primary' 
+            variant='contained'> 
+              Add Row
+          </Button> 
+        }
+
         {/* timesheet table */}
-        <TableContainer component={Paper} className={classes.timesheetTable}>
+        <TableContainer className={classes.timesheetTable}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>

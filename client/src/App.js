@@ -81,7 +81,7 @@ class App extends Component {
     return(
       <div className="App">
       <BrowserRouter>
-        {this.state.isAuth ? <Redirect to='/dashboard/timesheet'  /> : <Redirect to='/'  />}
+        {this.state.isAuth ? <Redirect to='/dashboard'  /> : <Redirect to='/'  />}
         {routes}
       </BrowserRouter>
     </div>
