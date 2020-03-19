@@ -6,6 +6,8 @@ import HR from '../HR/HR'
 import Profile from '../Profile/Profile'
 import Login from '../Login/Login'
 import Dashboard from '../Dashboard/Dashboard'
+import Projects from '../ProjectsPortal/ProjectsHome/Projects'
+import ProjectCreate from '../ProjectCreate/ProjectCreate'
 
 /**
  * Author: Joe 
@@ -64,7 +66,25 @@ export default class Routes extends Component {
                 />
               )}
             />
-          </Switch>
+          <Route
+          path="/dashboard/Projects"
+          exact
+          render = {props => (
+            <Projects
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/createProject"
+          exact
+          render = {props => (
+            <ProjectCreate
+              {...props}
+            />
+          )}
+        />
+      </Switch>
         )
         break; 
 
