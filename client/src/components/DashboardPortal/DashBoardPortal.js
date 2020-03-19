@@ -23,11 +23,11 @@ const styles = () => ({
       flexGrow: 1,
     },
     leftPaper: {
-      height: 737,
+      height: 767,
       overflow: 'auto'
     },
     rightTopPaper: {
-        height: 470,
+        height: 500,
     }, 
     rightBottomLeftPaper: {
         height: 250,
@@ -39,7 +39,6 @@ const styles = () => ({
     },
     title: {
         fontWeight: 'bold',
-        marginLeft: 10,
     },
     seperator: {
         borderTop: '1px solid lightgray'
@@ -49,8 +48,8 @@ const styles = () => ({
         color: 'purple'
     },
     CircularProgressbar: {
-      width: '45%',
-      margin: '0 auto'
+      width: '50%',
+      marginTop: 10
     }
   });
 
@@ -89,7 +88,7 @@ class DashBoardPortal extends Component {
         ];
         var date = new Date().getDate(); //Current Date
         var month = new Date().getMonth(); //Current Month
-        var dayOfWeek = new Date().getDay();
+        var dayOfWeek = new Date().getDay() - 1;  // day of the week
 
         return date + " " + monthNames[month] + ", " + dayOfWeekNames[dayOfWeek];
     }
