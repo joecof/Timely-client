@@ -7,6 +7,7 @@ import Profile from '../Profile/Profile'
 import Login from '../Login/Login'
 import Dashboard from '../Dashboard/Dashboard'
 import DashboardPortal from '../DashboardPortal/DashBoardPortal'
+import SupervisorPortal from '../SupervisorPortal/SupervisorPortal'
 
 /**
  * Author: Joe 
@@ -70,6 +71,15 @@ export default class Routes extends Component {
               exact
               render = {props => (
                 <Profile
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/supervisor"
+              exact
+              render = {props => (
+                <SupervisorPortal
                   {...props}
                 />
               )}
