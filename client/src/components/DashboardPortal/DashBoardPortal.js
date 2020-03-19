@@ -22,6 +22,7 @@ const styles = () => ({
     root: {
       flexGrow: 1,
     },
+    
     leftPaper: {
       height: 767,
       overflow: 'auto'
