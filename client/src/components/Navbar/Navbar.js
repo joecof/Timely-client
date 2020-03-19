@@ -11,6 +11,7 @@ import clsx from "clsx";
 import Searchbar from './Searchbar'
 import MenuIcon from '@material-ui/icons/Menu';
 import constants from '../../constants/contants'
+import BreadCrumb from '../BreadCrumb/BreadCrumb'
 
 /**
  * Defined breaking points for navbar size upon resizing. 
@@ -72,7 +73,7 @@ const styles = theme => ({
  * Description: Navbar component for dashboard navigation. 
  */
 class Navbar extends Component {
-
+  
   /**
    * Returns a JSX Navbar component that resizes dynamically. 
    * @param {JSON} classes 
@@ -94,11 +95,13 @@ class Navbar extends Component {
               {/* Will render a different 'icon' depending on if the user has resized the navbar or not. */}
               {this.props.resize ?  <ArrowBackIcon/>  : <MenuIcon/>  }
             </IconButton>
-            <Typography className={classes.title} variant="h6" noWrap> Timely </Typography>
+            <Typography className={classes.title} variant="h6" noWrap> 
+              <BreadCrumb { ...this.props } />
+            </Typography>
             <Searchbar/>
             <Divider className = {classes.divider} orientation="vertical" flexItem />
             <h4 className = {classes.userName}> {this.props.loadedUser.first_name} {this.props.loadedUser.last_name}</h4>
-            <DropDownProfile logoutHandler = {this.props.logoutHandler}/>
+            <DropDownProfile logoutHandler = {this.props.logoutHandler} loadedUser={this.props.loadedUser}/>
           </Toolbar>
         </AppBar>
       </div>

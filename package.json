@@ -21,6 +21,7 @@
     "@date-io/date-fns": "^2.4.0",
     "express": "^4.17.1",
     "mui-datatables": "^2.14.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "react-circular-progressbar": "^2.0.3"
   }
 }

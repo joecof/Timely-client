@@ -11,9 +11,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import { Button } from '@material-ui/core/';
 import './TimesheetDetail.css';
 
+// testing id
+let idTEST = 1;
 // timesheet table css
 const timesheetStyle = theme => ({
     table: {
@@ -27,6 +29,9 @@ const timesheetStyle = theme => ({
     },
     tableTitle: {
       fontWeight: 'bold'
+    },
+    button: {
+      margin: '25px 0 0 100px'
     }
 });
 
@@ -98,9 +103,9 @@ function overTimeDay(items) {
 }
 // demo date
 const rows = [
-  createTimesheetRow(1, 10, 'EJ02', 7, 3, 1, 1, 1, 0, 1, 'haha'),
-  createTimesheetRow(2, 11, 'RT34', 4, 1, 0, 8, 1, 0.5, 1, 'This is great'),
-  createTimesheetRow(3, 12, 'FG23', 1, 1, 6, 7, 0, 1, 1, 'Love this duff'),
+  createTimesheetRow(idTEST++, 10, 'EJ02', 7, 3, 1, 1, 1, 0, 1, 'haha'),
+  createTimesheetRow(idTEST++, 11, 'RT34', 4, 1, 0, 8, 1, 0.5, 1, 'This is great'),
+  createTimesheetRow(idTEST++, 12, 'FG23', 1, 1, 6, 7, 0, 1, 1, 'Love this duff'),
 ];
 
 // calculating total hours of all week
@@ -121,7 +126,6 @@ class TimesheetDetail extends Component {
     this.state = {
       timesheetrows: []
     }
-
   }
 
   // onLoad function, where i will be fetch data
@@ -131,11 +135,35 @@ class TimesheetDetail extends Component {
     })
   }
 
+  // handle add row button click
+  handleClick = () => {
+    let rowID = idTEST++;
+    let emptyRow = createTimesheetRow(rowID, null, null, 0, 0, 0, 0, 0, 0, 0, null);
+    this.state.timesheetrows.push(emptyRow);
+    console.log(this.state.timesheetrows);
+  }
+
+  // timesheet row
+  timesheetRow = (row, i) => <TableRow key={i}>
+                      <TableCell component="th" scope="row">
+                          {row.proj}
+                      </TableCell>
+                      <TableCell align="right">{row.wp}</TableCell>
+                      <TableCell align="right">{ccyFormat(row.tol)}</TableCell>
+                      <TableCell align="right">{row.sat}</TableCell>
+                      <TableCell align="right">{row.sun}</TableCell>
+                      <TableCell align="right">{row.mon}</TableCell>
+                      <TableCell align="right">{row.tue}</TableCell>
+                      <TableCell align="right">{row.wed}</TableCell>
+                      <TableCell align="right">{row.thu}</TableCell>
+                      <TableCell align="right">{row.fri}</TableCell>
+                      <TableCell align="right">{row.notes}</TableCell>
+                    </TableRow>;
+
   render() {
     // link css
     const { classes } = this.props;
   
-
     return (
       <div className="container">
         {/* employee info header */}
@@ -157,19 +185,35 @@ class TimesheetDetail extends Component {
                 Week Ending:
             </div>
             <div className="weekEnd">
-                2020-02-23
+              &nbsp;&nbsp;&nbsp;2020-02-23
             </div>
           </div>
-          <div className="empNameAttribute">
-            <div className="empNameTitle">
-              Name:
+          {this.props.dashboardTimesheet ?  
+            null
+            :
+            <div className="empNameAttribute">
+              <div className="empNameTitle">
+                Name:
+              </div>
+              <div className="empName">
+                Bruce Link
+              </div>
             </div>
-            <div className="empName">
-              Bruce Link
-            </div>
-          </div>
+          }
         </div>
-        <TableContainer component={Paper} className={classes.timesheetTable}>
+        {/* add row button */}
+        {this.props.dashboardTimesheet ? null :
+          <Button
+            className={classes.button}
+            onClick={this.handleClick} 
+            color='primary' 
+            variant='contained'> 
+              Add Row
+          </Button> 
+        }
+
+        {/* timesheet table */}
+        <TableContainer className={classes.timesheetTable}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -186,25 +230,9 @@ class TimesheetDetail extends Component {
                 <TableCell id="notes" align="right" className={classes.tableTitle}>Notes</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody timesheetrows={this.state.timesheetrows}>
               {/* timesheet row date mapping */}
-              {rows.map(row => (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    {row.proj}
-                  </TableCell>
-                  <TableCell align="right">{row.wp}</TableCell>
-                  <TableCell align="right">{ccyFormat(row.tol)}</TableCell>
-                  <TableCell align="right">{row.sat}</TableCell>
-                  <TableCell align="right">{row.sun}</TableCell>
-                  <TableCell align="right">{row.mon}</TableCell>
-                  <TableCell align="right">{row.tue}</TableCell>
-                  <TableCell align="right">{row.wed}</TableCell>
-                  <TableCell align="right">{row.thu}</TableCell>
-                  <TableCell align="right">{row.fri}</TableCell>
-                  <TableCell align="right">{row.notes}</TableCell>
-                </TableRow>
-              ))}
+              {this.state.timesheetrows.map((x, i) => this.timesheetRow(x, i))}
 
               {/* total span column */}
               <TableRow>
