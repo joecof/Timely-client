@@ -106,7 +106,6 @@ const rows = [
   createTimesheetRow(idTEST++, 10, 'EJ02', 7, 3, 1, 1, 1, 0, 1, 'haha'),
   createTimesheetRow(idTEST++, 11, 'RT34', 4, 1, 0, 8, 1, 0.5, 1, 'This is great'),
   createTimesheetRow(idTEST++, 12, 'FG23', 1, 1, 6, 7, 0, 1, 1, 'Love this duff'),
-  createTimesheetRow(idTEST++, 10, 'EJ02', 7, 3, 1, 1, 1, 0, 1, 'haha'),
 ];
 
 // calculating total hours of all week
