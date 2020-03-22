@@ -22,6 +22,7 @@ const styles = () => ({
     root: {
       flexGrow: 1,
     },
+    
     leftPaper: {
       height: 767,
       overflow: 'auto'
@@ -48,7 +49,7 @@ const styles = () => ({
         color: 'purple'
     },
     CircularProgressbar: {
-      width: '50%',
+      width: '40%',
       marginTop: 10
     }
   });
