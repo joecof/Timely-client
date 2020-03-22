@@ -17,10 +17,9 @@ const styles = () => ({
  * Defines the columns for the HR portal. 
  */
 const columns = [
-  {name:"pictureUrl", label:"Photo", className:"column"},
-  {name:"employeeId", label:"Employee ID", className:"column"},
-  {name:"firstName", label:"First Name", className:"column"},
-  {name:"lastName", label:"Last Name", className:"column"},
+  {name:"projectId", label:"Project ID", className:"column"},
+  {name:"projectName", label:"Project Name", className:"column"},
+  {name:"projectManager", label:"Project Manager", className:"column"},
 ];
 
 /**
@@ -29,19 +28,22 @@ const columns = [
 const demoData = 
     [{
       pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "1",
+      projectId: "1",
+      projectName: "Building a database",
       firstName: "John",
       lastName: "Doe"
     },
     {
       pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "2",
+      projectId: "2",
+      projectName: "Software Development",
       firstName: "Jane",
       lastName: "Kelly"
     },
     {
       pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "3",
+      projectId: "3",
+      projectName: "Creating a website",
       firstName: "Henry",
       lastName: "Peter"
     }]
@@ -50,16 +52,15 @@ const demoData =
  * Author: John Ham 
  * Version: 1.0 
  * Description: Supervisor Portal Component. 
- * Portal used by supervisor for viewing a list of employees that can be assigned to projects. 
+ * List of projects that an employee is assigned to. 
  */
-class SupervisorPortal extends Component {
+class ProjectsAssignedTo extends Component {
 
   constructor(props) {
     super(props); 
 
     this.state = ({
-      data: [],
-      selectedEmployee: {employeeId: "", employeeName:""},
+      data: []
     })
 
     this.fetchData = this.fetchData.bind(this);
@@ -76,15 +77,15 @@ class SupervisorPortal extends Component {
     var resultData = [];
     for (let i = 0; i < demoData.length; i++) {
         let pictureUrl = demoData[i].pictureUrl;
-        let id = demoData[i].employeeId;
-        let firstName = demoData[i].firstName;
-        let lastName = demoData[i].lastName;
+        let id = demoData[i].projectId;
+        let projectName = demoData[i].projectName;
+        let name = demoData[i].firstName + " " + demoData[i].lastName;
 
         let row = [];
-        row.push(<img src= {pictureUrl} className = {classes.pictureUrl} alt = {firstName}/>);
         row.push(id);
-        row.push(firstName);
-        row.push(lastName);
+        row.push(projectName);
+        row.push(<><img src= {pictureUrl} className = {classes.pictureUrl} alt = {name}/> <span>{name}</span></>);
+
         resultData.push(row);
     }
     
@@ -99,26 +100,20 @@ class SupervisorPortal extends Component {
      */
     const options = () => {
         const data = {
-          selectableRows: false,
-          search: true,
-          print: false,
-          download: false,
-          filter: false,
-          customToolbar: () => {
-              return <AssignToolBar history={this.props.history} />;
-          },
-          onRowClick: (rowData, rowState) => {
-              this.props.history.push(`/dashboard/supervisor/${rowData[1]}`);
-          },
+        selectableRows: false,
+        search: true,
+        print: false,
+        download: false,
+        filter: false,
         }
-      return data;
+        return data;
     };
 
     return (
       <>
       <MUIDatatable 
         className="datatable"
-        title={<h1>Employees</h1>}
+        title={<h1>Projects Assigned To</h1>}
         options={options(this.props)}
         columns={columns}
         data={this.state.data}
@@ -128,4 +123,4 @@ class SupervisorPortal extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(SupervisorPortal);
+export default withStyles(styles, { withTheme: true })(ProjectsAssignedTo);

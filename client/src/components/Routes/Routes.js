@@ -11,6 +11,7 @@ import ProjectCreate from '../ProjectCreate/ProjectCreate'
 import DashboardPortal from '../DashboardPortal/DashBoardPortal'
 import SupervisorPortal from '../SupervisorPortal/SupervisorPortal'
 import AssignToProject from '../SupervisorPortal/AssignToProject'
+import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo';
 
 /**
  * Author: Joe 
@@ -92,6 +93,15 @@ export default class Routes extends Component {
               exact
               render = {props => (
                 <AssignToProject
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/supervisor/:id"
+              exact
+              render = {props => (
+                <ProjectsAssignedTo
                   {...props}
                 />
               )}

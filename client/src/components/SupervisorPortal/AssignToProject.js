@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Paper, Typography, TextField } from '@material-ui/core';
+import { Paper, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -54,26 +54,8 @@ const AssignToProject = () => {
         { employeeId: "3", name: "Henry Peter" }
     ]);
 
-    const [projectsData, setProjectsData] = React.useState({});
-    const [employeesData, setEmployeesData] = React.useState({});
-
-    // const onProjectsChange = (event, values) => {
-    //     console.log("values " + values);
-    //     console.log("values NUMBER " + values.number);
-    //     setProjectsData(values.number);
-    //     // This will output an array of objects
-    //     // given by Autocompelte options property.
-    //     console.log("PROJECTS " + projectsData);
-    // }
-
-    // const onEmployeesChange = (event) => {
-    //     console.log("values " + event.target.value);
-    //     console.log("values NAME " + event.target.value.name);
-    //     setEmployeesData(event.target.value);
-    //     // This will output an array of objects
-    //     // given by Autocompelte options property.
-    //     console.log("EMPDATA " + employeesData);
-    // }
+    const [projectsData, setProjectsData] = React.useState();
+    const [employeesData, setEmployeesData] = React.useState();
 
     const handleDelete = chipToDelete => () => {
         setChipData(chips => chips.filter(chip => chip.employeeId !== chipToDelete.employeeId));
@@ -90,7 +72,7 @@ const AssignToProject = () => {
                 options={demoProject}
                 getOptionLabel={option => option.number}
                 style={{ width: 300 }}
-                onChange={(event, value) => {setProjectsData(value); console.log(projectsData);}}
+                onChange={(event, value) => setProjectsData(value)}
                 renderInput={params => <TextField {...params} label="Project ID" variant="outlined" />}
             />
             <Autocomplete
@@ -99,7 +81,7 @@ const AssignToProject = () => {
                 options={demoEmployee}
                 getOptionLabel={option => option.name}
                 style={{ width: 300 }}
-                onChange={(event, value) => {setEmployeesData(value); console.log(employeesData);}}
+                onChange={(event, value) => setEmployeesData(value)}
                 renderInput={params => <TextField {...params} label="Search for an employee" variant="outlined" />}
             />
             <Grid>
