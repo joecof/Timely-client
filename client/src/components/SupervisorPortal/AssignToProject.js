@@ -3,7 +3,6 @@ import { Paper, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 /**
@@ -21,8 +20,7 @@ const useStyles = makeStyles(theme => ({
         height: 750,
         padding: 50,
     },
-    chip: {
-      margin: theme.spacing(0.5),
+    supervisorButton: {
       width: "fit-content"
     },
 }));
@@ -71,31 +69,20 @@ const AssignToProject = () => {
                 className={classes.supervisorMargin}
                 options={demoProject}
                 getOptionLabel={option => option.number}
-                style={{ width: 300 }}
+                style={{ width: 700 }}
                 onChange={(event, value) => setProjectsData(value)}
-                renderInput={params => <TextField {...params} label="Project ID" variant="outlined" />}
+                renderInput={params => <TextField {...params} variant="standard" label="Project ID" />}
             />
             <Autocomplete
                 multiple
                 className={classes.supervisorMargin}
                 options={demoEmployee}
                 getOptionLabel={option => option.name}
-                style={{ width: 300 }}
+                style={{ width: 700 }}
                 onChange={(event, value) => setEmployeesData(value)}
-                renderInput={params => <TextField {...params} label="Search for an employee" variant="outlined" />}
+                renderInput={params => <TextField {...params} variant="standard" label="Add employees" placeholder="Search for an employee" />}
             />
-            <Grid>
-                {chipData.map(data => {
-                    return (
-                    <Chip
-                        key={data.employeeId}
-                        label={data.name}
-                        onDelete={handleDelete(data)}
-                        className={classes.chip}
-                    />
-                    );
-                })}
-            </Grid>
+            <Button variant="contained" color="primary" style={{ width: 700 }}>Assign</Button>
           </Grid>
         </Paper>
       </div>
