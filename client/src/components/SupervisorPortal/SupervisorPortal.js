@@ -50,7 +50,7 @@ const demoData =
  * Author: John Ham 
  * Version: 1.0 
  * Description: Supervisor Portal Component. 
- * Portal used by supervisor for assigning employees to projects. 
+ * Portal used by supervisor for viewing a list of employees that can be assigned to projects. 
  */
 class SupervisorPortal extends Component {
 
@@ -107,7 +107,7 @@ class SupervisorPortal extends Component {
             this.props.history.push(`/dashboard/supervisor/${rowData[1]}`);
             },
         customToolbar: () => {
-            return <AssignToolBar />;
+            return <AssignToolBar history={this.props.history} />;
             }
         }
         return data;

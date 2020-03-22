@@ -18,11 +18,12 @@ const defaultToolbarStyles = {
  * Description: AssignToolBar component for the MUI data table  
  */
 class AssignToolBar extends React.Component {
-  
+
   /**
    * Will be used to assign an employee to a project
    */
-  handleClick = () => {
+  clickAssign = () => {
+    this.props.history.push(`/dashboard/supervisor/assign`);
     console.log("assign an employee!");
   }
 
@@ -34,7 +35,7 @@ class AssignToolBar extends React.Component {
         <Tooltip title={"Assign an employee to a project"}>
           <Button 
             className={classes.iconButton} 
-            onClick={this.handleClick} 
+            onClick={this.clickAssign} 
             color='primary' 
             variant='contained'> 
               Assign 
