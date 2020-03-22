@@ -24,23 +24,6 @@ const columns = [
 ];
 
 /**
- * Configuration object for the MUI data table. 
- */
-const options = () => {
-  const data = {
-    selectableRows: false,
-    search: true,
-    print: false,
-    download: false,
-    filter: false,
-    customToolbar: () => {
-      return <AssignToolBar />;
-    }
-  }
-  return data;
-};
-
-/**
  * Demo data for now. 
  */
 const demoData = 
@@ -64,9 +47,10 @@ const demoData =
     }]
 
 /**
- * Author: Joe 
+ * Author: John Ham 
  * Version: 1.0 
- * Description: HR Portal Component. Portal used by HR employee for editing/adding/archiving employee information. 
+ * Description: Supervisor Portal Component. 
+ * Portal used by supervisor for assigning employees to projects. 
  */
 class SupervisorPortal extends Component {
 
@@ -109,6 +93,26 @@ class SupervisorPortal extends Component {
   } 
 
   render() {
+    /**
+     * Configuration object for the MUI data table. 
+     */
+    const options = () => {
+        const data = {
+        selectableRows: false,
+        search: true,
+        print: false,
+        download: false,
+        filter: false,
+        onRowClick: (rowData, rowState) => {
+            this.props.history.push(`/dashboard/supervisor/${rowData[1]}`);
+            },
+        customToolbar: () => {
+            return <AssignToolBar />;
+            }
+        }
+        return data;
+    };
+
     return (
       <>
       <MUIDatatable 
