@@ -80,7 +80,7 @@ class SideMenu extends Component {
           <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
           <Divider className={classes.divider}/>
           <div>
-            <MenuItem text = "Dashboard" resize = {this.props.resize} link = "/dashboard"/>
+            <MenuItem text = "Dashboard" resize = {this.props.resize} link = {`/dashboard/1`}/>
             <MenuItem text = "Timesheet" resize = {this.props.resize} link = "/dashboard/timesheet"/>
             <MenuItem text = "Projects" resize = {this.props.resize} link = "/dashboard/projects"/>
           </div>

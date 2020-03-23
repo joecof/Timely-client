@@ -35,15 +35,6 @@ export default class Routes extends Component {
         routes = (
           <Switch>
             <Route
-              path="/dashboard"
-              exact
-              render = {props => (
-                <DashboardPortal
-                  {...props}
-                />
-              )}
-            />
-            <Route
               path="/dashboard/timesheet"
               exact
               render = {props => (
@@ -115,7 +106,7 @@ export default class Routes extends Component {
                 />
               )}
             />
-            {/* login employee progile */}
+            {/* login employee profile */}
             <Route
               path="/dashboard/profile"
               exact
@@ -139,6 +130,15 @@ export default class Routes extends Component {
           exact
           render = {props => (
             <ProjectCreate
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/:id"
+          exact
+          render = {props => (
+            <DashboardPortal
               {...props}
             />
           )}

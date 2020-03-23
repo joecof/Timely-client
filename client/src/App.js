@@ -23,7 +23,6 @@ class App extends Component {
     this.logoutHandler = this.logoutHandler.bind(this);
   }
 
-
   /**
    * Login handler. Logs in the user and sets state of application to authenticated. 
    * Will redirect to a user dashboard upon login. 
@@ -81,7 +80,7 @@ class App extends Component {
     return(
       <div className="App">
       <BrowserRouter>
-        {this.state.isAuth ? <Redirect to='/dashboard'  /> : <Redirect to='/'  />}
+        {this.state.isAuth ? <Redirect to= {`/dashboard/${this.state.loadedUser.employee_id}`}  /> : <Redirect to='/'  />}
         {routes}
       </BrowserRouter>
     </div>

@@ -8,6 +8,7 @@ import AssignToolBar from './AssignToolBar';
  * Material UI styling JSON object. 
  */
 const styles = () => ({
+
   pictureUrl: {
     width: 50
   }
@@ -94,6 +95,8 @@ class SupervisorPortal extends Component {
   } 
 
   render() {
+    const { classes } = this.props; 
+
     /**
      * Configuration object for the MUI data table. 
      */
@@ -115,7 +118,7 @@ class SupervisorPortal extends Component {
     };
 
     return (
-      <>
+      <div>
       <MUIDatatable 
         className="datatable"
         title={<h1>Employees</h1>}
@@ -123,7 +126,7 @@ class SupervisorPortal extends Component {
         columns={columns}
         data={this.state.data}
       />
-    </>
+    </div>
     )
   }
 }
