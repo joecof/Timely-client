@@ -21,14 +21,19 @@ const requests = {
   del: (url) => axios.delete(url).then(resBody) 
 }
 
+/**
+ * Prototype to get employee information. Not Currently used. 
+ */
 const employeeInfo = {
-  getCurrentUser: () => requests.get('/employees/1'), 
+  getCurrentUser: (id) => requests.get(`/employees/${id}`), 
 }
 
+/**
+ * API request for current login.  
+ */
 const authorization = {
   login: (data) => requests.post('/login', data)
 }
-
 
 export default {
   employeeInfo,

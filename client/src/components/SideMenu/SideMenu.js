@@ -1,15 +1,23 @@
 import React, {Component} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { withStyles } from '@material-ui/core/styles';
+import clsx from "clsx";
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
-import { withStyles } from '@material-ui/core/styles';
 import MenuItem from './MenuItem'
 import ExpansionMenu from './ExpansionMenu/ExpansionMenu'
-import clsx from "clsx";
+import constants from '../../constants/contants'
 
-const drawerExpandedWidth = 230;
-const drawerShrinkedWidth = 100;
+/**
+ * Defined breaking points for drawer size (side menu) upon resizing. 
+ */
+const drawerExpandedWidth = constants.DRAWER_EXPANDED_WIDTH;
+const drawerShrinkedWidth = constants.DRAWER_SHRINKED_WIDTH;
 
+/**
+ * Material UI styling JSON object. 
+ * @param {JSON} theme 
+ */
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -18,10 +26,6 @@ const styles = theme => ({
   paper: {
     width: drawerExpandedWidth,
     height: '100%',
-  },
-  content: {
-    flexGrow: 3,
-    padding: theme.spacing(3),
   },
   divider: {
     backgroundColor: 'light gray',
@@ -44,46 +48,46 @@ const styles = theme => ({
   }
 });
 
-  class SideMenu extends Component {
+/**
+ * Author: Lawrence 
+ * Version: 1.0 
+ * Description: SideMenu component for dashboard navigation. 
+ */
+class SideMenu extends Component {
 
-    constructor(props) {
-      super(props);
-    }
+  render() {
+    const { classes } = this.props;
 
-    render() {
-      const { classes } = this.props;
-
-      return(
-        <div className={classes.root}>
-          <CssBaseline />
-            <Drawer 
-              variant="permanent" 
-              open = {true} 
-              className={clsx(classes.drawer, {
-                [classes.drawerOpen]: this.props.resize,
-                [classes.drawerClose]: !this.props.resize
-              })}
-              classes={{
-                paper: clsx({
-                  [classes.drawerOpen]: this.props.resize,
-                  [classes.drawerClose]: !this.props.resize
-                })
-              }}
-              >
-              <Divider />
-              <MenuItem isMenuLogo = {true} />
-              <Divider className={classes.divider} />
-                <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
-                <Divider className={classes.divider}/>
-                  <div>
-                    <MenuItem text = "Dashboard" resize = {this.props.resize}/>
-                    <MenuItem text = "Timesheet" resize = {this.props.resize}/>
-                    <MenuItem text = "Projects" resize = {this.props.resize}/>
-                  </div>
-            </Drawer>
-        </div>
-      )
-    }
+    return(
+      <div className={classes.root}>
+        <CssBaseline />
+        <Drawer 
+          variant="permanent" 
+          open = {true} 
+          className={clsx(classes.drawer, {
+            [classes.drawerOpen]: this.props.resize,
+            [classes.drawerClose]: !this.props.resize
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: this.props.resize,
+              [classes.drawerClose]: !this.props.resize
+            })
+          }}
+          >
+          <MenuItem isMenuLogo = {true} />
+          <Divider className={classes.divider} />
+          <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
+          <Divider className={classes.divider}/>
+          <div>
+            <MenuItem text = "Dashboard" resize = {this.props.resize} link = {`/dashboard/1`}/>
+            <MenuItem text = "Timesheet" resize = {this.props.resize} link = "/dashboard/timesheet"/>
+            <MenuItem text = "Projects" resize = {this.props.resize} link = "/dashboard/projects"/>
+          </div>
+        </Drawer>
+      </div>
+    )
   }
+}
 
 export default withStyles(styles, { withTheme: true })(SideMenu);
