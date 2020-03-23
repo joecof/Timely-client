@@ -53,17 +53,6 @@ class DashboardProtalProjInfo extends Component {
 
     constructor(props) {
       super(props);
-  
-      this.props = ({
-        projName: '',
-        dueDate: '',
-        projManagerName: ''
-      })
-  
-    }
-  
-    componentDidMount() {
-
     }
 
     render() {
