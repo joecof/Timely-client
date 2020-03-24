@@ -3,7 +3,8 @@ import axios from 'axios';
 /**
  * Define the base axios URL. 
  */
-axios.defaults.baseURL = "http://localhost:8080/timely/api/";
+axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL;
+// axios.defaults.baseURL = process.env.REACT_APP_PRODUCTION_BASE_URL;
 
 /**
  * Contains the data of the response body 
