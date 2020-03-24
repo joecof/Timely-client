@@ -12,9 +12,7 @@ import "./ProjectCreate.css";
  * Version: 1
  * Desc: first step for project creation
  */
-const ProjectInfo = () => {
-  const [startDate, setStartDate] = useState({});
-  const [endDate, setEndDate] = useState({});
+const ProjectInfo = (props) => {
 
   return (
     <form autoComplete="off">
@@ -22,17 +20,23 @@ const ProjectInfo = () => {
         <KeyboardDatePicker
           disableToolbar
           variant="inline"
-          format="MM/dd/yyyy"
+          format="yyyy-MM-dd"
           margin="normal"
           label="Start Date"
+          name="startDate"
+          value={props.startDate}
+          onChange={props.handleStartChange}
         />
         <br />
         <KeyboardDatePicker
           disableToolbar
           variant="inline"
-          format="MM/dd/yyyy"
+          format="yyyy-MM-dd"
           margin="normal"
           label="End Date"
+          name="endDate"
+          value={props.endDate}
+          onChange={props.handleEndChange}
         />
       </MuiPickersUtilsProvider>
     </form>
