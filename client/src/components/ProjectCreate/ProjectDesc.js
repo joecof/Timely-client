@@ -7,8 +7,7 @@ import './ProjectCreate.css';
  * Version: 1
  * Desc: second step for project creation
  */
-const ProjectDesc = () => {
-  const [projectDesc, setProjectDesc] = useState({});
+const ProjectDesc = (props) => {
 
   return (
     <form autoComplete="off">
@@ -18,8 +17,10 @@ const ProjectDesc = () => {
           label="Project Description"
           multiline
           rows="8"
-          defaultValue="Default Value"
           variant="outlined"
+          name="projectDesc"
+          value={props.projectDesc}
+          onChange={props.handleChange}
         />
     </form>
   );

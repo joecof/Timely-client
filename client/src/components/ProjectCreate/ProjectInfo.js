@@ -7,18 +7,18 @@ import './ProjectCreate.css';
  * Version: 1
  * Desc: first step for project creation
  */
-const ProjectInfo = () => {
-  const [projectID, setProjectID] = useState({});
-  const [projectName, setProjectName] = useState({});
-  const [projectManager, setProjectManager] = useState({});
+const ProjectInfo = (props) => {
 
   return (
     <form autoComplete="off">
-      <TextField className="margin" id="standard-basic" label="Project ID" />
+      <TextField component={'span'} className="margin" label="Project ID" name="projectID" 
+      value={props.projectID} onChange={props.handleChange}/>
       <br />
-      <TextField className="margin" id="standard-basic" label="Project Name" />
+      <TextField component={'span'} className="margin" label="Project Name" name="projectName" 
+      value={props.projectName} onChange={props.handleChange}/>
       <br />
-      <TextField className="margin" id="standard-basic" label="Project Manager" />
+      <TextField component={'span'} className="margin" label="Project Manager" name="projectManager" 
+      value={props.projectManager} onChange={props.handleChange}/>
     </form>
   );
 };

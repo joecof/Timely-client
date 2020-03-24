@@ -13,6 +13,7 @@ import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo';
 import EmployeeForm from '../Profile/EmployeeForm'
 
+import ProjectDetail from '../ProjectDetail/ProjectDetail'
 
 /**
  * Author: Joe 
@@ -147,7 +148,18 @@ export default class Routes extends Component {
                 />
               )}
             />
-          </Switch>
+          )}
+        />
+        <Route
+          path="/projectDetails"
+          exact
+          render = {props => (
+            <ProjectDetail
+              {...props}
+            />
+          )}
+        />
+      </Switch>
         )
         break; 
 
