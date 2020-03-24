@@ -26,7 +26,7 @@ const navbarShrinkedWidth = NAVBAR_PARAMETERS.NAVBAR_SHRINKED_WIDTH;
  */
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+
   },
   menuButton: {
     marginRight: theme.spacing(2),
