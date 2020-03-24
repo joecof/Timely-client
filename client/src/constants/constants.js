@@ -1,3 +1,9 @@
+/**
+ * Author: Joe Fong
+ * Version: 1.0 
+ * Description: All constants should be described here in order to avoid magic numbers and to  
+ * produce a cleaner codebase. 
+ */
 export const NAVBAR_PARAMETERS = ({
   NAVBAR_EXPANDED_WIDTH: 230, 
   NAVBAR_SHRINKED_WIDTH: 100,

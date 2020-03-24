@@ -22,7 +22,8 @@ const styles = () => ({
 
 class EmployeeForm extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes, loadedUser } = this.props;
+    console.log(loadedUser);
     
     return (
       <div className={classes.root}>

@@ -11,8 +11,6 @@ import DashboardPortal from '../DashboardPortal/DashBoardPortal'
 import SupervisorPortal from '../SupervisorPortal/SupervisorPortal'
 import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo';
-
-import Profile from '../Profile/Profile'
 import EmployeeForm from '../Profile/EmployeeForm'
 
 
@@ -122,34 +120,34 @@ export default class Routes extends Component {
                 />
               )}
             />
-          <Route
-          path="/dashboard/projects"
-          exact
-          render = {props => (
-            <Projects
-              {...props}
+            <Route
+              path="/dashboard/projects"
+              exact
+              render = {props => (
+                <Projects
+                  {...props}
+                />
+              )}
             />
-          )}
-        />
-        <Route
-          path="/createProject"
-          exact
-          render = {props => (
-            <ProjectCreate
-              {...props}
+            <Route
+              path="/createProject"
+              exact
+              render = {props => (
+                <ProjectCreate
+                  {...props}
+                />
+              )}
             />
-          )}
-        />
-        <Route
-          path="/dashboard/:id"
-          exact
-          render = {props => (
-            <DashboardPortal
-              {...props}
+            <Route
+              path="/dashboard/:id"
+              exact
+              render = {props => (
+                <DashboardPortal
+                  {...props}
+                />
+              )}
             />
-          )}
-        />
-      </Switch>
+          </Switch>
         )
         break; 
 
