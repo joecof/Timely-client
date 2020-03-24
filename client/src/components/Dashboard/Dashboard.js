@@ -54,6 +54,7 @@ class Dashboard extends Component {
     let config = (name) => {
       return ({
         option: name,
+        loadedUser: this.props.loadedUser
       })
     }
     /**

@@ -14,7 +14,7 @@ const styles = theme => ({
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
   text: {
     marginLeft: 30,
@@ -36,7 +36,7 @@ class MenuItem extends Component {
 
     return (
       
-      <Link to = {this.props.isMenuLogo ? '/dashboard' : this.props.link } className = {classes.link} >
+      <Link className = {classes.link} to = {this.props.isMenuLogo ? '/dashboard' : this.props.link } >
         <Grid container direction="row" alignItems="center" className = {classes.menuItem} >
           <Grid item >
             {this.props.isMenuLogo ? 

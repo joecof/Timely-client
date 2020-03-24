@@ -19,20 +19,19 @@ let idTEST = 1;
 // timesheet table css
 const timesheetStyle = theme => ({
     table: {
-      minWidth: 650
+      width: "93%"
     },
     timesheetTable: {
-      marginTop: '20px',
-      marginLeft: '4%',
-      width: '90%',
-      maxHeight: '420px'
+      width: '100%',
+      maxHeight: '420px',
+      display: "flex",
+      justifyContent: "center"
     },
     tableTitle: {
       fontWeight: 'bold',
       fontSize: '10pt !important'
     },
     button: {
-      margin: '25px 0 0 100px'
     }
 });
 
@@ -170,24 +169,39 @@ class TimesheetDetail extends Component {
         {/* employee info header */}
         <div className="timesheetTitle">
           <div className="attributeRow">
-            <div className="empNumTitle">
-              Employee Number:
+            <div className="empNumContainer">
+              <div className="empNumTitle">
+                Employee Number:
+              </div>
+              <div className="empNum">
+                1
+              </div>
             </div>
-            <div className="empNum">
-              1
+            <div className="weekNumContainer">
+              <div className="weekNumTitle">
+                Week Number:
+              </div>
+              <div className="weekNum">
+                23
+              </div>
             </div>
-            <div className="weekNumTitle">
-              Week Number:
+            <div className="weekEndContainer">
+              <div className="weekEndTitle">
+                  Week Ending:
+              </div>
+              <div className="weekEnd">
+                2020-02-23
+              </div>
             </div>
-            <div className="weekNum">
-              23
-            </div>
-            <div className="weekEndTitle">
-                Week Ending:
-            </div>
-            <div className="weekEnd">
-              &nbsp;&nbsp;&nbsp;2020-02-23
-            </div>
+            {this.props.dashboardTimesheet ? null :
+              <Button
+                className={classes.button}
+                onClick={this.handleClick} 
+                color='primary' 
+                variant='contained'> 
+                  Add Row
+              </Button> 
+            }
           </div>
           {this.props.dashboardTimesheet ?  
             null
@@ -203,15 +217,6 @@ class TimesheetDetail extends Component {
           }
         </div>
         {/* add row button */}
-        {this.props.dashboardTimesheet ? null :
-          <Button
-            className={classes.button}
-            onClick={this.handleClick} 
-            color='primary' 
-            variant='contained'> 
-              Add Row
-          </Button> 
-        }
 
         {/* timesheet table */}
         <TableContainer className={classes.timesheetTable}>

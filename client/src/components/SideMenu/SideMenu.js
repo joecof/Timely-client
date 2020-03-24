@@ -6,13 +6,13 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import MenuItem from './MenuItem'
 import ExpansionMenu from './ExpansionMenu/ExpansionMenu'
-import constants from '../../constants/contants'
+import { NAVBAR_PARAMETERS } from '../../constants/constants'
 
 /**
  * Defined breaking points for drawer size (side menu) upon resizing. 
  */
-const drawerExpandedWidth = constants.DRAWER_EXPANDED_WIDTH;
-const drawerShrinkedWidth = constants.DRAWER_SHRINKED_WIDTH;
+const drawerExpandedWidth = NAVBAR_PARAMETERS.DRAWER_EXPANDED_WIDTH;
+const drawerShrinkedWidth = NAVBAR_PARAMETERS.DRAWER_SHRINKED_WIDTH;
 
 /**
  * Material UI styling JSON object. 
@@ -56,7 +56,7 @@ const styles = theme => ({
 class SideMenu extends Component {
 
   render() {
-    const { classes } = this.props;
+    const { classes, loadedUser } = this.props;
 
     return(
       <div className={classes.root}>
@@ -80,7 +80,7 @@ class SideMenu extends Component {
           <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
           <Divider className={classes.divider}/>
           <div>
-            <MenuItem text = "Dashboard" resize = {this.props.resize} link = {`/dashboard/1`}/>
+            <MenuItem text = "Dashboard" resize = {this.props.resize} link = {`/dashboard/${loadedUser.employee_id}`}/>
             <MenuItem text = "Timesheet" resize = {this.props.resize} link = "/dashboard/timesheet"/>
             <MenuItem text = "Projects" resize = {this.props.resize} link = "/dashboard/projects"/>
           </div>
