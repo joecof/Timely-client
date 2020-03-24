@@ -21,7 +21,7 @@
     "react-scripts": "3.3.1"
   },
   "scripts": {
-    "start": "env REACT_APP_ENV=development react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build && mv build view",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

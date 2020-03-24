@@ -8,10 +8,10 @@ import axios from 'axios';
  * Checks the environment variable at npm start or npm build. Depending on that variable it will use 
  * a different base url. 
  */
-process.env.REACT_APP_ENV == "development" ? 
-  axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL : axios.defaults.baseURL = process.env.REACT_APP_PRODUCTION_BASE_URL;
+// process.env.REACT_APP_ENV == "development" ? 
+//   axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL : axios.defaults.baseURL = process.env.REACT_APP_PRODUCTION_BASE_URL;
 
-
+  axios.defaults.baseURL = "http://localhost:8080/timely/api/"
 /**
  * Contains the data of the response body 
  * @param {any} response 
