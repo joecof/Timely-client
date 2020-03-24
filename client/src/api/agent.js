@@ -26,22 +26,22 @@ const token = localStorage.getItem("token");
 const requests = {
   get: (url) => axios.get(url, {
     headers: {
-      'Authorization': token
+      'Authorization': 'bearer ' + token
     }
   }).then(resBody),
   post: (url, body) => axios.post(url, body, {
     headers: {
-      'Authorization': token
+      'Authorization': 'bearer ' + token
     }
   }).then(resBody),
   put: (url, body) => axios.put(url, body, {
     headers: {
-      'Authorization': token
+      'Authorization': 'bearer ' + token
     }
   }).then(resBody),
   del: (url) => axios.delete(url, {
     headers: {
-      'Authorization': token
+      'Authorization': 'bearer ' + token
     }
   }).then(resBody) 
 }

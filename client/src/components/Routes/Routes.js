@@ -50,6 +50,7 @@ export default class Routes extends Component {
               exact
               render = {props => (
                 <TimesheetDetail
+                  loadedUser = {this.props.config.loadedUser}
                   {...props}
                 />
               )}
