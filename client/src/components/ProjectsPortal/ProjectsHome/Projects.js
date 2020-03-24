@@ -77,6 +77,8 @@ class Projects extends React.Component {
     var allProj = [], mineProj = [], archivedProj = [], closedProj = [];
 
     for (var i = 0; i < response.length; i++) {
+      projData = [];
+      console.log(response[i]);
       projData.push(response[i].project_code);
       projData.push(response[i].project_name);
       var manager = response[i].project_manager_id.first_name + " " + response[i].project_manager_id.last_name;
