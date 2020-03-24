@@ -14,8 +14,8 @@ class ProjectsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: props.data,
-      type: props.type
+      data: [],
+      type: ''
     }
     this.options = {
       print: false,
@@ -23,6 +23,13 @@ class ProjectsList extends React.Component {
       selectableRows : true,
       customToolbarSelect: (selectedRows) => <CustomSelectProject selectedRows={selectedRows} type={this.state.type}/>
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ 
+      data: nextProps.data,
+      type: nextProps.type
+     });  
   }
 
   render() {

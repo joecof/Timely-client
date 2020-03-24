@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import './Login.css';
-import agent from '../../api/agent'
+import agent from '../../api/agent.js';
 
 
 export default class Login extends Component {
@@ -12,26 +12,18 @@ export default class Login extends Component {
       employee_id: null,
       password: '',
     })
-
     this.updateInputValue = this.updateInputValue.bind(this);
     this.loginHandler = this.loginHandler.bind(this);
   }
 
   async loginHandler(){
-
     const data = 
     {
         "employee_id": this.state.employee_id,
         "password": this.state.password
     }
-
     const response = await agent.authorization.login(data);
-
-    this.setState({
-      loaded_user: response
-    })
-
-    }
+  }
     
   updateInputValue(e) {
     this.setState({

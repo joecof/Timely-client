@@ -28,6 +28,11 @@ const employeeInfo = {
   getCurrentUser: (id) => requests.get(`/employees/${id}`), 
 }
 
+const projects = {
+  getProjectsForUser: (id) => requests.get(`/projects/emp/${id}`),
+  createProject: (data) => requests.post(`/projects/createProject`, data),
+}
+
 /**
  * API request for current login.  
  */
@@ -37,5 +42,6 @@ const authorization = {
 
 export default {
   employeeInfo,
-  authorization
+  authorization,
+  projects
 }

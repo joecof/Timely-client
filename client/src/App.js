@@ -39,6 +39,8 @@ class App extends Component {
         isAuth: true,
         loadedUser: response
       })
+      console.log(this.state.loadedUser);
+      localStorage.setItem('User', JSON.stringify(this.state.loadedUser)); //storing user in the localstorage
     }
   }
 
