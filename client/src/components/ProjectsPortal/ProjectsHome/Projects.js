@@ -122,7 +122,7 @@ class Projects extends React.Component {
             <Button variant="contained" color="secondary" component={Link} to="/createProject">+ Create</Button>
           </Grid>
         </Grid>
-        <ProjectsList data={this.state.data} type={this.state.type}/>
+        <ProjectsList data={this.state.data} type={this.state.type} history={this.props.history}/>
       </React.Fragment>
     );
   }

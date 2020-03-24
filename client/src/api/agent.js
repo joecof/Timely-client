@@ -11,14 +11,32 @@ axios.defaults.baseURL = "http://localhost:8080/timely/api/";
  */
 const resBody = (response) => response.data;
 
+const token = localStorage.getItem("token");
+
 /**
  * Defines HTTP functions for CRUD functionality. 
  */
 const requests = {
-  get: (url) => axios.get(url).then(resBody),
-  post: (url, body) => axios.post(url, body).then(resBody),
-  put: (url, body) => axios.put(url, body).then(resBody),
-  del: (url) => axios.delete(url).then(resBody) 
+  get: (url) => axios.get(url, {
+    headers: {
+      'Authorization': token
+    }
+  }).then(resBody),
+  post: (url, body) => axios.post(url, body, {
+    headers: {
+      'Authorization': token
+    }
+  }).then(resBody),
+  put: (url, body) => axios.put(url, body, {
+    headers: {
+      'Authorization': token
+    }
+  }).then(resBody),
+  del: (url) => axios.delete(url, {
+    headers: {
+      'Authorization': token
+    }
+  }).then(resBody) 
 }
 
 /**
@@ -31,13 +49,14 @@ const employeeInfo = {
 const projects = {
   getProjectsForUser: (id) => requests.get(`/projects/emp/${id}`),
   createProject: (data) => requests.post(`/projects/createProject`, data),
+  getById: (id) => requests.get(`/projects/${id}`)
 }
 
 /**
  * API request for current login.  
  */
 const authorization = {
-  login: (data) => requests.post('/login', data)
+  login: (data) => requests.post('/tokens', data)
 }
 
 export default {

@@ -9,6 +9,7 @@ import Dashboard from '../Dashboard/Dashboard'
 import Projects from '../ProjectsPortal/ProjectsHome/Projects'
 import ProjectCreate from '../ProjectCreate/ProjectCreate'
 import DashboardPortal from '../DashboardPortal/DashBoardPortal'
+import ProjectDetail from '../ProjectDetail/ProjectDetail'
 
 /**
  * Author: Joe 
@@ -109,6 +110,15 @@ export default class Routes extends Component {
           exact
           render = {props => (
             <ProjectCreate
+              {...props}
+            />
+          )}
+        />
+        <Route
+          path="/projectDetails"
+          exact
+          render = {props => (
+            <ProjectDetail
               {...props}
             />
           )}

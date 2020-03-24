@@ -1,6 +1,6 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
-import CustomSelectProject from "./CustomSelectProject";
+import CustomSelectProject from "./CustomSelectProject"
 import "./ProjectsList.css";
 
 /**
@@ -21,8 +21,14 @@ class ProjectsList extends React.Component {
       print: false,
       responsive: "scroll",
       selectableRows : true,
-      customToolbarSelect: (selectedRows) => <CustomSelectProject selectedRows={selectedRows} type={this.state.type}/>
-    }
+      customToolbarSelect: (selectedRows) => <CustomSelectProject selectedRows={selectedRows} type={this.state.type}/>,
+      onRowClick: (rowData, rowState) => {
+        this.props.history.push({
+          pathname: `/projectDetails`,
+          state: {projectID: rowData[0]}
+        })
+      } 
+    };
   }
 
   componentWillReceiveProps(nextProps) {

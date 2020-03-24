@@ -9,7 +9,7 @@ export default class Login extends Component {
     super(props); 
 
     this.state = ({
-      employee_id: null,
+      employee_zid: null,
       password: '',
     })
     this.updateInputValue = this.updateInputValue.bind(this);
@@ -41,7 +41,7 @@ export default class Login extends Component {
             Login
           </div>
           {/* Login Form */}
-          <form className="loginForm" onSubmit={(e) => this.props.loginHandler(e, {employee_id: this.state.employee_id, password: this.state.password})}>
+          <form className="loginForm" onSubmit={(e) => this.props.loginHandler(e, {id: this.state.employee_id, password: this.state.password})}>
             {/* Email Div */}
             <div className="loginEmail">
               <input
