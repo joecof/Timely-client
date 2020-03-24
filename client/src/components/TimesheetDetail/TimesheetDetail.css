@@ -1,0 +1,73 @@
+
+/* Author: Kang Wang
+ * Version: 1
+ * Desc: Timesheet Detail Css
+ */
+ 
+/* body css */
+.container {
+    /* box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12); */
+    height: 500px;
+}
+.timesheetTitle {
+    font-size: medium;
+    min-width: 750px;
+    height: 45px;
+    margin-left: 20px;
+    float: left;
+}
+/* first row  */
+.attributeRow {
+    margin-left: 4%;
+}
+
+.empNumTitle {
+    float: left;
+    font-weight: bold;
+}
+
+.empNum {
+    margin-left: 10px;
+    float: left;
+}
+
+.weekNumTitle {
+    margin-left: 13%;
+    float: left;
+    font-weight: bold;
+}
+
+.weekNum {
+    margin-left: 10px;
+    float: left;
+}
+
+.weekEndTitle {
+    margin-left: 13%;
+    float: left;
+    font-weight: bold;
+}
+
+.weekEnd {
+    
+}
+/* second row */
+.empNameAttribute {
+    margin-left: 4%;
+    width: 260px;
+}
+
+.empNameTitle {
+    font-weight: bold;
+    float: left;
+}
+.empName {
+    margin-left: 160px;
+}
+/* timesheet */
+.timesheetTable {
+    width: 90%;
+    margin: 20px 0 0 4%;
+    height: 200px;
+    background-color: red;
+}

@@ -1,0 +1,85 @@
+import React, { Component } from 'react'
+import './Login.css';
+import agent from '../../api/agent'
+
+
+export default class Login extends Component {
+
+  constructor(props) {
+    super(props); 
+
+    this.state = ({
+      employee_id: null,
+      password: '',
+    })
+
+    this.updateInputValue = this.updateInputValue.bind(this);
+    this.loginHandler = this.loginHandler.bind(this);
+  }
+
+  async loginHandler(){
+
+    const data = 
+    {
+        "employee_id": this.state.employee_id,
+        "password": this.state.password
+    }
+
+    const response = await agent.authorization.login(data);
+
+    this.setState({
+      loaded_user: response
+    })
+
+    }
+    
+  updateInputValue(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  render() {
+    return (
+      <div className="loginWrapper">
+        {/* Index Title */}
+        <p className="prjMng">Project Management</p>
+        <div className="loginContainer">
+          <div className="loginHint">
+            Login
+          </div>
+          {/* Login Form */}
+          <form className="loginForm" onSubmit={(e) => this.props.loginHandler(e, {employee_id: this.state.employee_id, password: this.state.password})}>
+            {/* Email Div */}
+            <div className="loginEmail">
+              <input
+                className="loginInputs"
+                name="employee_id"
+                placeholder="Employee Id"
+                required
+                autoFocus
+                onChange = {this.updateInputValue}
+              />
+            </div>
+            {/* Password Div */}
+            <div className="loginPwd">
+              <input
+                  className="loginInputs"
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                  onChange = {this.updateInputValue}
+              />
+            </div>
+            <div className="loginBsection">
+              <a href="/timesheet" className="forgetPwd">Forgot Password?</a>
+              <button className="loginBtn" type="submit"> Login </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+}
+
