@@ -14,18 +14,6 @@ export default class Login extends Component {
     })
     this.updateInputValue = this.updateInputValue.bind(this);
   }
-<<<<<<< HEAD
-=======
-
-  async loginHandler(){
-    const data = 
-    {
-        "employee_id": this.state.employee_id,
-        "password": this.state.password
-    }
-    const response = await agent.authorization.login(data);
-  }
->>>>>>> project
     
   updateInputValue(e) {
     this.setState({
