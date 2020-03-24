@@ -11,6 +11,7 @@ import axios from 'axios';
 process.env.REACT_APP_ENV == "development" ? 
   axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL : axios.defaults.baseURL = process.env.REACT_APP_PRODUCTION_BASE_URL;
 
+
 /**
  * Contains the data of the response body 
  * @param {any} response 
