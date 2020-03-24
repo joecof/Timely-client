@@ -53,6 +53,8 @@ class App extends Component {
   
   render() {
 
+    console.log(process.env);
+
     let routes; 
     /**
      * Returns a configuration objection that routes takes in to pass it the developers desired props. 
