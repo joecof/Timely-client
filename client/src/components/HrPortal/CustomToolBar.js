@@ -23,7 +23,8 @@ class CustomToolbar extends React.Component {
    * Will be used to add an employee
    */
   handleClick = () => {
-    console.log("add an employee!");
+    const { history } = this.props;
+    history.push(`/dashboard/profile/`);
   }
 
   render() {

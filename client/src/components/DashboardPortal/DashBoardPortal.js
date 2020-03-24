@@ -11,7 +11,7 @@ import agent from "../../api/agent";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import Grid from "@material-ui/core/Grid";
 import "react-circular-progressbar/dist/styles.css";
-import DashboardProtalProjInfo from "../DashboardProtalProjInfo/DashboardProtalProjInfo";
+import DashboardPortalProjInfo from "../DashboardPortalProjInfo/DashboardPortalProjInfo";
 import TimesheetDetail from "../TimesheetDetail/TimesheetDetail";
 
 /**
@@ -142,27 +142,27 @@ class DashBoardPortal extends Component {
         <div className={classes.topContainer}>
           <Paper className={classes.leftPaper} elevation={2}>
             <div className={classes.projTitle}>Recent / New Projects</div>
-            <DashboardProtalProjInfo
+            <DashboardPortalProjInfo
               projName="TJ100"
               dueDate="December 20, 2020"
               projManagerName="Dick Jones"
             />
-            <DashboardProtalProjInfo
+            <DashboardPortalProjInfo
               projName="TR311"
               dueDate="March 20, 2021"
               projManagerName="Slim Teddy"
             />
-            <DashboardProtalProjInfo
+            <DashboardPortalProjInfo
               projName="GY852"
               dueDate="April 20, 2021"
               projManagerName="Flower Jones"
             />
-            <DashboardProtalProjInfo
+            <DashboardPortalProjInfo
               projName="TY965"
               dueDate="May 23, 2022"
               projManagerName="Juice Moon"
             />
-            <DashboardProtalProjInfo
+            <DashboardPortalProjInfo
               projName="TG203"
               dueDate="October 23, 2022"
               projManagerName="Pie Hook"

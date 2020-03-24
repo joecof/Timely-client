@@ -10,14 +10,15 @@ import DropDownProfile from "../DropDownProfile/DropDownProfile"
 import clsx from "clsx";
 import Searchbar from './Searchbar'
 import MenuIcon from '@material-ui/icons/Menu';
-import constants from '../../constants/contants'
 import BreadCrumb from '../BreadCrumb/BreadCrumb'
+import { NAVBAR_PARAMETERS } from '../../constants/constants'
+
 
 /**
  * Defined breaking points for navbar size upon resizing. 
  */
-const navbarExpandedWidth = constants.NAVBAR_EXPANDED_WIDTH;
-const navbarShrinkedWidth = constants.NAVBAR_SHRINKED_WIDTH;
+const navbarExpandedWidth = NAVBAR_PARAMETERS.NAVBAR_EXPANDED_WIDTH;
+const navbarShrinkedWidth = NAVBAR_PARAMETERS.NAVBAR_SHRINKED_WIDTH;
 
 /**
  * Material UI styling JSON object. 

@@ -16,7 +16,6 @@ class ExpansionMenu extends Component {
     return (
       <ExpansionPanel elevation={0} >
         <ExpansionMenuHeader loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
-        {/* <ExpansionMenuItem text="Profile" resize = {this.props.resize} link = "/dashboard/profile"/> */}
         <ExpansionMenuItem text="Lead Engineer" resize = {this.props.resize} link = "/dashboard/lead"/>
         <ExpansionMenuItem text="Supervisor" resize = {this.props.resize} link = "/dashboard/supervisor"/>
         <ExpansionMenuItem text="HR" resize = {this.props.resize} link = "/dashboard/hr"/>
