@@ -31,7 +31,9 @@ const columns = [
 /**
  * Configuration object for the MUI data table. 
  */
-const options = () => {
+const options = (props) => {
+  const { loadedUser, history } = props; 
+
   const data = {
     selectableRows: false,
     search: true,
@@ -39,7 +41,7 @@ const options = () => {
     download: false,
     filter: false,
     customToolbar: () => {
-      return <CustomToolbar />;
+      return <CustomToolbar history = {history} />;
     }
   }
   return data;

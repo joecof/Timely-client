@@ -3,7 +3,6 @@ import {Route, Switch} from "react-router-dom";
 import TimesheetPortal from '../TimesheetPortal/TimesheetPortal'
 import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
 import HrPortal from '../HrPortal/HrPortal'
-import Profile from '../Profile/Profile'
 import Login from '../Login/Login'
 import Dashboard from '../Dashboard/Dashboard'
 import Projects from '../ProjectsPortal/ProjectsHome/Projects'
@@ -12,6 +11,10 @@ import DashboardPortal from '../DashboardPortal/DashBoardPortal'
 import SupervisorPortal from '../SupervisorPortal/SupervisorPortal'
 import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo';
+
+import Profile from '../Profile/Profile'
+import EmployeeForm from '../Profile/EmployeeForm'
+
 
 /**
  * Author: Joe 
@@ -57,6 +60,7 @@ export default class Routes extends Component {
               exact
               render = {props => (
                 <HrPortal
+                  loadedUser = {this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -65,7 +69,8 @@ export default class Routes extends Component {
               path="/dashboard/hr/:id"
               exact
               render = {props => (
-                <Profile
+                <EmployeeForm
+                  loadedUser = {this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -101,23 +106,24 @@ export default class Routes extends Component {
               path="/dashboard/profile/:id"
               exact
               render = {props => (
-                <Profile
+                <EmployeeForm
+                  loadedUser = {this.props.config.loadedUser}
                   {...props}
                 />
               )}
             />
-            {/* login employee profile */}
             <Route
               path="/dashboard/profile"
               exact
               render = {props => (
-                <Profile
+                <EmployeeForm
+                  loadedUser = {this.props.config.loadedUser}
                   {...props}
                 />
               )}
             />
           <Route
-          path="/dashboard/Projects"
+          path="/dashboard/projects"
           exact
           render = {props => (
             <Projects
