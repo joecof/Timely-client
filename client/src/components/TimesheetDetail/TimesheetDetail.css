@@ -1,73 +1,81 @@
-
 /* Author: Kang Wang
  * Version: 1
  * Desc: Timesheet Detail Css
  */
- 
+
 /* body css */
 .container {
-    /* box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12); */
-    height: 500px;
+  /* box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.1), 0px 4px 5px 0px rgba(0,0,0,0.1), 0px 1px 10px 0px rgba(0,0,0,0.1); */
+  background-color: white;
+  width: 1000px;
+  padding: 30px 0px 45px 0px;
+  border: solid 1px lightgray;
+  border-radius: 5px;
 }
 .timesheetTitle {
-    font-size: medium;
-    min-width: 750px;
-    height: 45px;
-    margin-left: 20px;
-    float: left;
+  font-size: medium;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 /* first row  */
 .attributeRow {
-    margin-left: 4%;
+  /* margin-left: 4%; */
+  width: 93%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.empNumContainer {
+  display: flex;
 }
 
 .empNumTitle {
-    float: left;
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .empNum {
-    margin-left: 10px;
-    float: left;
+  margin-left: 10px;
+  float: left;
+}
+
+.weekNumContainer {
+  display: flex;
 }
 
 .weekNumTitle {
-    margin-left: 13%;
-    float: left;
-    font-weight: bold;
+  font-weight: bold;
+  display: inline-block;
 }
 
 .weekNum {
-    margin-left: 10px;
-    float: left;
+  margin-left: 10px;
+}
+
+.weekEndContainer {
+  display: flex;
 }
 
 .weekEndTitle {
-    margin-left: 13%;
-    float: left;
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .weekEnd {
-    
+    margin-left: 10px;
 }
 /* second row */
 .empNameAttribute {
-    margin-left: 4%;
-    width: 260px;
+  width: 93%;
+  display: flex;
 }
 
 .empNameTitle {
-    font-weight: bold;
-    float: left;
+  font-weight: bold;
 }
 .empName {
-    margin-left: 160px;
+  /* margin-left: 160px; */
 }
 /* timesheet */
 .timesheetTable {
-    width: 90%;
-    margin: 20px 0 0 4%;
-    height: 200px;
-    background-color: red;
 }

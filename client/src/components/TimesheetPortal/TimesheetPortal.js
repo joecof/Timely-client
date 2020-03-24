@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import CurrentTimesheetToolBar from './CurrentTimesheetToolBar';
+import './TimesheetPortal.css';
 
 export default class TimesheetPortal extends Component {
 
@@ -14,7 +15,7 @@ export default class TimesheetPortal extends Component {
   // link: https://github.com/gregnb/mui-datatables/tree/master/examples
   getMuiTheme = () => createMuiTheme({
     overrides: {
-      
+    
     }
   });
   
