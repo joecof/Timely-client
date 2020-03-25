@@ -7,15 +7,11 @@ import './ProjectCreate.css';
  * Version: 1
  * Desc: Third step for project creation
  */
-const ProjectInfo = () => {
-  const [cost, setCost] = useState({});
-  const [schedule, setSchedule] = useState({});
+const ProjectInfo = (props) => {
 
   return (
     <form autoComplete="off">
-      <TextField className="margin" id="standard-basic" label="Cost" />
-      <br />
-      <TextField className="margin" id="standard-basic" label="Schedule" />
+      <TextField component="span" className="margin" id="standard-basic" label="Cost" value={props.cost} name="cost" onChange={props.handleChange}/>
     </form>
   );
 };

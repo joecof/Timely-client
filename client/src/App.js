@@ -36,8 +36,11 @@ class App extends Component {
     if(response) {
       this.setState({
         isAuth: true,
-        loadedUser: response
+        loadedUser: response.loadedUser,
       })
+      
+      localStorage.setItem("token", response.token);
+      localStorage.setItem('User', JSON.stringify(this.state.loadedUser)); 
     }
   }
 
@@ -47,7 +50,7 @@ class App extends Component {
   logoutHandler() {
     this.setState({
       isAuth: false,
-      loadedUser: null
+      loadedUser: null,
     })
   }
   
