@@ -44,7 +44,7 @@ class MenuItem extends Component {
           </Grid>
           <Grid item onClick = {this.props.handleClick}>
             {this.props.text && this.props.resize ? 
-              <p className = {classes.text}> {this.props.text} </p> : <p className = {classes.text}> Timely </p>}
+              <p className = {classes.text}> {this.props.text} </p> : null}
           </Grid>
         </Grid>
       </Link>

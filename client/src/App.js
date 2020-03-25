@@ -33,6 +33,8 @@ class App extends Component {
     event.preventDefault();
     const response = await agent.authorization.login(data);
 
+    console.log(response);
+
     if(response) {
       this.setState({
         isAuth: true,
