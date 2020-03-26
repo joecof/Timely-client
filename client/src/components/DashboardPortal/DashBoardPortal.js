@@ -83,24 +83,7 @@ class DashBoardPortal extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      loadedUser: {}
-    };
-
-    this.fetchData = this.fetchData.bind(this);
     this.currentDate = this.currentDate.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchData();
-  }
-  // logged in user
-  async fetchData() {
-    const currentUserId = this.props.match.params.id;
-    const response = await agent.employeeInfo.getCurrentUser(currentUserId);
-    this.setState({
-      loadedUser: response
-    });
   }
 
   // current date

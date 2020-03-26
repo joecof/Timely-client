@@ -11,6 +11,18 @@ import './TimesheetPortal.css';
 
 export default class TimesheetPortal extends Component {
 
+  constructor(props) {
+    super(props); 
+
+    this.state = ({
+      timesheets: []
+    })
+  }
+
+  componentDidMount() {
+    
+  }
+
   // css here
   // link: https://github.com/gregnb/mui-datatables/tree/master/examples
   getMuiTheme = () => createMuiTheme({
