@@ -83,40 +83,31 @@ class DashBoardPortal extends Component {
   constructor(props) {
     super(props);
 
-    this.currentDate = this.currentDate.bind(this);
+    this.state = {
+      loadedUser: {},
+      projects: []
+    };
+
+    this.fetchData = this.fetchData.bind(this);
   }
 
-  // current date
-  currentDate() {
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ];
-    const dayOfWeekNames = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ];
-    var date = new Date().getDate(); //Current Date
-    var month = new Date().getMonth(); //Current Month
-    var dayOfWeek = new Date().getDay() - 1; // day of the week
-
-    return date + " " + monthNames[month] + ", " + dayOfWeekNames[dayOfWeek];
+  componentDidMount() {
+    this.fetchData();
   }
+
+  // logged in user and the projects
+  async fetchData() {
+    // fetch logined user
+    // const currentUserId = this.props.match.params.id;
+    // const response = await agent.employeeInfo.getCurrentUser(currentUserId);
+    // this.setState({
+    //   loadedUser: response
+    // });
+
+    // fetch projects
+    
+  }
+
   render() {
     const { classes } = this.props;
 
