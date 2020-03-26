@@ -13,6 +13,7 @@ import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo';
 import EmployeeForm from '../Profile/EmployeeForm'
 
+import ProjectDetail from '../ProjectDetail/ProjectDetail'
 
 /**
  * Author: Joe 
@@ -49,6 +50,7 @@ export default class Routes extends Component {
               exact
               render = {props => (
                 <TimesheetDetail
+                  loadedUser = {this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -147,7 +149,18 @@ export default class Routes extends Component {
                 />
               )}
             />
-          </Switch>
+          )}
+        />
+        <Route
+          path="/projectDetails"
+          exact
+          render = {props => (
+            <ProjectDetail
+              {...props}
+            />
+          )}
+        />
+      </Switch>
         )
         break; 
 

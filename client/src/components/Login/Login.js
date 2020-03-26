@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import './Login.css';
-import agent from '../../api/agent'
+import agent from '../../api/agent.js';
 
 
 export default class Login extends Component {
@@ -9,10 +9,9 @@ export default class Login extends Component {
     super(props); 
 
     this.state = ({
-      employee_id: null,
+      employee_zid: null,
       password: '',
     })
-
     this.updateInputValue = this.updateInputValue.bind(this);
   }
     
@@ -23,6 +22,7 @@ export default class Login extends Component {
   }
 
   render() {
+
     return (
       <div className="loginWrapper">
         {/* Index Title */}
@@ -32,7 +32,7 @@ export default class Login extends Component {
             Login
           </div>
           {/* Login Form */}
-          <form className="loginForm" onSubmit={(e) => this.props.loginHandler(e, {employee_id: this.state.employee_id, password: this.state.password})}>
+          <form className="loginForm" onSubmit={(e) => this.props.loginHandler(e, {id: this.state.employee_id, password: this.state.password})}>
             {/* Email Div */}
             <div className="loginEmail">
               <input

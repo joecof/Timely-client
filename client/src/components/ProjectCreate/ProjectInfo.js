@@ -1,24 +1,32 @@
 import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from "@material-ui/core/styles";
 import './ProjectCreate.css';
+
+const useStyles = makeStyles(theme => ({
+  projInfo: {
+    width: "280px"
+  }
+}));
 
 /**
  * Author: Prabh
  * Version: 1
  * Desc: first step for project creation
  */
-const ProjectInfo = () => {
-  const [projectID, setProjectID] = useState({});
-  const [projectName, setProjectName] = useState({});
-  const [projectManager, setProjectManager] = useState({});
+const ProjectInfo = (props) => {
+    const classes = useStyles();
 
   return (
     <form autoComplete="off">
-      <TextField className="margin" id="standard-basic" label="Project ID" />
+      <TextField component={'span'} className="margin" label="Project ID" name="projectID" 
+      value={props.projectID} onChange={props.handleChange} className={classes.projInfo}/>
       <br />
-      <TextField className="margin" id="standard-basic" label="Project Name" />
+      <TextField component={'span'} className="margin" label="Project Name" name="projectName" 
+      value={props.projectName} onChange={props.handleChange} className={classes.projInfo}/>
       <br />
-      <TextField className="margin" id="standard-basic" label="Project Manager" />
+      <TextField component={'span'} className="margin" label="Project Manager" name="projectManager" 
+      value={props.projectManager} onChange={props.handleChange} className={classes.projInfo}/>
     </form>
   );
 };
