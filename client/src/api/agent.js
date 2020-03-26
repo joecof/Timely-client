@@ -1,10 +1,6 @@
 import axios from 'axios';
 
 /**
- * Define the base axios URL. 
- */
-
-/**
  * Checks the environment variable at npm start or npm build. Depending on that variable it will use 
  * a different base url. 
  */
@@ -34,9 +30,6 @@ const requests = {
   authenticate: (url, body) => axios.post(url, body).then(resBody), 
 }
 
-/**
- * Prototype to get employee information. Not Currently used. 
- */
 const employeeInfo = {
   getCurrentUser: (id, token) => requests.get(`/emps/${id}`, token), 
   getAllEmployees: (token) => requests.get(`/emps`, token)
@@ -48,13 +41,6 @@ const projects = {
   getById: (id) => requests.get(`/projects/${id}`)
 }
 
-const timesheetInfo = {
-  getEmployeeTimesheet: (id, token) => {requests.get(`/${id}/timesheets`, token)}
-}
-
-/**
- * API request for current login.  
- */
 const authorization = {
   login: (data) => requests.authenticate('/tokens/token', data)
 }
@@ -63,5 +49,4 @@ export default {
   employeeInfo,
   authorization,
   projects,
-  timesheetInfo
 }

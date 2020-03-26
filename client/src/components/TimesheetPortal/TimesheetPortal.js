@@ -20,7 +20,6 @@ export default class TimesheetPortal extends Component {
   }
 
   componentDidMount() {
-    
   }
 
   // css here
