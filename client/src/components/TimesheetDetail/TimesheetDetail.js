@@ -279,4 +279,3 @@ class TimesheetDetail extends Component {
 }
 
 export default withStyles(timesheetStyle, { withTheme: true })(TimesheetDetail);
-

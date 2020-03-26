@@ -5,7 +5,6 @@
  */
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
-import { MuiThemeProvider } from '@material-ui/core/styles';
 import CurrentTimesheetToolBar from './CurrentTimesheetToolBar';
 import './TimesheetPortal.css';
 import agent from "../../api/agent";
@@ -115,8 +114,6 @@ export default class TimesheetPortal extends Component {
     // });
 
     // fetching timesheets
-    const response = await agent.timesheets.getTimesheetByEmp(9);
-    console.log(response);
     var timesheetsData = [];
 
     for (let i = 0; i < demoData.length; i++) {
@@ -141,16 +138,13 @@ export default class TimesheetPortal extends Component {
   render() {
     return (
       <>
-        <MuiThemeProvider>
-          <MUIDatatable 
-              className="datatable"
-              title={<h1>Timesheet</h1>}
-              options={options(this.props, this.state)}
-              columns={columns}
-              data={this.state.timesheets} />
-        </MuiThemeProvider>
+        <MUIDatatable 
+            className="datatable"
+            title={<h1>Timesheet</h1>}
+            options={options(this.props, this.state)}
+            columns={columns}
+            data={this.state.timesheets} />
       </>
     )
   }
-
 }

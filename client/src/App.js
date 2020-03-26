@@ -21,6 +21,8 @@ class App extends Component {
 
     this.loginHandler = this.loginHandler.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
+    this.setAutoLogout = this.setAutoLogout.bind(this);
+
   }
 
   /**
@@ -31,16 +33,40 @@ class App extends Component {
    */
   async loginHandler(event, data){
     event.preventDefault();
-    const response = await agent.authorization.login(data);
 
-    if(response) {
-      this.setState({
-        isAuth: true,
-        loadedUser: response.loadedUser,
-      })
-      
-      localStorage.setItem("token", response.token);
-      localStorage.setItem('User', JSON.stringify(this.state.loadedUser)); 
+    try {
+
+      const response = await agent.authorization.login(data);
+
+      console.log(response);
+
+      if(response) {
+
+        this.setState({
+          isAuth: true,
+          loadedUser: response.loadedUser,
+        })
+        
+        const remainingMilliseconds = 60 * 60 * 1000;
+        const expiryDate = new Date(
+          new Date().getTime() + remainingMilliseconds
+        );
+  
+        localStorage.setItem('expiryDate', expiryDate.toISOString());
+        localStorage.setItem("token", response.token);
+
+        const emp = await agent.employeeInfo.getAllEmployees(response.token);
+        
+        //doesn't work cuz the backend code not finished yet -- just an example of what it would look like 
+        // const timesheets = await agent.timesheetInfo.getEmployeeTimesheet(9, response.token);
+
+        console.log(emp);
+
+        this.setAutoLogout(remainingMilliseconds);     
+      }
+
+    } catch(e) {
+      console.error(e);
     }
   }
 
@@ -52,7 +78,16 @@ class App extends Component {
       isAuth: false,
       loadedUser: null,
     })
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   }
+
+  setAutoLogout(milliseconds) {
+    setTimeout(() => {
+      this.logoutHandler();
+    }, milliseconds);
+  };
   
   render() {
     
