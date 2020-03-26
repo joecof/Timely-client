@@ -22,7 +22,40 @@ class App extends Component {
     this.loginHandler = this.loginHandler.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
     this.setAutoLogout = this.setAutoLogout.bind(this);
+    this.sessionHandler = this.sessionHandler.bind(this);
 
+  }
+
+  componentDidMount() {
+    this.sessionHandler();
+  }
+
+   /**
+   * Checks if the user has logged-in in the past hour. If user has logged in, will maintain there 
+   * session, and keep them logged in to the system until the session as expired. 
+   */
+  sessionHandler() {
+    const session = sessionStorage.getItem('logged');
+    const token = localStorage.getItem('token');
+    const expiryDate = localStorage.getItem('expiryDate');
+
+    if (!session) {
+      this.logoutHandler();
+      return;
+    } 
+
+    if(!token || !expiryDate) {
+      this.props.history.push('/');
+      return; 
+    }
+
+    const remainingMilliseconds = new Date(expiryDate).getTime() - new Date().getTime(); 
+    this.setAutoLogout(remainingMilliseconds);
+
+    this.setState({
+      isAuth: true,
+      loadedUser: JSON.parse(sessionStorage.getItem('user'))
+    })
   }
 
   /**
@@ -35,13 +68,9 @@ class App extends Component {
     event.preventDefault();
 
     try {
-
       const response = await agent.authorization.login(data);
 
-      console.log(response);
-
       if(response) {
-
         this.setState({
           isAuth: true,
           loadedUser: response.loadedUser,
@@ -54,13 +83,8 @@ class App extends Component {
   
         localStorage.setItem('expiryDate', expiryDate.toISOString());
         localStorage.setItem("token", response.token);
-
-        const emp = await agent.employeeInfo.getAllEmployees(response.token);
-        
-        //doesn't work cuz the backend code not finished yet -- just an example of what it would look like 
-        // const timesheets = await agent.timesheetInfo.getEmployeeTimesheet(9, response.token);
-
-        console.log(emp);
+        sessionStorage.setItem("user", JSON.stringify(response.loadedUser));
+        sessionStorage.setItem('logged', true)
 
         this.setAutoLogout(remainingMilliseconds);     
       }
@@ -79,10 +103,16 @@ class App extends Component {
       loadedUser: null,
     })
 
+    localStorage.removeItem('expiryDate');
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem('logged')
   }
 
+  /**
+   * Set Auto Logout. Logs out the user automatically after 1 hour has expired. Will remove token and user info from localStorage. 
+   * @param {int} milliseconds 
+   */
   setAutoLogout(milliseconds) {
     setTimeout(() => {
       this.logoutHandler();
@@ -92,6 +122,7 @@ class App extends Component {
   render() {
     
     let routes; 
+
     /**
      * Returns a configuration objection that routes takes in to pass it the developers desired props. 
      * @param {String} name 

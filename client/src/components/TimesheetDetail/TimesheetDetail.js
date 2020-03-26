@@ -141,6 +141,7 @@ class TimesheetDetail extends Component {
     let emptyRow = createTimesheetRow(rowID, null, null, 0, 0, 0, 0, 0, 0, 0, null);
     this.state.timesheetrows.push(emptyRow);
     console.log(this.state.timesheetrows);
+
   }
 
   // timesheet row
