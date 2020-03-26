@@ -13,7 +13,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { Button } from '@material-ui/core/';
 import './TimesheetDetail.css';
-import DropDown from '../DropDownProfile/DropDownProfile'
 
 // testing id
 let idTEST = 1;
@@ -145,21 +144,22 @@ class TimesheetDetail extends Component {
   }
 
   // timesheet row
-  timesheetRow = (row, i) => <TableRow key={i}>
-                      <TableCell scope="row">
-                          {row.proj}
-                      </TableCell>
-                      <TableCell align="right">{row.wp}</TableCell>
-                      <TableCell align="right">{ccyFormat(row.tol)}</TableCell>
-                      <TableCell align="right">{row.sat}</TableCell>
-                      <TableCell align="right">{row.sun}</TableCell>
-                      <TableCell align="right">{row.mon}</TableCell>
-                      <TableCell align="right">{row.tue}</TableCell>
-                      <TableCell align="right">{row.wed}</TableCell>
-                      <TableCell align="right">{row.thu}</TableCell>
-                      <TableCell align="right">{row.fri}</TableCell>
-                      <TableCell align="right">{row.notes}</TableCell>
-                    </TableRow>;
+  timesheetRow = (row, i) => 
+    <TableRow key={i}>
+      <TableCell scope="row">
+          {row.proj}
+      </TableCell>
+      <TableCell align="right">{row.wp}</TableCell>
+      <TableCell align="right">{ccyFormat(row.tol)}</TableCell>
+      <TableCell align="right">{row.sat}</TableCell>
+      <TableCell align="right">{row.sun}</TableCell>
+      <TableCell align="right">{row.mon}</TableCell>
+      <TableCell align="right">{row.tue}</TableCell>
+      <TableCell align="right">{row.wed}</TableCell>
+      <TableCell align="right">{row.thu}</TableCell>
+      <TableCell align="right">{row.fri}</TableCell>
+      <TableCell align="right">{row.notes}</TableCell>
+    </TableRow>;
 
   render() {
     // link css

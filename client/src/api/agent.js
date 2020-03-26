@@ -60,6 +60,13 @@ const projects = {
 }
 
 /**
+ * Getting logged in user timesheets
+ */
+const timesheets = {
+  getTimesheetByEmp: (id) => requests.get(`/emps/${id}/timesheets`)
+}
+
+/**
  * API request for current login.  
  */
 const authorization = {
@@ -69,5 +76,6 @@ const authorization = {
 export default {
   employeeInfo,
   authorization,
-  projects
+  projects,
+  timesheets
 }
