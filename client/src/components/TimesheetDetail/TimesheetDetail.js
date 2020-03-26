@@ -13,7 +13,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { Button } from '@material-ui/core/';
 import './TimesheetDetail.css';
-import DropDown from '../DropDownProfile/DropDownProfile'
+
+import DropDown from "../DropDownProfile/DropDownProfile";
+
 
 // testing id
 let idTEST = 1;
@@ -125,7 +127,7 @@ class TimesheetDetail extends Component {
     super(props);
 
     this.state = {
-      timesheetrows: []
+      timesheetrows: [],
     }
   }
 
@@ -142,6 +144,7 @@ class TimesheetDetail extends Component {
     let emptyRow = createTimesheetRow(rowID, null, null, 0, 0, 0, 0, 0, 0, 0, null);
     this.state.timesheetrows.push(emptyRow);
     console.log(this.state.timesheetrows);
+
   }
 
   // timesheet row
