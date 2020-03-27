@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from '@material-ui/core/Tooltip';
 import Modal from './Modal.js';
+import WorkpackageList from './WorkpackageList';
 import "./ProjectDetail.css"
 
 /**
@@ -93,6 +94,7 @@ class ProjectDetail extends React.Component {
           </>
           }
         </Grid>
+        <WorkpackageList type={this.state.isProjManager ? 'PM' : 'Emp'} wpList={this.state.wpList} />
       </div>
     );
   }
