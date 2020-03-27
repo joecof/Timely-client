@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { request } from 'http';
 
 /**
  * Checks the environment variable at npm start or npm build. Depending on that variable it will use 
@@ -20,7 +21,11 @@ const resBody = (response) => response.data;
  * Returns an object that sets headers for HTTP requests. 
  * @param {string} token 
  */
-const headers = (token) => {return {headers: {'Authorization': 'Bearer ' + token}}}
+const headers = (token) => {
+  return { headers: {
+    'Authorization': 'Bearer ' + token,
+  }}
+}
 
 /**
  * Defines HTTP functions for CRUD functionality. 
@@ -39,9 +44,10 @@ const employeeInfo = {
 }
 
 const projects = {
-  getProjectsForUser: (id) => requests.get(`/projects/emp/${id}`),
-  createProject: (data) => requests.post(`/projects/createProject`, data),
-  getById: (id) => requests.get(`/projects/${id}`)
+  getProjectsForUser: (id, token) => requests.get(`/projects/emp/${id}`, token),
+  createProject: (data, token) => requests.post(`/projects/createProject`, token, data),
+  getDetailsById: (id, token) => requests.get(`/projects/projectDetails/${id}`, token),
+  getById: (id, token) => requests.get(`/projects/${id}`, token)
 }
 
 const authorization = {

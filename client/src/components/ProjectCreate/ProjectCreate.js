@@ -14,6 +14,11 @@ import Schedule from "./Schedule";
 import agent from '../../api/agent.js'
 import "./ProjectCreate.css";
 
+/**
+ * Author: Prabh
+ * Version: 1
+ * Desc: This component let's the user create a new project
+ */
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%"
@@ -100,6 +105,8 @@ export default function ProjectCreate() {
   };
 
   const handleSubmit = async () => {
+    const token = localStorage.getItem("token");
+    console.log(token);
     const data = {
       "project_code": inputValues.projectID,
       "project_manager_id": {
@@ -117,7 +124,8 @@ export default function ProjectCreate() {
         }
       ]
     };
-    const response = agent.projects.createProject(data);
+    console.log(data);
+    const response = agent.projects.createProject(data, token);
     console.log(response);
   };
 
