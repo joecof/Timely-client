@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -7,12 +7,12 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import ProjectInfo from "./ProjectInfo";
-import Desc from "../CreationWizard/Desc";
-import Budget from "../CreationWizard/Budget";
-import Schedule from "../CreationWizard/Schedule";
 import agent from '../../api/agent.js'
-import "./ProjectCreate.css";
+import WorkpackageInfo from './WorkpackageInfo';
+import WorkpackageDesc from '../CreationWizard/Desc';
+import Budget from '../CreationWizard/Budget';
+import Schedule from '../CreationWizard/Schedule';
+import "./WorkpackageCreate.css";
 
 /**
  * Author: Prabh
@@ -21,51 +21,19 @@ import "./ProjectCreate.css";
  */
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "1100px"
-  },
-  stepper: {
-    padding: "40px 0",
-    border: "1px solid lightgray"
+    width: "100%"
   },
   backButton: {
-    margin: "0 7px 0 0"
-  },
-  nextButton: {
-    margin: "0 0 0 7px"
-  },
-  instructionsContainer: {
-    display: "flex",
-    justifyContent: "center",
-    padding: "25px 0"
+    marginRight: theme.spacing(1)
   },
   instructions: {
-    backgroundColor: "white",
-    width: "400px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "280px",
-    padding: "0 0 10px 0",
-    borderTop: "3px solid lightgray"
-  },
-  backNextButtonContainer: {
-    display: "flex",
-    justifyContent: "center",
-    margin: "20px 0 0 0"
-  },
-  endMessage: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  createProjAgain: {
-    margin: "15px 0",
-    padding: "15px"
-    // borderTop: "3px solid lightgray"
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1)
   }
 }));
 
 function getSteps() {
-  return ["Project Information", "Project Description", "Budget", "Schedule"];
+  return ["Work-Package Information", "Work-Package Description", "Budget", "Schedule", "Employees"];
 }
 
 function getStepContent(
@@ -78,17 +46,19 @@ function getStepContent(
   switch (step) {
     case 0:
       return (
-        <ProjectInfo
-          projectID={inputValues.projectID}
-          projectName={inputValues.projectName}
-          projectManager={inputValues.projectManager}
+        <WorkpackageInfo
+          wpID={inputValues.wpID}
+          wpName={inputValues.wpName}
+          wpRE={inputValues.wpRE}
+          wpProject={inputValues.projectName}
+          wpParent={inputValues.wpList}
           handleChange={handleOnChange}
         />
       );
     case 1:
       return (
-        <Desc
-          Desc={inputValues.projectDesc}
+        <WorkpackageDesc
+          Desc={inputValues.Desc}
           handleChange={handleOnChange}
         />
       );
@@ -102,29 +72,28 @@ function getStepContent(
           handleStartChange={handleStartDate}
           handleEndChange={handleEndDate}
         />
-      );
+        );
     default:
       return <></>;
   }
 }
 
-export default function ProjectCreate() {
+export default function WorkpackageCreate() {
   const classes = useStyles();
 
-<<<<<<< HEAD
-  const user = JSON.parse(localStorage.getItem("User"));
-=======
   const user = JSON.parse(sessionStorage.getItem('user'));
->>>>>>> project
 
   const [inputValues, setInputValues] = useState({
-    projectID: "",
+    wpID: "",
+    wpName: "",
+    wpRE: "",
     projectName: "",
-    projectManager: user.first_name + " " + user.last_name,
-    projectDesc: "",
+    wpParent: "",
+    Desc: "",
+    cost: "",
     startDate: new Date(),
     endDate: new Date(),
-    cost: ""
+    
   });
 
   const handleOnChange = event => {
@@ -143,26 +112,26 @@ export default function ProjectCreate() {
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
     console.log(token);
-    const data = {
-      project_code: inputValues.projectID,
-      project_manager_id: {
-        employee_id: user.employee_id
-      },
-      project_name: inputValues.projectName,
-      status: "OPEN",
-      start_date: inputValues.startDate.toISOString().split("T", 1)[0],
-      end_date: inputValues.endDate.toISOString().split("T", 1)[0],
-      description: inputValues.projectDesc,
-      budget_dollar: inputValues.cost,
-      employees: [
-        {
-          employee_id: user.employee_id
-        }
-      ]
-    };
-    console.log(data);
-    const response = agent.projects.createProject(data, token);
-    console.log(response);
+    // const data = {
+    //   "project_code": inputValues.projectID,
+    //   "project_manager_id": {
+    //     "employee_id": user.employee_id
+    //   },
+    //   "project_name": inputValues.projectName,
+    //   "status": "OPEN",
+    //   "start_date": inputValues.startDate.toISOString().split('T', 1)[0],
+    //   "end_date": inputValues.endDate.toISOString().split('T', 1)[0],
+    //   "description": inputValues.projectDesc,
+    //   "budget_dollar": inputValues.cost,
+    //   "employees": [
+    //     {
+    //       "employee_id": user.employee_id
+    //     }
+    //   ]
+    // };
+    // console.log(data);
+    // const response = agent.projects.createProject(data, token);
+    // console.log(response);
   };
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -182,24 +151,20 @@ export default function ProjectCreate() {
 
   return (
     <div className={classes.root}>
-      <Stepper
-        activeStep={activeStep}
-        alternativeLabel
-        className={classes.stepper}
-      >
+      <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map(label => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <div className={classes.instructionsContainer}>
+      <div>
         {activeStep === steps.length ? (
-          <div className={classes.endMessage}>
+          <div>
             <Typography component={"span"} className={classes.instructions}>
-              Project Created.
+              All steps completed
             </Typography>
-            <Button onClick={handleReset}>Create another project</Button>
+            <Button onClick={handleReset}>Reset</Button>
           </div>
         ) : (
           <div>
@@ -212,7 +177,7 @@ export default function ProjectCreate() {
                 handleEndDate
               )}
             </Typography>
-            <div className={classes.backNextButtonContainer}>
+            <div>
               <Button
                 disabled={activeStep === 0}
                 onClick={handleBack}
@@ -225,7 +190,6 @@ export default function ProjectCreate() {
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
-                  className={classes.nextButton}
                 >
                   Finish
                 </Button>
