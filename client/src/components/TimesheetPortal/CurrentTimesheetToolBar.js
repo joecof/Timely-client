@@ -91,7 +91,7 @@ class CurrentTimesheetToolBar extends React.Component {
     const currentWeekNumber = this.currentWeekNumber();
     // current week ending
     const currentWeekEnding = this.getSundayOfCurrentWeek();
-
+    // current timesheet creation
     const timesheetCreation = {
       "labor_grade_id": laborGradeId,
       "year": currentYear,
@@ -103,8 +103,8 @@ class CurrentTimesheetToolBar extends React.Component {
       "attribute1": null,
       "details": [
           {
-              "project_code": null,
-              "work_package_id": null,
+              "project_code": " ",
+              "work_package_id": " ",
               "saturday": 0.0,
               "sunday": 0.0,
               "monday": 0.0,
@@ -113,7 +113,7 @@ class CurrentTimesheetToolBar extends React.Component {
               "thursday": 0.0,
               "friday": 0.0,
               "notes": "",
-              "project_wp": null
+              "project_wp": "PJT19257_2"
           }
       ]
     };
