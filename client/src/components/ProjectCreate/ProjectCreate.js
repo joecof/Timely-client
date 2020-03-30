@@ -111,11 +111,7 @@ function getStepContent(
 export default function ProjectCreate() {
   const classes = useStyles();
 
-<<<<<<< HEAD
-  const user = JSON.parse(localStorage.getItem("User"));
-=======
   const user = JSON.parse(sessionStorage.getItem('user'));
->>>>>>> project
 
   const [inputValues, setInputValues] = useState({
     projectID: "",
