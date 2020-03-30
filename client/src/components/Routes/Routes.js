@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Route, Switch} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import TimesheetPortal from '../TimesheetPortal/TimesheetPortal'
 import TimesheetDetail from '../TimesheetDetail/TimesheetDetail'
 import HrPortal from '../HrPortal/HrPortal'
@@ -10,10 +10,10 @@ import ProjectCreate from '../ProjectCreate/ProjectCreate'
 import DashboardPortal from '../DashboardPortal/DashBoardPortal'
 import SupervisorPortal from '../SupervisorPortal/SupervisorPortal'
 import AssignToProject from '../SupervisorPortal/AssignToProject'
-import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo';
+import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo'
 import EmployeeForm from '../Profile/EmployeeForm'
-
 import ProjectDetail from '../ProjectDetail/ProjectDetail'
+import LeadEngineer from '../LeadEngineerPortal/LeadEngineer'
 
 /**
  * Author: Joe 
@@ -25,21 +25,21 @@ import ProjectDetail from '../ProjectDetail/ProjectDetail'
 export default class Routes extends Component {
 
   render() {
-    let routes; 
+    let routes;
 
     /**
      * A switch statement to render the correct routes depending on the option provided. 
      * this.props.config.option is a string that the developer passes into the Routes component 
      * in order to configure what routes they want rendered. 
      */
-    switch(this.props.config.option) {
+    switch (this.props.config.option) {
       case 'dashboard':
         routes = (
           <Switch>
             <Route
               path="/dashboard/timesheet"
               exact
-              render = {props => (
+              render={props => (
                 <TimesheetPortal
                   {...props}
                 />
@@ -48,9 +48,9 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/timesheet/:id"
               exact
-              render = {props => (
+              render={props => (
                 <TimesheetDetail
-                  loadedUser = {this.props.config.loadedUser}
+                  loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -58,9 +58,9 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/hr"
               exact
-              render = {props => (
+              render={props => (
                 <HrPortal
-                  loadedUser = {this.props.config.loadedUser}
+                  loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -68,9 +68,9 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/hr/:id"
               exact
-              render = {props => (
+              render={props => (
                 <EmployeeForm
-                  loadedUser = {this.props.config.loadedUser}
+                  loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -78,7 +78,7 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/supervisor"
               exact
-              render = {props => (
+              render={props => (
                 <SupervisorPortal
                   {...props}
                 />
@@ -87,7 +87,7 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/supervisor/assign"
               exact
-              render = {props => (
+              render={props => (
                 <AssignToProject
                   {...props}
                 />
@@ -96,7 +96,7 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/supervisor/:id"
               exact
-              render = {props => (
+              render={props => (
                 <ProjectsAssignedTo
                   {...props}
                 />
@@ -105,9 +105,9 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/profile/:id"
               exact
-              render = {props => (
+              render={props => (
                 <EmployeeForm
-                  loadedUser = {this.props.config.loadedUser}
+                  loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -115,9 +115,9 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/profile"
               exact
-              render = {props => (
+              render={props => (
                 <EmployeeForm
-                  loadedUser = {this.props.config.loadedUser}
+                  loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -125,7 +125,7 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/projects"
               exact
-              render = {props => (
+              render={props => (
                 <Projects
                   {...props}
                 />
@@ -134,8 +134,26 @@ export default class Routes extends Component {
             <Route
               path="/createProject"
               exact
-              render = {props => (
+              render={props => (
                 <ProjectCreate
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/projectDetails"
+              exact
+              render={props => (
+                <ProjectDetail
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/lead"
+              exact
+              render={props => (
+                <LeadEngineer
                   {...props}
                 />
               )}
@@ -143,37 +161,26 @@ export default class Routes extends Component {
             <Route
               path="/dashboard/:id"
               exact
-              render = {props => (
+              render={props => (
                 <DashboardPortal
                   {...props}
                 />
               )}
             />
-          )}
-        />
-        <Route
-          path="/projectDetails"
-          exact
-          render = {props => (
-            <ProjectDetail
-              {...props}
-            />
-          )}
-        />
-      </Switch>
+          </Switch>
         )
-        break; 
+        break;
 
-      case 'login': 
+      case 'login':
         routes = (
           <Switch>
             <Route
               path="/"
               exact
-              render = {props => (
+              render={props => (
                 <Login
                   {...props}
-                  loginHandler = {this.props.config.loginHandler}
+                  loginHandler={this.props.config.loginHandler}
                 />
               )}
             />
@@ -181,17 +188,17 @@ export default class Routes extends Component {
         );
         break;
 
-      case 'authentication': 
+      case 'authentication':
         routes = (
           <Switch>
             <Route
               path="/dashboard"
-              render= {props => (
+              render={props => (
                 <Dashboard
-                  {...props} 
-                  logoutHandler = {this.props.config.logoutHandler}
-                  loadedUser = {this.props.config.loadedUser}
-                  breadCrumbs = {this.props.config.breadCrumbs}
+                  {...props}
+                  logoutHandler={this.props.config.logoutHandler}
+                  loadedUser={this.props.config.loadedUser}
+                  breadCrumbs={this.props.config.breadCrumbs}
                 />
               )}
             />
@@ -199,16 +206,16 @@ export default class Routes extends Component {
         )
         break;
 
-      default: 
+      default:
         routes = (
           <Switch>
             <Route
               path="/"
               exact
-              render = {props => (
+              render={props => (
                 <Login
                   {...props}
-                  loginHandler = {this.props.config.loginHandler}
+                  loginHandler={this.props.config.loginHandler}
                 />
               )}
             />

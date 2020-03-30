@@ -13,9 +13,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { Button } from '@material-ui/core/';
 import './TimesheetDetail.css';
-
-import DropDown from "../DropDownProfile/DropDownProfile";
-
+import agent from "../../api/agent";
 
 // testing id
 let idTEST = 1;
@@ -38,87 +36,6 @@ const timesheetStyle = theme => ({
     }
 });
 
-// create TimesheetRow
-function createTimesheetRow(id, proj, wp, sat, sun, mon, tue, wed, thu, fri, notes) {
-  const tol = totalHourRow(sat, sun, mon, tue, wed, thu, fri)
-  return { id, proj, wp, tol, sat, sun, mon, tue, wed, thu, fri, notes };
-}
-// work hour data formatting
-function ccyFormat(num) {
-  return `${num.toFixed(1)}`;
-}
-
-// calculating total of each row
-function totalHourRow(sat, sun, mon, tue, wed, thu, fri) {
-  return sat + sun + mon + tue + wed + thu + fri;
-}
-// calculating total of Sat
-function totalSat(items) {
-  return items.map(({ sat }) => sat).reduce((saturday, i) => saturday + i, 0);
-}
-// calculating total of Sun
-function totalSun(items) {
-  return items.map(({ sun }) => sun).reduce((sunday, i) => sunday + i, 0);
-}
-// calculating total of Mon
-function totalMon(items) {
-  return items.map(({ mon }) => mon).reduce((monday, i) => monday + i, 0);
-}
-// calculating total of Tue
-function totalTue(items) {
-  return items.map(({ tue }) => tue).reduce((tuesday, i) => tuesday + i, 0);
-}
-// calculating total of Wed
-function totalWed(items) {
-  return items.map(({ wed }) => wed).reduce((weds, i) => weds + i, 0);
-}
-// calculating total of Thu
-function totalThu(items) {
-  return items.map(({ thu }) => thu).reduce((thur, i) => thur + i, 0);
-}
-// calculating total of Fri
-function totalFri(items) {
-  return items.map(({ fri }) => fri).reduce((friday, i) => friday + i, 0);
-}
-// calculating total of week
-function totalHourWeek(items) {
-  return items.map(({ tol }) => tol).reduce((total, i) => total + i, 0);
-}
-// calculating total overtime of week
-function overTimeWeek(items) {
-  let sumOvertime = 0;
-  items.forEach((element) => {
-    sumOvertime += element;
-  });
-  return sumOvertime;
-}
-// calculating total overtime of each day
-function overTimeDay(items) {
-  const overtimeArray = new Array(7);
-  items.forEach((element, i) => {
-    const overtimeDayDiff = element - 8;
-    if(overtimeDayDiff >= 0)
-      overtimeArray[i] = overtimeDayDiff;
-    else 
-    overtimeArray[i] = 0;
-  });
-  return overtimeArray;
-}
-// demo date
-const rows = [
-  createTimesheetRow(idTEST++, 10, 'EJ02', 7, 3, 1, 1, 1, 0, 1, 'haha'),
-  createTimesheetRow(idTEST++, 11, 'RT34', 4, 1, 0, 8, 1, 0.5, 1, 'This is great'),
-  createTimesheetRow(idTEST++, 12, 'FG23', 1, 1, 6, 7, 0, 1, 1, 'Love this duff'),
-];
-
-// calculating total hours of all week
-const weekTotal = totalHourWeek(rows);
-// array of total hours of each day
-const dayTotal = [totalSat(rows), totalSun(rows), totalMon(rows), totalTue(rows), totalWed(rows), totalThu(rows), totalFri(rows)];
-// array of overtime hours of each day
-const dayOvertime = overTimeDay(dayTotal);
-// calculating overtime of all week
-const overTotal = overTimeWeek(dayOvertime);
 
 // TimesheetDetail Component
 class TimesheetDetail extends Component {
@@ -128,46 +45,240 @@ class TimesheetDetail extends Component {
 
     this.state = {
       timesheetrows: [],
-    }
+      loadUser: {},
+      totalWeek: {},
+      totalDay: [],
+      totalOver: {},
+      totalOverDays: [],
+    };
+
+    this.fetchTimesheetRows = this.fetchTimesheetRows.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.totalHourRow = this.totalHourRow.bind(this);
+    this.totalSat = this.totalSat.bind(this);
+    this.totalSun = this.totalSun.bind(this);
+    this.totalMon = this.totalMon.bind(this);
+    this.totalTue = this.totalTue.bind(this);
+    this.totalWed = this.totalWed.bind(this);
+    this.totalThu = this.totalThu.bind(this);
+    this.totalFri = this.totalFri.bind(this);
+    this.totalHourWeek = this.totalHourWeek.bind(this);
+    this.ccyFormat = this.ccyFormat.bind(this);
+    this.overTimeWeek = this.overTimeWeek.bind(this);
+    this.overTimeDay = this.overTimeDay.bind(this);
   }
 
   // onLoad function, where i will be fetch data
   componentDidMount(){
-    this.setState({
-      timesheetrows: rows
-    })
+    this.fetchTimesheetRows();
+  }
+
+  // Fetching Timesheet Rows
+  async fetchTimesheetRows() {
+    // check if its dash board timesheet
+    const ifDashboardTs = this.props.dashboardTimesheet;
+    var user, userId, token, tsId;
+
+    // setting userId token and tsId for fetching
+    if(ifDashboardTs == null) {
+      user = JSON.parse(sessionStorage.getItem('user'));
+      userId = user.employee_id;
+      token = localStorage.getItem("token");
+      tsId = localStorage.getItem("timesheetId");
+      
+    } else {
+      console.log(this.props.userId);
+      console.log(this.props.token);
+    }
+    
+    // fetching timesheetRow
+    if(userId != null && token != null && tsId != null) {
+      const response = await agent.timesheetsInfo.getTimesheetById(userId, token, tsId);
+      if(response.details.length != 0) {
+        const timesheetDetails  = response.details;
+        // fetching timesheetRows
+        var timesheetRowList = [];
+
+        // id, proj, wp, sat, sun, mon, tue, wed, thu, fri, notes
+        for (let i = 0; i < timesheetDetails.length; i++) {
+          let id = timesheetDetails[i].timesheet_row_id;
+          let proj = timesheetDetails[i].project_code;
+          let wp = timesheetDetails[i].work_package_id;
+          let sat = timesheetDetails[i].saturday;
+          let sun = timesheetDetails[i].sunday;
+          let mon = timesheetDetails[i].monday;
+          let tue = timesheetDetails[i].tuesday;
+          let wed = timesheetDetails[i].wednesday;
+          let thu = timesheetDetails[i].thursday;
+          let fri = timesheetDetails[i].friday;
+          let notes = timesheetDetails[i].notes;
+          let proj_wp = timesheetDetails[i].project_wp;
+          const tol = this.totalHourRow(sat, sun, mon, tue, wed, thu, fri)
+        
+          let eachTimesheetRow = [];
+          eachTimesheetRow.push(id);
+          eachTimesheetRow.push(proj);
+          eachTimesheetRow.push(wp);
+          eachTimesheetRow.push(tol);
+          eachTimesheetRow.push(sat);
+          eachTimesheetRow.push(sun);
+          eachTimesheetRow.push(mon);
+          eachTimesheetRow.push(tue);
+          eachTimesheetRow.push(wed);
+          eachTimesheetRow.push(thu);
+          eachTimesheetRow.push(fri);
+          eachTimesheetRow.push(notes);
+          eachTimesheetRow.push(proj_wp);
+          timesheetRowList.push(eachTimesheetRow);
+        }
+        //  setting state
+        this.setState({
+          timesheetrows: timesheetRowList,
+          loadUser: user,
+        });
+        // calculating total hours of all week
+        const weekTotal = this.totalHourWeek(this.state.timesheetrows);
+        // array of total hours of each day
+        const dayTotal = [this.totalSat(this.state.timesheetrows), this.totalSun(this.state.timesheetrows),
+          this.totalMon(this.state.timesheetrows), this.totalTue(this.state.timesheetrows), 
+            this.totalWed(this.state.timesheetrows), this.totalThu(this.state.timesheetrows), this.totalFri(this.state.timesheetrows)];
+        // total overtime of the week
+        const overTotal = this.overTimeWeek(weekTotal);
+        // array of overtime hours of each day
+        const dayOvertime = this.overTimeDay(dayTotal);
+        //  setting state
+        this.setState({
+          timesheetrows: timesheetRowList,
+          loadUser: user,
+          totalWeek: weekTotal,
+          totalDay: dayTotal,
+          totalOver: overTotal,
+          totalOverDays: dayOvertime,
+        });
+      }
+    }
+  }
+
+  // work hour data formatting
+  ccyFormat(num) {
+    return (Math.round(num * 10) / 10).toFixed(1);;
+  }
+
+  // calculating total of each row
+  totalHourRow(sat, sun, mon, tue, wed, thu, fri) {
+    return sat + sun + mon + tue + wed + thu + fri;
+  }
+
+  // calculating total of Sat
+  totalSat(items) {
+    var total = 0;
+    for(let i = 0; i < items.length; i++) {
+      total += items[i][4];
+    }
+    return total;
+  }
+  // calculating total of Sun
+  totalSun(items) {
+    var total = 0;
+    for(let i = 0; i < items.length; i++) {
+      total += items[i][5];
+    }
+    return total;
+  }
+  // calculating total of Mon
+  totalMon(items) {
+    var total = 0;
+    for(let i = 0; i < items.length; i++) {
+      total += items[i][6];
+    }
+    return total;
+  }
+  // calculating total of Tue
+  totalTue(items) {
+    var total = 0;
+    for(let i = 0; i < items.length; i++) {
+      total += items[i][7];
+    }
+    return total;
+  }
+  // calculating total of Wed
+  totalWed(items) {
+    var total = 0;
+    for(let i = 0; i < items.length; i++) {
+      total += items[i][8];
+    }
+    return total;
+  }
+  // calculating total of Thu
+  totalThu(items) {
+    var total = 0;
+    for(let i = 0; i < items.length; i++) {
+      total += items[i][9];
+    }
+    return total;
+  }
+  // calculating total of Fri
+  totalFri(items) {
+    var total = 0;
+    for(let i = 0; i < items.length; i++) {
+      total += items[i][10];
+    }
+    return total;
+  }
+  // calculating total of week
+  totalHourWeek(items) {
+    var totalWeekHour = 0;
+    for(let i = 0; i < items.length; i++) {
+      totalWeekHour += items[i][3];
+    }
+    return totalWeekHour;
+  }
+  // calculating total overtime of week
+  overTimeWeek(item) {
+    if(item > 40) {
+      return item - 40;
+    }
+    return 0;
+  }
+  // calculating total overtime of each day
+  overTimeDay(items) {
+    const overtimeArray = new Array(7);
+    items.forEach((element, i) => {
+      const overtimeDayDiff = element - 8;
+      if(overtimeDayDiff >= 0)
+        overtimeArray[i] = overtimeDayDiff;
+      else 
+      overtimeArray[i] = 0;
+    });
+    return overtimeArray;
   }
 
   // handle add row button click
   handleClick = () => {
-    let rowID = idTEST++;
-    let emptyRow = createTimesheetRow(rowID, null, null, 0, 0, 0, 0, 0, 0, 0, null);
-    this.state.timesheetrows.push(emptyRow);
-    console.log(this.state.timesheetrows);
-
-  }
+    console.log("create timesheet row");
+  } 
 
   // timesheet row
-  timesheetRow = (row, i) => <TableRow key={i}>
-                      <TableCell scope="row">
-                          {row.proj}
-                      </TableCell>
-                      <TableCell align="right">{row.wp}</TableCell>
-                      <TableCell align="right">{ccyFormat(row.tol)}</TableCell>
-                      <TableCell align="right">{row.sat}</TableCell>
-                      <TableCell align="right">{row.sun}</TableCell>
-                      <TableCell align="right">{row.mon}</TableCell>
-                      <TableCell align="right">{row.tue}</TableCell>
-                      <TableCell align="right">{row.wed}</TableCell>
-                      <TableCell align="right">{row.thu}</TableCell>
-                      <TableCell align="right">{row.fri}</TableCell>
-                      <TableCell align="right">{row.notes}</TableCell>
-                    </TableRow>;
+  timesheetRow = (row, i) => 
+    <TableRow key={i}>
+      <TableCell scope="row">
+          {row[1]}
+      </TableCell>
+      <TableCell align="right">{row[2]}</TableCell>
+      <TableCell align="right">{this.ccyFormat(row[3])}</TableCell>
+      <TableCell align="right">{this.ccyFormat(row[4])}</TableCell>
+      <TableCell align="right">{this.ccyFormat(row[5])}</TableCell>
+      <TableCell align="right">{this.ccyFormat(row[6])}</TableCell>
+      <TableCell align="right">{this.ccyFormat(row[7])}</TableCell>
+      <TableCell align="right">{this.ccyFormat(row[8])}</TableCell>
+      <TableCell align="right">{this.ccyFormat(row[9])}</TableCell>
+      <TableCell align="right">{this.ccyFormat(row[10])}</TableCell>
+      <TableCell align="right">{row[11]}</TableCell>
+    </TableRow>;
 
   render() {
     // link css
     const { classes } = this.props;
-  
     return (
       <div className="container">
         {/* employee info header */}
@@ -178,7 +289,7 @@ class TimesheetDetail extends Component {
                 Employee Number:
               </div>
               <div className="empNum">
-                1
+                {this.state.loadUser.employee_id}
               </div>
             </div>
             <div className="weekNumContainer">
@@ -186,7 +297,7 @@ class TimesheetDetail extends Component {
                 Week Number:
               </div>
               <div className="weekNum">
-                23
+                {localStorage.getItem("weekNumber")}
               </div>
             </div>
             <div className="weekEndContainer">
@@ -194,7 +305,7 @@ class TimesheetDetail extends Component {
                   Week Ending:
               </div>
               <div className="weekEnd">
-                2020-02-23
+                {localStorage.getItem("weekEnding")}
               </div>
             </div>
             {this.props.dashboardTimesheet ? null :
@@ -215,7 +326,7 @@ class TimesheetDetail extends Component {
                 Name:
               </div>
               <div className="empName">
-                Bruce Link
+                    {this.state.loadUser.first_name} {this.state.loadUser.last_name}
               </div>
             </div>
           }
@@ -240,33 +351,33 @@ class TimesheetDetail extends Component {
                 <TableCell id="notes" align="right" className={classes.tableTitle}>Notes</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody timesheetrows={this.state.timesheetrows}>
+            <TableBody>
               {/* timesheet row date mapping */}
               {this.state.timesheetrows.map((x, i) => this.timesheetRow(x, i))}
 
               {/* total span column */}
               <TableRow>
                 <TableCell  className={classes.tableTitle}>Total</TableCell>
-                <TableCell colSpan={2} align="right">{ccyFormat(weekTotal)}</TableCell>
-                <TableCell align="right">{ccyFormat(dayTotal[0])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayTotal[1])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayTotal[2])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayTotal[3])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayTotal[4])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayTotal[5])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayTotal[6])}</TableCell>
+                <TableCell colSpan={2} align="right">{this.ccyFormat(this.state.totalWeek)}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalDay[0])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalDay[1])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalDay[2])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalDay[3])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalDay[4])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalDay[5])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalDay[6])}</TableCell>
               </TableRow>
               {/* overtime span column */}
               <TableRow>
                 <TableCell colSpan={2} className={classes.tableTitle}>Overtime</TableCell>
-                <TableCell align="right">{ccyFormat(overTotal)}</TableCell>
-                <TableCell align="right">{ccyFormat(dayOvertime[0])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayOvertime[1])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayOvertime[2])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayOvertime[3])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayOvertime[4])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayOvertime[5])}</TableCell>
-                <TableCell align="right">{ccyFormat(dayOvertime[6])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalOver)}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[0])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[1])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[2])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[3])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[4])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[5])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[6])}</TableCell>
               </TableRow>
               {/* flex span column */}
               <TableRow>
@@ -282,4 +393,3 @@ class TimesheetDetail extends Component {
 }
 
 export default withStyles(timesheetStyle, { withTheme: true })(TimesheetDetail);
-
