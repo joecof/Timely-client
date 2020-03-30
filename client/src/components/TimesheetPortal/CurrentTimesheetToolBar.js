@@ -28,7 +28,7 @@ class CurrentTimesheetToolBar extends React.Component {
     this.currentDate = this.currentDate.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.currentWeekNumber = this.currentWeekNumber.bind(this);
-    this.getFridayOfCurrentWeek = this.getFridayOfCurrentWeek.bind(this);
+    this.getSundayOfCurrentWeek = this.getSundayOfCurrentWeek.bind(this);
   }
 
   // get current date
@@ -40,11 +40,11 @@ class CurrentTimesheetToolBar extends React.Component {
     return (year + "-" + month + "-" + day);
   }
 
-  // week ending of every friday
-  getFridayOfCurrentWeek() {
+  // week ending of every sunday
+  getSundayOfCurrentWeek() {
     var d = new Date();
     var day = d.getDay(),
-        diff = d.getDate() - day + (day == 0 ? -6:1) + 4; // friday
+        diff = d.getDate() - day + (day == 0 ? -6:1) + 6; // sunday
     return new Date(d.setDate(diff));
   }
 
@@ -90,7 +90,7 @@ class CurrentTimesheetToolBar extends React.Component {
     // current week number
     const currentWeekNumber = this.currentWeekNumber();
     // current week ending
-    const currentWeekEnding = this.getFridayOfCurrentWeek();
+    const currentWeekEnding = this.getSundayOfCurrentWeek();
 
     const timesheetCreation = {
       "labor_grade_id": laborGradeId,
