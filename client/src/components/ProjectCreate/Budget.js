@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from "@material-ui/core/styles";
 import './ProjectCreate.css';
+
+const useStyles = makeStyles(theme => ({
+  budgetInfo: {
+    width: "280px"
+  }
+  }));  
 
 /**
  * Author: Prabh
@@ -9,9 +16,11 @@ import './ProjectCreate.css';
  */
 const ProjectInfo = (props) => {
 
+  const classes = useStyles();
+
   return (
     <form autoComplete="off">
-      <TextField component="span" className="margin" id="standard-basic" label="Cost" value={props.cost} name="cost" onChange={props.handleChange}/>
+      <TextField component="span" className="margin" id="standard-basic" label="Cost" value={props.cost} name="cost" onChange={props.handleChange} className={classes.budgetInfo}/>
     </form>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DateFnsUtils from "@date-io/date-fns";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -7,12 +8,21 @@ import {
 } from "@material-ui/pickers";
 import "./ProjectCreate.css";
 
+const useStyles = makeStyles(theme => ({
+  scheduleInfo: {
+    width: "280px"
+  }
+}));
+
 /**
  * Author: Prabh
  * Version: 1
  * Desc: first step for project creation
  */
 const ProjectInfo = (props) => {
+  const classes = useStyles();
+  const [startDate, setStartDate] = useState({});
+  const [endDate, setEndDate] = useState({});
 
   return (
     <form autoComplete="off">
@@ -26,6 +36,7 @@ const ProjectInfo = (props) => {
           name="startDate"
           value={props.startDate}
           onChange={props.handleStartChange}
+          className={classes.scheduleInfo}
         />
         <br />
         <KeyboardDatePicker
@@ -37,6 +48,7 @@ const ProjectInfo = (props) => {
           name="endDate"
           value={props.endDate}
           onChange={props.handleEndChange}
+          className={classes.scheduleInfo}
         />
       </MuiPickersUtilsProvider>
     </form>
