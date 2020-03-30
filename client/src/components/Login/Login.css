@@ -53,13 +53,6 @@ body {
     margin-top: 10px;
 }
 
-/* css for forgot pwd link */
-a {
-    font-size: 10pt;
-}
-
-
-
 /* css for button login */
 .loginBtn {
     color: #fff;
@@ -69,7 +62,7 @@ a {
     text-align: center;
     border: none;
     outline: none;
-    margin-left: 45%;
+    margin-left: 76.5%;
 }
 
 /* css for input fields */

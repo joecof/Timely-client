@@ -56,7 +56,6 @@ export default class Login extends Component {
               />
             </div>
             <div className="loginBsection">
-              <a href="/timesheet" className="forgetPwd">Forgot Password?</a>
               <button className="loginBtn" type="submit"> Login </button>
             </div>
           </form>

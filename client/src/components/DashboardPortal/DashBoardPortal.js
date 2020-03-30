@@ -143,7 +143,7 @@ class DashBoardPortal extends Component {
             />
           </Paper>
           <div>
-            <TimesheetDetail dashboardTimesheet={true} />
+            <TimesheetDetail dashboardTimesheet={true} userId={this.props.match.params.id} token={localStorage.getItem("token")}/>
             <div className={classes.sickVancationContainer}>
               <Paper className={classes.rightBottomLeftPaper} elevation={2}>
                 <div className={classes.title}>Sick Days</div>

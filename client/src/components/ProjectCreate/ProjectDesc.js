@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from "@material-ui/core/styles";
 import './ProjectCreate.css';
+
+const useStyles = makeStyles(theme => ({
+projDesc: {
+  width: "310px"
+}
+}));
 
 /**
  * Author: Prabh
@@ -8,11 +15,12 @@ import './ProjectCreate.css';
  * Desc: second step for project creation
  */
 const ProjectDesc = (props) => {
+  const classes = useStyles();
 
   return (
     <form autoComplete="off">
       <TextField
-          className="margin"
+          className={classes.projDesc}
           id="outlined-multiline-static"
           label="Project Description"
           multiline
