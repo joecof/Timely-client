@@ -52,9 +52,9 @@ const projects = {
 
 // api for timesheets and timesheetrows
 const timesheetsInfo = {
-  getAllTimesheetsByEmp: (empId, token) => requests.get(`/emps/${empId}/timesheets`, token),
+  getAllTimesheetsByEmp: (empId, token) => requests.get(`/emps/${empId}/timesheets/`, token),
   getTimesheetById: (empId, token, tsId) => requests.get(`/emps/${empId}/timesheets/${tsId}`, token),
-  createCurrentWeekTimesheet: (empId, token, data)=> requests.post(`emps/${empId}/timesheets`, token, data),
+  createCurrentWeekTimesheet: (empId, token, data)=> requests.post(`emps/${empId}/timesheets/`, token, data),
 }
 
 const authorization = {
