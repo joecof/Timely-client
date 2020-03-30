@@ -45,7 +45,7 @@ const projects = {
 }
 
 const authorization = {
-  login: (data) => requests.authenticate('/tokens/token', data)
+  login: (data) => requests.authenticate('/tokens', data)
 }
 
 export default {
