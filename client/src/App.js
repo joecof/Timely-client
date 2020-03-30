@@ -70,24 +70,27 @@ class App extends Component {
     try {
       const response = await agent.authorization.login(data);
 
-      if(response) {
-        this.setState({
-          isAuth: true,
-          loadedUser: response.loadedUser,
-        })
-        
-        const remainingMilliseconds = 60 * 60 * 1000;
-        const expiryDate = new Date(
-          new Date().getTime() + remainingMilliseconds
-        );
-  
-        localStorage.setItem('expiryDate', expiryDate.toISOString());
-        localStorage.setItem("token", response.token);
-        sessionStorage.setItem("user", JSON.stringify(response.loadedUser));
-        sessionStorage.setItem('logged', true)
-
-        this.setAutoLogout(remainingMilliseconds);     
+      if(!response) {
+        //probably some error message / incorrect credentials 
+        return;  
       }
+
+      this.setState({
+        isAuth: true,
+        loadedUser: response.loadedUser,
+      })
+      
+      const remainingMilliseconds = 60 * 60 * 1000;
+      const expiryDate = new Date(
+        new Date().getTime() + remainingMilliseconds
+      );
+
+      localStorage.setItem('expiryDate', expiryDate.toISOString());
+      localStorage.setItem("token", response.token);
+      sessionStorage.setItem("user", JSON.stringify(response.loadedUser));
+      sessionStorage.setItem('logged', true)
+
+      this.setAutoLogout(remainingMilliseconds);   
 
     } catch(e) {
       console.error(e);
