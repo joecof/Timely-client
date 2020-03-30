@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from "@material-ui/core/styles";
-import './ProjectCreate.css';
+import './CreationWizard.css';
 
 const useStyles = makeStyles(theme => ({
 projDesc: {
@@ -14,7 +14,7 @@ projDesc: {
  * Version: 1
  * Desc: second step for project creation
  */
-const ProjectDesc = (props) => {
+const Desc = (props) => {
   const classes = useStyles();
 
   return (
@@ -27,11 +27,11 @@ const ProjectDesc = (props) => {
           rows="8"
           variant="outlined"
           name="projectDesc"
-          value={props.projectDesc}
+          value={props.Desc}
           onChange={props.handleChange}
         />
     </form>
   );
 };
 
-export default ProjectDesc;
+export default Desc;
