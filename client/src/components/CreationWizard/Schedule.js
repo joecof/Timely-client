@@ -5,7 +5,7 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
-import "./ProjectCreate.css";
+import "./CreationWizard.css";
 
 /**
  * Author: Prabh

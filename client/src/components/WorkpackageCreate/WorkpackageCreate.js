@@ -7,12 +7,12 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import ProjectInfo from "./ProjectInfo";
-import Desc from "../CreationWizard/Desc";
-import Budget from "../CreationWizard/Budget";
-import Schedule from "../CreationWizard/Schedule";
 import agent from '../../api/agent.js'
-import "./ProjectCreate.css";
+import WorkpackageInfo from './WorkpackageInfo';
+import WorkpackageDesc from '../CreationWizard/Desc';
+import Budget from '../CreationWizard/Budget';
+import Schedule from '../CreationWizard/Schedule';
+import "./WorkpackageCreate.css";
 
 /**
  * Author: Prabh
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ["Project Information", "Project Description", "Budget", "Schedule"];
+  return ["Work-Package Information", "Work-Package Description", "Budget", "Schedule", "Employees"];
 }
 
 function getStepContent(
@@ -46,17 +46,19 @@ function getStepContent(
   switch (step) {
     case 0:
       return (
-        <ProjectInfo
-          projectID={inputValues.projectID}
-          projectName={inputValues.projectName}
-          projectManager={inputValues.projectManager}
+        <WorkpackageInfo
+          wpID={inputValues.wpID}
+          wpName={inputValues.wpName}
+          wpRE={inputValues.wpRE}
+          wpProject={inputValues.projectName}
+          wpParent={inputValues.wpList}
           handleChange={handleOnChange}
         />
       );
     case 1:
       return (
-        <Desc
-          Desc={inputValues.projectDesc}
+        <WorkpackageDesc
+          Desc={inputValues.Desc}
           handleChange={handleOnChange}
         />
       );
@@ -70,25 +72,28 @@ function getStepContent(
           handleStartChange={handleStartDate}
           handleEndChange={handleEndDate}
         />
-      );
+        );
     default:
       return <></>;
   }
 }
 
-export default function ProjectCreate() {
+export default function WorkpackageCreate() {
   const classes = useStyles();
 
   const user = JSON.parse(sessionStorage.getItem('user'));
 
   const [inputValues, setInputValues] = useState({
-    projectID: "",
+    wpID: "",
+    wpName: "",
+    wpRE: "",
     projectName: "",
-    projectManager: user.first_name + " " + user.last_name,
-    projectDesc: "",
+    wpParent: "",
+    Desc: "",
+    cost: "",
     startDate: new Date(),
     endDate: new Date(),
-    cost: ""
+    
   });
 
   const handleOnChange = event => {
@@ -107,26 +112,26 @@ export default function ProjectCreate() {
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
     console.log(token);
-    const data = {
-      "project_code": inputValues.projectID,
-      "project_manager_id": {
-        "employee_id": user.employee_id
-      },
-      "project_name": inputValues.projectName,
-      "status": "OPEN",
-      "start_date": inputValues.startDate.toISOString().split('T', 1)[0],
-      "end_date": inputValues.endDate.toISOString().split('T', 1)[0],
-      "description": inputValues.projectDesc,
-      "budget_dollar": inputValues.cost,
-      "employees": [
-        {
-          "employee_id": user.employee_id
-        }
-      ]
-    };
-    console.log(data);
-    const response = agent.projects.createProject(data, token);
-    console.log(response);
+    // const data = {
+    //   "project_code": inputValues.projectID,
+    //   "project_manager_id": {
+    //     "employee_id": user.employee_id
+    //   },
+    //   "project_name": inputValues.projectName,
+    //   "status": "OPEN",
+    //   "start_date": inputValues.startDate.toISOString().split('T', 1)[0],
+    //   "end_date": inputValues.endDate.toISOString().split('T', 1)[0],
+    //   "description": inputValues.projectDesc,
+    //   "budget_dollar": inputValues.cost,
+    //   "employees": [
+    //     {
+    //       "employee_id": user.employee_id
+    //     }
+    //   ]
+    // };
+    // console.log(data);
+    // const response = agent.projects.createProject(data, token);
+    // console.log(response);
   };
 
   const [activeStep, setActiveStep] = React.useState(0);

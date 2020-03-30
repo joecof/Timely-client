@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
-import './ProjectCreate.css';
+import './CreationWizard.css';
 
 /**
  * Author: Prabh
