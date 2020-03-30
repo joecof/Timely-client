@@ -26,7 +26,6 @@ export default class Routes extends Component {
 
   render() {
     let routes;
-
     /**
      * A switch statement to render the correct routes depending on the option provided. 
      * this.props.config.option is a string that the developer passes into the Routes component 
@@ -163,6 +162,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <DashboardPortal
+                  token={this.props.token}
                   {...props}
                 />
               )}
@@ -195,6 +195,7 @@ export default class Routes extends Component {
               path="/dashboard"
               render={props => (
                 <Dashboard
+                  token={this.props.token}
                   {...props}
                   logoutHandler={this.props.config.logoutHandler}
                   loadedUser={this.props.config.loadedUser}
