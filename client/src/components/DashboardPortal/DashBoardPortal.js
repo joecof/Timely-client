@@ -103,6 +103,7 @@ class DashBoardPortal extends Component {
     // this.setState({
     //   loadedUser: response
     // });
+    console.log(this.props.token)
 
     // fetch projects
     
