@@ -9,27 +9,6 @@ import CurrentTimesheetToolBar from './CurrentTimesheetToolBar';
 import './TimesheetPortal.css';
 import agent from "../../api/agent";
 
-// demo data
-const demoData = 
-  [{
-    timesheetid:'T123',
-    weeknumber: '23',
-    weekending:'12/12/2019',
-    status: 'Pending'
-  },
-  {
-    timesheetid:'T122',
-    weeknumber:'22',
-    weekending:'06/12/2019',
-    status: 'Approved'
-  },
-  {
-    timesheetid:'T121',
-    weeknumber:'21',
-    weekending:'30/11/2019',
-    status: 'Rejected'
-  }];
-
   // static columns
   const columns = [
     {
@@ -69,18 +48,21 @@ const demoData =
   ];
 
   // static options
-  const options = (props, states) => {
+  const options = (props, states, fetchTimesheets) => {
     const data = {
       selectableRows: false,
       search: true,
       print: false,
       download: false,
       rowHover: true,
-      onRowClick: (rowData, rowState) => {
+      onRowClick: (rowData) => {
         props.history.push(`/dashboard/timesheet/${rowData[0]}`);
+        localStorage.setItem("timesheetId", rowData[0]);
+        localStorage.setItem("weekNumber", rowData[1]);
+        localStorage.setItem("weekEnding", rowData[2]);
       },
       customToolbar: () => {
-        return <CurrentTimesheetToolBar states={states}/>
+        return <CurrentTimesheetToolBar {...props} fetchTimesheets={fetchTimesheets} states={states}/>
       }
     }
     return data;
@@ -93,55 +75,75 @@ export default class TimesheetPortal extends Component {
 
     this.state = ({
       timesheets: [],
-      loadedUser: {}
+      loadedUserID: {}
     })
-
     this.fetchTimesheets = this.fetchTimesheets.bind(this);
+    this.formatWeekEnding = this.formatWeekEnding.bind(this);
   }
 
   // on page load fetching timesheets data
   componentDidMount() {
     this.fetchTimesheets();
+    this.formatWeekEnding();
   }
 
   // Fetching Timesheets
   async fetchTimesheets() {
     // fetch logined user
-    // const currentUserId = this.props.match.params.id;
-    // const response = await agent.employeeInfo.getCurrentUser(currentUserId);
-    // this.setState({
-    //   loadedUser: response
-    // });
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const token = localStorage.getItem("token");
+    const userId = user.employee_id;
+    const response = await agent.timesheetsInfo.getAllTimesheetsByEmp(userId, token);
+    console.log(response);
 
-    // fetching timesheets
-    var timesheetsData = [];
+    if(response.length != 0) {
+      // fetching timesheets
+      var timesheetList = [];
 
-    for (let i = 0; i < demoData.length; i++) {
-        let timesheetid = demoData[i].timesheetid;
-        let weeknumber = demoData[i].weeknumber;
-        let weekending = demoData[i].weekending
-        let status = demoData[i].status;
+      for (let i = 0; i < response.length; i++) {
+          let timesheetid = response[i].timesheet_id;
+          let weeknumber = response[i].week;
+          let weekending = this.formatWeekEnding(response[i].week_ending);
+          let status = response[i].status;
 
-        let row = [];
-        row.push(timesheetid);
-        row.push(weeknumber);
-        row.push(weekending);
-        row.push(status);
-        timesheetsData.push(row);
+          let eachTimesheet = [];
+          eachTimesheet.push(timesheetid);
+          eachTimesheet.push(weeknumber);
+          eachTimesheet.push(weekending);
+          eachTimesheet.push(status);
+          timesheetList.push(eachTimesheet);
+      }
+      // sorting timesheet list by week number
+      timesheetList.sort( function(a,b){
+        return b[1] - a[1];
+      });
+      // setting the states
+      this.setState({
+        timesheets: timesheetList,
+        loadedUserID: userId
+      })
+    } else {
+      console.log("no timesheets");
     }
-    
-    this.setState({
-      timesheets: timesheetsData
-    })
   } 
 
+  // converting weekending api from milliseconds to date format
+  formatWeekEnding(weekending) {
+    var weekEnding_date = new Date(weekending);
+    var year = weekEnding_date.getFullYear();
+    var month = ("0" + (weekEnding_date.getMonth() + 1)).slice(-2)
+    var day = ("0" + weekEnding_date.getDate()).slice(-2)  ;
+    return (year + "-" + month + "-" + day);
+  }
+
+  // timesheet table UI
   render() {
     return (
       <>
         <MUIDatatable 
             className="datatable"
             title={<h1>Timesheet</h1>}
-            options={options(this.props, this.state)}
+            options={options(this.props, this.state, this.fetchTimesheets)}
             columns={columns}
             data={this.state.timesheets} />
       </>
