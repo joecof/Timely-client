@@ -51,9 +51,8 @@ class WorkpackageList extends React.Component {
       //checking if PM ? show report button : don't show
       var button;
       if (this.state.type === 'PM' && columns.length === 4) {
+        console.log("push report");
         columns.push("Report");
-      } else {
-        columns.pop("Report");
       }
       const data = [];
       var curData;
