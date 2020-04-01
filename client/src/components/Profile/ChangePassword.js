@@ -51,7 +51,6 @@ class ChangePassword extends Component {
             <Typography className = {classes.title} variant="h6"> Change Password </Typography>
             <TextField
               className = {classes.input}
-              defaultValue = "default"
               type="password"
               helperText="Old Password"
               fullWidth
@@ -62,7 +61,6 @@ class ChangePassword extends Component {
             />
             <TextField
               className = {classes.input}
-              defaultValue = "default"
               type="password"
               helperText="New Password"
               fullWidth
@@ -73,7 +71,6 @@ class ChangePassword extends Component {
             />
             <TextField
               className = {classes.input}
-              defaultValue = "default"
               type="password"
               helperText="Confirm New Password"
               fullWidth

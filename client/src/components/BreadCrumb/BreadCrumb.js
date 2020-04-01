@@ -11,7 +11,7 @@ import { Link, withRouter} from "react-router-dom";
 class BreadCrumb extends Component {
 
   render() {
-    const { location  } = this.props
+    const { location, loadedUser  } = this.props
     const breadcrumbs = location.pathname.split("/");
     const arr = [];
     let str = "";
@@ -32,7 +32,7 @@ class BreadCrumb extends Component {
                   <Typography color="textPrimary"> {item.split('/')[i + 1]} </Typography>
                 </Link> 
                 : 
-                <Link key = {i} to = {item}> {item.split('/')[i + 1]} </Link>}
+                <Link key = {i} to = {`${item}/${loadedUser.employee_id}`}> {item.split('/')[i + 1]} </Link>}
             </div>
           ))}
         </Breadcrumbs>
