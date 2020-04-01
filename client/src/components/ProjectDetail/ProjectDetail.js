@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar'
 import Tooltip from '@material-ui/core/Tooltip';
 import Modal from './Modal.js';
 import WorkpackageList from './WorkpackageList';
+import {Link} from 'react-router-dom';
 import "./ProjectDetail.css"
 
 /**
@@ -94,6 +95,23 @@ class ProjectDetail extends React.Component {
           </>
           }
         </Grid>
+        {this.state.isProjManager &&
+        <>
+          <br/><br/> 
+          <Grid justify="space-between"  container spacing={1} >
+            <Grid item>
+              <Typography variant="h6"><b>Budget:</b> ${this.state.project.budget_dollar}</Typography>
+              <Typography variant="h6">
+                <b>Start Date:</b> {new Date(this.state.project.start_date).toDateString().split(' ').slice(1).join(' ')} &nbsp; &nbsp; 
+                <b>End Date:</b> {new Date(this.state.project.end_date).toDateString().split(' ').slice(1).join(' ')}                   
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="primary" component={Link} to="/createWorkpackage" style={{marginRight: "5%"}}><b>+ Create Work Package</b></Button>
+            </Grid>
+          </Grid>
+        </>
+        }
         <WorkpackageList type={this.state.isProjManager ? 'PM' : 'Emp'} wpList={this.state.wpList} />
       </div>
     );
