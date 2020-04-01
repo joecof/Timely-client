@@ -161,7 +161,7 @@ class ProjectDetail extends React.Component {
             </Grid>
           </>
         )}
-        {this.state.isProjManager === "Emp" ? (
+        {this.state.isProjManager === false ? (
           <WorkpackageList
             type={this.state.isProjManager ? "PM" : "Emp"}
             wpList={this.state.wpList}

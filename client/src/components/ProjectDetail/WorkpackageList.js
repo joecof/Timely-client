@@ -15,8 +15,8 @@ class WorkpackageList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      wpList: [],
-      type: '',
+      wpList: props.wpList,
+      type: props.type,
       data: []
     }
     this.options = {
@@ -33,13 +33,8 @@ class WorkpackageList extends React.Component {
     this.setData = this.setData.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ 
-      wpList: nextProps.wpList,
-      type: nextProps.type
-     }, () =>
-        this.setData(this.state.wpList)
-     );  
+  componentDidMount() {
+    this.setData(this.state.wpList);
   }
 
   showReport(wpID) {

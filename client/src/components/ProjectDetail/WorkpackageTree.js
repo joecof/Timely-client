@@ -19,6 +19,7 @@ class WorkpackageTree extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+      console.log("Received props");
     this.setState(
       {
         wpList: nextProps.wpList
@@ -75,7 +76,7 @@ class WorkpackageTree extends React.Component {
   renderTree(nodes) {
     console.log(nodes);
     return (
-      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+      <TreeItem key={nodes.id} nodeId={nodes.id} label={"WP" + nodes.id + ": " + nodes.name}>
         <Typography variant="h5">
           {Array.isArray(nodes.children)
             ? nodes.children.map(node => this.renderTree(node))
