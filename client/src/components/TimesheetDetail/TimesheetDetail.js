@@ -87,8 +87,8 @@ class TimesheetDetail extends Component {
       tsId = localStorage.getItem("timesheetId");
       
     } else {
-      console.log(this.props.userId);
-      console.log(this.props.token);
+      // console.log(this.props.userId);
+      // console.log(this.props.token);
     }
     
     // fetching timesheetRow

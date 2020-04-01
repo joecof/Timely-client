@@ -46,7 +46,8 @@ class BasicInfo extends Component {
             <Typography className = {classes.title} variant="h6"> Basic Information </Typography>
             <TextField
               className = {classes.input}
-              placeholder = {this.props.loadedUser.first_name}
+              disabled = {true}
+              defaultValue = {this.props.loadedUser.first_name}
               helperText="First Name"
               fullWidth
               margin="normal"
@@ -56,7 +57,8 @@ class BasicInfo extends Component {
             />
             <TextField
               className = {classes.input}
-              placeholder = {this.props.loadedUser.last_name}
+              disabled = {true}
+              defaultValue = {this.props.loadedUser.last_name}
               helperText="Last Name"
               fullWidth
               margin="normal"
@@ -70,7 +72,8 @@ class BasicInfo extends Component {
           <Typography className = {classes.title} variant="h6"> Labor Grade </Typography>
           <TextField
               className = {classes.input}
-              placeholder = {this.props.loadedUser.labor_grade_id}
+              disabled = {true}
+              defaultValue = {this.props.loadedUser.labor_grade_id.labor_grade_id}
               helperText="Grade"
               fullWidth
               margin="normal"
@@ -85,7 +88,8 @@ class BasicInfo extends Component {
             <TextField
               className = {classes.input}
               helperText="Supervisor"
-              placeholder = {this.props.loadedUser.supervisor_id}
+              disabled = {true}
+              defaultValue = {this.props.loadedUser.supervisor_id}
               fullWidth
               margin="normal"
               InputLabelProps={{
