@@ -41,7 +41,8 @@ function getStepContent(
   inputValues,
   handleOnChange,
   handleStartDate,
-  handleEndDate
+  handleEndDate,
+  handleCheckboxChange
 ) {
   switch (step) {
     case 0:
@@ -52,7 +53,9 @@ function getStepContent(
           wpRE={inputValues.wpRE}
           wpProject={inputValues.projectName}
           wpParent={inputValues.wpList}
+          checkedLower={inputValues.checkedLower}
           handleChange={handleOnChange}
+          handleCheckboxChange={handleCheckboxChange}
         />
       );
     case 1:
@@ -93,6 +96,7 @@ export default function WorkpackageCreate() {
     cost: "",
     startDate: new Date(),
     endDate: new Date(),
+    checkedLower: false,
     
   });
 
@@ -107,6 +111,10 @@ export default function WorkpackageCreate() {
 
   const handleEndDate = date => {
     setInputValues({ ...inputValues, endDate: date });
+  };
+
+  const handleCheckboxChange = (event) => {
+    setInputValues({ ...inputValues, [event.target.name]: event.target.checked });
   };
 
   const handleSubmit = async () => {
@@ -174,7 +182,8 @@ export default function WorkpackageCreate() {
                 inputValues,
                 handleOnChange,
                 handleStartDate,
-                handleEndDate
+                handleEndDate,
+                handleCheckboxChange
               )}
             </Typography>
             <div>
