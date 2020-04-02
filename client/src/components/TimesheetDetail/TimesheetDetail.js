@@ -46,7 +46,8 @@ class TimesheetDetail extends Component {
       totalWeek: {},
       totalDay: [],
       totalOver: {},
-      totalOverDays: []
+      totalOverDays: [],
+      loadedTimesheet: {},
     };
 
     this.fetchTimesheetRows = this.fetchTimesheetRows.bind(this);
@@ -63,39 +64,84 @@ class TimesheetDetail extends Component {
     this.ccyFormat = this.ccyFormat.bind(this);
     this.overTimeWeek = this.overTimeWeek.bind(this);
     this.overTimeDay = this.overTimeDay.bind(this);
+    this.formatWeekEnding = this.formatWeekEnding.bind(this);
+    this.gotoTimesheetDetail = this.gotoTimesheetDetail.bind(this);
   }
 
   // onLoad function, where i will be fetch data
   componentDidMount() {
     this.fetchTimesheetRows();
   }
+  
 
   // Fetching Timesheet Rows
   async fetchTimesheetRows() {
     // check if its dash board timesheet
     const ifDashboardTs = this.props.dashboardTimesheet;
-    var user, userId, token, tsId;
+    var userId, token, tsId;
 
     // setting userId token and tsId for fetching
-    if (ifDashboardTs == null) {
-      user = JSON.parse(sessionStorage.getItem("user"));
+    if(ifDashboardTs == null) {
+      var user = JSON.parse(sessionStorage.getItem('user'));
       userId = user.employee_id;
       token = localStorage.getItem("token");
+      
       tsId = localStorage.getItem("timesheetId");
+      console.log(tsId);
+      this.setState({
+        loadUser: user
+      });
     } else {
-      console.log(this.props.userId);
-      console.log(this.props.token);
+        if(this.props.token != null) {
+          userId = this.props.userId;
+          token = this.props.token;
+          const response = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
+          this.setState({
+            loadUser: response
+          });
+
+          // looking for the most recent timesheet
+          const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(userId, token);
+
+          if(tsResponse.length != 0) {
+            // fetching timesheets
+            var timesheetList = [];
+
+            for (let i = 0; i < tsResponse.length; i++) {
+                let timesheetid = tsResponse[i].timesheet_id;
+                let weeknumber = tsResponse[i].week;
+                let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
+                let status = tsResponse[i].status;
+
+                let eachTimesheet = [];
+                eachTimesheet.push(timesheetid);
+                eachTimesheet.push(weeknumber);
+                eachTimesheet.push(weekending);
+                eachTimesheet.push(status);
+                timesheetList.push(eachTimesheet);
+            }
+            // sorting timesheet list by week number
+            timesheetList.sort( function(a,b){
+              return b[1] - a[1];
+            });
+            tsId = timesheetList[0][0];
+          } else {
+            console.log("no timesheets");
+          }
+        }
+      // console.log(this.props.userId);
+      // console.log(this.props.token);
     }
 
     // fetching timesheetRow
-    if (userId != null && token != null && tsId != null) {
-      const response = await agent.timesheetsInfo.getTimesheetById(
-        userId,
-        token,
-        tsId
-      );
-      if (response.details.length != 0) {
-        const timesheetDetails = response.details;
+    if(userId != null && token != null && tsId != null) {
+      const response = await agent.timesheetsInfo.getTimesheetById(userId, token, tsId);
+      // fetched timesheet
+      this.setState({
+        loadedTimesheet: response
+      });
+      if(response.details.length != 0) {
+        const timesheetDetails  = response.details;
         // fetching timesheetRows
         var timesheetRowList = [];
 
@@ -131,10 +177,9 @@ class TimesheetDetail extends Component {
           eachTimesheetRow.push(proj_wp);
           timesheetRowList.push(eachTimesheetRow);
         }
-        //  setting state
+
         this.setState({
-          timesheetrows: timesheetRowList,
-          loadUser: user
+          timesheetrows: timesheetRowList
         });
         // calculating total hours of all week
         const weekTotal = this.totalHourWeek(this.state.timesheetrows);
@@ -154,14 +199,14 @@ class TimesheetDetail extends Component {
         const dayOvertime = this.overTimeDay(dayTotal);
         //  setting state
         this.setState({
-          timesheetrows: timesheetRowList,
-          loadUser: user,
           totalWeek: weekTotal,
           totalDay: dayTotal,
           totalOver: overTotal,
           totalOverDays: dayOvertime
         });
       }
+    } else {
+      document.getElementById("timesheetDetailContainer").innerHTML = "Sorry, there's no current timesheet in the database!"
     }
   }
 
@@ -262,6 +307,24 @@ class TimesheetDetail extends Component {
     console.log("create timesheet row");
   };
 
+  // converting weekending api from milliseconds to date format
+  formatWeekEnding(weekending) {
+    var weekEnding_date = new Date(weekending);
+    var year = weekEnding_date.getFullYear();
+    var month = ("0" + (weekEnding_date.getMonth() + 1)).slice(-2)
+    var day = ("0" + weekEnding_date.getDate()).slice(-2)  ;
+    return (year + "-" + month + "-" + day);
+  }
+
+  // go to timesheetdetail if on dashboard
+  gotoTimesheetDetail = () =>  {
+    if(this.props.dashboardTimesheet == true && this.state.timesheetrows.length != 0) {
+      var timesheet_id = this.state.loadedTimesheet.timesheet_id;
+      localStorage.setItem("timesheetId", timesheet_id);
+      this.props.history.push(`/dashboard/timesheet/${timesheet_id}`);
+    }
+  }
+
   // timesheet row
   timesheetRow = (row, i) => (
     <TableRow key={i}>
@@ -295,13 +358,13 @@ class TimesheetDetail extends Component {
               <div className="weekNumContainer">
                 <div className="weekNumTitle">Week Number:</div>
                 <div className="weekNum">
-                  {localStorage.getItem("weekNumber")}
+                {this.state.loadedTimesheet.week}
                 </div>
               </div>
               <div className="weekEndContainer">
                 <div className="weekEndTitle">Week Ending:</div>
                 <div className="weekEnd">
-                  {localStorage.getItem("weekEnding")}
+                {this.formatWeekEnding(this.state.loadedTimesheet.week_ending)}
                 </div>
               </div>
               {this.props.dashboardTimesheet ? null : (
@@ -324,6 +387,19 @@ class TimesheetDetail extends Component {
                 </div>
               </div>
             )}
+              <div className="weekEnd">
+              {this.formatWeekEnding(this.state.loadedTimesheet.week_ending)}
+              </div>
+            </div>
+            {this.props.dashboardTimesheet ? null :
+              <Button
+                className={classes.button}
+                onClick={this.handleClick} 
+                color='primary' 
+                variant='contained'> 
+                  Add Row
+              </Button> 
+            }
           </div>
           {/* add row button */}
 
@@ -482,7 +558,6 @@ class TimesheetDetail extends Component {
             </Table>
           </TableContainer>
         </div>
-      </div>
     );
   }
 }
