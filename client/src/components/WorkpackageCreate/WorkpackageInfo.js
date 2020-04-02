@@ -17,7 +17,7 @@ const WorkpackageInfo = (props) => {
       <Grid container direction="column" alignItems="flex-start">
         <Grid item>
         <TextField component={'span'} className="margin" label="Work Package ID" name="wpID" 
-          value={props.wpID} onChange={props.handleChange}/>
+          value={props.wpID} onChange={props.handleChange} disabled={true}/>
         </Grid>
         <Grid item>
           <FormControlLabel

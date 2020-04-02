@@ -5,6 +5,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import "./ProjectDetail.css";
 import { Typography } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 
 class WorkpackageTree extends React.Component {
   constructor(props) {
@@ -74,10 +75,31 @@ class WorkpackageTree extends React.Component {
     }
   }
 
+  renderLabel(nodes) {
+    return (
+      <Box
+        display="flex"
+        onClick={event => {
+          this.props.history.push({
+            pathname: `/workpackageDetail`,
+            state: {wpID: nodes.id}
+          });
+          event.stopPropagation();
+          event.preventDefault();
+        }}
+      >
+        <Typography>
+          {"WP" + nodes.id + ": " + nodes.name}
+        </Typography>
+      </Box>
+    );
+  };
+
   renderTree(nodes) {
     console.log(nodes);
     return (
-      <TreeItem key={nodes.id} nodeId={nodes.id} label={"WP" + nodes.id + ": " + nodes.name}>
+      <TreeItem key={nodes.id} nodeId={nodes.id} 
+        label={this.renderLabel(nodes)}>
         <Typography variant="h5">
           {Array.isArray(nodes.children)
             ? nodes.children.map(node => this.renderTree(node))
@@ -96,13 +118,18 @@ class WorkpackageTree extends React.Component {
         state: {wpID: nodeId}
       })
   }
+
+  handleToggle(event, nodeIds) {
+    event.preventDefault();
+    console.log(nodeIds);
+  }
+
   render() {
     return (
       <TreeView
         className="PDWPTreeView"
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
-        onNodeSelect={this.handleClick}
       >
         {this.state.data.map(thisData => {
           return this.renderTree(thisData);
