@@ -132,6 +132,8 @@ class TimesheetDetail extends Component {
             console.log("no timesheets");
           }
         }
+      // console.log(this.props.userId);
+      // console.log(this.props.token);
     }
     
     // fetching timesheetRow
