@@ -1,0 +1,9 @@
+.container {
+    height: 495px;
+    border: none;
+}
+/* hide scroll bar */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
