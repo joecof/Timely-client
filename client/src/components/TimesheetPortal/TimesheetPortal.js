@@ -58,8 +58,6 @@ import agent from "../../api/agent";
       onRowClick: (rowData) => {
         props.history.push(`/dashboard/timesheet/${rowData[0]}`);
         localStorage.setItem("timesheetId", rowData[0]);
-        localStorage.setItem("weekNumber", rowData[1]);
-        localStorage.setItem("weekEnding", rowData[2]);
       },
       customToolbar: () => {
         return <CurrentTimesheetToolBar {...props} fetchTimesheets={fetchTimesheets} states={states}/>
