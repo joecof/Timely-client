@@ -46,6 +46,7 @@ const employeeInfo = {
 const projects = {
   getProjectsForUser: (id, token) => requests.get(`/projects/emp/${id}`, token),
   createProject: (data, token) => requests.post(`/projects/createProject`, token, data),
+  assignToProject: (projId, empId, token) => requests.post(`/projects/assignToProject/${projId}?empId=${empId}`, token),
   getDetailsById: (id, token) => requests.get(`/projects/projectDetails/${id}`, token),
   getById: (id, token) => requests.get(`/projects/${id}`, token)
 }

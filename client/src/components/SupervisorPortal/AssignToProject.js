@@ -46,18 +46,8 @@ const demoProject =
 const AssignToProject = () => {
     const classes = useStyles();
 
-    const [chipData, setChipData] = React.useState([
-        { employeeId: "1", name: "John Doe" },
-        { employeeId: "2", name: "Jane Kelly" },
-        { employeeId: "3", name: "Henry Peter" }
-    ]);
-
     const [projectsData, setProjectsData] = React.useState();
     const [employeesData, setEmployeesData] = React.useState();
-
-    const handleDelete = chipToDelete => () => {
-        setChipData(chips => chips.filter(chip => chip.employeeId !== chipToDelete.employeeId));
-    };
 
     return (
       <div className={classes.root}>

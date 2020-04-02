@@ -1,17 +1,7 @@
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import { withStyles } from '@material-ui/core/styles';
-import AssignToolBar from './AssignToolBar';
-
-
-/**
- * Material UI styling JSON object. 
- */
-const styles = () => ({
-  pictureUrl: {
-    width: 50
-  }
-});
+import agent from '../../api/agent.js'
 
 /**
  * Defines the columns for the HR portal. 
@@ -21,33 +11,7 @@ const columns = [
   {name:"projectName", label:"Project Name", className:"column"},
   {name:"projectManager", label:"Project Manager", className:"column"},
 ];
-
-/**
- * Demo data for now. 
- */
-const demoData = 
-    [{
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      projectId: "1",
-      projectName: "Building a database",
-      firstName: "John",
-      lastName: "Doe"
-    },
-    {
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      projectId: "2",
-      projectName: "Software Development",
-      firstName: "Jane",
-      lastName: "Kelly"
-    },
-    {
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      projectId: "3",
-      projectName: "Creating a website",
-      firstName: "Henry",
-      lastName: "Peter"
-    }]
-
+  
 /**
  * Author: John Ham 
  * Version: 1.0 
@@ -69,22 +33,40 @@ class ProjectsAssignedTo extends Component {
   componentDidMount() {
     this.fetchData();
   }
+  
+  /**
+   * Gets a list of the projects that the employee is assigned to.
+   */
+  async getProjects() {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    console.log("ID : " + this.props.match.params.id);
+    const response = agent.projects.getProjectsForUser(this.props.match.params.id, token);
+    console.log(response);
+    return response;
+  }
 
-  //will use this function to fetch from backend soon 
-  fetchData() {
+  /**
+   * Gets the necessary information from the employees' data and stores
+   * them in an array.
+   */
+  async fetchData() {
     const { classes } = this.props; 
   
+    console.log(this.props);
+    var projectsData = await this.getProjects();
+    console.log(projectsData);
+
     var resultData = [];
-    for (let i = 0; i < demoData.length; i++) {
-        let pictureUrl = demoData[i].pictureUrl;
-        let id = demoData[i].projectId;
-        let projectName = demoData[i].projectName;
-        let name = demoData[i].firstName + " " + demoData[i].lastName;
+    for (let i = 0; i < projectsData.length; i++) {
+        let id = projectsData[i].project_code;
+        let projectName = projectsData[i].project_name;
+        let name = projectsData[i].project_manager_id.first_name + " " + projectsData[i].project_manager_id.last_name;
 
         let row = [];
         row.push(id);
         row.push(projectName);
-        row.push(<><img src= {pictureUrl} className = {classes.pictureUrl} alt = {name}/> <span>{name}</span></>);
+        row.push(name);
 
         resultData.push(row);
     }
@@ -123,4 +105,4 @@ class ProjectsAssignedTo extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(ProjectsAssignedTo);
+export default ProjectsAssignedTo;
