@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import "react-circular-progressbar/dist/styles.css";
 import DashboardPortalProjInfo from "../DashboardPortalProjInfo/DashboardPortalProjInfo";
 import TimesheetDetail from "../TimesheetDetail/TimesheetDetail";
+import './DashBoardPortal.css';
 
 /**
  * Material UI styling JSON object.
@@ -22,11 +23,12 @@ const styles = () => ({
   root: {
     flexGrow: 1
   },
-  container: {},
   leftPanelContainer: {
     width: "360px"
   },
   leftPaper: {
+    overflow: 'scroll',
+    maxHeight: '500px',
     overflow: "auto",
     width: "310px",
     margin: "0 20px 0 0",
@@ -50,7 +52,8 @@ const styles = () => ({
     textAlign: "center",
     boxShadow: "none",
     border: "solid 1px lightgray",
-    borderRadius: "5px"
+    borderRadius: "5px",
+    marginLeft: '20px'
   },
   title: {
     display: "flex",
@@ -77,6 +80,14 @@ const styles = () => ({
     display: "flex",
     margin: "22px 0 0 4px"
   },
+  timesheetDetailContainer: {
+    border: "solid 1px lightgray",
+    minWidth: '1000px',
+    textAlign: 'center',
+    height: '500px',
+    fontSize: '18pt',
+    borderRadius: '5px',
+  },
 });
 
 class DashBoardPortal extends Component {
@@ -99,14 +110,13 @@ class DashBoardPortal extends Component {
   async fetchData() {
     // fetch logined user
     // const currentUserId = this.props.match.params.id;
-    // const response = await agent.employeeInfo.getCurrentUser(currentUserId);
+    // const token = this.props.token;
+    // const response = await agent.employeeInfo.getCurrentUser(currentUserId, token);
     // this.setState({
     //   loadedUser: response
     // });
-    console.log(this.props.token)
-
+    // console.log(this.state.loadedUser);
     // fetch projects
-    
   }
 
   render() {
@@ -128,26 +138,23 @@ class DashBoardPortal extends Component {
               projManagerName="Slim Teddy"
             />
             <DashboardPortalProjInfo
-              projName="GY852"
-              dueDate="April 20, 2021"
-              projManagerName="Flower Jones"
+              projName="TJ100"
+              dueDate="December 20, 2020"
+              projManagerName="Dick Jones"
             />
             <DashboardPortalProjInfo
-              projName="TY965"
-              dueDate="May 23, 2022"
-              projManagerName="Juice Moon"
-            />
-            <DashboardPortalProjInfo
-              projName="TG203"
-              dueDate="October 23, 2022"
-              projManagerName="Pie Hook"
+              projName="TR311"
+              dueDate="March 20, 2021"
+              projManagerName="Slim Teddy"
             />
           </Paper>
           <div>
-            <TimesheetDetail dashboardTimesheet={true} userId={this.props.match.params.id} token={localStorage.getItem("token")}/>
+            <div id="timesheetDetailContainer" className={classes.timesheetDetailContainer}>
+              <TimesheetDetail history={this.props.history} dashboardTimesheet={true} userId={this.props.match.params.id} token={this.props.token}/>
+            </div>
             <div className={classes.sickVancationContainer}>
               <Paper className={classes.rightBottomLeftPaper} elevation={2}>
-                <div className={classes.title}>Sick Days</div>
+                <div className={classes.title}>Flextime</div>
                 <hr className={classes.seperator} />
                 <CircularProgressbar
                   className={classes.CircularProgressbar}
