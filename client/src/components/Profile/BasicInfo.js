@@ -8,20 +8,31 @@ import TextField from "@material-ui/core/TextField";
  * Material UI styling JSON object.
  */
 const styles = () => ({
+  container: {
+    width: "475px",
+    padding: "0 50px 0 70px"
+  },
   title: {
     marginBottom: 5,
     fontSize: "16px",
     fontWeight: "bold"
   },
   paper: {
-    height: 600
+    // height: 500
   },
   input: {
     display: "block",
-    width: "90%"
+    width: "90%",
+    margin: "5px 0 0 0"
   },
-  field: {
-    marginTop: 50
+  basicInfoContainer: {
+    marginTop: "50px"
+  },
+  laborGradeContainer: {
+    margin: "50px 0 0 0"
+  },
+  supervisorContainer: {
+    margin: "50px 0 0 0"
   }
 });
 
@@ -42,14 +53,12 @@ class BasicInfo extends Component {
     const { classes } = this.props;
 
     return (
-      <Grid item xs={4} className={classes.container}>
-        <div className={classes.field}>
-          <div className={classes.title}>
-            Basic Information
-          </div>
+      <div className={classes.container}>
+        <div className={classes.basicInfoContainer}>
+          <div className={classes.title}>Basic Information</div>
           <TextField
             className={classes.input}
-            placeholder={this.props.loadedUser.first_name}
+            placeholder=""
             helperText="First Name"
             fullWidth
             margin="normal"
@@ -59,7 +68,7 @@ class BasicInfo extends Component {
           />
           <TextField
             className={classes.input}
-            placeholder={this.props.loadedUser.last_name}
+            placeholder=""
             helperText="Last Name"
             fullWidth
             margin="normal"
@@ -69,14 +78,11 @@ class BasicInfo extends Component {
           />
         </div>
 
-        <div className={classes.field}>
-          <Typography className={classes.title} variant="h6">
-            {" "}
-            Labor Grade{" "}
-          </Typography>
+        <div className={classes.laborGradeContainer}>
+          <div className={classes.title}>Labor Grade</div>
           <TextField
             className={classes.input}
-            placeholder={this.props.loadedUser.labor_grade_id}
+            placeholder=""
             helperText="Grade"
             fullWidth
             margin="normal"
@@ -86,11 +92,8 @@ class BasicInfo extends Component {
           />
         </div>
 
-        <div className={classes.field}>
-          <Typography className={classes.title} variant="h6">
-            {" "}
-            Supervisor{" "}
-          </Typography>
+        <div className={classes.supervisorContainer}>
+          <div className={classes.title}> Supervisor </div>
           <TextField
             className={classes.input}
             helperText="Supervisor"
@@ -102,7 +105,7 @@ class BasicInfo extends Component {
             }}
           />
         </div>
-      </Grid>
+      </div>
     );
   }
 }

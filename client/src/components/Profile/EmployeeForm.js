@@ -15,7 +15,7 @@ const styles = () => ({
     justifyContent: "center"
   },
   root: {
-    width: "1100px"
+    width: "1000px"
   },
   paper: {
     boxShadow: "none",
@@ -23,11 +23,11 @@ const styles = () => ({
     borderRadius: "5px"
   },
   divider: {
-    margin: 45,
-    height: "500px"
+    margin: "45px 0",
+    height: "420px"
   },
   employeeInfoContainer: {
-    
+    display: "flex"
   }
 });
 

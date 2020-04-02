@@ -20,6 +20,11 @@ import "./ProjectCreate.css";
  * Desc: This component let's the user create a new project
  */
 const useStyles = makeStyles(theme => ({
+  container: {
+    width: "1300px",
+    display: "flex",
+    justifyContent: "center"
+  },
   root: {
     width: "1100px"
   },
@@ -177,6 +182,7 @@ export default function ProjectCreate() {
   };
 
   return (
+    <div className={classes.container}>
     <div className={classes.root}>
       <Stepper
         activeStep={activeStep}
@@ -239,6 +245,7 @@ export default function ProjectCreate() {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 }

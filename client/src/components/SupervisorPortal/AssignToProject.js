@@ -11,18 +11,35 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
  */
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1,
+        width: "1300px",
+        display: "flex",
+        justifyContent: "center"
     },
     supervisorMargin: {
         margin: 10,
     },
     supervisorPaper: {
-        height: 750,
-        padding: 50,
+      width: "1000px",
+        height: "300px",
+        padding: "40px",
     },
     supervisorButton: {
       width: "fit-content"
     },
+    assignToProjectContainer: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    AssignToProjectTitle: {
+      fontSize: "16px",
+      fontWeight: "bold"
+    },
+    assignButton: {
+      width: "200px",
+      margin: "20px 0 0 0"
+    }
 }));
 
 /**
@@ -62,14 +79,14 @@ const AssignToProject = () => {
     return (
       <div className={classes.root}>
         <Paper className={classes.supervisorPaper} elevation={2}>
-          <Grid container direction="column">
-            <Typography variant="h4">Assign To Project</Typography>
+          <div className={classes.assignToProjectContainer}>
+            <div className={classes.AssignToProjectTitle}>Assign To Project</div>
             <Divider className="supervisorMargin"/>
             <Autocomplete
                 className={classes.supervisorMargin}
                 options={demoProject}
                 getOptionLabel={option => option.number}
-                style={{ width: 700 }}
+                style={{ width: 500 }}
                 onChange={(event, value) => setProjectsData(value)}
                 renderInput={params => <TextField {...params} variant="standard" label="Project ID" />}
             />
@@ -78,12 +95,12 @@ const AssignToProject = () => {
                 className={classes.supervisorMargin}
                 options={demoEmployee}
                 getOptionLabel={option => option.name}
-                style={{ width: 700 }}
+                style={{ width: 500 }}
                 onChange={(event, value) => setEmployeesData(value)}
                 renderInput={params => <TextField {...params} variant="standard" label="Add employees" placeholder="Search for an employee" />}
             />
-            <Button variant="contained" color="primary" style={{ width: 700 }}>Assign</Button>
-          </Grid>
+            <Button className={classes.assignButton} variant="contained" color="primary">Assign</Button>
+          </div>
         </Paper>
       </div>
     )
