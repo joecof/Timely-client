@@ -75,8 +75,8 @@ class SideMenu extends Component {
             })
           }}
           >
-          <MenuItem isMenuLogo = {true} />
-          <Divider className={classes.divider} />
+          {/* <MenuItem isMenuLogo = {true} />
+          <Divider className={classes.divider} /> */}
           <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
           <Divider className={classes.divider}/>
           <div>

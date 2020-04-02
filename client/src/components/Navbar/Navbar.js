@@ -56,7 +56,8 @@ const styles = theme => ({
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    border: "solid 1px lightgray",
   },
   appBarShift: { 
     marginLeft: navbarExpandedWidth,
@@ -99,7 +100,6 @@ class Navbar extends Component {
             <Typography className={classes.title} variant="h6" noWrap> 
               <BreadCrumb { ...this.props } />
             </Typography>
-            <Searchbar/>
             <Divider className = {classes.divider} orientation="vertical" flexItem />
             <h4 className = {classes.userName}> {this.props.loadedUser.first_name} {this.props.loadedUser.last_name}</h4>
             <DropDownProfile logoutHandler = {this.props.logoutHandler} loadedUser={this.props.loadedUser}/>

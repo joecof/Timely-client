@@ -3,6 +3,7 @@ import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import EnhancedTable from "./EnhancedTable";
 import makeData from "./MakeData";
+import "./LeadEngineer.css";
 import { render } from "react-dom";
 
 const LeadEngineer = () => {
@@ -23,7 +24,7 @@ const LeadEngineer = () => {
       {
         Header: "Team",
         accessor: "Team"
-      },
+      }
     ],
     []
   );
@@ -54,19 +55,21 @@ const LeadEngineer = () => {
   };
 
   // render() {
-    return (
-        <div>
-          <CssBaseline />
-          <EnhancedTable
-            columns={columns}
-            data={data}
-            setData={setData}
-            updateMyData={updateMyData}
-            skipPageReset={skipPageReset}
-          />
-        </div>
-      );
-  }
+  return (
+    <div className="leadEngineer-outerContainer">
+      <div class="leadEngineer-container">
+        {/* <CssBaseline /> */}
+        <EnhancedTable
+          columns={columns}
+          data={data}
+          setData={setData}
+          updateMyData={updateMyData}
+          skipPageReset={skipPageReset}
+        />
+      </div>
+    </div>
+  );
+};
 
 // };
 

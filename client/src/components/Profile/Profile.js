@@ -13,7 +13,7 @@ import ChangePassword from './ChangePassword'
  */
 const styles = () => ({
   root: {
-    flexGrow: 1,
+    width: "1100px"
   },
   paper: {
     height: 750,

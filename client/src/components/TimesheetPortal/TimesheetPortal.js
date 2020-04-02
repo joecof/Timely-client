@@ -139,14 +139,14 @@ export default class TimesheetPortal extends Component {
   // timesheet table UI
   render() {
     return (
-      <>
+      <div className="timesheetPortal-container">
         <MUIDatatable 
             className="datatable"
             title={<h1>Timesheet</h1>}
             options={options(this.props, this.state, this.fetchTimesheets)}
             columns={columns}
             data={this.state.timesheets} />
-      </>
+      </div>
     )
   }
 }

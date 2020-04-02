@@ -1,59 +1,59 @@
-import React from 'react'
+import React from "react";
 
-import MaUTable from '@material-ui/core/Table'
-import PropTypes from 'prop-types'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableFooter from '@material-ui/core/TableFooter'
-import TableHead from '@material-ui/core/TableHead'
-import TablePagination from '@material-ui/core/TablePagination'
-import TablePaginationActions from './TablePaginationAction'
-import TableRow from '@material-ui/core/TableRow'
-import TableSortLabel from '@material-ui/core/TableSortLabel'
-import TableToolbar from './TableToolbar'
+import MaUTable from "@material-ui/core/Table";
+import PropTypes from "prop-types";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableFooter from "@material-ui/core/TableFooter";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TablePaginationActions from "./TablePaginationAction";
+import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import TableToolbar from "./TableToolbar";
 import Button from "@material-ui/core/Button";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import "./EnhancedTable.css";
 
 import {
   useGlobalFilter,
   usePagination,
   useSortBy,
-  useTable,
-} from 'react-table'
-
+  useTable
+} from "react-table";
 
 const inputStyle = {
+  fontSize: "14px",
   padding: 0,
   margin: 0,
   border: 0,
-  background: 'transparent',
-}
+  background: "transparent"
+};
 
 // Create an editable cell renderer
 const EditableCell = ({
   cell: { value: initialValue },
   row: { index },
   column: { id },
-  updateMyData, // This is a custom function that we supplied to our table instance
+  updateMyData // This is a custom function that we supplied to our table instance
 }) => {
   // We need to keep and update the state of the cell normally
-  const [value, setValue] = React.useState(initialValue)
+  const [value, setValue] = React.useState(initialValue);
 
   const onChange = e => {
-    setValue(e.target.value)
-  }
+    setValue(e.target.value);
+  };
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
-    updateMyData(index, id, value)
-  }
+    updateMyData(index, id, value);
+  };
 
   // If the initialValue is changed externall, sync it up with our state
   React.useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
+    setValue(initialValue);
+  }, [initialValue]);
 
   return (
     <input
@@ -62,33 +62,33 @@ const EditableCell = ({
       onChange={onChange}
       onBlur={onBlur}
     />
-  )
-}
+  );
+};
 
 EditableCell.propTypes = {
   cell: PropTypes.shape({
-    value: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired
   }),
   row: PropTypes.shape({
-    index: PropTypes.number.isRequired,
+    index: PropTypes.number.isRequired
   }),
   column: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired
   }),
-  updateMyData: PropTypes.func.isRequired,
-}
+  updateMyData: PropTypes.func.isRequired
+};
 
 // Set our editable cell renderer as the default Cell renderer
 const defaultColumn = {
-  Cell: EditableCell,
-}
+  Cell: EditableCell
+};
 
 const EnhancedTable = ({
   columns,
   data,
   setData,
   updateMyData,
-  skipPageReset,
+  skipPageReset
 }) => {
   const {
     getTableProps,
@@ -99,7 +99,7 @@ const EnhancedTable = ({
     setPageSize,
     preGlobalFilteredRows,
     setGlobalFilter,
-    state: { pageIndex, pageSize, globalFilter },
+    state: { pageIndex, pageSize, globalFilter }
   } = useTable(
     {
       columns,
@@ -111,7 +111,7 @@ const EnhancedTable = ({
       automatically be available on the instance.
       That way we can call this function from our
       cell renderer! */
-      updateMyData,
+      updateMyData
     },
     useGlobalFilter,
     useSortBy,
@@ -120,61 +120,71 @@ const EnhancedTable = ({
       hooks.allColumns.push(columns => [
         ...columns,
         {
-          id: 'view',
+          id: "view",
           Header: <div>Information Page</div>,
           Cell: ({ row }) => (
-            <Button variant ="contained" color ="primary">View</Button>
-          ),
+            <Button variant="contained" color="primary">
+              View
+            </Button>
+          )
         },
 
         {
-          id: 'option',
+          id: "option",
           Header: <div></div>,
           Cell: ({ row }) => (
-            <Button><MoreVertIcon></MoreVertIcon></Button>
-          ),
-        },
-
-
-      ])
+            <Button>
+              <MoreVertIcon></MoreVertIcon>
+            </Button>
+          )
+        }
+      ]);
     }
-  )
+  );
 
   const handleChangePage = (event, newPage) => {
-    gotoPage(newPage)
-  }
+    gotoPage(newPage);
+  };
 
   const handleChangeRowsPerPage = event => {
-    setPageSize(Number(event.target.value))
-  }
-
+    setPageSize(Number(event.target.value));
+  };
 
   // Render the UI for your table
   return (
-    <TableContainer>
+    <TableContainer className="enhancedTable-tableContainer">
       <TableToolbar
         preGlobalFilteredRows={preGlobalFilteredRows}
         setGlobalFilter={setGlobalFilter}
         globalFilter={globalFilter}
       />
       <MaUTable {...getTableProps()}>
-        <TableHead>
+        <TableHead className="enhancedTable-tableHead">
           {headerGroups.map(headerGroup => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
+            <TableRow
+              className="enhancedTable-tableRow"
+              {...headerGroup.getHeaderGroupProps()}
+            >
               {headerGroup.headers.map(column => (
                 <TableCell
-                  {...(column.id === ('view' || 'option')
+                  className="enhancedTable-tableCell"
+                  {...(column.id === ("view" || "option")
                     ? column.getHeaderProps()
                     : column.getHeaderProps(column.getSortByToggleProps()))}
                 >
-                  {column.render('Header')}
-                  {(column.id !== 'view' && column.id !== 'option') ? (
+                  <div className="enhancedTable-headerRow">
+                    {column.render("Header")}
+                  </div>
+                  {column.id !== "view" && column.id !== "option" ? (
                     <TableSortLabel
                       active={column.isSorted}
                       // react-table has a unsorted state which is not treated here
-                      direction={column.isSortedDesc ? 'desc' : 'asc'}
+                      direction={column.isSortedDesc ? "desc" : "asc"}
+                      className="enhancedTable-tableSortLabel"
                     />
-                  ) : null}
+                  ) : (
+                    <div className="enhancedTable-headerPlaceholder"></div>
+                  )}
                 </TableCell>
               ))}
             </TableRow>
@@ -182,55 +192,54 @@ const EnhancedTable = ({
         </TableHead>
         <TableBody>
           {page.map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <TableRow {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return (
                     <TableCell {...cell.getCellProps()}>
-                      {cell.render('Cell')}
+                      {cell.render("Cell")}
                     </TableCell>
-                  )
+                  );
                 })}
               </TableRow>
-            )
+            );
           })}
         </TableBody>
-
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[
-                5,
-                10,
-                25,
-                { label: 'All', value: data.length },
-              ]}
-              colSpan={3}
-              count={data.length}
-              rowsPerPage={pageSize}
-              page={pageIndex}
-              SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
       </MaUTable>
+      <TableFooter className="enhancedTable-tableFooter">
+        <TableRow className="enhancedTable-footer-tableRow">
+          <TablePagination
+            rowsPerPageOptions={[
+              5,
+              10,
+              25,
+              { label: "All", value: data.length }
+            ]}
+            colSpan={3}
+            count={data.length}
+            rowsPerPage={pageSize}
+            page={pageIndex}
+            SelectProps={{
+              inputProps: { "aria-label": "rows per page" },
+              native: true
+            }}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            ActionsComponent={TablePaginationActions}
+          />
+        </TableRow>
+      </TableFooter>
     </TableContainer>
-  )
-}
+  );
+};
 
 EnhancedTable.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
   updateMyData: PropTypes.func.isRequired,
   setData: PropTypes.func.isRequired,
-  skipPageReset: PropTypes.bool.isRequired,
-}
+  skipPageReset: PropTypes.bool.isRequired
+};
 
-export default EnhancedTable
+export default EnhancedTable;

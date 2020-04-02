@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import agent from './api/agent'
 import { BrowserRouter, Redirect} from "react-router-dom";
 import Routes from './components/Routes/Routes'
+import "./App.css";
 
 
 /**

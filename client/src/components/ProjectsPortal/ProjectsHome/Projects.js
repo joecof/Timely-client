@@ -2,9 +2,9 @@ import React from "react";
 import ProjectsList from "./ProjectsList";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import agent from '../../../api/agent'
+import agent from "../../../api/agent";
 import "./Projects.css";
 
 /**
@@ -17,8 +17,9 @@ import "./Projects.css";
 class Projects extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { // data is the prop being sent to the projectLists component. Other states are for all categories of projects
-      data: [], 
+    this.state = {
+      // data is the prop being sent to the projectLists component. Other states are for all categories of projects
+      data: [],
       allProj: [],
       mineProj: [],
       archivedProj: [],
@@ -37,52 +38,58 @@ class Projects extends React.Component {
     this.allProjects();
   }
 
-  allProjects(){
+  allProjects() {
     this.setState({
       data: this.state.allProj,
       type: "All"
-    })
+    });
   }
 
-  mineProjects(){
+  mineProjects() {
     this.setState({
       data: this.state.mineProj,
       type: "Mine"
-    })
+    });
   }
 
-  archivedProjects(){
+  archivedProjects() {
     this.setState({
       data: this.state.archivedProj,
       type: "Archived"
-    })
+    });
   }
 
-  closedProjects(){
+  closedProjects() {
     this.setState({
       data: this.state.closedProj,
       type: "Closed"
-    })
+    });
   }
 
   async setData() {
-    const user = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = localStorage.getItem("token");
-    const ID = (user.employee_id);
+    const ID = user.employee_id;
     console.log(user);
     const response = await agent.projects.getProjectsForUser(ID, token);
     console.log(response);
 
     var projData = [];
 
-    var allProj = [], mineProj = [], archivedProj = [], closedProj = [];
+    var allProj = [],
+      mineProj = [],
+      archivedProj = [],
+      closedProj = [];
 
     for (var i = 0; i < response.length; i++) {
       projData = [];
       console.log(response[i]);
       projData.push(response[i].project_code);
       projData.push(response[i].project_name);
-      var manager = response[i].project_manager_id.first_name + " " + response[i].project_manager_id.last_name;
+      var manager =
+        response[i].project_manager_id.first_name +
+        " " +
+        response[i].project_manager_id.last_name;
       projData.push(manager);
       if (response[i].project_manager_id.employee_id === parseInt(ID)) {
         mineProj.push(projData);
@@ -91,7 +98,7 @@ class Projects extends React.Component {
         closedProj.push(projData);
       }
       if (response[i].status === "ARCHIVED") {
-          archivedProj.push(projData);
+        archivedProj.push(projData);
       }
       allProj.push(projData);
     }
@@ -100,18 +107,24 @@ class Projects extends React.Component {
       mineProj: mineProj,
       closedProj: closedProj,
       archivedProj: archivedProj
-    })
+    });
   }
 
   render() {
     return (
-      <React.Fragment>
-        <Grid justify="space-between" container spacing={1} className="btnProjects">
+      <div className="projectPageContainer">
+        <Grid
+          justify="space-between"
+          container
+          spacing={1}
+          className="btnProjects"
+        >
           <Grid item>
             <ButtonGroup
               variant="contained"
               color="primary"
               aria-label="contained primary button group"
+              className="buttonGroup"
             >
               <Button onClick={this.allProjects}>All</Button>
               <Button onClick={this.mineProjects}>Mine</Button>
@@ -120,11 +133,23 @@ class Projects extends React.Component {
             </ButtonGroup>
           </Grid>
           <Grid item>
-            <Button variant="contained" color="secondary" component={Link} to="/createProject">+ Create</Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              component={Link}
+              to="/createProject"
+              className="createButton"
+            >
+              + Create
+            </Button>
           </Grid>
         </Grid>
-        <ProjectsList data={this.state.data} type={this.state.type} history={this.props.history}/>
-      </React.Fragment>
+        <ProjectsList
+          data={this.state.data}
+          type={this.state.type}
+          history={this.props.history}
+        />
+      </div>
     );
   }
 }

@@ -14,30 +14,32 @@ const useToolbarStyles = makeStyles(theme => ({
   highlight:
     theme.palette.type === "light"
       ? {
-        color: theme.palette.secondary.main,
-        backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-      }
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
+        }
       : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.secondary.dark
-      },
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark
+        },
   title: {
-    flex: "1 1 100%"
+    fontSize: "16px",
+    fontWeight: "bold"
+  },
+  tableToolbarToolbar: {
+    padding: "16px !important",
+    display: "flex",
+    justifyContent: "space-between"
   }
 }));
 
 const TableToolbar = props => {
   const classes = useToolbarStyles();
-  const {
-    preGlobalFilteredRows,
-    setGlobalFilter,
-    globalFilter
-  } = props;
+  const { preGlobalFilteredRows, setGlobalFilter, globalFilter } = props;
   return (
-    <Toolbar>
-      <Typography className={classes.title} variant="h6" id="tableTitle">
+    <Toolbar className={classes.tableToolbarToolbar}>
+      <div className={classes.title} id="tableTitle">
         Work Package Reports
-      </Typography>
+      </div>
       <GlobalFilter
         preGlobalFilteredRows={preGlobalFilteredRows}
         globalFilter={globalFilter}
