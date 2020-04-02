@@ -15,6 +15,7 @@ import EmployeeForm from '../Profile/EmployeeForm'
 import ProjectDetail from '../ProjectDetail/ProjectDetail'
 import LeadEngineer from '../LeadEngineerPortal/LeadEngineer'
 import WorkpackageCreate from '../WorkpackageCreate/WorkpackageCreate';
+import WorkpackageDetail from '../ProjectDetail/WorkpackageDetail'
 
 /**
  * Author: Joe 
@@ -154,6 +155,15 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <WorkpackageCreate
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/workpackageDetail"
+              exact
+              render={props => (
+                <WorkpackageDetail
                   {...props}
                 />
               )}

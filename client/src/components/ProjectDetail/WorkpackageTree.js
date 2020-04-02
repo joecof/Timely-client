@@ -16,6 +16,7 @@ class WorkpackageTree extends React.Component {
     this.setData = this.setData.bind(this);
     this.addChildren = this.addChildren.bind(this);
     this.renderTree = this.renderTree.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -86,12 +87,22 @@ class WorkpackageTree extends React.Component {
     );
   }
 
+  handleClick(event, nodeId) {
+      event.preventDefault();
+      console.log(event);
+      console.log(nodeId);
+      this.props.history.push({
+        pathname: `/workpackageDetail`,
+        state: {wpID: nodeId}
+      })
+  }
   render() {
     return (
       <TreeView
         className="PDWPTreeView"
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
+        onNodeSelect={this.handleClick}
       >
         {this.state.data.map(thisData => {
           return this.renderTree(thisData);

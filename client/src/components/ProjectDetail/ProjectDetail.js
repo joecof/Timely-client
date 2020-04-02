@@ -163,13 +163,14 @@ class ProjectDetail extends React.Component {
         )}
         {this.state.isProjManager === false ? (
           <WorkpackageList
+            history={this.props.history}
             type={this.state.isProjManager ? "PM" : "Emp"}
             wpList={this.state.wpList}
           />
         ) : (
           <Grid container justify="center" className="PDWorkpackageTree">
             <Grid item>
-              <WorkpackageTree wpList={this.state.wpList} />
+              <WorkpackageTree wpList={this.state.wpList} history={this.props.history} />
             </Grid>
           </Grid>
         )}
