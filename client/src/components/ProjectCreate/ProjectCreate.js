@@ -162,7 +162,7 @@ export default function ProjectCreate() {
       ]
     };
     console.log(data);
-    const response = agent.projects.createProject(data, token);
+    const response = await agent.projects.createProject(data, token);
     console.log(response);
   };
 
