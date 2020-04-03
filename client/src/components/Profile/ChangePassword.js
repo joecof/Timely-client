@@ -37,23 +37,23 @@ class ChangePassword extends Component {
 
   constructor(props) {
     super(props); 
-
-    this.state = ({
-      loadedUser: this.props.loadedUser
-    })
   }
+
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props;   
 
     return (
+      <>
         <Grid item xs={4} className = {classes.container}>
           <div className = {classes.field}>
             <Typography className = {classes.title} variant="h6"> Change Password </Typography>
             <TextField
               className = {classes.input}
+              name="oldPassword"
               type="password"
               helperText="Old Password"
               fullWidth
+              onChange = {(e) => this.props.formHandler(e)}
               margin="normal"
               InputLabelProps={{
                 shrink: true,
@@ -61,9 +61,11 @@ class ChangePassword extends Component {
             />
             <TextField
               className = {classes.input}
+              name="newPassword"
               type="password"
               helperText="New Password"
               fullWidth
+              onChange = {(e) => this.props.formHandler(e)}
               margin="normal"
               InputLabelProps={{
                 shrink: true,
@@ -71,19 +73,22 @@ class ChangePassword extends Component {
             />
             <TextField
               className = {classes.input}
+              name="confirmPassword"
               type="password"
               helperText="Confirm New Password"
               fullWidth
+              onChange = {(e) => this.props.formHandler(e)}
               margin="normal"
               InputLabelProps={{
                 shrink: true,
               }}
             />
           </div>
-          <Button variant="contained" color="primary" className = {classes.button}> 
+          <Button variant="contained" color="primary" className = {classes.button} onClick = {this.props.handleSubmit}> 
             Submit 
           </Button>
         </Grid>
+      </>
     )
   }
 }
