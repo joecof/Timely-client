@@ -60,6 +60,10 @@ const timesheetsInfo = {
   createCurrentWeekTimesheet: (empId, token, data)=> requests.post(`emps/${empId}/timesheets/`, token, data),
 }
 
+const yearlyRate = {
+  getYearlyRate: (token) => requests.get(`/yearlyRate`, token)
+}
+
 const authorization = {
   login: (data) => requests.authenticate('/tokens', data)
 }
@@ -68,5 +72,6 @@ export default {
   employeeInfo,
   authorization,
   projects,
-  timesheetsInfo
+  timesheetsInfo,
+  yearlyRate
 }
