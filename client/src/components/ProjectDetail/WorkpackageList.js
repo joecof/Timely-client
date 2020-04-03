@@ -15,45 +15,30 @@ class WorkpackageList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      wpList: [],
-      type: '',
+      wpList: props.wpList,
       data: []
     }
     this.options = {
       print: false,
       responsive: "scroll",
       selectableRows : false,
-    //   onRowClick: (rowData, rowState) => {
-    //     this.props.history.push({
-    //       pathname: `/projectDetails`,
-    //       state: {projectID: rowData[0]}
-    //     })
-    //   } 
+      onRowClick: (rowData, rowState) => {
+        console.log(rowData);
+        this.props.history.push({
+          pathname: `/workpackageDetail`,
+          state: {wpID: rowData[0]}
+        });
+      } 
     };
     this.setData = this.setData.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ 
-      wpList: nextProps.wpList,
-      type: nextProps.type
-     }, () =>
-        this.setData(this.state.wpList)
-     );  
-  }
-
-  showReport(wpID) {
-    console.log("showReport", wpID);
+  componentDidMount() {
+    this.setData(this.state.wpList);
   }
 
   setData(wpList) {
       var self = this;
-      //checking if PM ? show report button : don't show
-      var button;
-      if (this.state.type === 'PM' && columns.length === 4) {
-        console.log("push report");
-        columns.push("Report");
-      }
       const data = [];
       var curData;
       wpList.map(function(wp) {
@@ -62,10 +47,6 @@ class WorkpackageList extends React.Component {
         curData.push(wp.description);
         curData.push(wp.responsible_person_id.first_name + " " + wp.responsible_person_id.last_name);
         curData.push(wp.employees.length);
-        if (self.state.type === 'PM') {
-          button = <Button variant="contained" color="secondary" onClick={self.showReport.bind(self,[wp.work_package_id])}>Report</Button>;
-        }
-        curData.push(button);
         data.push(curData);
       });
       this.setState({
