@@ -109,9 +109,11 @@ class DashBoardPortal extends Component {
   // logged in user and the projects
   async fetchData() {
     // fetch logined user
-    // const currentUserId = this.props.match.params.id;
-    // const token = this.props.token;
-    // const response = await agent.employeeInfo.getCurrentUser(currentUserId, token);
+    const currentUserId = this.props.match.params.id;
+    const token = this.props.token;
+    console.log(currentUserId, token);
+    // const response = await agent.projects.getProjectsForUser(currentUserId, token);
+    // console.log(response);
     // this.setState({
     //   loadedUser: response
     // });

@@ -98,7 +98,7 @@ class TimesheetDetail extends Component {
         if(this.props.token != null) {
           userId = this.props.userId;
           token = this.props.token;
-          const response = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
+          const response = await agent.employeeInfo.getCurrentUser(userId, token);
           this.setState({
             loadUser: response
           });
@@ -203,7 +203,7 @@ class TimesheetDetail extends Component {
         });
       }
     } else {
-      document.getElementById("timesheetDetailContainer").innerHTML = "Sorry, there's no current timesheet in the database!"
+      document.getElementById("timesheetDetailContainer").innerHTML = "Sorry, you don't have any timesheet records in the database!"
     }
   }
 
