@@ -113,9 +113,10 @@ class WorkpackageTree extends React.Component {
       event.preventDefault();
       console.log(event);
       console.log(nodeId);
+      var wp = 
       this.props.history.push({
         pathname: `/workpackageDetail`,
-        state: {wpID: nodeId}
+        state: {wpID: nodeId, isPM: true, }
       })
   }
 

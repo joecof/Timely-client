@@ -176,6 +176,7 @@ export default function WorkpackageCreate(props) {
     // console.log(data);
     // const response = agent.projects.createProject(data, token);
     // console.log(response);
+    console.log(inputValues);
   };
 
   const [activeStep, setActiveStep] = React.useState(0);
