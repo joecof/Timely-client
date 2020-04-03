@@ -1,7 +1,8 @@
 /**
  * Author: Joe, Kang
  * Version: 1
- * Desc: Create Current Timesheet Button Function
+ * Desc: Create Current Timesheet Button Function if employee does not have timesheet for current week
+ * Direct to curent week timesheet if it's already been created
  */
 import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -18,8 +19,10 @@ const defaultToolbarStyles = {
   },
 };
 
+// Current Timesheet Buttion Component
 class CurrentTimesheetToolBar extends React.Component {
 
+  // Constructor for props, states and functions
   constructor(props) {
     super(props); 
 
