@@ -78,8 +78,6 @@ class CreateEmployeeForm extends Component {
       supervisorFirstName:'',
       supervisorLastName: ''
     })
-
-
   }
 
   getSliderValue(value) {
