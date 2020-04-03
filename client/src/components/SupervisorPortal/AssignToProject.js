@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import { Paper, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import agent from '../../api/agent.js'
 
 /**
  * Material UI styling JSON object. 
@@ -45,9 +46,41 @@ const demoProject =
  */
 const AssignToProject = () => {
     const classes = useStyles();
+    const token = localStorage.getItem("token");
+
+    const [project, setProject] = React.useState();
+    const [employees, setEmployees] = React.useState();
 
     const [projectsData, setProjectsData] = React.useState();
     const [employeesData, setEmployeesData] = React.useState();
+
+    const fetchProjectsData = async () => {
+      const response = await agent.projects.getAllProjects(token);
+      return response;
+    }
+
+    const fetchEmployeesData = async () => {
+      const response = await agent.employeeInfo.getAllEmployees(token);
+      return response;
+    }
+
+    useEffect(() => {
+      async function fetchData() {
+        setProjectsData(await fetchProjectsData());
+        setEmployeesData(await fetchEmployeesData());
+      }
+      fetchData();
+    }, []);
+
+    const handleSubmit = async () => {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      for (var i = 0; i < employees.length; i++) {
+        project.employees.push(employees[i]);
+      }
+      const response = agent.projects.assignToProject(project, token);
+      console.log(response);
+    };
 
     return (
       <div className={classes.root}>
@@ -57,22 +90,22 @@ const AssignToProject = () => {
             <Divider className="supervisorMargin"/>
             <Autocomplete
                 className={classes.supervisorMargin}
-                options={demoProject}
-                getOptionLabel={option => option.number}
+                options={projectsData}
+                getOptionLabel={(option) => option.project_code}
                 style={{ width: 700 }}
-                onChange={(event, value) => setProjectsData(value)}
+                onChange={(event, value) => setProject(value)}
                 renderInput={params => <TextField {...params} variant="standard" label="Project ID" />}
             />
             <Autocomplete
                 multiple
                 className={classes.supervisorMargin}
-                options={demoEmployee}
-                getOptionLabel={option => option.name}
+                options={employeesData}
+                getOptionLabel={option => option.first_name + " " + option.last_name}
                 style={{ width: 700 }}
-                onChange={(event, value) => setEmployeesData(value)}
+                onChange={(event, value) => setEmployees(value)}
                 renderInput={params => <TextField {...params} variant="standard" label="Add employees" placeholder="Search for an employee" />}
             />
-            <Button variant="contained" color="primary" style={{ width: 700 }}>Assign</Button>
+            <Button variant="contained" color="primary" onClick={handleSubmit} style={{ width: 700 }}>Assign</Button>
           </Grid>
         </Paper>
       </div>
