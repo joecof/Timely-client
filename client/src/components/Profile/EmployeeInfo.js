@@ -7,8 +7,6 @@ import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 import FaceIcon from '@material-ui/icons/Face';
 
-
-
 /**
  * Material UI styling JSON object. 
  */
@@ -42,7 +40,16 @@ const styles = () => ({
     width: 135,
     height:100,
     marginTop: 15
-  }
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    margin: '0 auto'
+  },
+  faceIcon: {
+    width: '100%',
+    height: '100%'
+  },
 });
 
 /**
@@ -60,7 +67,9 @@ class EmployeeInfo extends Component {
       {
         loadedUser ? (
           <Grid item xs={2} className = {classes.container}>
-            <Avatar className = {classes.avatar} alt="employee photo" src="https://api4u.azurewebsites.net/images/flintstone/fred.png" />
+            <Avatar className = {classes.avatar} alt="employee photo" >
+              <FaceIcon className = {classes.faceIcon}/>
+            </Avatar>
             <div className = {classes.textContainer}>
               <Typography className = {classes.textHeader}>Employee ID</Typography>
               <TextField

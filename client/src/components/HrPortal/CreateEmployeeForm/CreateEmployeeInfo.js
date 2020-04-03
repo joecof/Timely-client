@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
+import FaceIcon from '@material-ui/icons/Face';
 import { Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
-import FaceIcon from '@material-ui/icons/Face';
 import Switch from '@material-ui/core/Switch';
+
 
 
 /**

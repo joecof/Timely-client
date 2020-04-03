@@ -8,6 +8,8 @@ import BasicInfo from './BasicInfo'
 import ChangePassword from './ChangePassword'
 import agent from '../../api/agent'
 import Alert from '../Alert/Alert'
+import Avatar from '@material-ui/core/Avatar';
+import FaceIcon from '@material-ui/icons/Face';
 const laborData = require('../HrPortal/CreateEmployeeForm/labor')
 
 const styles = () => ({

@@ -11,8 +11,6 @@ import agent from '../../../api/agent'
 require('datejs');
 const laborData = require('./labor')
 
-
-
 const styles = () => ({
   root: {
     flexGrow: 1,

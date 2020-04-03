@@ -2,50 +2,16 @@ import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import { withStyles } from '@material-ui/core/styles';
 import AssignToolBar from './AssignToolBar';
-
-
-/**
- * Material UI styling JSON object. 
- */
-const styles = () => ({
-
-  pictureUrl: {
-    width: 50
-  }
-});
+import agent from '../../api/agent.js'
 
 /**
  * Defines the columns for the HR portal. 
  */
 const columns = [
-  {name:"pictureUrl", label:"Photo", className:"column"},
   {name:"employeeId", label:"Employee ID", className:"column"},
   {name:"firstName", label:"First Name", className:"column"},
   {name:"lastName", label:"Last Name", className:"column"},
 ];
-
-/**
- * Demo data for now. 
- */
-const demoData = 
-    [{
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "1",
-      firstName: "John",
-      lastName: "Doe"
-    },
-    {
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "2",
-      firstName: "Jane",
-      lastName: "Kelly"
-    },
-    {
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "3",
-      firstName: "Henry",
-      lastName: "Peter"
-    }]
 
 /**
  * Author: John Ham 
@@ -59,8 +25,7 @@ class SupervisorPortal extends Component {
     super(props); 
 
     this.state = ({
-      data: [],
-      selectedEmployee: {employeeId: "", employeeName:""},
+      data: []
     })
 
     this.fetchData = this.fetchData.bind(this);
@@ -70,19 +35,33 @@ class SupervisorPortal extends Component {
     this.fetchData();
   }
 
-  //will use this function to fetch from backend soon 
-  fetchData() {
-    const { classes } = this.props; 
+  /**
+   * Gets a list of all the employess from the database.
+   */
+  async getEmployees() {
+    const token = localStorage.getItem("token");
+    const response = agent.employeeInfo.getAllEmployees(token);
+    return response;
+  }
+
+  /**
+   * Gets the necessary information from the employees' data and stores
+   * them in an array.
+   */
+  async fetchData() {
+    const { classes } = this.props;
+    console.log(this.props);
+
+    var employeeData = await this.getEmployees();
+    // console.log(employeeData);
   
     var resultData = [];
-    for (let i = 0; i < demoData.length; i++) {
-        let pictureUrl = demoData[i].pictureUrl;
-        let id = demoData[i].employeeId;
-        let firstName = demoData[i].firstName;
-        let lastName = demoData[i].lastName;
+    for (let i = 0; i < employeeData.length; i++) {
+        let id = employeeData[i].employee_id;
+        let firstName = employeeData[i].first_name;
+        let lastName = employeeData[i].last_name;
 
         let row = [];
-        row.push(<img src= {pictureUrl} className = {classes.pictureUrl} alt = {firstName}/>);
         row.push(id);
         row.push(firstName);
         row.push(lastName);
@@ -111,7 +90,7 @@ class SupervisorPortal extends Component {
               return <AssignToolBar history={this.props.history} />;
           },
           onRowClick: (rowData, rowState) => {
-              this.props.history.push(`/dashboard/supervisor/${rowData[1]}`);
+              this.props.history.push(`/dashboard/supervisor/${rowData[0]}`);
           },
         }
       return data;
@@ -131,4 +110,4 @@ class SupervisorPortal extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(SupervisorPortal);
+export default SupervisorPortal;

@@ -20,8 +20,7 @@ const styles = () => ({
  * Defines the columns for the HR portal. 
  */
 const columns = [
-  {name:"pictureUrl", label:"Photo", className:"column"},
-  {name:"employeeId", label:"Employee ID", className:"column"},
+  {name:"employeeId", label:"ID", className:"column"},
   {name:"firstName", label:"First Name", className:"column"},
   {name:"lastName", label:"Last Name", className:"column"},
   {name:"startDate", label:"Start Date", className:"column"},
@@ -55,13 +54,6 @@ const options = (props, handleCreate) => {
   return data;
 };
 
-/**
- * Demo data for now. 
- */
-const demoData = 
-  [{
-    pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-  }]
 
 /**
  * Author: Joe 
@@ -120,7 +112,6 @@ class HrPortal extends Component {
 
     var resultData = [];
     resp.forEach(async (item) => {
-      let pictureUrl = demoData[0].pictureUrl;
       let id = item.employee_id;
       let firstName = item.first_name;
       let lastName = item.last_name;
@@ -134,7 +125,6 @@ class HrPortal extends Component {
         (<p style = {{color: 'red' }}> Archived </p>)
 
       let row = [];
-      row.push(<img src= {pictureUrl} className = {classes.pictureUrl} alt = {firstName}/>);
       row.push(id);
       row.push(firstName);
       row.push(lastName);
