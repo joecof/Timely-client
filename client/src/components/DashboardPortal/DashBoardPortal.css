@@ -1,7 +1,14 @@
+/* Author: Kang Wang
+ * Version: 1
+ * Desc: Dashboard Portal CSS
+ */
+
+ /* CSS for timesheet container */
 .container {
     height: 495px;
     border: none;
 }
+
 /* hide scroll bar */
 ::-webkit-scrollbar {
     width: 0px;

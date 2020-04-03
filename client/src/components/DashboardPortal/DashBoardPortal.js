@@ -2,14 +2,12 @@
  * Author: Kang W
  * Version: 1.0
  * Description: Dashboard component, showing the current timesheet detail,
- * vacation days taken, sick days allocted, and some notifications regarding on the projets and wps
+ * vacation days taken, FlexTime allocted, and information regarding on the projets and wps
  */
 import React, { Component } from "react";
 import { Paper } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import agent from "../../api/agent";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import Grid from "@material-ui/core/Grid";
 import "react-circular-progressbar/dist/styles.css";
 import DashboardPortalProjInfo from "../DashboardPortalProjInfo/DashboardPortalProjInfo";
 import TimesheetDetail from "../TimesheetDetail/TimesheetDetail";
@@ -76,7 +74,7 @@ const styles = () => ({
   topContainer: {
     display: "flex"
   },
-  sickVancationContainer: {
+  flexVancationContainer: {
     display: "flex",
     margin: "22px 0 0 4px"
   },
@@ -88,9 +86,14 @@ const styles = () => ({
     fontSize: '18pt',
     borderRadius: '5px',
   },
+  projsInfo: {
+    textAlign: 'center'
+  }
 });
 
+// DashBoardPortal Component
 class DashBoardPortal extends Component {
+  // Constructor for props, states and functions
   constructor(props) {
     super(props);
 
@@ -100,16 +103,51 @@ class DashBoardPortal extends Component {
     };
 
     this.getProject = this.getProject.bind(this);
+    this.formatWeekEnding = this.formatWeekEnding.bind(this);
   }
 
-  // logged in user and the projects
-  getProject(projects) {
-    this.setState({
-      projects: projects
+  // converting weekending api from milliseconds to date format
+  formatWeekEnding(weekending) {
+    // static monthCharacter
+    const monthCharacter = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+      ];
+    var weekEnding_date = new Date(weekending);
+    var year = weekEnding_date.getFullYear();
+    var month = weekEnding_date.getMonth();
+    var day = ("0" + weekEnding_date.getDate()).slice(-2);
+    return (monthCharacter[month] + " " + day + ", " + year);
+  }
+
+  // getting logged in user and the projects
+  getProject(projects, loadedUser) {
+    // sorting projects by end_date
+    projects.sort(function(a,b){
+      return b.end_date - a.end_date;
     });
-    console.log(this.state.projects);
+    // setting the states
+    this.setState({
+      projects: projects,
+      loadedUser: loadedUser
+    });
+    // if user does not have any projects
+    if(this.state.projects.length == 0) {
+      document.getElementById("recentNewProjTitle").innerHTML = "You don't have any projects"
+    }
   }
-
+  
+  
   render() {
     const { classes } = this.props;
 
@@ -117,34 +155,26 @@ class DashBoardPortal extends Component {
       <div className={classes.root}>
         <div className={classes.topContainer}>
           <Paper className={classes.leftPaper} elevation={2}>
-            <div className={classes.projTitle}>Recent / New Projects</div>
-            <DashboardPortalProjInfo
-              projName="TJ100"
-              dueDate="December 20, 2020"
-              projManagerName="Dick Jones"
-            />
-            <DashboardPortalProjInfo
-              projName="TR311"
-              dueDate="March 20, 2021"
-              projManagerName="Slim Teddy"
-            />
-            <DashboardPortalProjInfo
-              projName="TJ100"
-              dueDate="December 20, 2020"
-              projManagerName="Dick Jones"
-            />
-            <DashboardPortalProjInfo
-              projName="TR311"
-              dueDate="March 20, 2021"
-              projManagerName="Slim Teddy"
-            />
+            {/* displaying the projects current employee is involved in */}
+            <div className={classes.projTitle} id="recentNewProjTitle">Recent / New Projects</div>
+              {this.state.projects.length == 0 ? "" : 
+                this.state.projects.map((proj, index) =>
+                  <DashboardPortalProjInfo key={proj.project_code} history={this.props.history}
+                    projName={proj.project_code}
+                    dueDate={this.formatWeekEnding(proj.end_date)}
+                    projManagerName={proj.project_manager_id.first_name + " " + proj.project_manager_id.last_name}
+                  />
+                )
+              }
           </Paper>
           <div>
+            {/* timesheet for current week */}
             <div id="timesheetDetailContainer" className={classes.timesheetDetailContainer}>
               <TimesheetDetail fetchProject={this.getProject} history={this.props.history} dashboardTimesheet={true} userId={this.props.match.params.id} token={this.props.token}/>
             </div>
-            <div className={classes.sickVancationContainer}>
+            <div className={classes.flexVancationContainer}>
               <Paper className={classes.rightBottomLeftPaper} elevation={2}>
+                {/* flex time allocated */}
                 <div className={classes.title}>Flextime</div>
                 <hr className={classes.seperator} />
                 <CircularProgressbar
@@ -166,6 +196,7 @@ class DashBoardPortal extends Component {
                 />
               </Paper>
               <Paper className={classes.rightBottomRightPaper} elevation={2}>
+                {/* vacation days taken */}
                 <div className={classes.title}>Vacation Days</div>
                 <hr className={classes.seperator} />
                 <CircularProgressbar

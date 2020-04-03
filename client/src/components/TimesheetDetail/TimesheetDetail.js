@@ -1,7 +1,7 @@
 /**
  * Author: Kang Wang
  * Version: 1
- * Desc: Timesheet Detail Component after user click on a row on Timesheet
+ * Desc: Timesheet Detail Component displaying timesheet details after user click on a row on Timesheet Portal lists
  */
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
@@ -40,6 +40,7 @@ const timesheetStyle = theme => ({
 // TimesheetDetail Component
 class TimesheetDetail extends Component {
 
+  // Constructor for props, states and functions
   constructor(props) {
     super(props);
 
@@ -99,10 +100,10 @@ class TimesheetDetail extends Component {
           token = this.props.token;
           // fetching projects
           const projects = await agent.projects.getProjectsForUser(userId, token);
-          // returning projects to dashboard
-          this.props.fetchProject(projects);
           // fetching employee
           const response = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
+          // returning projects to dashboard
+          this.props.fetchProject(projects, response);
           this.setState({
             loadUser: response
           });
