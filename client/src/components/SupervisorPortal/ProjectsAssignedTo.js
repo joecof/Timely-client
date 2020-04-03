@@ -39,10 +39,7 @@ class ProjectsAssignedTo extends Component {
    */
   async getProjects() {
     const token = localStorage.getItem("token");
-    console.log(token);
-    console.log("ID : " + this.props.match.params.id);
     const response = agent.projects.getProjectsForUser(this.props.match.params.id, token);
-    console.log(response);
     return response;
   }
 

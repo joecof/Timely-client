@@ -44,7 +44,7 @@ const demoProject =
  * Description: Supervisor portal component. 
  * Allows a supervisor to select employees and assign them to a project.  
  */
-const AssignToProject = () => {
+const AssignToProject = (props) => {
     const classes = useStyles();
     const token = localStorage.getItem("token");
 
@@ -60,7 +60,8 @@ const AssignToProject = () => {
     }
 
     const fetchEmployeesData = async () => {
-      const response = await agent.employeeInfo.getAllEmployees(token);
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      const response = await agent.employeeInfo.getEmployeesBySupervisor(user.supervisor_id, token);
       return response;
     }
 
