@@ -99,24 +99,15 @@ class DashBoardPortal extends Component {
       projects: []
     };
 
-    this.fetchData = this.fetchData.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchData();
+    this.getProject = this.getProject.bind(this);
   }
 
   // logged in user and the projects
-  async fetchData() {
-    // fetch logined user
-    // const currentUserId = this.props.match.params.id;
-    // const token = this.props.token;
-    // const response = await agent.employeeInfo.getCurrentUser(currentUserId, token);
-    // this.setState({
-    //   loadedUser: response
-    // });
-    // console.log(this.state.loadedUser);
-    // fetch projects
+  getProject(projects) {
+    this.setState({
+      projects: projects
+    });
+    console.log(this.state.projects);
   }
 
   render() {
@@ -150,7 +141,7 @@ class DashBoardPortal extends Component {
           </Paper>
           <div>
             <div id="timesheetDetailContainer" className={classes.timesheetDetailContainer}>
-              <TimesheetDetail history={this.props.history} dashboardTimesheet={true} userId={this.props.match.params.id} token={this.props.token}/>
+              <TimesheetDetail fetchProject={this.getProject} history={this.props.history} dashboardTimesheet={true} userId={this.props.match.params.id} token={this.props.token}/>
             </div>
             <div className={classes.sickVancationContainer}>
               <Paper className={classes.rightBottomLeftPaper} elevation={2}>
