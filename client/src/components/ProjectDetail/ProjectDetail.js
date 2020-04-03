@@ -152,7 +152,7 @@ class ProjectDetail extends React.Component {
                   variant="contained"
                   color="primary"
                   component={Link}
-                  to="/createWorkpackage"
+                  to={{pathname:"/createWorkpackage", project: this.state.project, wpList: this.state.wpList}}
                   style={{ marginRight: "5%" }}
                 >
                   <b>+ Create Work Package</b>
