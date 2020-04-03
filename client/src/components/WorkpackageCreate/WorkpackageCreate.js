@@ -129,7 +129,10 @@ export default function WorkpackageCreate(props) {
         id = parseInt(value)*10 + 1
       }
       console.log(id);
-      setInputValues({ ...inputValues, wpID: id + inputValues.wpID });
+      var newWPID = id;
+      newWPID += inputValues.checkedLower ? 'L' : '';
+      console.log(newWPID)
+      setInputValues({ ...inputValues, wpID: newWPID, wpParent: value });
     }
   };
 
