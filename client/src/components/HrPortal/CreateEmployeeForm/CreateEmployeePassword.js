@@ -31,9 +31,9 @@ const styles = () => ({
 /**
  * Author: Joe 
  * Version: 1.0 
- * Description: ChangePassword component. 
+ * Description: CreateEmployeePassword component. 
  */
-class ChangePassword extends Component {
+class CreateEmployeePassword extends Component {
 
   constructor(props) {
     super(props); 
@@ -46,19 +46,7 @@ class ChangePassword extends Component {
       <>
         <Grid item xs={4} className = {classes.container}>
           <div className = {classes.field}>
-            <Typography className = {classes.title} variant="h6"> Change Password </Typography>
-            <TextField
-              className = {classes.input}
-              name="oldPassword"
-              type="password"
-              helperText="Old Password"
-              fullWidth
-              onChange = {(e) => this.props.formHandler(e)}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+            <Typography className = {classes.title} variant="h6"> Password </Typography>
             <TextField
               className = {classes.input}
               name="newPassword"
@@ -93,5 +81,5 @@ class ChangePassword extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(ChangePassword);
+export default withStyles(styles, { withTheme: true })(CreateEmployeePassword);
 

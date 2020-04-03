@@ -3,8 +3,9 @@ import MUIDatatable from "mui-datatables";
 import { withStyles } from '@material-ui/core/styles';
 import MoreVertOption from './MoreVertOption'
 import CustomToolbar from './CustomToolBar';
-
-
+import agent from '../../api/agent'
+import CircularProgress from '@material-ui/core/CircularProgress';
+require('datejs');
 
 /**
  * Material UI styling JSON object. 
@@ -23,6 +24,8 @@ const columns = [
   {name:"employeeId", label:"Employee ID", className:"column"},
   {name:"firstName", label:"First Name", className:"column"},
   {name:"lastName", label:"Last Name", className:"column"},
+  {name:"startDate", label:"Start Date", className:"column"},
+  {name:"endDate", label:"End Date", className:"column"},
   {name:"laborGrade", label:"Labor Grade", className:"column"},
   {name:"supervisor", label:"Supervisor", className:"column"},
   {name:"edit", label:"Edit", className:"column"},
@@ -31,8 +34,8 @@ const columns = [
 /**
  * Configuration object for the MUI data table. 
  */
-const options = (props) => {
-  const { loadedUser, history } = props; 
+const options = (props, handleCreate) => {
+  const { history } = props; 
 
   const data = {
     selectableRows: false,
@@ -41,7 +44,12 @@ const options = (props) => {
     download: false,
     filter: false,
     customToolbar: () => {
-      return <CustomToolbar history = {history} />;
+      return <CustomToolbar history = {history} handleCreate = {handleCreate}/>;
+    },
+    textLabels: {
+      body: {
+          noMatch: <CircularProgress />       
+      },
     }
   }
   return data;
@@ -51,30 +59,9 @@ const options = (props) => {
  * Demo data for now. 
  */
 const demoData = 
-    [{
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "1",
-      firstName: "John",
-      lastName: "Doe", 
-      laborGrade: "A",
-      supervisor: "Bruce Link"
-    },
-    {
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "2",
-      firstName: "Jane",
-      lastName: "Kelly", 
-      laborGrade: "A",
-      supervisor: "Bruce Link"
-    },
-    {
-      pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-      employeeId: "3",
-      firstName: "Henry",
-      lastName: "Peter", 
-      laborGrade: "A",
-      supervisor: "Bruce Link"
-    }]
+  [{
+    pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
+  }]
 
 /**
  * Author: Joe 
@@ -87,39 +74,83 @@ class HrPortal extends Component {
     super(props); 
 
     this.state = ({
-      data: []
+      data: [],
+      token: null
     })
 
     this.fetchData = this.fetchData.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
+    this.handleArchive = this.handleArchive.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+
   }
 
   componentDidMount() {
-    this.fetchData();
+    const token = localStorage.getItem("token");
+
+    this.setState({
+      token: token
+    })
+
+    this.fetchData(token);
   }
 
-  //will use this function to fetch from backend soon 
-  fetchData() {
-    const { classes } = this.props; 
-  
-    var resultData = [];
-    for (let i = 0; i < demoData.length; i++) {
-        let pictureUrl = demoData[i].pictureUrl;
-        let id = demoData[i].employeeId;
-        let firstName = demoData[i].firstName;
-        let lastName = demoData[i].lastName;
-        let laborGrade = demoData[i].laborGrade;
-        let supervisor = demoData[i].supervisor;
+  handleCreate = () => {
+    const { history } = this.props;
+    history.push(`/dashboard/hr/create`);
+  }
 
-        let row = [];
-        row.push(<img src= {pictureUrl} className = {classes.pictureUrl} alt = {firstName}/>);
-        row.push(id);
-        row.push(firstName);
-        row.push(lastName);
-        row.push(laborGrade);
-        row.push(supervisor);
-        row.push(<MoreVertOption link={`/dashboard/hr/${id}`}/>);
-        resultData.push(row);
-    }
+  handleArchive = async (id, body) => {
+    const date = new Date().getTime();
+    body.end_date = date;
+    await agent.employeeInfo.updateEmployee(id, this.state.token, body);
+    this.fetchData(this.state.token);
+  }
+
+  handleOpen = async (id, body) => {
+    body.end_date = null;
+    await agent.employeeInfo.updateEmployee(id, this.state.token, body);
+    this.fetchData(this.state.token);
+  }
+
+
+  async fetchData(token) {
+    const { classes } = this.props; 
+    const resp = await agent.employeeInfo.getAllEmployees(token);
+
+    var resultData = [];
+    resp.forEach(async (item) => {
+      let pictureUrl = demoData[0].pictureUrl;
+      let id = item.employee_id;
+      let firstName = item.first_name;
+      let lastName = item.last_name;
+      let startDate = new Date(item.start_date).toString("MMM dd");
+      let endDate = item.end_date;
+      let laborGrade = item.labor_grade_id.labor_grade_id
+      let supervisor = item.supervisor_id;
+
+      let dateEnd = endDate == null ? 
+        (<p style = {{color: 'green' }} > Currently Employed </p>) : 
+        (<p style = {{color: 'red' }}> Archived </p>)
+
+      let row = [];
+      row.push(<img src= {pictureUrl} className = {classes.pictureUrl} alt = {firstName}/>);
+      row.push(id);
+      row.push(firstName);
+      row.push(lastName);
+      row.push(startDate);
+      row.push(dateEnd);
+      row.push(laborGrade);
+      row.push(supervisor);
+      row.push(<MoreVertOption 
+        link={`/dashboard/hr/${id}`} 
+        id = {id} 
+        employee = {item} 
+        handleArchive = {this.handleArchive} 
+        handleOpen = {this.handleOpen}  
+        />);
+      resultData.push(row);
+    })
     
     this.setState({
       data: resultData
@@ -127,12 +158,13 @@ class HrPortal extends Component {
   } 
 
   render() {
+
     return (
       <>
       <MUIDatatable 
         className="datatable"
         title={<h1> Manage Employees</h1>}
-        options={options(this.props)}
+        options={options(this.props, this.handleCreate)}
         columns={columns}
         data={this.state.data}
       />

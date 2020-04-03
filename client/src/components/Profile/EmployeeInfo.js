@@ -3,6 +3,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import { Typography } from '@material-ui/core';
+import Chip from '@material-ui/core/Chip';
+import TextField from '@material-ui/core/TextField';
+import FaceIcon from '@material-ui/icons/Face';
+
+
 
 /**
  * Material UI styling JSON object. 
@@ -28,6 +33,15 @@ const styles = () => ({
   },
   text: {
     borderBottom: '1px solid lightgray'
+  },
+  chip: {
+    margin: 5
+  }, 
+  textContainerChips: {
+    margin: '0 auto', 
+    width: 135,
+    height:100,
+    marginTop: 15
   }
 });
 
@@ -37,17 +51,40 @@ const styles = () => ({
  * Description: EmployeeInfo component. 
  */
 class EmployeeInfo extends Component {
+
   render() {
-    const { classes } = this.props;
+    const { classes, loadedUser } = this.props;
 
     return (
-      <Grid item xs={2} className = {classes.container}>
-          <Avatar className = {classes.avatar} alt="employee photo" src="https://api4u.azurewebsites.net/images/flintstone/fred.png" />
-          <div className = {classes.textContainer}>
-            <Typography className = {classes.textHeader}>Employee ID</Typography>
-            <Typography className = {classes.text}> {this.props.loadedUser.employee_id}</Typography>
-          </div>
-      </Grid>
+      <>
+      {
+        loadedUser ? (
+          <Grid item xs={2} className = {classes.container}>
+            <Avatar className = {classes.avatar} alt="employee photo" src="https://api4u.azurewebsites.net/images/flintstone/fred.png" />
+            <div className = {classes.textContainer}>
+              <Typography className = {classes.textHeader}>Employee ID</Typography>
+              <TextField
+                  className = {classes.text}
+                  name="employeeId"
+                  onChange = {(e) => this.props.formHandler(e)}
+                  disabled = {!this.props.hr}
+                  defaultValue =  {loadedUser.employee_id}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}/>
+            </div>
+            <div className = {classes.textContainerChips}> 
+            { this.props.isHr ? <Chip className = {classes.chip} icon={<FaceIcon />} label="HR" /> : null }
+            { this.props.isAdmin ? <Chip className = {classes.chip} icon={<FaceIcon />} label="Admin" /> : null }
+            { this.props.isSuperTimesheetApprover ? <Chip className = {classes.chip} icon={<FaceIcon />} label="Super Timesheet Approver" /> : null }
+            </div>
+          </Grid>)
+          :
+          null
+      }
+      </>
     )
   }
 }
