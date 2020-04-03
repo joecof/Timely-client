@@ -1,7 +1,7 @@
 /**
  * Author: Kang W
  * Version: 1.0
- * Description: Project Information on Dashboard
+ * Description: Project Information Component on Dashboard Portal
  */
 
 import React, { Component } from "react";
@@ -53,16 +53,29 @@ const styles = () => ({
   }
 });
 
+// DshboardPortalProjInfo Component
 class DashboardProtalProjInfo extends Component {
+
+  // Constructor for props, states and functions
   constructor(props) {
     super(props);
+
+    this.gotoProjectDetail = this.gotoProjectDetail.bind(this);
+  }
+
+  // go to project detail when employee click on the project
+  gotoProjectDetail() {
+    this.props.history.push({
+      pathname: `/projectDetails`,
+      state: {projectID: this.props.projName}
+    })
   }
 
   render() {
     const { classes } = this.props;
 
     return (
-      <Paper className={classes.projDetail} elevation={2}>
+      <Paper className={classes.projDetail} elevation={2}  onClick={() => this.gotoProjectDetail()}>
         <div className={classes.projName}>{this.props.projName}</div>
         <div className={classes.dueDateRow}>
           <div className={classes.dueDate}>Due Date:</div>
