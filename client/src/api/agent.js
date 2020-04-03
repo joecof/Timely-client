@@ -40,12 +40,15 @@ const requests = {
 
 const employeeInfo = {
   getCurrentUser: (id, token) => requests.get(`/emps/${id}`, token), 
-  getAllEmployees: (token) => requests.get(`/emps`, token)
+  getAllEmployees: (token) => requests.get(`/emps`, token),
+  getEmployeesBySupervisor: (id, token) => requests.get(`/emps/supervisor/${id}`, token)
 }
 
 const projects = {
+  getAllProjects: (token) => requests.get(`/projects`, token),
   getProjectsForUser: (id, token) => requests.get(`/projects/emp/${id}`, token),
   createProject: (data, token) => requests.post(`/projects/createProject`, token, data),
+  assignToProject: (project, token) => requests.post(`/projects/assignToProject/`, token, project),
   getDetailsById: (id, token) => requests.get(`/projects/projectDetails/${id}`, token),
   getById: (id, token) => requests.get(`/projects/${id}`, token)
 }
