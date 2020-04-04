@@ -9,6 +9,7 @@ import { Paper } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import logo from "../../images/logo.png";
 import { yellow } from "@material-ui/core/colors";
+import FaceIcon from '@material-ui/icons/Face';
 /**
  * Material UI styling JSON object.
  * @param {JSON} theme
@@ -84,7 +85,7 @@ class DashboardProtalProjInfo extends Component {
           </div>
         </div>
         <div className={classes.projManagerRow}>
-          <img className={classes.circleStyle} src={logo} alt="Logo" />
+          <FaceIcon className={classes.circleStyle}/>
           <div className={classes.projManagerName}>
             {this.props.projManagerName}
           </div>
