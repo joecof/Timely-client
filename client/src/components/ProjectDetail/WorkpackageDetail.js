@@ -8,6 +8,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Modal from "./Modal.js";
 import WorkpackageList from "./WorkpackageList";
 import WorkpackageTree from "./WorkpackageTree";
+import EmpHours from '../Charts/EmpHours';
 import { Link } from "react-router-dom";
 import "./ProjectDetail.css";
 
@@ -22,10 +23,14 @@ class WorkpackageDetail extends React.Component {
     this.state = {
       wp: this.props.location.state.wp,
       isProjManager: this.props.location.state.isPM,
+      empHoursX: [],
+      empHoursY: [],
+      week: 0,
       openModal: false
     };
 
     this.openModal = this.openModal.bind(this);
+    this.calcValuesEmpHours = this.calcValuesEmpHours.bind(this);
   }
 
   openModal() {
@@ -35,6 +40,12 @@ class WorkpackageDetail extends React.Component {
   }
 
   async componentDidMount() {
+    //need to change this later
+    await this.calcValuesEmpHours();
+    
+  }
+
+  async calcValuesEmpHours() {
     const token = localStorage.getItem("token");
     var emps = [];
     this.state.wp.employees.forEach(x => {
@@ -45,6 +56,19 @@ class WorkpackageDetail extends React.Component {
       emps.toString(),
       token
     );
+
+    var date = new Date();
+    var week = date.getWeek();
+    if (date.getDay() > 0 && date.getDay() < 6) {
+      week--;
+    }
+    
+    this.setState({
+      empHoursX: this.state.wp.employees,
+      week: week,
+      empHoursY: response
+    })
+
     console.log(response);
   }
 
@@ -117,8 +141,10 @@ class WorkpackageDetail extends React.Component {
               </Grid>
             </>
         </Grid>
-        {this.state.isProjManager && (<></>)
-        }
+        {(this.state.isProjManager && this.state.empHoursX.length > 0) && (
+          //NOTE: chagne week
+          <EmpHours EmpsX={this.state.empHoursX} week={50} EmpsY={this.state.empHoursY} wp={this.state.wp} />
+        )}
       </div>
     );
   }
