@@ -22,11 +22,6 @@ class CustomToolbar extends React.Component {
   /**
    * Will be used to add an employee
    */
-  handleClick = () => {
-    const { history } = this.props;
-    history.push(`/dashboard/profile/`);
-  }
-
   render() {
     const { classes } = this.props;
 
@@ -35,7 +30,7 @@ class CustomToolbar extends React.Component {
         <Tooltip title={"Add an Employee"}>
           <Button 
             className={classes.iconButton} 
-            onClick={this.handleClick} 
+            onClick={this.props.handleCreate} 
             color='primary' 
             variant='contained'> 
               Create 
