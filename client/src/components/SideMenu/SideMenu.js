@@ -75,7 +75,7 @@ class SideMenu extends Component {
             })
           }}
           >
-          <MenuItem isMenuLogo = {true} />
+          <MenuItem isMenuLogo = {true} link = {`/dashboard/${loadedUser.employee_id}`}/>
           <Divider className={classes.divider} />
           <ExpansionMenu loadedUser = {this.props.loadedUser} resize = {this.props.resize} />
           <Divider className={classes.divider}/>

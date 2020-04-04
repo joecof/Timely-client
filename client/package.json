@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "cross-env REACT_APP_NODE_ENV=deployment react-scripts start",
-    "build": "react-scripts build && mv build view",
+    "build": "cross-env REACT_APP_NODE_ENV=production react-scripts build && mv build view",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
