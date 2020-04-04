@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import { withStyles } from '@material-ui/core/styles';
+import RemoveToolBar from './RemoveToolBar';
 import AssignToolBar from './AssignToolBar';
 import agent from '../../api/agent.js'
 
@@ -87,7 +88,7 @@ class SupervisorPortal extends Component {
           download: false,
           filter: false,
           customToolbar: () => {
-              return <AssignToolBar history={this.props.history} />;
+              return <><RemoveToolBar history={this.props.history}/><AssignToolBar history={this.props.history}/></>;
           },
           onRowClick: (rowData, rowState) => {
               this.props.history.push(`/dashboard/supervisor/${rowData[0]}`);
