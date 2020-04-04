@@ -8,10 +8,10 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ProjectInfo from "./ProjectInfo";
-import ProjectDesc from "./ProjectDesc";
-import Budget from "./Budget";
-import Schedule from "./Schedule";
-import agent from "../../api/agent.js";
+import Desc from "../CreationWizard/Desc";
+import Budget from "../CreationWizard/Budget";
+import Schedule from "../CreationWizard/Schedule";
+import agent from '../../api/agent.js'
 import "./ProjectCreate.css";
 
 /**
@@ -87,8 +87,8 @@ function getStepContent(
       );
     case 1:
       return (
-        <ProjectDesc
-          projectDesc={inputValues.projectDesc}
+        <Desc
+          Desc={inputValues.projectDesc}
           handleChange={handleOnChange}
         />
       );
@@ -111,7 +111,7 @@ function getStepContent(
 export default function ProjectCreate() {
   const classes = useStyles();
 
-  const user = JSON.parse(localStorage.getItem("User"));
+  const user = JSON.parse(sessionStorage.getItem('user'));
 
   const [inputValues, setInputValues] = useState({
     projectID: "",
@@ -157,7 +157,7 @@ export default function ProjectCreate() {
       ]
     };
     console.log(data);
-    const response = agent.projects.createProject(data, token);
+    const response = await agent.projects.createProject(data, token);
     console.log(response);
   };
 
