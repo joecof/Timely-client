@@ -18,6 +18,7 @@ const SelectEmployees = props => {
       options={props.project.employees}
       onChange={(e, v) => props.handleTagsChange(v)}
       getOptionLabel={(option) => option.first_name + " " + option.last_name + " (" + option.labor_grade_id.labor_grade_id + ")"}
+      disabled={props.isDisabled}
       renderInput={params => (
         <TextField
           {...params}
