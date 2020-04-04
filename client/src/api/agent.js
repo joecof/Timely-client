@@ -4,15 +4,11 @@ import axios from 'axios';
  * Checks the environment variable at npm start or npm build. Depending on that variable it will use 
  * a different base url. 
  */
+axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL
+
 if(process.env.REACT_APP_NODE_ENV == "production") {
   axios.defaults.baseURL = process.env.REACT_APP_PRODUCTION_BASE_URL
-} else if (process.env.REACT_APP_NODE_ENV == "development") {
-  axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL
-}
-
-console.log(process.env);
-
-axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL
+} 
 
 /**
  * Contains the data of the response body 

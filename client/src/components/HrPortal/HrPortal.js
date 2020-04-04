@@ -5,6 +5,7 @@ import MoreVertOption from './MoreVertOption'
 import CustomToolbar from './CustomToolBar';
 import agent from '../../api/agent'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Face from '../Icon/Face'
 require('datejs');
 
 /**
@@ -20,12 +21,14 @@ const styles = () => ({
  * Defines the columns for the HR portal. 
  */
 const columns = [
+  {name:"photo", label:"Photo", className:"column"},
   {name:"employeeId", label:"ID", className:"column"},
   {name:"firstName", label:"First Name", className:"column"},
   {name:"lastName", label:"Last Name", className:"column"},
   {name:"startDate", label:"Start Date", className:"column"},
   {name:"endDate", label:"End Date", className:"column"},
   {name:"laborGrade", label:"Labor Grade", className:"column"},
+  {name:"vacation", label:"Vacation Days", className:"column"},
   {name:"supervisor", label:"Supervisor", className:"column"},
   {name:"edit", label:"Edit", className:"column"},
 ];
@@ -105,7 +108,6 @@ class HrPortal extends Component {
     this.fetchData(this.state.token);
   }
 
-
   async fetchData(token) {
     const { classes } = this.props; 
     const resp = await agent.employeeInfo.getAllEmployees(token);
@@ -118,6 +120,7 @@ class HrPortal extends Component {
       let startDate = new Date(item.start_date).toString("MMM dd");
       let endDate = item.end_date;
       let laborGrade = item.labor_grade_id.labor_grade_id
+      let vacation = item.vacation;
       let supervisor = item.supervisor_id;
 
       let dateEnd = endDate == null ? 
@@ -125,12 +128,14 @@ class HrPortal extends Component {
         (<p style = {{color: 'red' }}> Archived </p>)
 
       let row = [];
+      row.push(<Face  avatar = {{width: 25, height: 25, margin: '0 auto'}}/>)
       row.push(id);
       row.push(firstName);
       row.push(lastName);
       row.push(startDate);
       row.push(dateEnd);
       row.push(laborGrade);
+      row.push(vacation);
       row.push(supervisor);
       row.push(<MoreVertOption 
         link={`/dashboard/hr/${id}`} 
