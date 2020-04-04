@@ -14,9 +14,9 @@ import TableRow from "@material-ui/core/TableRow";
 import { Button } from '@material-ui/core/';
 import './TimesheetDetail.css';
 import agent from "../../api/agent";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddIcon from "@material-ui/icons/Add";
 
-// testing id
-let idTEST = 1;
 // timesheet table css
 const timesheetStyle = theme => ({
     table: {
@@ -32,7 +32,12 @@ const timesheetStyle = theme => ({
       fontWeight: 'bold',
       fontSize: '10pt !important'
     },
-    button: {
+    updateSubmitButton: {
+      position: 'absolute',
+      margin: '0 0 0 780px'
+    },
+    submitButton: {
+      marginLeft: 25
     }
 });
 
@@ -52,10 +57,14 @@ class TimesheetDetail extends Component {
       totalOver: {},
       totalOverDays: [],
       loadedTimesheet: {},
+      isEditable: {},
+      overtime: 0,
+      flextime: 0,
     };
-
+    
+    // functions
     this.fetchTimesheetRows = this.fetchTimesheetRows.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.addRow = this.addRow.bind(this);
     this.totalHourRow = this.totalHourRow.bind(this);
     this.totalSat = this.totalSat.bind(this);
     this.totalSun = this.totalSun.bind(this);
@@ -68,14 +77,29 @@ class TimesheetDetail extends Component {
     this.ccyFormat = this.ccyFormat.bind(this);
     this.formatWeekEnding = this.formatWeekEnding.bind(this);
     this.gotoTimesheetDetail = this.gotoTimesheetDetail.bind(this);
+    this.isEditable = this.isEditable.bind(this);
+    this.deleteRow = this.deleteRow.bind(this);
+    this.updateTS = this.updateTS.bind(this);
+    this.submitTS = this.submitTS.bind(this);
   }
 
   // onLoad function, where i will be fetch data
   componentDidMount(){
     this.fetchTimesheetRows();
   }
-  
 
+  // checking the status of the timesheet to determine if its editable
+  isEditable() {
+    const thisStatus = this.state.loadedTimesheet.status;
+    let isEditable = false;
+    if((thisStatus == "REJECTED" || thisStatus == "InProgress") && this.props.dashboardTimesheet == undefined) {
+      isEditable = true;
+    }
+    // setting the state
+    this.setState({
+      isEditable: isEditable
+    })
+  }
   // Fetching Timesheet Rows
   async fetchTimesheetRows() {
     // check if its dash board timesheet
@@ -83,7 +107,7 @@ class TimesheetDetail extends Component {
     var userId, token, tsId;
 
     // setting userId token and tsId for fetching
-    if(ifDashboardTs == null) {
+    if(ifDashboardTs == undefined) {
       var user = JSON.parse(sessionStorage.getItem('user'));
       userId = user.employee_id;
       token = localStorage.getItem("token");
@@ -144,10 +168,19 @@ class TimesheetDetail extends Component {
     // fetching timesheetRow
     if(userId != null && token != null && tsId != null) {
       const response = await agent.timesheetsInfo.getTimesheetById(userId, token, tsId);
+      // getting overtime and flexTime
+      let loadedTimesheetattribute1 = (response.attribute1==null ? "0|0" : response.attribute1);
+      const res = loadedTimesheetattribute1.split("|");
+      const ovTime = parseFloat(res[0]);
+      const flTime = parseFloat(res[1]); 
       // fetched timesheet
       this.setState({
-        loadedTimesheet: response
+        loadedTimesheet: response,
+        overtime: ovTime,
+        flextime: flTime
       });
+      // setting if the timesheet is editable
+      this.isEditable();
       if(response.details.length != 0) {
         const timesheetDetails  = response.details;
         // fetching timesheetRows
@@ -185,7 +218,7 @@ class TimesheetDetail extends Component {
           eachTimesheetRow.push(proj_wp);
           timesheetRowList.push(eachTimesheetRow);
         }
-
+        // setting the state
         this.setState({
           timesheetrows: timesheetRowList
         });
@@ -282,10 +315,33 @@ class TimesheetDetail extends Component {
   }
 
   // handle add row button click
-  handleClick = () => {
-    console.log("create timesheet row");
+  addRow = () => {
+    var curRow = this.state.timesheetrows;
+    let eachTimesheetRow = [];
+    eachTimesheetRow.push("");
+    eachTimesheetRow.push("");
+    eachTimesheetRow.push("");
+    eachTimesheetRow.push(0.0);
+    eachTimesheetRow.push(0.0);
+    eachTimesheetRow.push(0.0);
+    eachTimesheetRow.push(0.0);
+    eachTimesheetRow.push(0.0);
+    eachTimesheetRow.push(0.0);
+    eachTimesheetRow.push(0.0);
+    eachTimesheetRow.push(0.0);
+    eachTimesheetRow.push("");
+    eachTimesheetRow.push("PJT19257_2");
+    curRow.push(eachTimesheetRow);
+    this.setState({
+      timesheetrows: curRow
+    })
   } 
-
+  
+  // delelte Row
+  deleteRow = (index) => {
+    let datas = this.state.timesheetrows.filter((e, i) => i !== index);
+    this.setState({ timesheetrows : datas });
+  }
   // converting weekending api from milliseconds to date format
   formatWeekEnding(weekending) {
     var weekEnding_date = new Date(weekending);
@@ -293,6 +349,16 @@ class TimesheetDetail extends Component {
     var month = ("0" + (weekEnding_date.getMonth() + 1)).slice(-2)
     var day = ("0" + weekEnding_date.getDate()).slice(-2)  ;
     return (year + "-" + month + "-" + day);
+  }
+
+  // updating timesheet
+  updateTS = () => {
+    console.log("Updating Timesheet");
+  }
+
+  // updating timesheet
+  submitTS = () => {
+    console.log("Submitting Timesheet");
   }
 
   // go to timesheetdetail if on dashboard
@@ -307,19 +373,20 @@ class TimesheetDetail extends Component {
   // timesheet row
   timesheetRow = (row, i) => 
     <TableRow key={i}>
-      <TableCell scope="row">
+      <TableCell scope="row" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>
           {row[1]}
       </TableCell>
-      <TableCell align="right">{row[2]}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{row[2]}</TableCell>
       <TableCell align="right">{this.ccyFormat(row[3])}</TableCell>
-      <TableCell align="right">{this.ccyFormat(row[4])}</TableCell>
-      <TableCell align="right">{this.ccyFormat(row[5])}</TableCell>
-      <TableCell align="right">{this.ccyFormat(row[6])}</TableCell>
-      <TableCell align="right">{this.ccyFormat(row[7])}</TableCell>
-      <TableCell align="right">{this.ccyFormat(row[8])}</TableCell>
-      <TableCell align="right">{this.ccyFormat(row[9])}</TableCell>
-      <TableCell align="right">{this.ccyFormat(row[10])}</TableCell>
-      <TableCell align="right">{row[11]}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[4])}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[5])}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[6])}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[7])}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[8])}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[9])}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[10])}</TableCell>
+      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{row[11]}</TableCell>
+      {!this.state.isEditable ? null : <TableCell align="right" ><DeleteIcon onClick={() => { this.deleteRow(i) }} /></TableCell>}
     </TableRow>;
 
   render() {
@@ -354,14 +421,11 @@ class TimesheetDetail extends Component {
               {this.formatWeekEnding(this.state.loadedTimesheet.week_ending)}
               </div>
             </div>
-            {this.props.dashboardTimesheet ? null :
-              <Button
-                className={classes.button}
-                onClick={this.handleClick} 
+            {!this.state.isEditable ? null :
+              <AddIcon fontSize='large'
+                onClick={this.addRow} 
                 color='primary' 
-                variant='contained'> 
-                  Add Row
-              </Button> 
+                variant='contained' />
             }
           </div>
           {this.props.dashboardTimesheet ?  
@@ -416,16 +480,23 @@ class TimesheetDetail extends Component {
               {/* overtime span column */}
               <TableRow>
                 <TableCell colSpan={2} className={classes.tableTitle}>Overtime</TableCell>
-                <TableCell align="right">{this.ccyFormat(20)}</TableCell>
+                <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(this.state.overtime)}</TableCell>
               </TableRow>
               {/* flex span column */}
               <TableRow>
                 <TableCell colSpan={2} className={classes.tableTitle}>Flextime</TableCell>
-                <TableCell align="right">{this.ccyFormat(20)}</TableCell>
+                <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(this.state.flextime)}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
+        {/* update and submite button */}
+        {!this.state.isEditable ? null :
+                <div className={classes.updateSubmitButton}>
+                  <Button onClick={this.updateTS} color='primary'variant='contained'>Update</Button>
+                  <Button className={classes.submitButton}onClick={this.submitTS} color='secondary'variant='contained'>Submit</Button>
+                </div>
+              }
       </div>
     )
   }
