@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './Login.css';
-import agent from '../../api/agent.js';
-
 
 export default class Login extends Component {
 
@@ -9,13 +7,14 @@ export default class Login extends Component {
     super(props); 
 
     this.state = ({
-      employee_zid: null,
+      employee_id: null,
       password: '',
     })
     this.updateInputValue = this.updateInputValue.bind(this);
   }
     
   updateInputValue(e) {
+    e.preventDefault();
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -56,7 +55,6 @@ export default class Login extends Component {
               />
             </div>
             <div className="loginBsection">
-              <a href="/timesheet" className="forgetPwd">Forgot Password?</a>
               <button className="loginBtn" type="submit"> Login </button>
             </div>
           </form>

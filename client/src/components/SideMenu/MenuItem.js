@@ -35,8 +35,7 @@ class MenuItem extends Component {
     const { classes } = this.props;
 
     return (
-      
-      <Link className = {classes.link} to = {this.props.isMenuLogo ? '/dashboard' : this.props.link } >
+      <Link className = {classes.link} to = { this.props.link } >
         <Grid container direction="row" alignItems="center" className = {classes.menuItem} >
           <Grid item >
             {this.props.isMenuLogo ? 

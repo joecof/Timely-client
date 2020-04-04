@@ -67,9 +67,10 @@ class Projects extends React.Component {
 
   async setData() {
     const user = JSON.parse(sessionStorage.getItem('user'));
+    const token = localStorage.getItem("token");
     const ID = (user.employee_id);
     console.log(user);
-    const response = await agent.projects.getProjectsForUser(ID);
+    const response = await agent.projects.getProjectsForUser(ID, token);
     console.log(response);
 
     var projData = [];

@@ -1,0 +1,15 @@
+.gridBorder {
+    border-right: 2px grey solid;
+}
+
+.projectDetailsMargin {
+    margin-right: 4% !important;
+}
+
+.WorkpackageListDT{
+    margin: 7%;
+}
+
+.PDWorkpackageTree {
+    margin: 4%;
+}
