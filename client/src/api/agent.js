@@ -60,6 +60,10 @@ const timesheetsInfo = {
   createCurrentWeekTimesheet: (empId, token, data)=> requests.post(`emps/${empId}/timesheets/`, token, data),
 }
 
+const workpackages = {
+  createWorkpackage: (data, token) => requests.post(`/workpackages/createWP`, token, data),
+}
+
 const yearlyRate = {
   getYearlyRate: (token) => requests.get(`/yearlyRate`, token)
 }
@@ -73,5 +77,6 @@ export default {
   authorization,
   projects,
   timesheetsInfo,
-  yearlyRate
+  yearlyRate,
+  workpackages
 }
