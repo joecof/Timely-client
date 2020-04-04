@@ -66,8 +66,6 @@ class TimesheetDetail extends Component {
     this.totalFri = this.totalFri.bind(this);
     this.totalHourWeek = this.totalHourWeek.bind(this);
     this.ccyFormat = this.ccyFormat.bind(this);
-    this.overTimeWeek = this.overTimeWeek.bind(this);
-    this.overTimeDay = this.overTimeDay.bind(this);
     this.formatWeekEnding = this.formatWeekEnding.bind(this);
     this.gotoTimesheetDetail = this.gotoTimesheetDetail.bind(this);
   }
@@ -101,11 +99,9 @@ class TimesheetDetail extends Component {
           // fetching projects
           const projects = await agent.projects.getProjectsForUser(userId, token);
           // fetching employee
-          const response = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
-          // returning projects to dashboard
-          this.props.fetchProject(projects, response);
+          const curEmp = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
           this.setState({
-            loadUser: response
+            loadUser: curEmp
           });
 
           // looking for the most recent timesheet
@@ -120,12 +116,14 @@ class TimesheetDetail extends Component {
                 let weeknumber = tsResponse[i].week;
                 let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
                 let status = tsResponse[i].status;
-
+                let attribute1 = (tsResponse[i].attribute1==null ? "0|0" : tsResponse[i].attribute1);
+                
                 let eachTimesheet = [];
                 eachTimesheet.push(timesheetid);
                 eachTimesheet.push(weeknumber);
                 eachTimesheet.push(weekending);
                 eachTimesheet.push(status);
+                eachTimesheet.push(attribute1);
                 timesheetList.push(eachTimesheet);
             }
             // sorting timesheet list by week number
@@ -133,7 +131,11 @@ class TimesheetDetail extends Component {
               return b[1] - a[1];
             });
             tsId = timesheetList[0][0];
+            // returning projects, employee and overFlex time to dashboard
+            this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
           } else {
+            // returning projects, employee and overFlex time to dashboard
+            this.props.fetchProject(projects, curEmp, "0|0");
             console.log("no timesheets");
           }
         }
@@ -193,16 +195,10 @@ class TimesheetDetail extends Component {
         const dayTotal = [this.totalSat(this.state.timesheetrows), this.totalSun(this.state.timesheetrows),
           this.totalMon(this.state.timesheetrows), this.totalTue(this.state.timesheetrows), 
             this.totalWed(this.state.timesheetrows), this.totalThu(this.state.timesheetrows), this.totalFri(this.state.timesheetrows)];
-        // total overtime of the week
-        const overTotal = this.overTimeWeek(weekTotal);
-        // array of overtime hours of each day
-        const dayOvertime = this.overTimeDay(dayTotal);
         //  setting state
         this.setState({
           totalWeek: weekTotal,
           totalDay: dayTotal,
-          totalOver: overTotal,
-          totalOverDays: dayOvertime,
         });
       }
     } else {
@@ -283,25 +279,6 @@ class TimesheetDetail extends Component {
       totalWeekHour += items[i][3];
     }
     return totalWeekHour;
-  }
-  // calculating total overtime of week
-  overTimeWeek(item) {
-    if(item > 40) {
-      return item - 40;
-    }
-    return 0;
-  }
-  // calculating total overtime of each day
-  overTimeDay(items) {
-    const overtimeArray = new Array(7);
-    items.forEach((element, i) => {
-      const overtimeDayDiff = element - 8;
-      if(overtimeDayDiff >= 0)
-        overtimeArray[i] = overtimeDayDiff;
-      else 
-      overtimeArray[i] = 0;
-    });
-    return overtimeArray;
   }
 
   // handle add row button click
@@ -439,19 +416,12 @@ class TimesheetDetail extends Component {
               {/* overtime span column */}
               <TableRow>
                 <TableCell colSpan={2} className={classes.tableTitle}>Overtime</TableCell>
-                <TableCell align="right">{this.ccyFormat(this.state.totalOver)}</TableCell>
-                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[0])}</TableCell>
-                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[1])}</TableCell>
-                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[2])}</TableCell>
-                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[3])}</TableCell>
-                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[4])}</TableCell>
-                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[5])}</TableCell>
-                <TableCell align="right">{this.ccyFormat(this.state.totalOverDays[6])}</TableCell>
+                <TableCell align="right">{this.ccyFormat(20)}</TableCell>
               </TableRow>
               {/* flex span column */}
               <TableRow>
                 <TableCell colSpan={2} className={classes.tableTitle}>Flextime</TableCell>
-                <TableCell align="right">20</TableCell>
+                <TableCell align="right">{this.ccyFormat(20)}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
