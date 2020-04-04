@@ -3,10 +3,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Avatar from '@material-ui/core/Avatar';
 import SupervisorList from '../HrPortal/CreateEmployeeForm/SupervisorList'
-import Slider from '@material-ui/core/Slider';
 import FaceIcon from '@material-ui/icons/Face';
+
 import Chip from '@material-ui/core/Chip';
 
 /**
@@ -109,6 +108,22 @@ class BasicInfo extends Component {
                       <Chip className = {classes.chip} icon={<FaceIcon />} label= {this.props.supervisorName} />
                     </Grid>
                   </Grid>
+                </div>
+                <div className = {classes.field}>
+                <Typography className = {classes.title} variant="h6"> Vacation Days </Typography>
+                <TextField
+                    className = {classes.input}
+                    disabled = {!this.props.hr}
+                    defaultValue = {this.props.loadedUser.vacation}
+                    helperText="Vacation Days"
+                    onChange = {(e) => this.props.formHandler(e)}
+                    name = "vacation"
+                    type = "number"
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
                 </div>
               </Grid>
             ) : 
