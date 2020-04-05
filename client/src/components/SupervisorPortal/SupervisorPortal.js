@@ -38,30 +38,6 @@ const columns = [
 ];
 
 /**
- * Demo data for now.
- */
-const demoData = [
-  {
-    pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-    employeeId: "1",
-    firstName: "John",
-    lastName: "Doe"
-  },
-  {
-    pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-    employeeId: "2",
-    firstName: "Jane",
-    lastName: "Kelly"
-  },
-  {
-    pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-    employeeId: "3",
-    firstName: "Henry",
-    lastName: "Peter"
-  }
-];
-
-/**
  * Author: John Ham 
  * Version: 1.0 
  * Description: Supervisor Portal Component. 
@@ -185,4 +161,4 @@ class SupervisorPortal extends Component {
   }
 }
 
-export default SupervisorPortal;
+export default withStyles(SupervisorPortal);
