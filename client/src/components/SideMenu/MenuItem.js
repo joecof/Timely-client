@@ -35,12 +35,12 @@ class MenuItem extends Component {
     const { classes } = this.props;
 
     return (
-      
-      <Link className = {classes.link} to = {this.props.isMenuLogo ? '/dashboard' : this.props.link } >
+      <Link className = {classes.link} to = { this.props.link } >
         <Grid container direction="row" alignItems="center" className = {classes.menuItem} >
           <Grid item >
             {this.props.isMenuLogo ? 
               <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>}
+
           </Grid>
           <Grid item onClick = {this.props.handleClick}>
             {this.props.text && this.props.resize ? 

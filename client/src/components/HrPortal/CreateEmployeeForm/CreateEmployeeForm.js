@@ -51,6 +51,7 @@ class CreateEmployeeForm extends Component {
     this.valueLabelFormat = this.valueLabelFormat.bind(this);
     this.getSliderValue = this.getSliderValue.bind(this);
     this.selectSupervisor = this.selectSupervisor.bind(this);
+    this.laborGradeFilter = this.laborGradeFilter.bind(this);
   }
 
   componentDidMount() {
@@ -67,8 +68,8 @@ class CreateEmployeeForm extends Component {
       isAdmin: false, 
       isSuperTimesheetApprover: false, 
       vacation: 0,
-      labelGradeId: laborData[0].label,
-      labelGradeName: '',
+      laborGradeId: laborData[0].label,
+      laborGradeName: '',
       errorAlert: false,
       successAlert: false,
       marks: laborData,
@@ -78,10 +79,20 @@ class CreateEmployeeForm extends Component {
     })
   }
 
+  laborGradeFilter(){
+    this.state.marks.forEach((item, i) => {
+      if(this.state.laborGradeId == item.label) {
+        this.setState({
+          laborGradeName: item.name
+        })
+      }
+    })
+  }
+
   getSliderValue(value) {
     this.setState({
-      labelGradeId: this.state.marks[value].label,
-      labelGradeName: this.state.marks[value].name
+      laborGradeId: this.state.marks[value].label,
+      laborGradeName: this.state.marks[value].name
     })
   }
   
@@ -131,20 +142,22 @@ class CreateEmployeeForm extends Component {
       middleName,
       lastName,
       supervisorId,
-      labelGradeId,
-      labelGradeName,
+      laborGradeId,
+      laborGradeName,
       confirmPassword,
       isHr, 
       isAdmin,
       isSuperTimesheetApprover,
       vacation,
     } = this.state; 
+
+    this.laborGradeFilter();
     
     const employee = {
       supervisor_id: supervisorId,
       labor_grade_id: {
-        labor_grade_id: labelGradeId,
-        labor_grade_name: labelGradeName
+        laborGradeId: laborGradeId,
+        labor_grade_name: laborGradeName
       },
       password: confirmPassword,
       first_name: firstName, 
@@ -200,6 +213,7 @@ class CreateEmployeeForm extends Component {
               formHandler = {this.formHandler} 
               valueLabelFormat = {this.valueLabelFormat}
               marks = {this.state.marks}
+              laborGradeId = {this.state.laborGradeId}
               getSliderValue = {this.getSliderValue}
               selectSupervisor = {this.selectSupervisor}
               supervisorName = {`${this.state.supervisorFirstName} ${this.state.supervisorLastName}`}

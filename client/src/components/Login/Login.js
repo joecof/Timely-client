@@ -25,7 +25,7 @@ export default class Login extends Component {
     return (
       <div className="loginWrapper">
         {/* Index Title */}
-        <p className="prjMng">Project Management</p>
+        <p className="prjMng">Timely</p>
         <div className="loginContainer">
           <div className="loginHint">
             Login

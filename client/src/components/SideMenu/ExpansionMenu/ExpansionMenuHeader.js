@@ -4,7 +4,7 @@ import { Grid } from '@material-ui/core';
 import Avatar from "@material-ui/core/Avatar";
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import Face from '../../Icon/Face'
 
 /**
  * Material UI styling JSON object. 
@@ -33,7 +33,8 @@ class ExpansionMenuHeader extends Component {
       >
       <Grid container direction="row" alignItems="center">
         <Grid item>
-          <Avatar variant="circle" className={classes.avatar} />
+          {/* <Avatar variant="circle" className={classes.avatar} /> */}
+          <Face avatar = {{width: 30, height: 30, margin: '0 auto'}} />
         </Grid>
         <Grid item>
           {this.props.resize ? 
