@@ -61,6 +61,15 @@ const timesheetsInfo = {
   getAllTimesheetsByEmp: (empId, token) => requests.get(`/emps/${empId}/timesheets/`, token),
   getTimesheetById: (empId, token, tsId) => requests.get(`/emps/${empId}/timesheets/${tsId}`, token),
   createCurrentWeekTimesheet: (empId, token, data)=> requests.post(`emps/${empId}/timesheets/`, token, data),
+  getTimesheetsByEmps: (emps, token)=> requests.get(`/timesheets/getForEmps/${emps}`, token)
+}
+
+const workpackages = {
+  createWorkpackage: (data, token) => requests.post(`/workpackages/createWP`, token, data),
+}
+
+const yearlyRate = {
+  getYearlyRate: (token) => requests.get(`/yearlyRate`, token)
 }
 
 const authorization = {
@@ -71,5 +80,7 @@ export default {
   employeeInfo,
   authorization,
   projects,
-  timesheetsInfo
+  timesheetsInfo,
+  yearlyRate,
+  workpackages
 }

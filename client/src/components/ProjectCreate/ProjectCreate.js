@@ -117,7 +117,7 @@ export default function ProjectCreate() {
     projectID: "",
     projectName: "",
     projectManager: user.first_name + " " + user.last_name,
-    projectDesc: "",
+    Desc: "",
     startDate: new Date(),
     endDate: new Date(),
     cost: ""
