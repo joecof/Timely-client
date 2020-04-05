@@ -1,0 +1,88 @@
+/* Styling for all Side Menu components including Expansion Menu and Menu Items */
+
+/* Expansion Menu Styling */
+.expansion-root {
+    background-color: transparent !important;
+}
+
+/* Side Menu Styling */
+.side-root {
+    background-image: url(../../images/sideBarBackgroundImage.png);
+    background-attachment: fixed;
+    position: relative;
+}
+
+.side-root::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+    opacity: 0.6;
+    z-index: 0;
+}
+
+.side-root > * {
+    position: relative;
+    z-index: 1;
+}
+
+.side-title {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    text-transform: uppercase;
+    font-size: 18px ;
+    text-align: center;
+    color: white;
+}
+
+/* Expansion Menu Header */
+.dropDown-arrow {
+    color: white !important;
+}
+
+/* Menu Items */
+.menuItems {
+    border-radius: 3px !important;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 12px;
+    padding: 10px 15px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5em;
+    position: relative;
+}
+
+.menuItems:hover {
+
+    transition: all 300ms linear;
+}
+
+.menuItems:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: whitesmoke;
+    opacity: 0.4;
+    z-index: -10;
+}
+
+.menuItems:focus-within { 
+    /* Temporary */
+    background-color: #00ACC1;
+}
+
+.itemIcon {
+    /* Material UI Icons for the Side Bar */
+    color: white;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}

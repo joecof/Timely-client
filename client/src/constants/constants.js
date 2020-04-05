@@ -5,9 +5,9 @@
  * produce a cleaner codebase. 
  */
 export const NAVBAR_PARAMETERS = ({
-  NAVBAR_EXPANDED_WIDTH: 230, 
+  NAVBAR_EXPANDED_WIDTH: 260, // originally 230
   NAVBAR_SHRINKED_WIDTH: 100,
-  DRAWER_EXPANDED_WIDTH: 230, 
+  DRAWER_EXPANDED_WIDTH: 260, // originally 230
   DRAWER_SHRINKED_WIDTH: 100
 })
 
