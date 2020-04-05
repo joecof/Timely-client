@@ -44,54 +44,62 @@ const styles = () => ({
  */
 class ChangePassword extends Component {
   constructor(props) {
-    super(props);
-
-    this.state = {
-      loadedUser: this.props.loadedUser
-    };
+    super(props); 
   }
+
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props;   
 
     return (
+      <>
       <div className={classes.container}>
-        <div className={classes.field}>
+          <div className = {classes.field}>
           <div className={classes.title} variant="h6">
             Change Password
           </div>
-          <TextField
-            className={classes.input}
-            defaultValue=""
-            type="password"
-            helperText="Old Password"
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-          <TextField
-            className={classes.input}
-            defaultValue=""
-            type="password"
-            helperText="New Password"
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-          <TextField
-            className={classes.input}
-            defaultValue=""
-            type="password"
-            helperText="Confirm New Password"
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
+            <TextField
+              className = {classes.input}
+              name="oldPassword"
+              type="password"
+              helperText="Old Password"
+              fullWidth
+              onChange = {(e) => this.props.formHandler(e)}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              className = {classes.input}
+              name="newPassword"
+              type="password"
+              helperText="New Password"
+              fullWidth
+              onChange = {(e) => this.props.formHandler(e)}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              className = {classes.input}
+              name="confirmPassword"
+              type="password"
+              helperText="Confirm New Password"
+              fullWidth
+              onChange = {(e) => this.props.formHandler(e)}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </div>
+          <Button variant="contained" color="primary" className = {classes.button} onClick = {this.props.handleSubmit}> 
+            Submit 
+          </Button>
         </div>
-        <Button variant="contained" color="primary" className={classes.button}>
-          Create User
-        </Button>
-      </div>
-    );
+      </>
+    )
   }
 }
 

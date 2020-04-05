@@ -12,7 +12,9 @@ import WorkpackageInfo from './WorkpackageInfo';
 import WorkpackageDesc from '../CreationWizard/Desc';
 import Budget from '../CreationWizard/Budget';
 import Schedule from '../CreationWizard/Schedule';
+import SelectEmployees from './SelectEmployees';
 import "./WorkpackageCreate.css";
+import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
 
 /**
  * Author: Prabh
@@ -41,18 +43,23 @@ function getStepContent(
   inputValues,
   handleOnChange,
   handleStartDate,
-  handleEndDate
+  handleEndDate,
+  handleCheckboxChange,
+  handleTagsChange
 ) {
   switch (step) {
     case 0:
       return (
         <WorkpackageInfo
+          wpList={inputValues.wpList}
+          project={inputValues.project}
           wpID={inputValues.wpID}
           wpName={inputValues.wpName}
           wpRE={inputValues.wpRE}
-          wpProject={inputValues.projectName}
-          wpParent={inputValues.wpList}
+          wpParent={inputValues.wpParent}
+          checkedLower={inputValues.checkedLower}
           handleChange={handleOnChange}
+          handleCheckboxChange={handleCheckboxChange}
         />
       );
     case 1:
@@ -73,12 +80,18 @@ function getStepContent(
           handleEndChange={handleEndDate}
         />
         );
-    default:
-      return <></>;
+    case 4:
+      return (
+        <SelectEmployees
+          handleTagsChange={handleTagsChange}
+          project={inputValues.project}
+          wpEmps={inputValues.wpEmps}
+        />
+      );
   }
 }
 
-export default function WorkpackageCreate() {
+export default function WorkpackageCreate(props) {
   const classes = useStyles();
 
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -87,18 +100,37 @@ export default function WorkpackageCreate() {
     wpID: "",
     wpName: "",
     wpRE: "",
-    projectName: "",
     wpParent: "",
     Desc: "",
     cost: "",
     startDate: new Date(),
     endDate: new Date(),
-    
+    checkedLower: false,
+    wpList: props.location.wpList,
+    project: props.location.project,
+    wpEmps: []
   });
 
   const handleOnChange = event => {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
+
+    // calculating the wp id here
+    if (name === "wpParent") {
+      var id = -1;
+      var list = inputValues.wpList;
+      list.sort();
+      for (var wp in list) {
+        if (list[wp].work_package_id.startsWith(value) && list[wp].work_package_id.length === value.length + 1) {
+          id = parseInt(list[wp].work_package_id) + 1;
+        }
+      }
+      if (id === -1) {
+        id = parseInt(value)*10 + 1
+      }
+      console.log(id);
+      setInputValues({ ...inputValues, wpID: id + inputValues.wpID });
+    }
   };
 
   const handleStartDate = date => {
@@ -107,6 +139,15 @@ export default function WorkpackageCreate() {
 
   const handleEndDate = date => {
     setInputValues({ ...inputValues, endDate: date });
+  };
+
+  const handleCheckboxChange = (event) => {
+    setInputValues({ ...inputValues, [event.target.name]: event.target.checked, wpID: event.target.checked ? inputValues.wpID+"L" : inputValues.wpID.replace('L', '')});
+  };
+
+  const handleTagsChange = (inputValue) => {
+    console.log(inputValue);
+    setInputValues({ ...inputValues, wpEmps: inputValue });
   };
 
   const handleSubmit = async () => {
@@ -174,7 +215,9 @@ export default function WorkpackageCreate() {
                 inputValues,
                 handleOnChange,
                 handleStartDate,
-                handleEndDate
+                handleEndDate,
+                handleCheckboxChange,
+                handleTagsChange
               )}
             </Typography>
             <div>

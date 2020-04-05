@@ -1,7 +1,7 @@
 /**
  * Author: Kang Wang
  * Version: 1
- * Desc: Timesheet Detail Component after user click on a row on Timesheet
+ * Desc: Timesheet Detail Component displaying timesheet details after user click on a row on Timesheet Portal lists
  */
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
@@ -40,6 +40,7 @@ const timesheetStyle = theme => ({
 // TimesheetDetail Component
 class TimesheetDetail extends Component {
 
+  // Constructor for props, states and functions
   constructor(props) {
     super(props);
 
@@ -90,7 +91,6 @@ class TimesheetDetail extends Component {
       token = localStorage.getItem("token");
       
       tsId = localStorage.getItem("timesheetId");
-      console.log(tsId);
       this.setState({
         loadUser: user
       });
@@ -98,7 +98,12 @@ class TimesheetDetail extends Component {
         if(this.props.token != null) {
           userId = this.props.userId;
           token = this.props.token;
+          // fetching projects
+          const projects = await agent.projects.getProjectsForUser(userId, token);
+          // fetching employee
           const response = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
+          // returning projects to dashboard
+          this.props.fetchProject(projects, response);
           this.setState({
             loadUser: response
           });
@@ -132,8 +137,6 @@ class TimesheetDetail extends Component {
             console.log("no timesheets");
           }
         }
-      // console.log(this.props.userId);
-      // console.log(this.props.token);
     }
     
     // fetching timesheetRow
@@ -203,7 +206,7 @@ class TimesheetDetail extends Component {
         });
       }
     } else {
-      document.getElementById("timesheetDetailContainer").innerHTML = "Sorry, there's no current timesheet in the database!"
+      document.getElementById("timesheetDetailContainer").innerHTML = "Sorry, you don't have any timesheet records in the database!"
     }
   }
 

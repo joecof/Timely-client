@@ -156,3 +156,11 @@ display: flex;
   border: solid 1px lightgray;
   border-radius: 5px;
 }
+
+.WorkpackageListDT{
+    margin: 7%;
+}
+
+.PDWorkpackageTree {
+    margin: 4%;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import MUIDatatable from "mui-datatables";
+import agent from '../../api/agent.js'
 import {
   withStyles,
   ThemeProvider,
@@ -108,27 +109,37 @@ class ProjectsAssignedTo extends Component {
   componentDidMount() {
     this.fetchData();
   }
+  
+  /**
+   * Gets a list of the projects that the employee is assigned to.
+   */
+  async getProjects() {
+    const token = localStorage.getItem("token");
+    const response = agent.projects.getProjectsForUser(this.props.match.params.id, token);
+    return response;
+  }
 
-  //will use this function to fetch from backend soon
-  fetchData() {
-    const { classes } = this.props;
+  /**
+   * Gets the necessary information from the employees' data and stores
+   * them in an array.
+   */
+  async fetchData() {
+    const { classes } = this.props; 
+  
+    console.log(this.props);
+    var projectsData = await this.getProjects();
+    console.log(projectsData);
 
     var resultData = [];
-    for (let i = 0; i < demoData.length; i++) {
-      let pictureUrl = demoData[i].pictureUrl;
-      let id = demoData[i].projectId;
-      let projectName = demoData[i].projectName;
-      let name = demoData[i].firstName + " " + demoData[i].lastName;
+    for (let i = 0; i < projectsData.length; i++) {
+        let id = projectsData[i].project_code;
+        let projectName = projectsData[i].project_name;
+        let name = projectsData[i].project_manager_id.first_name + " " + projectsData[i].project_manager_id.last_name;
 
-      let row = [];
-      row.push(id);
-      row.push(projectName);
-      row.push(
-        <>
-          <img src={pictureUrl} className={classes.pictureUrl} alt={name} />{" "}
-          <span>{name}</span>
-        </>
-      );
+        let row = [];
+        row.push(id);
+        row.push(projectName);
+        row.push(name);
 
       resultData.push(row);
     }
@@ -171,4 +182,4 @@ class ProjectsAssignedTo extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(ProjectsAssignedTo);
+export default ProjectsAssignedTo;

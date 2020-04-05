@@ -1,7 +1,7 @@
 /**
  * Author: Kang Wang
  * Version: 1
- * Desc: TimesheetPortal Component 
+ * Desc: TimesheetPortal Component displaying the past timesheet lists, create timesheet for current week
  */
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
@@ -66,8 +66,10 @@ import agent from "../../api/agent";
     return data;
   };
 
+  // TimesheetPortal Component
 export default class TimesheetPortal extends Component {
 
+  // Constructor for props, states and functions
   constructor(props) {
     super(props); 
 

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { request } from 'http';
 
 /**
  * Checks the environment variable at npm start or npm build. Depending on that variable it will use 
@@ -39,18 +38,23 @@ const requests = {
 }
 
 const employeeInfo = {
+  getEmployeeById: (id, token) => requests.get(`/emps/${id}`, token), 
+  getAllEmployees: (token) => requests.get(`/emps`, token),
+  createEmployee: (token, body) => requests.post(`/emps/`, token, body),
+  updateEmployee: (id, token, body) => requests.put(`/emps/${id}`, token, body),
   getCurrentUser: (id, token) => requests.get(`/emps/${id}`, token), 
-  getAllEmployees: (token) => requests.get(`/emps`, token)
+  getEmployeesBySupervisor: (id, token) => requests.get(`/emps/supervisor/${id}`, token)
 }
 
 const projects = {
+  getAllProjects: (token) => requests.get(`/projects`, token),
   getProjectsForUser: (id, token) => requests.get(`/projects/emp/${id}`, token),
   createProject: (data, token) => requests.post(`/projects/createProject`, token, data),
+  assignToProject: (project, token) => requests.post(`/projects/assignToProject/`, token, project),
   getDetailsById: (id, token) => requests.get(`/projects/projectDetails/${id}`, token),
   getById: (id, token) => requests.get(`/projects/${id}`, token)
 }
 
-// api for timesheets and timesheetrows
 const timesheetsInfo = {
   getAllTimesheetsByEmp: (empId, token) => requests.get(`/emps/${empId}/timesheets/`, token),
   getTimesheetById: (empId, token, tsId) => requests.get(`/emps/${empId}/timesheets/${tsId}`, token),

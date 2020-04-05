@@ -7,6 +7,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Modal from "./Modal.js";
 import WorkpackageList from "./WorkpackageList";
+import WorkpackageTree from "./WorkpackageTree";
 import { Link } from "react-router-dom";
 import "./ProjectDetail.css";
 
@@ -164,7 +165,12 @@ class ProjectDetail extends React.Component {
                   variant="contained"
                   color="primary"
                   component={Link}
-                  to="/createWorkpackage"
+                  to={{
+                    pathname: "/createWorkpackage",
+                    project: this.state.project,
+                    wpList: this.state.wpList
+                  }}
+                  style={{ marginRight: "5%" }}
                 >
                   <b>+ Create Work Package</b>
                 </Button>
@@ -172,12 +178,22 @@ class ProjectDetail extends React.Component {
             </div>
           </>
         )}
-        <div className="projectDetail-WPTableContainer">
+        {this.state.isProjManager === false ? (
           <WorkpackageList
+            history={this.props.history}
             type={this.state.isProjManager ? "PM" : "Emp"}
             wpList={this.state.wpList}
           />
-        </div>
+        ) : (
+          <Grid container justify="center" className="PDWorkpackageTree">
+            <Grid item>
+              <WorkpackageTree
+                wpList={this.state.wpList}
+                history={this.props.history}
+              />
+            </Grid>
+          </Grid>
+        )}
       </div>
     );
   }

@@ -3,6 +3,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from "react-router-dom";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import EditIcon from '@material-ui/icons/Edit';
+
 
 /**
  * Author: Joe 
@@ -21,6 +23,7 @@ export default function MoreVertOption(props) {
     setAnchorEl(event.currentTarget);
   };
 
+
   /**
    * Closes the drop down menu.
    */
@@ -30,10 +33,15 @@ export default function MoreVertOption(props) {
 
   return (
     <div>
-      <MoreVertIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/>
+      <EditIcon onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <Link to= {props.link} style = {{textDecoration: 'none', color: 'black'}}><MenuItem> Edit </MenuItem> </Link>
-        <MenuItem onClick={handleClose}>Archive</MenuItem>
+        {
+          props.employee.end_date == null ? 
+            <MenuItem onClick={() => {props.handleArchive(props.id, props.employee); handleClose()}}>Archive</MenuItem>
+            :
+            <MenuItem onClick={() => {props.handleOpen(props.id, props.employee); handleClose()}}>Open</MenuItem>
+        }
       </Menu>
     </div>
   );

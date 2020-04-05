@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import { Paper, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import agent from '../../api/agent.js'
 
 /**
  * Material UI styling JSON object. 
@@ -60,20 +61,43 @@ const demoProject =
  * Description: Supervisor portal component. 
  * Allows a supervisor to select employees and assign them to a project.  
  */
-const AssignToProject = () => {
+const AssignToProject = (props) => {
     const classes = useStyles();
+    const token = localStorage.getItem("token");
 
-    const [chipData, setChipData] = React.useState([
-        { employeeId: "1", name: "John Doe" },
-        { employeeId: "2", name: "Jane Kelly" },
-        { employeeId: "3", name: "Henry Peter" }
-    ]);
+    const [project, setProject] = React.useState();
+    const [employees, setEmployees] = React.useState();
 
     const [projectsData, setProjectsData] = React.useState();
     const [employeesData, setEmployeesData] = React.useState();
 
-    const handleDelete = chipToDelete => () => {
-        setChipData(chips => chips.filter(chip => chip.employeeId !== chipToDelete.employeeId));
+    const fetchProjectsData = async () => {
+      const response = await agent.projects.getAllProjects(token);
+      return response;
+    }
+
+    const fetchEmployeesData = async () => {
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      const response = await agent.employeeInfo.getEmployeesBySupervisor(user.supervisor_id, token);
+      return response;
+    }
+
+    useEffect(() => {
+      async function fetchData() {
+        setProjectsData(await fetchProjectsData());
+        setEmployeesData(await fetchEmployeesData());
+      }
+      fetchData();
+    }, []);
+
+    const handleSubmit = async () => {
+      const token = localStorage.getItem("token");
+      console.log(token);
+      for (var i = 0; i < employees.length; i++) {
+        project.employees.push(employees[i]);
+      }
+      const response = agent.projects.assignToProject(project, token);
+      console.log(response);
     };
 
     return (
@@ -84,10 +108,10 @@ const AssignToProject = () => {
             <Divider className="supervisorMargin"/>
             <Autocomplete
                 className={classes.supervisorMargin}
-                options={demoProject}
-                getOptionLabel={option => option.number}
-                style={{ width: 500 }}
-                onChange={(event, value) => setProjectsData(value)}
+                options={projectsData}
+                getOptionLabel={(option) => option.project_code}
+                style={{ width: 700 }}
+                onChange={(event, value) => setProject(value)}
                 renderInput={params => <TextField {...params} variant="standard" label="Project ID" />}
             />
             <Autocomplete
@@ -99,7 +123,7 @@ const AssignToProject = () => {
                 onChange={(event, value) => setEmployeesData(value)}
                 renderInput={params => <TextField {...params} variant="standard" label="Add employees" placeholder="Search for an employee" />}
             />
-            <Button className={classes.assignButton} variant="contained" color="primary">Assign</Button>
+            <Button className={classes.assignButton} variant="contained" color="primary" onClick={handleSubmit}>Assign</Button>
           </div>
         </Paper>
       </div>

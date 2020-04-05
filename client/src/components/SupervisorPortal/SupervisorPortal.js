@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import MUIDatatable from "mui-datatables";
+import agent from '../../api/agent.js'
 import {
   withStyles,
   ThemeProvider,
@@ -61,10 +62,10 @@ const demoData = [
 ];
 
 /**
- * Author: John Ham
- * Version: 1.0
- * Description: Supervisor Portal Component.
- * Portal used by supervisor for viewing a list of employees that can be assigned to projects.
+ * Author: John Ham 
+ * Version: 1.0 
+ * Description: Supervisor Portal Component. 
+ * Portal used by supervisor for viewing a list of employees that can be assigned to projects. 
  */
 class SupervisorPortal extends Component {
   getCustomTheme = () =>
@@ -96,10 +97,9 @@ class SupervisorPortal extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      data: [],
-      selectedEmployee: { employeeId: "", employeeName: "" }
-    };
+    this.state = ({
+      data: []
+    })
 
     this.fetchData = this.fetchData.bind(this);
   }
@@ -108,25 +108,37 @@ class SupervisorPortal extends Component {
     this.fetchData();
   }
 
-  //will use this function to fetch from backend soon
-  fetchData() {
+  /**
+   * Gets a list of all the employess from the database.
+   */
+  async getEmployees() {
+    const token = localStorage.getItem("token");
+    const response = agent.employeeInfo.getAllEmployees(token);
+    return response;
+  }
+
+  /**
+   * Gets the necessary information from the employees' data and stores
+   * them in an array.
+   */
+  async fetchData() {
     const { classes } = this.props;
+    console.log(this.props);
 
+    var employeeData = await this.getEmployees();
+    // console.log(employeeData);
+  
     var resultData = [];
-    for (let i = 0; i < demoData.length; i++) {
-      let pictureUrl = demoData[i].pictureUrl;
-      let id = demoData[i].employeeId;
-      let firstName = demoData[i].firstName;
-      let lastName = demoData[i].lastName;
+    for (let i = 0; i < employeeData.length; i++) {
+        let id = employeeData[i].employee_id;
+        let firstName = employeeData[i].first_name;
+        let lastName = employeeData[i].last_name;
 
-      let row = [];
-      row.push(
-        <img src={pictureUrl} className={classes.pictureUrl} alt={firstName} />
-      );
-      row.push(id);
-      row.push(firstName);
-      row.push(lastName);
-      resultData.push(row);
+        let row = [];
+        row.push(id);
+        row.push(firstName);
+        row.push(lastName);
+        resultData.push(row);
     }
 
     this.setState({
@@ -151,7 +163,7 @@ class SupervisorPortal extends Component {
           return <AssignToolBar history={this.props.history} />;
         },
         onRowClick: (rowData, rowState) => {
-          this.props.history.push(`/dashboard/supervisor/${rowData[1]}`);
+          this.props.history.push(`/dashboard/supervisor/${rowData[0]}`);
         }
       };
       return data;
@@ -173,4 +185,4 @@ class SupervisorPortal extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(SupervisorPortal);
+export default SupervisorPortal;

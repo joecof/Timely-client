@@ -1,6 +1,6 @@
 /* Author: Kang Wang
  * Version: 1
- * Desc: Timesheet Detail Css
+ * Desc: Timesheet Detail CSS
  */
 
 /* body css */
@@ -32,41 +32,41 @@
   justify-content: space-between;
   align-items: center;
 }
-
+/* employee name */
 .empNumContainer {
   display: flex;
 }
-
+/* employee Number Title */
 .empNumTitle {
   font-weight: bold;
 }
-
+/* Employee number */
 .empNum {
   margin-left: 10px;
   float: left;
 }
-
+/* week number container */
 .weekNumContainer {
   display: flex;
 }
-
+/* week number title */
 .weekNumTitle {
   font-weight: bold;
   display: inline-block;
 }
-
+/* week number */
 .weekNum {
   margin-left: 10px;
 }
-
+/* week ending container */
 .weekEndContainer {
   display: flex;
 }
-
+/* week ending title */
 .weekEndTitle {
   font-weight: bold;
 }
-
+/* week ending */
 .weekEnd {
     margin-left: 10px;
 }
@@ -75,10 +75,11 @@
   width: 93%;
   display: flex;
 }
-
+/* employee name title */
 .empNameTitle {
   font-weight: bold;
 }
+/* employee name */
 .empName {
   margin-left: 10px;
 }

@@ -12,9 +12,12 @@ import SupervisorPortal from '../SupervisorPortal/SupervisorPortal'
 import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo'
 import EmployeeForm from '../Profile/EmployeeForm'
+import CreateEmployeeForm from '../HrPortal/CreateEmployeeForm/CreateEmployeeForm'
+
 import ProjectDetail from '../ProjectDetail/ProjectDetail'
 import LeadEngineer from '../LeadEngineerPortal/LeadEngineer'
 import WorkpackageCreate from '../WorkpackageCreate/WorkpackageCreate';
+import WorkpackageDetail from '../ProjectDetail/WorkpackageDetail'
 
 /**
  * Author: Joe 
@@ -66,10 +69,34 @@ export default class Routes extends Component {
               )}
             />
             <Route
+              path="/dashboard/profile/:id"
+              exact
+              render={props => (
+                <EmployeeForm
+                  hr={false}
+                  loadedUser={this.props.config.loadedUser}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              exact path="/dashboard/hr/create"
+              render={props => (
+                <CreateEmployeeForm
+                  hr = {true}
+                  createEmployee = {true}
+                  loadedUser={this.props.config.loadedUser}
+                  {...props}
+                />
+              )}
+            />
+            <Route
               path="/dashboard/hr/:id"
               exact
               render={props => (
                 <EmployeeForm
+                  hr = {true}
+                  createEmployee = {false}
                   loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
@@ -98,26 +125,6 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <ProjectsAssignedTo
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/dashboard/profile/:id"
-              exact
-              render={props => (
-                <EmployeeForm
-                  loadedUser={this.props.config.loadedUser}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/dashboard/profile"
-              exact
-              render={props => (
-                <EmployeeForm
-                  loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
               )}
@@ -154,6 +161,15 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <WorkpackageCreate
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/workpackageDetail"
+              exact
+              render={props => (
+                <WorkpackageDetail
                   {...props}
                 />
               )}
@@ -197,7 +213,6 @@ export default class Routes extends Component {
           </Switch>
         );
         break;
-
       case 'authentication':
         routes = (
           <Switch>
@@ -216,10 +231,9 @@ export default class Routes extends Component {
           </Switch>
         )
         break;
-
       default:
         routes = (
-          <Switch>
+          <Switch>å
             <Route
               path="/"
               exact
