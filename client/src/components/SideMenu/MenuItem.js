@@ -5,6 +5,7 @@ import Avatar from "@material-ui/core/Avatar";
 import logo from '../../images/logo.png'
 import { Link } from "react-router-dom";
 
+
 /**
  * Material UI styling JSON object. 
  * @param {JSON} theme 
@@ -40,6 +41,7 @@ class MenuItem extends Component {
           <Grid item >
             {this.props.isMenuLogo ? 
               <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>}
+
           </Grid>
           <Grid item onClick = {this.props.handleClick}>
             {this.props.text && this.props.resize ? 

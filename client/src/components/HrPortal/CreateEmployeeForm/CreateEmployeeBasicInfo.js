@@ -25,6 +25,9 @@ const styles = () => ({
   field: {
     marginTop: 50
   },
+  fieldVacation: {
+    marginTop: 25
+  },
   slider: {
     width: '90%'
   },
@@ -111,9 +114,6 @@ class BasicInfo extends Component {
               />
           </div>
           <div className = {classes.field}>
-          <Typography className = {classes.title} variant="h6"> 
-              Supervisor
-            </Typography>
           <Grid container spacing={1} className = {classes.container}>
             <Grid item xs={6}>
               <SupervisorList hr = {this.props.hr} selectSupervisor = {this.props.selectSupervisor}/>
@@ -124,38 +124,26 @@ class BasicInfo extends Component {
               <Chip className = {classes.chip} icon={<FaceIcon />} label= {this.props.supervisorName} /> : null
             }
             </Grid>
+            <Grid item xs={6}>
+              <div className = {classes.fieldVacation}>
+              <Typography className = {classes.title} variant="h6"> 
+                Vacation Days 
+              </Typography>
+              <TextField
+                className = {classes.input}
+                helperText="Vacation Days"
+                type="number"
+                name="vacation"
+                onChange = {(e) => this.props.formHandler(e)}
+                disabled = {!this.props.hr}
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}/>
+              </div>
+            </Grid>
           </Grid>
           </div>
-          {/* <div className = {classes.field}>
-          <Typography className = {classes.title} variant="h6"> Labor Grade </Typography>
-            <Slider
-              defaultValue={0}
-              valueLabelFormat={this.props.valueLabelFormat}
-              onChange={(e, val) => this.props.getSliderValue(val) } 
-              aria-labelledby="discrete-slider-restrict"
-              className = {classes.slider}
-              step={null}
-              valueLabelDisplay="auto"
-              marks={this.props.marks}
-              max = {7}
-            />
-          </div> */}
-          {/* <div className = {classes.field}>
-            <Typography className = {classes.title} variant="h6"> 
-              Vacation Days 
-            </Typography>
-            <TextField
-              className = {classes.input}
-              helperText="Vacation Days"
-              type="number"
-              name="vacation"
-              onChange = {(e) => this.props.formHandler(e)}
-              disabled = {!this.props.hr}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}/>
-          </div> */}
         </Grid>
       </>
     )
