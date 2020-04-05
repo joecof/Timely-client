@@ -74,6 +74,9 @@ const RemoveFromProject = (props) => {
 
     const handleSubmit = async () => {
       const token = localStorage.getItem("token");
+      if (project == null || employees == null) {
+          return null;
+      }
       project.employees = project.employees.filter(function(o) {
         return employees.indexOf(o) < 0;
       });

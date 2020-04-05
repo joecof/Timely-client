@@ -39,8 +39,8 @@ const AssignToProject = (props) => {
     const [project, setProject] = React.useState();
     const [employees, setEmployees] = React.useState();
 
-    const [projectsData, setProjectsData] = React.useState();
-    const [employeesData, setEmployeesData] = React.useState();
+    const [projectsData, setProjectsData] = React.useState([]);
+    const [employeesData, setEmployeesData] = React.useState([]);
 
     const fetchProjectsData = async () => {
       const response = await agent.projects.getAllProjects(token);
@@ -64,6 +64,9 @@ const AssignToProject = (props) => {
     const handleSubmit = async () => {
       const token = localStorage.getItem("token");
       console.log(token);
+      if (project == null) {
+        return null;
+      }
       for (var i = 0; i < employees.length; i++) {
         project.employees.push(employees[i]);
       }
