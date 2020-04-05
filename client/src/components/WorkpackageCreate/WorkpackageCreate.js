@@ -137,7 +137,7 @@ export default function WorkpackageCreate(props) {
       for (var wp in list) {
         if (
           list[wp].work_package_id.startsWith(value) &&
-          list[wp].work_package_id.length === value.length + 1
+          (parseInt(list[wp].work_package_id)).toString().length === value.length + 1
         ) {
           id = parseInt(list[wp].work_package_id) + 1;
         }

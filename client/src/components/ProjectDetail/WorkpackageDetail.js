@@ -6,10 +6,8 @@ import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Modal from "./Modal.js";
-import WorkpackageList from "./WorkpackageList";
-import WorkpackageTree from "./WorkpackageTree";
 import EmpHours from '../Charts/EmpHours';
-import { Link } from "react-router-dom";
+import BudgetVsActual from '../Charts/BudgetVsActual';
 import "./ProjectDetail.css";
 
 /**
@@ -23,8 +21,8 @@ class WorkpackageDetail extends React.Component {
     this.state = {
       wp: this.props.location.state.wp,
       isProjManager: this.props.location.state.isPM,
-      empHoursX: [],
-      empHoursY: [],
+      emps: [],
+      timesheets: [],
       week: 0,
       openModal: false
     };
@@ -64,9 +62,9 @@ class WorkpackageDetail extends React.Component {
     }
     
     this.setState({
-      empHoursX: this.state.wp.employees,
+      emps: this.state.wp.employees,
       week: week,
-      empHoursY: response
+      timesheets: response
     })
 
     console.log(response);
@@ -141,9 +139,13 @@ class WorkpackageDetail extends React.Component {
               </Grid>
             </>
         </Grid>
-        {(this.state.isProjManager && this.state.empHoursX.length > 0) && (
+        {(this.state.isProjManager && this.state.emps.length > 0) && (
           //NOTE: chagne week
-          <EmpHours EmpsX={this.state.empHoursX} week={50} EmpsY={this.state.empHoursY} wp={this.state.wp} />
+          <>
+            <EmpHours EmpsX={this.state.emps} week={50} EmpsY={this.state.timesheets} wp={this.state.wp} />
+            <br />
+            <BudgetVsActual tsheets={this.state.timesheets} wp={this.state.wp}  />
+          </>
         )}
       </div>
     );

@@ -76,9 +76,14 @@ class EmpHours extends React.Component {
     };
     this.handleWeekChange = this.handleWeekChange.bind(this);
     this.getWeeksMap = this.getWeeksMap.bind(this);
+    this.setGraphValues = this.setGraphValues.bind(this);
   }
 
   componentDidMount() {
+    this.setGraphValues();
+  }
+
+  setGraphValues() {
     var emps = [];
     var empsNames = [];
     this.props.EmpsX.forEach(x => {
@@ -96,6 +101,7 @@ class EmpHours extends React.Component {
     var projName = this.props.wp.project.project_code;
     var wpName = this.props.wp.work_package_id;
     var hours = [];
+    console.log(this.state.week)
     emps.forEach(e => {
       var count = 0;
       this.props.EmpsY.forEach(ts => {
@@ -140,20 +146,19 @@ class EmpHours extends React.Component {
   }
 
   handleWeekChange(e) {
+    console.log(e.target.value);
     this.setState({
       week: e.target.value
-    });
+    }, () => this.setGraphValues());
   }
 
   getWeeksMap() {
     var weeks = [];
-    var startDate = new Date(
-      this.props.wp.workPackagePlanCollection[0].start_date
-    );
+    var startDate = new Date(this.props.wp.workPackagePlanCollection[0].start_date);
     var endDate = new Date(this.props.wp.workPackagePlanCollection[0].end_date);
+    console.log(startDate)
+    console.log(endDate);
 
-    startDate.setDate(startDate.getDate() - 1);
-    console.log(startDate);
     var startDay = startDate.getDay();
 
     if (startDay > -1 && startDay < 6) {
