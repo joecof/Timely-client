@@ -45,10 +45,10 @@ class CurrentTimesheetToolBar extends React.Component {
 
   // week ending of every sunday
   getSundayOfCurrentWeek() {
-    var d = new Date();
-    var day = d.getDay(),
-        diff = d.getDate() - day + (day == 0 ? -6:1) + 6; // sunday
-    return new Date(d.setDate(diff));
+    var curr = new Date(); // get current date
+    var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+    var last = first + 6; // last day is the first day + 6
+    return new Date(curr.setDate(last));
   }
 
   // generate current weekNumber
@@ -56,7 +56,7 @@ class CurrentTimesheetToolBar extends React.Component {
     const today = new Date();
     const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
     const pastDaysOfYear = (today.getTime() - firstDayOfYear.getTime()) / 86400000;
-    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 7) / 7);
+    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 7.1) / 7);
   }
 
   // check if fetched timesheets has currentTimesheet
@@ -84,7 +84,6 @@ class CurrentTimesheetToolBar extends React.Component {
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
     const logedInUser = await agent.employeeInfo.getCurrentUser(userId, token);
-    console.log(logedInUser.labor_grade_id.labor_grade_id);
 
     // login employee labor grade
     const laborGradeId = logedInUser.labor_grade_id.labor_grade_id;
@@ -121,7 +120,6 @@ class CurrentTimesheetToolBar extends React.Component {
       ]
     };
     const response = await agent.timesheetsInfo.createCurrentWeekTimesheet(userId, token, timesheetCreation);
-    console.log(response);
     this.props.fetchTimesheets();
   }
   
@@ -137,7 +135,6 @@ class CurrentTimesheetToolBar extends React.Component {
       if(!this.hasCurrentTimesheet()) {
         this.createCurrentTimesheet();
       } else {  // go to currentTimesheet Detail
-        console.log("go to currentTimesheetDetail");
         const tsId = this.props.states.timesheets[0][0];
         const weekNum = this.props.states.timesheets[0][1];
         const weekEnd = this.props.states.timesheets[0][2];
