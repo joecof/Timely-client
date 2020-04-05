@@ -16,6 +16,7 @@ import './TimesheetDetail.css';
 import agent from "../../api/agent";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
+import Paper from '@material-ui/core/Paper';
 
 // timesheet table css
 const timesheetStyle = theme => ({
@@ -393,7 +394,7 @@ class TimesheetDetail extends Component {
     // link css
     const { classes } = this.props;
     return (
-      <div className="container" onClick={() => { this.gotoTimesheetDetail() }}>
+      <Paper elevation = {2} className="container" onClick={() => { this.gotoTimesheetDetail() }}>
         {/* employee info header */}
         <div className="timesheetTitle">
           <div className="attributeRow">
@@ -497,7 +498,7 @@ class TimesheetDetail extends Component {
                   <Button className={classes.submitButton}onClick={this.submitTS} color='secondary'variant='contained'>Submit</Button>
                 </div>
               }
-      </div>
+      </Paper>
     )
   }
 }

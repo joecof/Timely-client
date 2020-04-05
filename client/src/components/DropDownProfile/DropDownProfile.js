@@ -3,6 +3,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
+import Face from '../Icon/Face'
+
 
 /**
  * Author: Joe 
@@ -30,7 +32,8 @@ export default function SimpleMenu(props) {
 
   return (
     <div>
-      <Avatar variant="circle" onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/>
+      {/* <Avatar variant="circle" onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true"/> */}
+      <Face handleClick={handleClick} avatar = {{width: 30, height: 30, margin: '0 auto'}} />
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <Link to= {`/dashboard/profile/${props.loadedUser.employee_id}`} style = {{textDecoration: 'none', color: 'black'}}>
           <MenuItem onClick={handleClose}> Profile </MenuItem> 

@@ -40,6 +40,7 @@ class MenuItem extends Component {
           <Grid item >
             {this.props.isMenuLogo ? 
               <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>}
+
           </Grid>
           <Grid item onClick = {this.props.handleClick}>
             {this.props.text && this.props.resize ? 

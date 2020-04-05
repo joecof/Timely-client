@@ -17,7 +17,7 @@ class Face extends Component {
     return(
       <div>
         <Avatar className = {classes.avatar} alt="employee photo" >
-          <FaceIcon className = {classes.faceIcon}/>
+          <FaceIcon onClick = {this.props.handleClick} className = {classes.faceIcon}/>
         </Avatar>
       </div>
     )
