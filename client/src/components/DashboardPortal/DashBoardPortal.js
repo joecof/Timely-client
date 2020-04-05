@@ -148,9 +148,17 @@ class DashBoardPortal extends Component {
 
   // getting logged in user and the projects
   getProject(projects, loadedUser, overFlex) {
+    // get projects thats open
+    let openPorj = [];
+    for(let i = 0; i < projects.length; i++) {
+      if(projects[i].status == "OPEN") {
+        openPorj.push(projects[i]);
+      }
+    }
+    projects = openPorj;
     // sorting projects by end_date
     projects.sort(function(a,b){
-      return b.end_date - a.end_date;
+      return a.end_date - b.end_date;
     });
     // getting overtime and flextime
     const res = overFlex.split("|");
