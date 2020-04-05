@@ -11,21 +11,14 @@ import "./WorkpackageCreate.css";
  * Desc: first step for wp creation
  */
 const SelectEmployees = props => {
-  var wpEmpList = [];
-  props.project.employees.map(e => {
-    var data = {};
-    data.value = e.employee_id;
-    data.label = e.first_name + " " + e.last_name;
-    wpEmpList.push(data);
-  });
 
   return (
-    <div>
     <Autocomplete
       multiple
-      options={wpEmpList}
-      values={props.wpEmps}
-      getOptionLabel={(option) => option.label}
+      options={props.project.employees}
+      onChange={(e, v) => props.handleTagsChange(v)}
+      getOptionLabel={(option) => option.first_name + " " + option.last_name + " (" + option.labor_grade_id.labor_grade_id + ")"}
+      disabled={props.isDisabled}
       renderInput={params => (
         <TextField
           {...params}
@@ -33,8 +26,7 @@ const SelectEmployees = props => {
           label="Select Employees"
         />
       )}
-    />
-    </div>
+    /> 
   );
 };
 

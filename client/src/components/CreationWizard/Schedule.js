@@ -37,6 +37,7 @@ const ProjectInfo = (props) => {
           value={props.startDate}
           onChange={props.handleStartChange}
           className={classes.scheduleInfo}
+          disabled={props.isDisabled}
         />
         <br />
         <KeyboardDatePicker
@@ -49,6 +50,7 @@ const ProjectInfo = (props) => {
           value={props.endDate}
           onChange={props.handleEndChange}
           className={classes.scheduleInfo}
+          disabled={props.isDisabled}
         />
       </MuiPickersUtilsProvider>
     </form>
