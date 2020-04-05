@@ -1,5 +1,6 @@
 import React from "react";
 import Chart from "react-apexcharts";
+import { Typography } from "@material-ui/core";
 
 class BudgetVsActual extends React.Component {
   constructor(props) {
@@ -63,7 +64,9 @@ class BudgetVsActual extends React.Component {
         }
       },
       wp: this.props.wp,
-      tsheets: this.props.tsheets
+      tsheets: this.props.tsheets,
+      startDate: '',
+      endDate: ''
     };
     this.calcValues = this.calcValues.bind(this);
   }
@@ -117,6 +120,9 @@ class BudgetVsActual extends React.Component {
     console.log(budgetHours);
     console.log(actualHours);
 
+    var startDate = new Date(this.state.wp.workPackagePlanCollection[0].start_date).toISOString().split("T", 1)[0],
+    var endDate = new Date(this.state.wp.workPackagePlanCollection[0].end_date).toISOString().split("T", 1)[0],
+
     this.setState(prevState => ({
       series: [
         ...prevState.series,
@@ -135,18 +141,25 @@ class BudgetVsActual extends React.Component {
           ...prevState.options.xaxis,
           categories: laborGrades
         }
-      }
+      },
+      startDate: startDate,
+      endDate: endDate
     }));
   }
 
   render() {
     return (
+    <>
       <Chart
         options={this.state.options}
         series={this.state.series}
         type="line"
         height="500"
       />
+      <Typography variant="h6">
+          {this.state.startDate} - {this.state.endDate}
+      </Typography>
+    </>
     );
   }
 }
