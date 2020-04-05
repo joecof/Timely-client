@@ -17,6 +17,7 @@ import agent from "../../api/agent";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Paper from '@material-ui/core/Paper';
+import ContentEditable from 'react-contenteditable'
 
 // timesheet table css
 const timesheetStyle = theme => ({
@@ -82,6 +83,9 @@ class TimesheetDetail extends Component {
     this.deleteRow = this.deleteRow.bind(this);
     this.updateTS = this.updateTS.bind(this);
     this.submitTS = this.submitTS.bind(this);
+    this.handleContentChange = this.handleContentChange.bind(this);
+    this.handleOverFlexTime = this.handleOverFlexTime.bind(this);
+    this.checkKey = this.checkKey.bind(this);
   }
 
   // onLoad function, where i will be fetch data
@@ -201,7 +205,7 @@ class TimesheetDetail extends Component {
           let fri = timesheetDetails[i].friday;
           let notes = timesheetDetails[i].notes;
           let proj_wp = timesheetDetails[i].project_wp;
-          const tol = this.totalHourRow(sat, sun, mon, tue, wed, thu, fri)
+          const tol = this.totalHourRow(sat, sun, mon, tue, wed, thu, fri);
         
           let eachTimesheetRow = [];
           eachTimesheetRow.push(id);
@@ -340,8 +344,19 @@ class TimesheetDetail extends Component {
   
   // delelte Row
   deleteRow = (index) => {
-    let datas = this.state.timesheetrows.filter((e, i) => i !== index);
-    this.setState({ timesheetrows : datas });
+    const datas = this.state.timesheetrows.filter((e, i) => i !== index);
+    // calculating total hours of all week
+    const weekTotal = this.totalHourWeek(datas);
+    // array of total hours of each day
+    const dayTotal = [this.totalSat(datas), this.totalSun(datas),
+      this.totalMon(datas), this.totalTue(this.state.timesheetrows), 
+        this.totalWed(datas), this.totalThu(datas), this.totalFri(datas)];
+      //  setting state
+      this.setState({
+      timesheetrows: datas,
+        totalWeek: weekTotal,
+        totalDay: dayTotal,
+      });
   }
   // converting weekending api from milliseconds to date format
   formatWeekEnding(weekending) {
@@ -355,11 +370,15 @@ class TimesheetDetail extends Component {
   // updating timesheet
   updateTS = () => {
     console.log("Updating Timesheet");
+    console.log(this.state.timesheetrows)
   }
 
   // updating timesheet
   submitTS = () => {
     console.log("Submitting Timesheet");
+    console.log(this.state.timesheetrows)
+    console.log(this.state.overtime)
+    console.log(this.state.flextime)
   }
 
   // go to timesheetdetail if on dashboard
@@ -371,22 +390,164 @@ class TimesheetDetail extends Component {
     }
   }
 
+  // handle content change
+  handleContentChange(e, row, rowIndex, column) {
+    if(column > 3 && column < 11) {
+      row[column] = parseFloat(this.ccyFormat(e.target.value));
+      row[3] = row[4] + row[5] + row[6] + row[7] + row[8] + row[9] + row[10];
+      // calculating total hours of all week
+      const weekTotal = this.totalHourWeek(this.state.timesheetrows);
+      // array of total hours of each day
+      const dayTotal = [this.totalSat(this.state.timesheetrows), this.totalSun(this.state.timesheetrows),
+        this.totalMon(this.state.timesheetrows), this.totalTue(this.state.timesheetrows), 
+          this.totalWed(this.state.timesheetrows), this.totalThu(this.state.timesheetrows), this.totalFri(this.state.timesheetrows)];
+      //  setting state
+      this.setState({
+        totalWeek: weekTotal,
+        totalDay: dayTotal,
+      });
+    } else {
+      row[column] = e.target.value;
+    }
+  }
+
+  //check key pressed
+  checkKey(e) {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+    }
+  }
+
+  // handling over flex time content change
+  handleOverFlexTime(e, type) {
+    //  setting over time
+    if(type == "over") {
+      this.setState({
+        overtime: e.target.value
+      })
+    }
+    //  setting over time
+    if(type == "flex") {
+      this.setState({
+        flextime: e.target.value
+      })
+    }
+  }
+
   // timesheet row
   timesheetRow = (row, i) => 
     <TableRow key={i}>
-      <TableCell scope="row" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>
-          {row[1]}
+      <TableCell scope="row">
+        {!this.state.isEditable ? row[1] :
+            <ContentEditable
+              html={row[1]}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 1)}
+            />
+        }
       </TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{row[2]}</TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? row[2] :
+            <ContentEditable
+              html={row[2]}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 2)}
+            />
+        }
+      </TableCell>
       <TableCell align="right">{this.ccyFormat(row[3])}</TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[4])}</TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[5])}</TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[6])}</TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[7])}</TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[8])}</TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[9])}</TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(row[10])}</TableCell>
-      <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{row[11]}</TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? this.ccyFormat(row[4]) :
+            <ContentEditable
+              html={this.ccyFormat(row[4])}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 4)}
+            />
+        }
+      </TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? this.ccyFormat(row[5]) :
+            <ContentEditable
+              html={this.ccyFormat(row[5])}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 5)}
+            />
+        }
+        </TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? this.ccyFormat(row[6]) :
+            <ContentEditable
+              html={this.ccyFormat(row[6])}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 6)}
+            />
+        }
+      </TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? this.ccyFormat(row[7]) :
+            <ContentEditable
+              html={this.ccyFormat(row[7])}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 7)}
+            />
+        }
+      </TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? this.ccyFormat(row[8]) :
+            <ContentEditable
+              html={this.ccyFormat(row[8])}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 8)}
+            />
+        }
+      </TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? this.ccyFormat(row[9]) :
+            <ContentEditable
+              html={this.ccyFormat(row[9])}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 9)}
+            />
+        }
+      </TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? this.ccyFormat(row[10]) :
+            <ContentEditable
+              html={this.ccyFormat(row[10])}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 10)}
+            />
+        }
+      </TableCell>
+      <TableCell align="right">
+        {!this.state.isEditable ? row[11] :
+            <ContentEditable
+              html={row[11]}
+              data-column="item"
+              className="content-editable"
+              onKeyDown={this.checkKey}
+              onChange={(e) => this.handleContentChange(e, row, i, 11)}
+            />
+        }
+      </TableCell>
       {!this.state.isEditable ? null : <TableCell align="right" ><DeleteIcon onClick={() => { this.deleteRow(i) }} /></TableCell>}
     </TableRow>;
 
@@ -481,12 +642,32 @@ class TimesheetDetail extends Component {
               {/* overtime span column */}
               <TableRow>
                 <TableCell colSpan={2} className={classes.tableTitle}>Overtime</TableCell>
-                <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(this.state.overtime)}</TableCell>
+                <TableCell align="right">
+                {!this.state.isEditable ? this.ccyFormat(this.state.overtime) :
+                  <ContentEditable
+                    html={this.ccyFormat(this.state.overtime)}
+                    data-column="item"
+                    className="content-editable"
+                    onKeyDown={this.checkKey}
+                    onChange={(e) => this.handleOverFlexTime(e, "over")}
+                  />
+                }
+                </TableCell>
               </TableRow>
               {/* flex span column */}
               <TableRow>
                 <TableCell colSpan={2} className={classes.tableTitle}>Flextime</TableCell>
-                <TableCell align="right" suppressContentEditableWarning={true} contentEditable={this.state.isEditable}>{this.ccyFormat(this.state.flextime)}</TableCell>
+                <TableCell align="right">
+                  {!this.state.isEditable ? this.ccyFormat(this.state.flextime) :
+                    <ContentEditable
+                      html={this.ccyFormat(this.state.flextime)}
+                      data-column="item"
+                      className="content-editable"
+                      onKeyDown={this.checkKey}
+                      onChange={(e) => this.handleOverFlexTime(e, "flex")}
+                    />
+                  }
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
