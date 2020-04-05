@@ -5,7 +5,6 @@ import Avatar from "@material-ui/core/Avatar";
 import logo from '../../images/logo.png'
 import { Link } from "react-router-dom";
 
-
 /**
  * Material UI styling JSON object. 
  * @param {JSON} theme 
