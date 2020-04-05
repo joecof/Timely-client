@@ -41,8 +41,7 @@ const RemoveFromProject = (props) => {
     const [employees, setEmployees] = React.useState();
 
     const [projectsData, setProjectsData] = React.useState();
-    // const [employeesData, setEmployeesData] = React.useState();
-    var employeesData = [];
+    var employeesToRemove = [];
 
     const fetchProjectsData = async () => {
       const response = await agent.projects.getProjectsForSupervisor(user.employee_id, token);
@@ -56,10 +55,10 @@ const RemoveFromProject = (props) => {
         }
         for (var i = 0; i < project.employees.length; i++) {
             if (project.employees[i].supervisor_id == user.employee_id) {
-                employeesData.push(project.employees[i]);
+                employeesToRemove.push(project.employees[i]);
             }
         }
-        return employeesData;
+        return employeesToRemove;
     }
 
     useEffect(() => {
@@ -100,7 +99,7 @@ const RemoveFromProject = (props) => {
             <Autocomplete
                 multiple
                 className={classes.supervisorMargin}
-                options={employeesData}
+                options={employeesToRemove}
                 getOptionLabel={option => option.first_name + " " + option.last_name}
                 style={{ width: 700 }}
                 onChange={(event, value) => setEmployees(value)}

@@ -49,7 +49,7 @@ const AssignToProject = (props) => {
 
     const fetchEmployeesData = async () => {
       const user = JSON.parse(sessionStorage.getItem('user'));
-      const response = await agent.employeeInfo.getEmployeesBySupervisor(user.supervisor_id, token);
+      const response = await agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
       return response;
     }
 

@@ -67,7 +67,7 @@ class App extends Component {
    */
   async loginHandler(event, data){
     event.preventDefault();
-
+    
     try {
       const response = await agent.authorization.login(data);
 
@@ -146,7 +146,14 @@ class App extends Component {
      * Else if isAuth is false render all available routes for non-authenticated (not logged-in users). 
      */
     if(this.state.isAuth) {
-      routes = <Routes { ...this.props} config = {config('authentication')} token={this.state.token}/>
+      var loadToken = null;
+      if(localStorage.getItem('token') == null) {
+        loadToken = this.state.token;
+      } else {
+        loadToken = localStorage.getItem('token');
+      }
+      routes = <Routes { ...this.props} config = {config('authentication')} token={loadToken}/>
+      
     } else {
       routes = <Routes { ...this.props} config = {config('login')} />
     }

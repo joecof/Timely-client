@@ -41,7 +41,8 @@ class SupervisorPortal extends Component {
    */
   async getEmployees() {
     const token = localStorage.getItem("token");
-    const response = agent.employeeInfo.getAllEmployees(token);
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const response = agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
     return response;
   }
 
