@@ -120,8 +120,8 @@ class BudgetVsActual extends React.Component {
     console.log(budgetHours);
     console.log(actualHours);
 
-    var startDate = new Date(this.state.wp.workPackagePlanCollection[0].start_date).toISOString().split("T", 1)[0],
-    var endDate = new Date(this.state.wp.workPackagePlanCollection[0].end_date).toISOString().split("T", 1)[0],
+    var startDate = new Date(this.state.wp.workPackagePlanCollection[0].start_date).toISOString().split("T", 1)[0];
+    var endDate = new Date(this.state.wp.workPackagePlanCollection[0].end_date).toISOString().split("T", 1)[0];
 
     this.setState(prevState => ({
       series: [
@@ -155,6 +155,7 @@ class BudgetVsActual extends React.Component {
         series={this.state.series}
         type="line"
         height="500"
+        width="800"
       />
       <Typography variant="h6">
           {this.state.startDate} - {this.state.endDate}
