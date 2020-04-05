@@ -68,7 +68,7 @@ class App extends Component {
    */
   async loginHandler(event, data){
     event.preventDefault();
-
+    
     try {
       const response = await agent.authorization.login(data);
 

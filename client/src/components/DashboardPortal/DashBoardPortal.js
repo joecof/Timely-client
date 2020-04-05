@@ -7,7 +7,6 @@
 import React, { Component } from "react";
 import { Paper } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import DashboardPortalProjInfo from "../DashboardPortalProjInfo/DashboardPortalProjInfo";
 import TimesheetDetail from "../TimesheetDetail/TimesheetDetail";
@@ -26,7 +25,7 @@ const styles = () => ({
   },
   leftPaper: {
     overflow: 'scroll',
-    maxHeight: '500px',
+    maxHeight: '800px',
     overflow: "auto",
     width: "310px",
     margin: "0 20px 0 0",
@@ -37,21 +36,31 @@ const styles = () => ({
   rightTopPaper: {
     height: 500
   },
-  rightBottomLeftPaper: {
-    height: 220,
-    textAlign: "center",
-    margin: "0 20px 0 0",
-    boxShadow: "none",
-    border: "solid 1px lightgray",
-    borderRadius: "5px"
-  },
-  rightBottomRightPaper: {
-    height: 220,
+  bottomLeftPaper: {
+    height: 200,
+    width: 302,
     textAlign: "center",
     boxShadow: "none",
     border: "solid 1px lightgray",
     borderRadius: "5px",
-    marginLeft: '20px'
+  },
+  bottomMidPaper: {
+    height: 200,
+    width: 302,
+    textAlign: "center",
+    boxShadow: "none",
+    border: "solid 1px lightgray",
+    borderRadius: "5px",
+    marginLeft: 45
+  },
+  bottomRightPaper: {
+    height: 200,
+    width: 302,
+    textAlign: "center",
+    boxShadow: "none",
+    border: "solid 1px lightgray",
+    borderRadius: "5px",
+    marginLeft: 45
   },
   title: {
     display: "flex",
@@ -85,9 +94,14 @@ const styles = () => ({
     height: '500px',
     fontSize: '18pt',
     borderRadius: '5px',
+    cursor: 'pointer'
   },
-  projsInfo: {
-    textAlign: 'center'
+  projInfo: {
+    cursor: 'pointer'
+  },
+  vacDays: {
+    fontSize: '80pt',
+    color: 'lightgray',
   }
 });
 
@@ -99,7 +113,9 @@ class DashBoardPortal extends Component {
 
     this.state = {
       loadedUser: {},
-      projects: []
+      projects: [],
+      overTime: 0,
+      flexTime: 0
     };
 
     this.getProject = this.getProject.bind(this);
@@ -131,15 +147,29 @@ class DashBoardPortal extends Component {
   }
 
   // getting logged in user and the projects
-  getProject(projects, loadedUser) {
+  getProject(projects, loadedUser, overFlex) {
+    // get projects thats open
+    let openPorj = [];
+    for(let i = 0; i < projects.length; i++) {
+      if(projects[i].status == "OPEN") {
+        openPorj.push(projects[i]);
+      }
+    }
+    projects = openPorj;
     // sorting projects by end_date
     projects.sort(function(a,b){
-      return b.end_date - a.end_date;
+      return a.end_date - b.end_date;
     });
+    // getting overtime and flextime
+    const res = overFlex.split("|");
+    const ovTime = parseFloat(res[0]);
+    const flTime = parseFloat(res[1]);
     // setting the states
     this.setState({
       projects: projects,
-      loadedUser: loadedUser
+      loadedUser: loadedUser,
+      overTime: ovTime,
+      flexTime: flTime
     });
     // if user does not have any projects
     if(this.state.projects.length == 0) {
@@ -159,11 +189,13 @@ class DashBoardPortal extends Component {
             <div className={classes.projTitle} id="recentNewProjTitle">Recent / New Projects</div>
               {this.state.projects.length == 0 ? "" : 
                 this.state.projects.map((proj, index) =>
-                  <DashboardPortalProjInfo key={proj.project_code} history={this.props.history}
-                    projName={proj.project_code}
-                    dueDate={this.formatWeekEnding(proj.end_date)}
-                    projManagerName={proj.project_manager_id.first_name + " " + proj.project_manager_id.last_name}
-                  />
+                  <div className={classes.projInfo}>
+                    <DashboardPortalProjInfo key={proj.project_code} history={this.props.history}
+                      projName={proj.project_code}
+                      dueDate={this.formatWeekEnding(proj.end_date)}
+                      projManagerName={proj.project_manager_id.first_name + " " + proj.project_manager_id.last_name}
+                    />
+                  </div>
                 )
               }
           </Paper>
@@ -173,52 +205,23 @@ class DashBoardPortal extends Component {
               <TimesheetDetail fetchProject={this.getProject} history={this.props.history} dashboardTimesheet={true} userId={this.props.match.params.id} token={this.props.token}/>
             </div>
             <div className={classes.flexVancationContainer}>
-              <Paper className={classes.rightBottomLeftPaper} elevation={2}>
+              <Paper className={classes.bottomLeftPaper} elevation={2}>
                 {/* flex time allocated */}
-                <div className={classes.title}>Flextime</div>
+                <div className={classes.title}>Overtime</div>
                 <hr className={classes.seperator} />
-                <CircularProgressbar
-                  className={classes.CircularProgressbar}
-                  value={66}
-                  text={`${66}%`}
-                  styles={buildStyles({
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                    strokeLinecap: "butt",
-                    // Text size
-                    textSize: "13px",
-                    // How long animation takes to go from one percentage to another, in seconds
-                    pathTransitionDuration: 3,
-                    pathColor: `rgba(62, 152, 199, ${66 / 100})`,
-                    textColor: "#f88",
-                    trailColor: "#d6d6d6",
-                    backgroundColor: "#3e98c7"
-                  })}
-                />
+                <div className={classes.vacDays}>{this.state.overTime}</div>
               </Paper>
-              <Paper className={classes.rightBottomRightPaper} elevation={2}>
+              <Paper className={classes.bottomMidPaper} elevation={2}>
                 {/* vacation days taken */}
                 <div className={classes.title}>Vacation Days</div>
                 <hr className={classes.seperator} />
-                <CircularProgressbar
-                  className={classes.CircularProgressbar}
-                  value={50}
-                  text={`${50}%`}
-                  styles={buildStyles({
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                    strokeLinecap: "butt",
-                    // Text size
-                    textSize: "13px",
-
-                    // How long animation takes to go from one percentage to another, in seconds
-                    pathTransitionDuration: 3,
-
-                    // Can specify path transition in more detail, or remove it entirely
-                    // pathTransition: 'none',
-
-                    // Colors
-                    pathColor: `rgba(62, 152, 199, ${50 / 100})`
-                  })}
-                />
+                <div className={classes.vacDays}>{this.state.loadedUser.vacation}</div>
+              </Paper>
+              <Paper className={classes.bottomRightPaper} elevation={2}>
+                {/* vacation days taken */}
+                <div className={classes.title}>Flextime</div>
+                <hr className={classes.seperator} />
+                <div className={classes.vacDays}>{this.state.flexTime}</div>
               </Paper>
             </div>
           </div>

@@ -88,6 +88,7 @@ class SideMenu extends Component {
             loadedUser={this.props.loadedUser}
             resize={this.props.resize}
           />
+
           <Divider className={classes.divider} />
           <div>
             <MenuItem
