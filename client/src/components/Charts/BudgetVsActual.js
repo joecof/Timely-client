@@ -23,7 +23,7 @@ class BudgetVsActual extends React.Component {
             show: false
           }
         },
-        colors: ["#77B6EA", "#545454"],
+        colors: ["#fc0303", "#035efc", "#17b309"],
         dataLabels: {
           enabled: true
         },
@@ -80,10 +80,17 @@ class BudgetVsActual extends React.Component {
     var laborGrades = [];
     var budgetHours = [];
     var actualHours = [];
+    var REHours = [];
     this.state.wp.workPackagePlanCollection.forEach(x => {
+      var revision = 0;
       if (x.type === "BUDGET") {
         laborGrades.push(x.labor_grade_id);
         budgetHours.push(parseInt(x.plan_hour));
+      } else {
+        if ( x.revision > revision) {
+          revision = x.revision;
+          REHours[laborGrades.indexOf(x.labor_grade_id)] = parseInt(x.plan_hour);
+        }
       }
     });
 
@@ -98,9 +105,6 @@ class BudgetVsActual extends React.Component {
         console.log(tsRow.project_wp);
         console.log(this.state.wp.project_wp);
         if (tsRow.project_wp === this.state.wp.project_wp) {
-          console.log(
-            laborGrades.indexOf(ts.employee.labor_grade_id.labor_grade_id)
-          );
           actualHours[
             laborGrades.indexOf(ts.employee.labor_grade_id.labor_grade_id)
           ] += parseInt(
@@ -119,6 +123,7 @@ class BudgetVsActual extends React.Component {
     console.log(laborGrades);
     console.log(budgetHours);
     console.log(actualHours);
+    console.log(REHours)
 
     var startDate = new Date(this.state.wp.workPackagePlanCollection[0].start_date).toISOString().split("T", 1)[0];
     var endDate = new Date(this.state.wp.workPackagePlanCollection[0].end_date).toISOString().split("T", 1)[0];
@@ -131,9 +136,13 @@ class BudgetVsActual extends React.Component {
           data: budgetHours
         },
         {
-          name: "Actual",
+          name: "Done",
           data: actualHours
         },
+        {
+          name: "Remaining RE estimate",
+          data: REHours
+        }
       ],
       options: {
         ...prevState.options,
