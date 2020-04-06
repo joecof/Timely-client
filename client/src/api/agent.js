@@ -51,8 +51,9 @@ const employeeInfo = {
 const projects = {
   getAllProjects: (token) => requests.get(`/projects`, token),
   getProjectsForUser: (id, token) => requests.get(`/projects/emp/${id}`, token),
+  getProjectsForSupervisor: (id, token) => requests.get(`projects/supervisor/${id}`, token),
   createProject: (data, token) => requests.post(`/projects/createProject`, token, data),
-  assignToProject: (project, token) => requests.post(`/projects/assignToProject/`, token, project),
+  updateProject: (project, token) => requests.post(`/projects/updateProject/`, token, project),
   getDetailsById: (id, token) => requests.get(`/projects/projectDetails/${id}`, token),
   getById: (id, token) => requests.get(`/projects/${id}`, token)
 }
@@ -61,7 +62,8 @@ const timesheetsInfo = {
   getAllTimesheetsByEmp: (empId, token) => requests.get(`/emps/${empId}/timesheets/`, token),
   getTimesheetById: (empId, token, tsId) => requests.get(`/emps/${empId}/timesheets/${tsId}`, token),
   createCurrentWeekTimesheet: (empId, token, data)=> requests.post(`emps/${empId}/timesheets/`, token, data),
-  getTimesheetsByEmps: (emps, token)=> requests.get(`/timesheets/getForEmps/${emps}`, token)
+  getTimesheetsByEmps: (emps, token)=> requests.get(`/timesheets/getForEmps/${emps}`, token),
+  updateTimesheetById: (empId, token, tsId, data) => requests.put(`/emps/${empId}/timesheets/${tsId}`, token, data)
 }
 
 const workpackages = {
