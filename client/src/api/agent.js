@@ -62,7 +62,8 @@ const timesheetsInfo = {
   getAllTimesheetsByEmp: (empId, token) => requests.get(`/emps/${empId}/timesheets/`, token),
   getTimesheetById: (empId, token, tsId) => requests.get(`/emps/${empId}/timesheets/${tsId}`, token),
   createCurrentWeekTimesheet: (empId, token, data)=> requests.post(`emps/${empId}/timesheets/`, token, data),
-  getTimesheetsByEmps: (emps, token)=> requests.get(`/timesheets/getForEmps/${emps}`, token)
+  getTimesheetsByEmps: (emps, token)=> requests.get(`/timesheets/getForEmps/${emps}`, token),
+  updateTimesheetById: (empId, token, tsId, data) => requests.put(`/emps/${empId}/timesheets/${tsId}`, token, data)
 }
 
 const workpackages = {
