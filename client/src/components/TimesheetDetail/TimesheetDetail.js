@@ -344,8 +344,19 @@ class TimesheetDetail extends Component {
   
   // delelte Row
   deleteRow = (index) => {
-    let datas = this.state.timesheetrows.filter((e, i) => i !== index);
-    this.setState({ timesheetrows : datas });
+    const datas = this.state.timesheetrows.filter((e, i) => i !== index);
+    // calculating total hours of all week
+    const weekTotal = this.totalHourWeek(datas);
+    // array of total hours of each day
+    const dayTotal = [this.totalSat(datas), this.totalSun(datas),
+      this.totalMon(datas), this.totalTue(this.state.timesheetrows), 
+        this.totalWed(datas), this.totalThu(datas), this.totalFri(datas)];
+      //  setting state
+      this.setState({
+      timesheetrows: datas,
+        totalWeek: weekTotal,
+        totalDay: dayTotal,
+      });
   }
   // converting weekending api from milliseconds to date format
   formatWeekEnding(weekending) {
@@ -381,7 +392,6 @@ class TimesheetDetail extends Component {
 
   // handle content change
   handleContentChange(e, row, rowIndex, column) {
-    
     if(column > 3 && column < 11) {
       row[column] = parseFloat(this.ccyFormat(e.target.value));
       row[3] = row[4] + row[5] + row[6] + row[7] + row[8] + row[9] + row[10];
