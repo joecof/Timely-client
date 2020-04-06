@@ -91,6 +91,7 @@ class TimesheetDetail extends Component {
     this.checkKey = this.checkKey.bind(this);
     this.hasProject = this.hasProject.bind(this);
     this.onProjCodeSelect = this.onProjCodeSelect.bind(this);
+    this.onWpIdSelect = this.onWpIdSelect.bind(this);
   }
 
   // onLoad function, where i will be fetch data
@@ -261,21 +262,20 @@ class TimesheetDetail extends Component {
             projectCodes: openPorjCodes
           });
           // fetching open wps
-          let wps = [];
+          let wps = [], w = [];
           for(let i = 0; i < openPorjCodes.length; i++) {
             const wp = await agent.projects.getDetailsById(
               openPorjCodes[i],
               token
             );
-            let w = [];
             for(let j = 0; j < wp.wpList.length; j++) {
-              if(wp.wpList[j].is_open == true) {
+              if(wp.wpList[j].is_open == true && wp.wpList[j].work_package_id.substring(wp.wpList[j].work_package_id.length - 1) == "L") {
                 w.push(wp.wpList[j].work_package_id);
               }
             }
             // if open projects has at least one open wp
             if(w.length > 0){
-              wps.push(w);
+              wps = w;
             }
           }
           // setting wps
@@ -441,7 +441,7 @@ class TimesheetDetail extends Component {
           "thursday": thu,
           "friday": fri,
           "notes": notes,
-          "project_wp": "PJT19257_2L"
+          "project_wp": proj + "_" + wp
         }
       } else {
           thisRow = {
@@ -455,7 +455,7 @@ class TimesheetDetail extends Component {
           "thursday": thu,
           "friday": fri,
           "notes": notes,
-          "project_wp": "PJT19257_2L"
+          "project_wp": proj + "_" + wp
         }
       }
       tsRows.push(thisRow);
@@ -479,7 +479,9 @@ class TimesheetDetail extends Component {
     const updateTsId = this.state.loadedTimesheet.timesheet_id;
     console.log(updateTs);
     const response = await agent.timesheetsInfo.updateTimesheetById(empId, updateToken, updateTsId, updateTs);
-    console.log(response);
+    if(response == "exception throw") {
+      alert("Porjct and Wp don't match, please check again");
+    }
   }
     
 
@@ -512,7 +514,7 @@ class TimesheetDetail extends Component {
           "thursday": thu,
           "friday": fri,
           "notes": notes,
-          "project_wp": "PJT19257_2L"
+          "project_wp": proj + "_" + wp
         }
       } else {
           thisRow = {
@@ -526,7 +528,7 @@ class TimesheetDetail extends Component {
           "thursday": thu,
           "friday": fri,
           "notes": notes,
-          "project_wp": "PJT19257_2L"
+          "project_wp": proj + "_" + wp
         }
       }
       tsRows.push(thisRow);
@@ -604,6 +606,14 @@ class TimesheetDetail extends Component {
     this.setState({
     })
   }
+
+  // handle project code select
+  onWpIdSelect(e, row, i, x) {
+    row[i] = e.target.value;
+    // for rendering purpose
+    this.setState({
+    })
+  }
   // handling over flex time content change
   handleOverFlexTime(e, type) {
     //  setting over time
@@ -619,7 +629,7 @@ class TimesheetDetail extends Component {
       })
     }
   }
-
+  
   // timesheet row
   timesheetRow = (row, i) => 
     <TableRow key={i}>
@@ -643,13 +653,20 @@ class TimesheetDetail extends Component {
       </TableCell>
       <TableCell align="right">
         {!this.state.isEditable ? row[2] :
-            <ContentEditable
-              html={row[2]}
-              data-column="item"
-              className="content-editable"
-              onKeyDown={this.checkKey}
-              onChange={(e) => this.handleContentChange(e, row, i, 2)}
-            />
+            this.state.projectCodes.length > 0 ?
+            <TextField
+              select
+              className="wpId"
+              id={"wpId" + i}
+              value={row[2]}
+              onChange={(e) => this.onWpIdSelect(e, row, 2, i)}
+            >
+              {this.state.wpIds.map((wp, index) => (
+                <MenuItem key={wp} value={wp}>
+                  {wp}
+                </MenuItem>
+              ))}
+            </TextField> : "No WorkPackages"
         }
       </TableCell>
       <TableCell align="right">{this.ccyFormat(row[3])}</TableCell>
