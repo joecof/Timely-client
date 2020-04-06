@@ -554,6 +554,8 @@ class TimesheetDetail extends Component {
     const response = await agent.timesheetsInfo.updateTimesheetById(empId, submitToken, submitTsId, submitTs);
     if(response == "exception throw") {
       alert("Porjct and Wp don't match, please check again");
+    } else {
+      this.fetchTimesheetRows();
     }
   }
 
