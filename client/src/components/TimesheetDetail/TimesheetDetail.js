@@ -3,7 +3,7 @@
  * Version: 1
  * Desc: Timesheet Detail Component displaying timesheet details after user click on a row on Timesheet Portal lists
  */
-import React, { Component } from 'react'
+import React, { Component, useState  } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -18,6 +18,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Paper from '@material-ui/core/Paper';
 import ContentEditable from 'react-contenteditable'
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
 
 // timesheet table css
 const timesheetStyle = theme => ({
@@ -43,7 +45,6 @@ const timesheetStyle = theme => ({
     }
 });
 
-
 // TimesheetDetail Component
 class TimesheetDetail extends Component {
 
@@ -62,6 +63,8 @@ class TimesheetDetail extends Component {
       isEditable: {},
       overtime: 0,
       flextime: 0,
+      projectCodes: [],
+      wpIds: []
     };
     
     // functions
@@ -86,6 +89,8 @@ class TimesheetDetail extends Component {
     this.handleContentChange = this.handleContentChange.bind(this);
     this.handleOverFlexTime = this.handleOverFlexTime.bind(this);
     this.checkKey = this.checkKey.bind(this);
+    this.hasProject = this.hasProject.bind(this);
+    this.onProjCodeSelect = this.onProjCodeSelect.bind(this);
   }
 
   // onLoad function, where i will be fetch data
@@ -239,6 +244,46 @@ class TimesheetDetail extends Component {
           totalDay: dayTotal,
         });
       }
+      // fetching projects here
+      if(this.state.isEditable) {
+        // fetching projects
+        const projects = await agent.projects.getProjectsForUser(userId, token);
+        // get projects thats open
+        let openPorjCodes = [];
+        for(let i = 0; i < projects.length; i++) {
+          if(projects[i].status == "OPEN") {
+            openPorjCodes.push(projects[i].project_code);
+          }
+        }
+        // if employee has project thats open then fetch wp ID
+        if(openPorjCodes.length > 0) {
+          this.setState({
+            projectCodes: openPorjCodes
+          });
+          // fetching open wps
+          let wps = [];
+          for(let i = 0; i < openPorjCodes.length; i++) {
+            const wp = await agent.projects.getDetailsById(
+              openPorjCodes[i],
+              token
+            );
+            let w = [];
+            for(let j = 0; j < wp.wpList.length; j++) {
+              if(wp.wpList[j].is_open == true) {
+                w.push(wp.wpList[j].work_package_id);
+              }
+            }
+            // if open projects has at least one open wp
+            if(w.length > 0){
+              wps.push(w);
+            }
+          }
+          // setting wps
+          this.setState({
+            wpIds: wps
+          });
+        }
+      }
     } else {
       document.getElementById("timesheetDetailContainer").innerHTML = "Sorry, you don't have any timesheet records in the database!"
     }
@@ -368,17 +413,144 @@ class TimesheetDetail extends Component {
   }
 
   // updating timesheet
-  updateTS = () => {
+  async updateTS() {
     console.log("Updating Timesheet");
-    console.log(this.state.timesheetrows)
+    var tsRows = [], thisRow;
+    for(let i = 0; i < this.state.timesheetrows.length; i++) {
+      var tsId = this.state.timesheetrows[i][0];
+      var proj = this.state.timesheetrows[i][1];
+      var wp = this.state.timesheetrows[i][2];
+      var sat = this.state.timesheetrows[i][4];
+      var sun = this.state.timesheetrows[i][5];
+      var mon = this.state.timesheetrows[i][6];
+      var tue = this.state.timesheetrows[i][7];
+      var wed = this.state.timesheetrows[i][8];
+      var thu = this.state.timesheetrows[i][9];
+      var fri = this.state.timesheetrows[i][10];
+      var notes = this.state.timesheetrows[i][11];
+      if(tsId != "") {
+        thisRow = {
+          "timesheet_row_id": tsId,
+          "project_code": proj,
+          "work_package_id": wp,
+          "saturday": sat,
+          "sunday": sun,
+          "monday": mon,
+          "tuesday": tue,
+          "wednesday": wed,
+          "thursday": thu,
+          "friday": fri,
+          "notes": notes,
+          "project_wp": "PJT19257_2L"
+        }
+      } else {
+          thisRow = {
+          "project_code": proj,
+          "work_package_id": wp,
+          "saturday": sat,
+          "sunday": sun,
+          "monday": mon,
+          "tuesday": tue,
+          "wednesday": wed,
+          "thursday": thu,
+          "friday": fri,
+          "notes": notes,
+          "project_wp": "PJT19257_2L"
+        }
+      }
+      tsRows.push(thisRow);
+    }
+    const overFlex = this.state.overtime + "|" + this.state.flextime;
+    // updating
+    const updateTs = {
+      "timesheet_id": this.state.loadedTimesheet.timesheet_id,
+      "labor_grade_id": this.state.loadedTimesheet.labor_grade_id,
+      "year": this.state.loadedTimesheet.year,
+      "week": this.state.loadedTimesheet.week,
+      "week_ending": this.state.loadedTimesheet.week_ending,
+      "status": "InProgress",
+      "approver_id": this.state.loadedTimesheet.approver_id,
+      "approve_date": this.state.loadedTimesheet.approve_date,
+      "attribute1": overFlex,
+      "details": tsRows
+    };
+    const empId = this.state.loadUser.employee_id;
+    const updateToken = localStorage.getItem("token");
+    const updateTsId = this.state.loadedTimesheet.timesheet_id;
+    console.log(updateTs);
+    const response = await agent.timesheetsInfo.updateTimesheetById(empId, updateToken, updateTsId, updateTs);
+    console.log(response);
   }
+    
 
   // updating timesheet
-  submitTS = () => {
+  async submitTS(){
     console.log("Submitting Timesheet");
-    console.log(this.state.timesheetrows)
-    console.log(this.state.overtime)
-    console.log(this.state.flextime)
+    var tsRows = [], thisRow;
+    for(let i = 0; i < this.state.timesheetrows.length; i++) {
+      var tsId = this.state.timesheetrows[i][0];
+      var proj = this.state.timesheetrows[i][1];
+      var wp = this.state.timesheetrows[i][2];
+      var sat = this.state.timesheetrows[i][4];
+      var sun = this.state.timesheetrows[i][5];
+      var mon = this.state.timesheetrows[i][6];
+      var tue = this.state.timesheetrows[i][7];
+      var wed = this.state.timesheetrows[i][8];
+      var thu = this.state.timesheetrows[i][9];
+      var fri = this.state.timesheetrows[i][10];
+      var notes = this.state.timesheetrows[i][11];
+      if(tsId != "") {
+        thisRow = {
+          "timesheet_row_id": tsId,
+          "project_code": proj,
+          "work_package_id": wp,
+          "saturday": sat,
+          "sunday": sun,
+          "monday": mon,
+          "tuesday": tue,
+          "wednesday": wed,
+          "thursday": thu,
+          "friday": fri,
+          "notes": notes,
+          "project_wp": "PJT19257_2L"
+        }
+      } else {
+          thisRow = {
+          "project_code": proj,
+          "work_package_id": wp,
+          "saturday": sat,
+          "sunday": sun,
+          "monday": mon,
+          "tuesday": tue,
+          "wednesday": wed,
+          "thursday": thu,
+          "friday": fri,
+          "notes": notes,
+          "project_wp": "PJT19257_2L"
+        }
+      }
+      tsRows.push(thisRow);
+    }
+    const overFlex = this.state.overtime + "|" + this.state.flextime;
+    // updating
+    const submitTs = {
+      "timesheet_id": this.state.loadedTimesheet.timesheet_id,
+      "labor_grade_id": this.state.loadedTimesheet.labor_grade_id,
+      "year": this.state.loadedTimesheet.year,
+      "week": this.state.loadedTimesheet.week,
+      "week_ending": this.state.loadedTimesheet.week_ending,
+      "status": "PENDING",
+      "approver_id": this.state.loadedTimesheet.approver_id,
+      "approve_date": this.state.loadedTimesheet.approve_date,
+      "attribute1": overFlex,
+      "details": tsRows
+    };
+    const empId = this.state.loadUser.employee_id;
+    const submitToken = localStorage.getItem("token");
+    const submitTsId = this.state.loadedTimesheet.timesheet_id;
+    console.log(submitTs);
+    const response = await agent.timesheetsInfo.updateTimesheetById(empId, submitToken, submitTsId, submitTs);
+    console.log(response);
   }
 
   // go to timesheetdetail if on dashboard
@@ -417,7 +589,21 @@ class TimesheetDetail extends Component {
       e.preventDefault();
     }
   }
+  // has project for submit
+  hasProject() {
+    if(this.state.projectCodes.length > 0) {
+      return true;
+    }
+    return false;
+  }
 
+  // handle project code select
+  onProjCodeSelect(e, row, i, x) {
+    row[i] = e.target.value;
+    // for rendering purpose
+    this.setState({
+    })
+  }
   // handling over flex time content change
   handleOverFlexTime(e, type) {
     //  setting over time
@@ -439,13 +625,20 @@ class TimesheetDetail extends Component {
     <TableRow key={i}>
       <TableCell scope="row">
         {!this.state.isEditable ? row[1] :
-            <ContentEditable
-              html={row[1]}
-              data-column="item"
-              className="content-editable"
-              onKeyDown={this.checkKey}
-              onChange={(e) => this.handleContentChange(e, row, i, 1)}
-            />
+          this.state.projectCodes.length > 0 ?
+            <TextField
+              select
+              className="projCode"
+              id={"projCode" + i}
+              value={row[1]}
+              onChange={(e) => this.onProjCodeSelect(e, row, 1, i)}
+            >
+              {this.state.projectCodes.map((proj, index) => (
+                <MenuItem key={proj} value={proj}>
+                  {proj}
+                </MenuItem>
+              ))}
+            </TextField> : "No Project"
         }
       </TableCell>
       <TableCell align="right">
@@ -481,7 +674,7 @@ class TimesheetDetail extends Component {
               onChange={(e) => this.handleContentChange(e, row, i, 5)}
             />
         }
-        </TableCell>
+      </TableCell>
       <TableCell align="right">
         {!this.state.isEditable ? this.ccyFormat(row[6]) :
             <ContentEditable
@@ -673,7 +866,7 @@ class TimesheetDetail extends Component {
           </Table>
         </TableContainer>
         {/* update and submite button */}
-        {!this.state.isEditable ? null :
+        {!this.state.isEditable || !this.hasProject() ? null :
                 <div className={classes.updateSubmitButton}>
                   <Button onClick={this.updateTS} color='primary'variant='contained'>Update</Button>
                   <Button className={classes.submitButton}onClick={this.submitTS} color='secondary'variant='contained'>Submit</Button>
