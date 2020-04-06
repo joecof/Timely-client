@@ -108,11 +108,14 @@ class BasicInfo extends Component {
               }}
             />
           </div>
-          <LaborGradeSlider 
-            marks = {this.props.marks} 
-            getSliderValue = {this.props.getSliderValue}
-            valueLabelFormat = {this.props.valueLabelFormat}  
+          <div className = {classes.field}>
+            <LaborGradeSlider 
+              marks = {this.props.marks} 
+              getSliderValue = {this.props.getSliderValue}
+              valueLabelFormat = {this.props.valueLabelFormat}  
+              hr = {this.props.hr}
             />
+          </div>
           <div className = {classes.field}>
           <Grid container spacing={1} className = {classes.container}>
             <Grid item xs={6}>

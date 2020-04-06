@@ -85,20 +85,6 @@ class BasicInfo extends Component {
                   />
                 </div>
                 <div className = {classes.field}>
-                {/* <Typography className = {classes.title} variant="h6"> Labor Grade </Typography>
-                <TextField
-                    className = {classes.input}
-                    disabled = {!this.props.hr}
-                    defaultValue = {this.props.loadedUser.labor_grade_id.labor_grade_id}
-                    helperText="Grade"
-                    name="laborGradeId"
-                    onChange = {(e) => this.props.formHandler(e)}
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  /> */}
                   <LaborGradeSlider 
                     valueLabelFormat = {this.props.valueLabelFormat}
                     getSliderValue = {this.props.getSliderValue}

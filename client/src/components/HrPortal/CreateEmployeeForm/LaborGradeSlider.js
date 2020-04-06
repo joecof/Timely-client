@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const styles = () => ({
   title: {
@@ -23,10 +25,10 @@ class LaborGradeSlider extends Component {
     return (
       
       <div className = {classes.field}>
-      {
-        this.props.marksValue ? 
         <div>
         <Typography className = {classes.title} variant="h6"> Labor Grade </Typography>
+        {
+          this.props.marksValue || this.props.marksValue == undefined ? 
           <Slider
             defaultValue={!this.props.hr ? parseInt(this.props.marksValue) : 0}
             valueLabelFormat={(val) => this.props.valueLabelFormat(val)}
@@ -39,11 +41,10 @@ class LaborGradeSlider extends Component {
             disabled = {!this.props.hr}
             max = {7}
           />
+          :
+          <CircularProgress/>
+        }
           </div>
-          : 
-          null
-      }
-       
         </div>
     )
   }
