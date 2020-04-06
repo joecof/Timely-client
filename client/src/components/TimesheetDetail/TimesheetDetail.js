@@ -552,7 +552,9 @@ class TimesheetDetail extends Component {
     const submitTsId = this.state.loadedTimesheet.timesheet_id;
     console.log(submitTs);
     const response = await agent.timesheetsInfo.updateTimesheetById(empId, submitToken, submitTsId, submitTs);
-    console.log(response);
+    if(response == "exception throw") {
+      alert("Porjct and Wp don't match, please check again");
+    }
   }
 
   // go to timesheetdetail if on dashboard
