@@ -103,7 +103,7 @@ class TimesheetDetail extends Component {
   isEditable() {
     const thisStatus = this.state.loadedTimesheet.status;
     let isEditable = false;
-    if((thisStatus == "REJECTED" || thisStatus == "InProgress") && this.props.dashboardTimesheet == undefined) {
+    if((thisStatus == "OPEN") && this.props.dashboardTimesheet == undefined) {
       isEditable = true;
     }
     // setting the state
@@ -468,7 +468,7 @@ class TimesheetDetail extends Component {
       "year": this.state.loadedTimesheet.year,
       "week": this.state.loadedTimesheet.week,
       "week_ending": this.state.loadedTimesheet.week_ending,
-      "status": "InProgress",
+      "status": "OPEN",
       "approver_id": this.state.loadedTimesheet.approver_id,
       "approve_date": this.state.loadedTimesheet.approve_date,
       "attribute1": overFlex,
@@ -541,7 +541,7 @@ class TimesheetDetail extends Component {
       "year": this.state.loadedTimesheet.year,
       "week": this.state.loadedTimesheet.week,
       "week_ending": this.state.loadedTimesheet.week_ending,
-      "status": "PENDING",
+      "status": "CLOSE",
       "approver_id": this.state.loadedTimesheet.approver_id,
       "approve_date": this.state.loadedTimesheet.approve_date,
       "attribute1": overFlex,

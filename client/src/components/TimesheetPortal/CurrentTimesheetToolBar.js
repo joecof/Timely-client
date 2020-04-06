@@ -100,7 +100,7 @@ class CurrentTimesheetToolBar extends React.Component {
       "year": currentYear,
       "week": currentWeekNumber,
       "week_ending": currentWeekEnding,
-      "status": "InProgress",
+      "status": "OPEN",
       "approver_id": 3,
       "approve_date": null,
       "attribute1": null,
