@@ -25,6 +25,10 @@ const WorkpackageInfo = props => {
   });
 
   const parentWP = [];
+  parentWP.push({
+    value: '',
+    label: "Project Level"
+  })
   props.wpList.map(wp => {
     if (wp.work_package_id.substring(wp.work_package_id.length - 1) !== "L") {
       var data = {};

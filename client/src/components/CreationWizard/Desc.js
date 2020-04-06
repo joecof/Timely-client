@@ -26,7 +26,7 @@ const Desc = (props) => {
           multiline
           rows="8"
           variant="outlined"
-          name="projectDesc"
+          name="Desc"
           value={props.Desc}
           onChange={props.handleChange}
         />

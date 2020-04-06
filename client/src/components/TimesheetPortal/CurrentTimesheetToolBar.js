@@ -31,7 +31,7 @@ class CurrentTimesheetToolBar extends React.Component {
     this.currentDate = this.currentDate.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.currentWeekNumber = this.currentWeekNumber.bind(this);
-    this.getSundayOfCurrentWeek = this.getSundayOfCurrentWeek.bind(this);
+    this.getFridayOfCurrentWeek = this.getFridayOfCurrentWeek.bind(this);
   }
 
   // get current date
@@ -43,12 +43,13 @@ class CurrentTimesheetToolBar extends React.Component {
     return (year + "-" + month + "-" + day);
   }
 
-  // week ending of every sunday
-  getSundayOfCurrentWeek() {
-    var d = new Date();
-    var day = d.getDay(),
-        diff = d.getDate() - day + (day == 0 ? -6:1) + 6; // sunday
-    return new Date(d.setDate(diff));
+  // week ending of every friday
+  getFridayOfCurrentWeek() {
+    var curr = new Date(); // get current date
+    var thisDate = new Date(curr.getFullYear(), curr.getMonth(), curr.getDate() + 1);
+    var first = thisDate.getDate() - thisDate.getDay() - 1; // First day is the day of the month - the day of the week
+    var last = first + 6; // last day is the first day + 6
+    return new Date(curr.setDate(last));
   }
 
   // generate current weekNumber
@@ -56,7 +57,7 @@ class CurrentTimesheetToolBar extends React.Component {
     const today = new Date();
     const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
     const pastDaysOfYear = (today.getTime() - firstDayOfYear.getTime()) / 86400000;
-    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 7) / 7);
+    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1.1) / 7);
   }
 
   // check if fetched timesheets has currentTimesheet
@@ -84,7 +85,6 @@ class CurrentTimesheetToolBar extends React.Component {
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
     const logedInUser = await agent.employeeInfo.getCurrentUser(userId, token);
-    console.log(logedInUser.labor_grade_id.labor_grade_id);
 
     // login employee labor grade
     const laborGradeId = logedInUser.labor_grade_id.labor_grade_id;
@@ -93,14 +93,14 @@ class CurrentTimesheetToolBar extends React.Component {
     // current week number
     const currentWeekNumber = this.currentWeekNumber();
     // current week ending
-    const currentWeekEnding = this.getSundayOfCurrentWeek();
+    const currentWeekEnding = this.getFridayOfCurrentWeek();
     // current timesheet creation
     const timesheetCreation = {
       "labor_grade_id": laborGradeId,
       "year": currentYear,
       "week": currentWeekNumber,
       "week_ending": currentWeekEnding,
-      "status": "InProgress",
+      "status": "OPEN",
       "approver_id": 3,
       "approve_date": null,
       "attribute1": null,
@@ -116,12 +116,11 @@ class CurrentTimesheetToolBar extends React.Component {
               "thursday": 0.0,
               "friday": 0.0,
               "notes": "",
-              "project_wp": "PJT19257_2"
+              "project_wp": "PJT19257_2L"
           }
       ]
     };
     const response = await agent.timesheetsInfo.createCurrentWeekTimesheet(userId, token, timesheetCreation);
-    console.log(response);
     this.props.fetchTimesheets();
   }
   
@@ -137,7 +136,6 @@ class CurrentTimesheetToolBar extends React.Component {
       if(!this.hasCurrentTimesheet()) {
         this.createCurrentTimesheet();
       } else {  // go to currentTimesheet Detail
-        console.log("go to currentTimesheetDetail");
         const tsId = this.props.states.timesheets[0][0];
         const weekNum = this.props.states.timesheets[0][1];
         const weekEnd = this.props.states.timesheets[0][2];
