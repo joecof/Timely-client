@@ -49,10 +49,7 @@ class ProjectsAssignedTo extends Component {
    */
   async fetchData() {
     const { classes } = this.props; 
-  
-    console.log(this.props);
     var projectsData = await this.getProjects();
-    console.log(projectsData);
 
     var resultData = [];
     for (let i = 0; i < projectsData.length; i++) {

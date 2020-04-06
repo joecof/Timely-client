@@ -94,7 +94,6 @@ export default class TimesheetPortal extends Component {
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
     const response = await agent.timesheetsInfo.getAllTimesheetsByEmp(userId, token);
-    console.log(response);
 
     if(response.length != 0) {
       // fetching timesheets

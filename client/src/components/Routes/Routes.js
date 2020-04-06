@@ -9,6 +9,7 @@ import Projects from '../ProjectsPortal/ProjectsHome/Projects'
 import ProjectCreate from '../ProjectCreate/ProjectCreate'
 import DashboardPortal from '../DashboardPortal/DashBoardPortal'
 import SupervisorPortal from '../SupervisorPortal/SupervisorPortal'
+import RemoveFromProject from '../SupervisorPortal/RemoveFromProject'
 import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo'
 import EmployeeForm from '../Profile/EmployeeForm'
@@ -107,6 +108,15 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <SupervisorPortal
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/supervisor/remove"
+              exact
+              render={props => (
+                <RemoveFromProject
                   {...props}
                 />
               )}
