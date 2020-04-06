@@ -3,10 +3,17 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Slider from '@material-ui/core/Slider';
 import SupervisorList from './SupervisorList'
 import FaceIcon from '@material-ui/icons/Face';
 import Chip from '@material-ui/core/Chip';
+import LaborGradeSlider from './LaborGradeSlider';
+
+
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 /**
  * Material UI styling JSON object. 
@@ -37,6 +44,10 @@ const styles = () => ({
   },
   supervisorName: {
     display: 'inline'
+  },
+  formControl: {
+    width: "50%",
+    marginTop: 10
   }
 });
 
@@ -97,22 +108,11 @@ class BasicInfo extends Component {
               }}
             />
           </div>
-          <div className = {classes.field}>
-            <Typography className = {classes.title} variant="h6"> Labor Grade </Typography>
-            <TextField
-                className = {classes.input}
-                disabled = {!this.props.hr}
-                defaultValue = {this.props.laborGradeId}
-                helperText="Labor Grade"
-                name="laborGradeId"
-                onChange = {(e) => this.props.formHandler(e)}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-          </div>
+          <LaborGradeSlider 
+            marks = {this.props.marks} 
+            getSliderValue = {this.props.getSliderValue}
+            valueLabelFormat = {this.props.valueLabelFormat}  
+            />
           <div className = {classes.field}>
           <Grid container spacing={1} className = {classes.container}>
             <Grid item xs={6}>

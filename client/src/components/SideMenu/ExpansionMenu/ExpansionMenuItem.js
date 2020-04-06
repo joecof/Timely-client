@@ -9,6 +9,9 @@ import { Link } from "react-router-dom";
  * Material UI styling JSON object. 
  */
 const styles = () => ({
+  expansionPanelDetails: {
+    // backgroundColor: '#272624'
+  },
   text: {
     marginLeft: 30,
     color: 'black'
