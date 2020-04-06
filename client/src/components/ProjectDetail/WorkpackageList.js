@@ -24,9 +24,15 @@ class WorkpackageList extends React.Component {
       selectableRows : false,
       onRowClick: (rowData, rowState) => {
         console.log(rowData);
+        var wp = null;
+          this.state.wpList.forEach(x => {
+            if (x.work_package_id === rowData[0]) {
+              wp = x;
+            }
+          });
         this.props.history.push({
           pathname: `/workpackageDetail`,
-          state: {wpID: rowData[0]}
+          state: {wp: wp}
         });
       } 
     };
