@@ -56,6 +56,8 @@ import agent from "../../api/agent";
       download: false,
       rowHover: true,
       onRowClick: (rowData) => {
+
+        console.log(rowData)
         props.history.push(`/dashboard/timesheet/${rowData[0]}`);
         localStorage.setItem("timesheetId", rowData[0]);
       },
