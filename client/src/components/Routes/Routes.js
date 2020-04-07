@@ -14,11 +14,14 @@ import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo'
 import EmployeeForm from '../Profile/EmployeeForm'
 import CreateEmployeeForm from '../HrPortal/CreateEmployeeForm/CreateEmployeeForm'
-
+import IterationPlanCreate from '../LeadEngineerDetail/IterationPlanCreate'
 import ProjectDetail from '../ProjectDetail/ProjectDetail'
 import LeadEngineer from '../LeadEngineerPortal/LeadEngineer'
 import WorkpackageCreate from '../WorkpackageCreate/WorkpackageCreate';
 import WorkpackageDetail from '../ProjectDetail/WorkpackageDetail'
+import TimesheetApproverPortal from '../TimesheetApproverPortal/TimesheetApproverPortal';
+import TimesheetsToApprove from '../TimesheetApproverPortal/TimesheetsToApprove';
+import CheckTimesheet from '../TimesheetApproverPortal/CheckTimesheet';
 
 /**
  * Author: Joe 
@@ -140,6 +143,33 @@ export default class Routes extends Component {
               )}
             />
             <Route
+              path="/dashboard/tsapprover"
+              exact
+              render={props => (
+                <TimesheetApproverPortal
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/tsapprover/:id"
+              exact
+              render={props => (
+                <TimesheetsToApprove
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/tsapprover/:id/:tsid"
+              exact
+              render={props => (
+                <CheckTimesheet
+                  {...props}
+                />
+              )}
+            />
+            <Route
               path="/dashboard/projects"
               exact
               render={props => (
@@ -180,6 +210,15 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <WorkpackageDetail
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/newIterationPlan"
+              exact
+              render={props => (
+                <IterationPlanCreate
                   {...props}
                 />
               )}

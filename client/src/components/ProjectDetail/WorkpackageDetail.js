@@ -8,6 +8,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Modal from "./Modal.js";
 import EmpHours from '../Charts/EmpHours';
 import BudgetVsActual from '../Charts/BudgetVsActual';
+import EstimationRE from '../Charts/EstimationRE';
+import {Link} from 'react-router-dom';
 import "./ProjectDetail.css";
 
 /**
@@ -21,6 +23,7 @@ class WorkpackageDetail extends React.Component {
     this.state = {
       wp: this.props.location.state.wp,
       isProjManager: this.props.location.state.isPM,
+      isRE: this.props.location.state.isRE ? this.props.location.state.isRE : false,
       emps: [],
       timesheets: [],
       week: 0,
@@ -145,6 +148,19 @@ class WorkpackageDetail extends React.Component {
             <EmpHours EmpsX={this.state.emps} week={50} EmpsY={this.state.timesheets} wp={this.state.wp} />
             <br />
             <BudgetVsActual tsheets={this.state.timesheets} wp={this.state.wp}  />
+            <br />
+          </>
+        )}
+        {(this.state.isRE) && (
+          <>
+          <BudgetVsActual tsheets={this.state.timesheets} wp={this.state.wp}  />
+          <br />
+          <EstimationRE wp={this.state.wp} />
+          <br />
+          <Button color="primary" component={Link} to={{
+                    pathname: "/newIterationPlan",
+                    wp: this.state.wp
+                  }}>New Plan</Button>
           </>
         )}
       </div>

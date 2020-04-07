@@ -37,7 +37,7 @@ class SupervisorPortal extends Component {
   }
 
   /**
-   * Gets a list of all the employess from the database.
+   * Gets a list of the employees that are associated with supervisor from the database.
    */
   async getEmployees() {
     const token = localStorage.getItem("token");
@@ -55,7 +55,6 @@ class SupervisorPortal extends Component {
     console.log(this.props);
 
     var employeeData = await this.getEmployees();
-    // console.log(employeeData);
   
     var resultData = [];
     for (let i = 0; i < employeeData.length; i++) {
@@ -92,6 +91,7 @@ class SupervisorPortal extends Component {
               return <><RemoveToolBar history={this.props.history}/><AssignToolBar history={this.props.history}/></>;
           },
           onRowClick: (rowData, rowState) => {
+              localStorage.setItem('name', rowData[1] + " " + rowData[2]);
               this.props.history.push(`/dashboard/supervisor/${rowData[0]}`);
           },
         }

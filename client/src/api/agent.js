@@ -60,6 +60,7 @@ const projects = {
 
 const timesheetsInfo = {
   getAllTimesheetsByEmp: (empId, token) => requests.get(`/emps/${empId}/timesheets/`, token),
+  getAllCloseTimesheetsByEmp: (empId, token) => requests.get(`/emps/${empId}/close_timesheets`, token),
   getTimesheetById: (empId, token, tsId) => requests.get(`/emps/${empId}/timesheets/${tsId}`, token),
   createCurrentWeekTimesheet: (empId, token, data)=> requests.post(`emps/${empId}/timesheets/`, token, data),
   getTimesheetsByEmps: (emps, token)=> requests.get(`/timesheets/getForEmps/${emps}`, token),
@@ -68,6 +69,11 @@ const timesheetsInfo = {
 
 const workpackages = {
   createWorkpackage: (data, token) => requests.post(`/workpackages/createWP`, token, data),
+  getAllWorkpackageFromRE: (empId,token) => requests.get(`/workpackages/RE/${empId}`,token),
+}
+
+const workpackagePlan = {
+  createNewPlan: (data, token) => requests.post(`/workpackageplans`, token, data)
 }
 
 const yearlyRate = {
@@ -84,5 +90,6 @@ export default {
   projects,
   timesheetsInfo,
   yearlyRate,
-  workpackages
+  workpackages,
+  workpackagePlan
 }
