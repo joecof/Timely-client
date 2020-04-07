@@ -189,7 +189,7 @@ class DashBoardPortal extends Component {
             <div className={classes.projTitle} id="recentNewProjTitle">Recent / New Projects</div>
               {this.state.projects.length == 0 ? "" : 
                 this.state.projects.map((proj, index) =>
-                  <div className={classes.projInfo}>
+                  <div className={classes.projInfo} key = {index}>
                     <DashboardPortalProjInfo key={proj.project_code} history={this.props.history}
                       projName={proj.project_code}
                       dueDate={this.formatWeekEnding(proj.end_date)}
