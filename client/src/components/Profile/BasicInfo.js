@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import SupervisorList from '../HrPortal/CreateEmployeeForm/SupervisorList'
 import FaceIcon from '@material-ui/icons/Face';
+import LaborGradeSlider from '../HrPortal/CreateEmployeeForm/LaborGradeSlider'
 
 import Chip from '@material-ui/core/Chip';
 
@@ -84,19 +85,13 @@ class BasicInfo extends Component {
                   />
                 </div>
                 <div className = {classes.field}>
-                <Typography className = {classes.title} variant="h6"> Labor Grade </Typography>
-                <TextField
-                    className = {classes.input}
-                    disabled = {!this.props.hr}
-                    defaultValue = {this.props.loadedUser.labor_grade_id.labor_grade_id}
-                    helperText="Grade"
-                    name="laborGradeId"
-                    onChange = {(e) => this.props.formHandler(e)}
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
+                  <LaborGradeSlider 
+                    valueLabelFormat = {this.props.valueLabelFormat}
+                    getSliderValue = {this.props.getSliderValue}
+                    marks = {this.props.marks} 
+                    hr = {this.props.hr}
+                    marksValue = {this.props.marksValue}
+
                   />
                 </div>
                 <div className = {classes.field}>

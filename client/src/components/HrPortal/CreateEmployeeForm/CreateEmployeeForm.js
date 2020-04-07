@@ -43,15 +43,14 @@ class CreateEmployeeForm extends Component {
       marks: laborData
     })
 
+    this.valueLabelFormat = this.valueLabelFormat.bind(this);
+    this.getSliderValue = this.getSliderValue.bind(this);
     this.formHandler = this.formHandler.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.isHrSwitch = this.isHrSwitch.bind(this);
     this.isAdminSwitch = this.isAdminSwitch.bind(this);
     this.isSuperTimesheetApproverSwitch = this.isSuperTimesheetApproverSwitch.bind(this);
-    this.valueLabelFormat = this.valueLabelFormat.bind(this);
-    this.getSliderValue = this.getSliderValue.bind(this);
     this.selectSupervisor = this.selectSupervisor.bind(this);
-    this.laborGradeFilter = this.laborGradeFilter.bind(this);
   }
 
   componentDidMount() {
@@ -79,15 +78,10 @@ class CreateEmployeeForm extends Component {
     })
   }
 
-  laborGradeFilter(){
-    this.state.marks.forEach((item, i) => {
-      if(this.state.laborGradeId == item.label) {
-        this.setState({
-          laborGradeName: item.name
-        })
-      }
-    })
+  valueLabelFormat(value) {
+    return this.state.marks[value].label;
   }
+
 
   getSliderValue(value) {
     this.setState({
@@ -95,10 +89,6 @@ class CreateEmployeeForm extends Component {
       laborGradeName: this.state.marks[value].name
     })
   }
-  
-  valueLabelFormat(value) {  
-    return this.state.marks[value].label;
-  } 
 
   formHandler(e) { 
    e.preventDefault();
@@ -150,13 +140,11 @@ class CreateEmployeeForm extends Component {
       isSuperTimesheetApprover,
       vacation,
     } = this.state; 
-
-    this.laborGradeFilter();
     
     const employee = {
       supervisor_id: supervisorId,
       labor_grade_id: {
-        laborGradeId: laborGradeId,
+        labor_grade_id: laborGradeId,
         labor_grade_name: laborGradeName
       },
       password: confirmPassword,
@@ -214,10 +202,10 @@ class CreateEmployeeForm extends Component {
               valueLabelFormat = {this.valueLabelFormat}
               marks = {this.state.marks}
               laborGradeId = {this.state.laborGradeId}
-              getSliderValue = {this.getSliderValue}
               selectSupervisor = {this.selectSupervisor}
               supervisorName = {`${this.state.supervisorFirstName} ${this.state.supervisorLastName}`}
               supervisorSelected = {this.state.supervisorSelected}
+              getSliderValue = {this.getSliderValue}
               />
             <Divider orientation="vertical" flexItem className = {classes.divider}/>
             <CreateEmployeePassword hr={hr} formHandler = {this.formHandler} handleSubmit = {this.handleSubmit} />
