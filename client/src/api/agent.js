@@ -69,8 +69,11 @@ const timesheetsInfo = {
 
 const workpackages = {
   createWorkpackage: (data, token) => requests.post(`/workpackages/createWP`, token, data),
-  getAllWorkpackageFromRE: (empId,token) => requests.get(`/workpackages/RE/${empId}`,token)
+  getAllWorkpackageFromRE: (empId,token) => requests.get(`/workpackages/RE/${empId}`,token),
+}
 
+const workpackagePlan = {
+  createNewPlan: (data, token) => requests.post(`/workpackageplans`, token, data)
 }
 
 const yearlyRate = {
@@ -87,5 +90,6 @@ export default {
   projects,
   timesheetsInfo,
   yearlyRate,
-  workpackages
+  workpackages,
+  workpackagePlan
 }

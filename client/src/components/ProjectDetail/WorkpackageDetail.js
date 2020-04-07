@@ -149,7 +149,6 @@ class WorkpackageDetail extends React.Component {
             <br />
             <BudgetVsActual tsheets={this.state.timesheets} wp={this.state.wp}  />
             <br />
-            <EstimationRE wp={this.state.wp} />
           </>
         )}
         {(this.state.isRE) && (
@@ -158,7 +157,10 @@ class WorkpackageDetail extends React.Component {
           <br />
           <EstimationRE wp={this.state.wp} />
           <br />
-          <Button color="primary" component={Link} to="/newIterationPlan">New Plan</Button>
+          <Button color="primary" component={Link} to={{
+                    pathname: "/newIterationPlan",
+                    wp: this.state.wp
+                  }}>New Plan</Button>
           </>
         )}
       </div>
