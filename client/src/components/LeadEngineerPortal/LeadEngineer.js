@@ -1,25 +1,17 @@
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
-import { withStyles } from '@material-ui/core/styles';
-import ViewInfo from './ViewInfo'
 import agent from '../../api/agent'
 
-/**
- * Material UI styling JSON object. 
- */
-const styles = () => ({
-  pictureUrl: {
-    width: 50
-  }
-});
+
+
 
 /**
- * Defines the columns for the HR portal. 
+ * Defines the columns for the RE portal. 
  */
 const columns = [
   { name: "WpId", label: "WorkPackage ID", className: "column" },
   { name: "PM", label: "Project Manager", className: "column" },
-  { name: "Team", label: "Team", className: "column" },
+  { name: "Members", label: "Members", className: "column" },
 ];
 
 /**
@@ -71,10 +63,6 @@ class LeadEngineer extends Component {
 
 
     this.fetchData = this.fetchData.bind(this);
-    // this.handleCreate = this.handleCreate.bind(this);
-    // this.handleArchive = this.handleArchive.bind(this);
-    // this.handleOpen = this.handleOpen.bind(this);
-
   }
 
   componentDidMount() {
@@ -86,20 +74,6 @@ class LeadEngineer extends Component {
 
     this.fetchData(token);
   }
-
-
-  //   handleArchive = async (id, body) => {
-  //     const date = new Date().getTime();
-  //     body.end_date = date;
-  //     await agent.employeeInfo.updateEmployee(id, this.state.token, body);
-  //     this.fetchData(this.state.token);
-  //   }
-
-  //   handleOpen = async (id, body) => {
-  //     body.end_date = null;
-  //     await agent.employeeInfo.updateEmployee(id, this.state.token, body);
-  //     this.fetchData(this.state.token);
-  //   }
 
   async fetchData(token) {
     const { classes } = this.props;
@@ -113,26 +87,20 @@ class LeadEngineer extends Component {
       })
     }
 
+    console.log(resp);
     var resultData = [];
-    // console.log(resp);
     resp.forEach(async (item) => {
       let id = item.work_package_id;
       let pm = item.project.project_manager_id.first_name + " " +
         item.project.project_manager_id.last_name;
-
-
-
+      let team = item.employees.length;
       let row = [];
 
       //Check if the wp is the lowest level
       if (id.endsWith("L")) {
         row.push(id);
         row.push(pm);
-        // row.push(<ViewInfo 
-        //   link={`/lead/workpackage/${id}`} 
-        //   id = {id} 
-        //   workpackage = {item} 
-        //   />);
+        row.push(team);
         resultData.push(row);
       }
 
@@ -159,4 +127,4 @@ class LeadEngineer extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(LeadEngineer);
+export default LeadEngineer;
