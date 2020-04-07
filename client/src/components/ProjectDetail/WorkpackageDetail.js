@@ -8,6 +8,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Modal from "./Modal.js";
 import EmpHours from '../Charts/EmpHours';
 import BudgetVsActual from '../Charts/BudgetVsActual';
+import EstimationRE from '../Charts/EstimationRE';
 import "./ProjectDetail.css";
 
 /**
@@ -145,6 +146,8 @@ class WorkpackageDetail extends React.Component {
             <EmpHours EmpsX={this.state.emps} week={50} EmpsY={this.state.timesheets} wp={this.state.wp} />
             <br />
             <BudgetVsActual tsheets={this.state.timesheets} wp={this.state.wp}  />
+            <br />
+            <EstimationRE wp={this.state.wp} />
           </>
         )}
       </div>
