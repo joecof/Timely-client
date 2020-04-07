@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import Paper from '@material-ui/core/Paper';
 import './Login.css';
+
 
 export default class Login extends Component {
 
@@ -23,7 +25,8 @@ export default class Login extends Component {
   render() {
 
     return (
-      <div className="loginWrapper">
+      // <div className="loginWrapper">
+      <Paper className="loginWrapper" elevation = {2}>
         {/* Index Title */}
         <p className="prjMng">Timely</p>
         <div className="loginContainer">
@@ -59,7 +62,8 @@ export default class Login extends Component {
             </div>
           </form>
         </div>
-      </div>
+      {/* </div> */}
+      </Paper>
     );
   }
 }

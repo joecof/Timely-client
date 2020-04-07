@@ -8,8 +8,6 @@ import BasicInfo from './BasicInfo'
 import ChangePassword from './ChangePassword'
 import agent from '../../api/agent'
 import Alert from '../Alert/Alert'
-import Avatar from '@material-ui/core/Avatar';
-import FaceIcon from '@material-ui/icons/Face';
 const laborData = require('../HrPortal/CreateEmployeeForm/labor')
 
 const styles = () => ({
@@ -43,13 +41,15 @@ class EmployeeForm extends Component {
       supervisorSelected: false,
       supervisorFirstName:'',
       supervisorLastName: '',
+      marksValue: 0
     })
 
     this.fetchData = this.fetchData.bind(this);
     this.formHandler = this.formHandler.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.selectSupervisor = this.selectSupervisor.bind(this);
-    this.laborGradeFilter = this.laborGradeFilter.bind(this);
+    this.valueLabelFormat = this.valueLabelFormat.bind(this);
+    this.getSliderValue = this.getSliderValue.bind(this);
 
   }
 
@@ -57,11 +57,21 @@ class EmployeeForm extends Component {
     const token = localStorage.getItem("token");
 
     this.fetchData(token);
-    this.laborGradeFilter();
 
     this.setState({
       errorAlert: false,
       successAlert: false
+    })
+  }
+
+  valueLabelFormat(value) {
+    return this.state.marks[value].label;
+  }
+
+  getSliderValue(value) {
+    this.setState({
+      laborGradeId: this.state.marks[value].label,
+      laborGradeName: this.state.marks[value].name
     })
   }
 
@@ -87,15 +97,6 @@ class EmployeeForm extends Component {
     } 
   }
 
-  laborGradeFilter(){
-    this.state.marks.forEach((item, i) => {
-      if(this.state.laborGradeId == item.label) {
-        this.setState({
-          laborGradeName: item.name
-        })
-      }
-    })
-  }
 
   async handleSubmit() {
     const token = localStorage.getItem("token");
@@ -114,8 +115,6 @@ class EmployeeForm extends Component {
       passwordChange
     } = this.state; 
 
-    console.log(vacation);
-
     if(passwordChange) {
       if(oldPassword != employee.password || newPassword != confirmPassword) {
         this.setState({
@@ -130,6 +129,8 @@ class EmployeeForm extends Component {
         employee.vacation = vacation;
         employee.supervisor_id = supervisorId
         employee.password = newPassword;
+
+        console.log(employee)
         
         await agent.employeeInfo.updateEmployee(this.props.loadedUser.employee_id, token, employee)
         this.setState({
@@ -170,6 +171,7 @@ class EmployeeForm extends Component {
       firstName: resp.first_name,
       lastName: resp.last_name, 
       laborGradeId: resp.labor_grade_id.labor_grade_id,
+      laborGradeName: resp.labor_grade_id.labor_grade_name,
       supervisorId: resp.supervisor_id,
       isAdmin: resp.is_admin,
       isHr: resp.is_hr_staff, 
@@ -187,6 +189,16 @@ class EmployeeForm extends Component {
       supervisorFirstName: supervisor.first_name,
       supervisorLastName: supervisor.last_name
     })
+
+  
+    for(const key in this.state.marks) {
+      if(this.state.marks[key].label == this.state.laborGradeId) {
+        this.setState({
+          marksValue: key
+        }) 
+      }
+      
+    }
 
   }
 
@@ -212,6 +224,10 @@ class EmployeeForm extends Component {
                   value = {this.state.value}
                   selectSupervisor = {this.selectSupervisor}
                   supervisorName = {`${this.state.supervisorFirstName} ${this.state.supervisorLastName}`}
+                  valueLabelFormat = {this.valueLabelFormat}
+                  getSliderValue = {this.getSliderValue}
+                  marks = {this.state.marks}
+                  marksValue = {this.state.marksValue}
                   />
                 <Divider orientation="vertical" flexItem className = {classes.divider}/>
                 <ChangePassword loadedUser = {loadedUser} hr={hr} formHandler = {this.formHandler} handleSubmit = {this.handleSubmit} />
