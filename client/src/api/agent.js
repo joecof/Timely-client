@@ -7,10 +7,9 @@ import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL
 
-if(process.env.REACT_APP_NODE_ENV == "production") {
+if(process.env.REACT_APP_NODE_ENV === "production") {
   axios.defaults.baseURL = process.env.REACT_APP_PRODUCTION_BASE_URL
 } 
-
 
 /**
  * Contains the data of the response body 

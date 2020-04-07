@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import agent from './api/agent'
 import { BrowserRouter, Redirect} from "react-router-dom";
 import Routes from './components/Routes/Routes'
+import Alert from './components/Alert/Alert'
 
 
 /**
@@ -17,7 +18,9 @@ class App extends Component {
     this.state = ({
       isAuth: false,
       loadedUser: null,
-      token: null
+      token: null,
+      errorAlert: false,
+      successAlert: false,
     })
 
     this.loginHandler = this.loginHandler.bind(this);
@@ -71,16 +74,18 @@ class App extends Component {
     try {
       const response = await agent.authorization.login(data);
 
-      if(!response) {
-        //probably some error message / incorrect credentials 
-        return;  
-      }
-
       this.setState({
-        isAuth: true,
-        loadedUser: response.loadedUser,
-        token: response.token
+        errorAlert: false,
+        successAlert: true,
       })
+
+      setTimeout(() => {
+        this.setState({
+          isAuth: true,
+          loadedUser: response.loadedUser,
+          token: response.token,
+        }) 
+      }, 1000);
       
       const remainingMilliseconds = 60 * 60 * 1000;
       const expiryDate = new Date(
@@ -95,8 +100,18 @@ class App extends Component {
       this.setAutoLogout(remainingMilliseconds);   
 
     } catch(e) {
-      console.error(e);
+      this.setState({
+        errorAlert: true,
+        successAlert: false,
+      })
     }
+
+    setTimeout(() => {
+      this.setState({
+        successAlert: false, 
+        errorAlert: false
+      }) 
+    }, 1000);
   }
 
   /**
@@ -160,6 +175,8 @@ class App extends Component {
 
     return(
       <div className="App">
+      {this.state.errorAlert ? <Alert config = {{message: "Login Failed", variant: "error"}}/> : null}
+      {this.state.successAlert ? <Alert config = {{message: `Login Success!`, variant: "success"}}/> : null}
       <BrowserRouter>
         {this.state.isAuth ? <Redirect to= {`/dashboard/${this.state.loadedUser.employee_id}`}  /> : <Redirect to='/'  />}
         {routes}

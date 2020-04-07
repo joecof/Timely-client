@@ -18,17 +18,16 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const styles = theme => ({
   container: {
-    height: 700
+    height: 700,
+    minWidth: 350,
+    minHeight:400
   },
-  minWidth: 650,
   button: {
     marginBottom: 10,
     display: 'inline-block',
     width: 210
   }
 });
-
-
 
 class SupervisorList extends Component {
 

@@ -12,6 +12,7 @@ import Desc from "../CreationWizard/Desc";
 import Budget from "../CreationWizard/Budget";
 import Schedule from "../CreationWizard/Schedule";
 import agent from '../../api/agent.js'
+import Alert from '../Alert/Alert'
 import "./ProjectCreate.css";
 
 /**
@@ -123,6 +124,9 @@ export default function ProjectCreate() {
     cost: ""
   });
 
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
+
   const handleOnChange = event => {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
@@ -156,9 +160,21 @@ export default function ProjectCreate() {
         }
       ]
     };
-    console.log(data);
-    const response = await agent.projects.createProject(data, token);
-    console.log(response);
+
+    try {
+      await agent.projects.createProject(data, token);
+      setSuccessAlert(true);
+      setErrorAlert(false);
+
+    } catch (e) {
+      setErrorAlert(true);
+      setSuccessAlert(false);
+    }
+
+    setTimeout(() => {
+      setErrorAlert(false);
+      setSuccessAlert(false);
+    }, 1000);
   };
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -178,6 +194,8 @@ export default function ProjectCreate() {
 
   return (
     <div className={classes.root}>
+      {errorAlert ? <Alert config = {{message: "Login Failed", variant: "error"}}/> : null}
+      {successAlert ? <Alert config = {{message: `Login Success!`, variant: "success"}}/> : null}
       <Stepper
         activeStep={activeStep}
         alternativeLabel

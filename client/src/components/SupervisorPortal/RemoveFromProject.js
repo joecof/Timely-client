@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import agent from '../../api/agent.js'
+import Alert from '../Alert/Alert'
+
 
 /**
  * Material UI styling JSON object. 
@@ -39,8 +41,10 @@ const RemoveFromProject = (props) => {
 
     const [project, setProject] = React.useState();
     const [employees, setEmployees] = React.useState();
-
     const [projectsData, setProjectsData] = React.useState();
+    const [successAlert, setSuccessAlert] = React.useState(false);
+    const [errorAlert, setErrorAlert] = React.useState(false);
+
     var employeesToRemove = [];
 
     const fetchProjectsData = async () => {
@@ -80,13 +84,29 @@ const RemoveFromProject = (props) => {
       project.employees = project.employees.filter(function(o) {
         return employees.indexOf(o) < 0;
       });
-      const response = agent.projects.updateProject(project, token);
-      console.log(response);
-      props.history.push(`/dashboard/supervisor`);
+
+      try {
+        await agent.projects.updateProject(project, token);
+        setSuccessAlert(true);
+        setErrorAlert(false);
+
+      } catch (e) {
+        setErrorAlert(true);
+        setSuccessAlert(false);
+      }
+
+
+      setTimeout(() => {
+        setErrorAlert(false);
+        setSuccessAlert(false);
+        props.history.push(`/dashboard/supervisor`);
+      }, 1100);
     };
 
     return (
       <div className={classes.root}>
+        {errorAlert ? <Alert config = {{message: "Login Failed", variant: "error"}}/> : null}
+        {successAlert ? <Alert config = {{message: `Login Success!`, variant: "success"}}/> : null}
         <Paper className={classes.supervisorPaper} elevation={2}>
           <Grid container direction="column">
             <Typography variant="h4">Remove From Project</Typography>
@@ -108,7 +128,7 @@ const RemoveFromProject = (props) => {
                 onChange={(event, value) => setEmployees(value)}
                 renderInput={params => <TextField {...params} variant="standard" label="Add employees" placeholder="Search for an employee" />}
             />
-            <Button variant="contained" color="primary" onClick={handleSubmit} style={{ width: 700 }}>Remove</Button>
+            <Button variant="contained" color="primary" onClick={() => handleSubmit()} style={{ width: 700 }}>Remove</Button>
           </Grid>
         </Paper>
       </div>
