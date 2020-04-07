@@ -92,6 +92,7 @@ export default class TimesheetPortal extends Component {
   // Fetching Timesheets
   async fetchTimesheets() {
     // fetch logined user
+
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
@@ -139,6 +140,9 @@ export default class TimesheetPortal extends Component {
 
   // timesheet table UI
   render() {
+
+    console.log(this.props)
+    
     return (
       <>
         <MUIDatatable 
