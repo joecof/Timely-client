@@ -69,6 +69,7 @@ class TimesheetDetail extends Component {
       wpIds: [],
       errorAlert: false,
       successAlert: false,
+      projWpDontMatch: false,
     };
     
     // functions
@@ -176,7 +177,6 @@ class TimesheetDetail extends Component {
           } else {
             // returning projects, employee and overFlex time to dashboard
             this.props.fetchProject(projects, curEmp, "0|0");
-            console.log("no timesheets");
           }
         }
     }
@@ -419,7 +419,6 @@ class TimesheetDetail extends Component {
 
   // updating timesheet
   async updateTS() {
-    console.log("Updating Timesheet");
     var tsRows = [], thisRow;
     for(let i = 0; i < this.state.timesheetrows.length; i++) {
       var tsId = this.state.timesheetrows[i][0];
@@ -482,17 +481,37 @@ class TimesheetDetail extends Component {
     const empId = this.state.loadUser.employee_id;
     const updateToken = localStorage.getItem("token");
     const updateTsId = this.state.loadedTimesheet.timesheet_id;
-    console.log(updateTs);
-    const response = await agent.timesheetsInfo.updateTimesheetById(empId, updateToken, updateTsId, updateTs);
-    if(response == "exception throw") {
-      alert("Porjct and Wp don't match, please check again");
+
+    // updating timesheets
+    try {
+      const response = await agent.timesheetsInfo.updateTimesheetById(empId, updateToken, updateTsId, updateTs);
+      if(response != "exception throw") {
+        this.setState({
+          successAlert: true,
+        })
+      }
+      if(response == "exception throw") {
+        this.setState({
+          projWpDontMatch: true,
+        })
+      }
+    } catch (e) {
+      this.setState({
+        errorAlert: true,
+      })
     }
+    setTimeout(() => {
+      this.setState({
+        successAlert: false, 
+        errorAlert: false,
+        projWpDontMatch: false,
+      })
+    }, 2000);
   }
     
 
   // updating timesheet
   async submitTS(){
-    console.log("Submitting Timesheet");
     var tsRows = [], thisRow;
     for(let i = 0; i < this.state.timesheetrows.length; i++) {
       var tsId = this.state.timesheetrows[i][0];
@@ -555,35 +574,41 @@ class TimesheetDetail extends Component {
     const empId = this.state.loadUser.employee_id;
     const submitToken = localStorage.getItem("token");
     const submitTsId = this.state.loadedTimesheet.timesheet_id;
-    console.log(submitTs);
     
-
+    // updating timesheet
     try {
       const response = await agent.timesheetsInfo.updateTimesheetById(empId, submitToken, submitTsId, submitTs);
-      if(!response) {
+      if(response != "exception throw") {
         this.fetchTimesheetRows();
+        this.setState({
+          successAlert: true,
+        })
+        setTimeout(() => {
+          this.setState({
+            successAlert: false, 
+            errorAlert: false,
+            projWpDontMatch: false,
+          })
+          this.props.history.push(`/dashboard/timesheet/`);
+        }, 2000);
       }
-
-      this.setState({
-        successAlert: true,
-      })
-
+      if(response == "exception throw") {
+        this.setState({
+          projWpDontMatch: true,
+        })
+      }
     } catch (e) {
       this.setState({
         errorAlert: true,
       })
     }
-
     setTimeout(() => {
       this.setState({
         successAlert: false, 
-        errorAlert: false
+        errorAlert: false,
+        projWpDontMatch: false,
       })
-      
-      this.props.history.push(`/dashboard/timesheet/`);
-    }, 1000);
-
-    
+    }, 2000);
   }
 
   // go to timesheetdetail if on dashboard
@@ -797,8 +822,9 @@ class TimesheetDetail extends Component {
     const { classes } = this.props;
     return (
       <Paper elevation = {2} className="container" onClick={() => { this.gotoTimesheetDetail() }}>
-       {this.state.errorAlert ? <Alert config = {{message: "Timesheet Submission Failed", variant: "error"}}/> : null}
-       {this.state.successAlert ? <Alert config = {{message: `Timesheet Submission Successful!`, variant: "success"}}/> : null}
+        {this.state.projWpDontMatch ? <Alert config = {{message: "Project and WP Don't Match. Please Check Again!", variant: "Warning"}}/> : null}
+        {this.state.errorAlert ? <Alert config = {{message: "Failed", variant: "error"}}/> : null}
+        {this.state.successAlert ? <Alert config = {{message: `Successful!`, variant: "success"}}/> : null}
         {/* employee info header */}
         <div className="timesheetTitle">
           <div className="attributeRow">

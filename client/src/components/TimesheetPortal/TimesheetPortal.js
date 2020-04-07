@@ -79,8 +79,7 @@ export default class TimesheetPortal extends Component {
     this.state = ({
       timesheets: [],
       loadedUserID: {},
-      noTSalert: false,
-      fetchTSalert: false
+      errorAlert: false
     })
     this.fetchTimesheets = this.fetchTimesheets.bind(this);
     this.formatWeekEnding = this.formatWeekEnding.bind(this);
@@ -128,16 +127,19 @@ export default class TimesheetPortal extends Component {
           timesheets: timesheetList,
           loadedUserID: userId
         })
-      } else {
-        this.setState({
-          noTSalert: true
-        })
       }
     } catch(e) {
       this.setState({
-        fetchTSalert: true
+        errorAlert: true
       })
+      this.props.sessionLogoutHandler();
     }
+    // set back
+    setTimeout(() => {
+      this.setState({
+        errorAlert: false
+      });
+    }, 1000);
   } 
 
   // converting weekending api from milliseconds to date format
@@ -156,8 +158,7 @@ export default class TimesheetPortal extends Component {
     
     return (
       <>
-        {this.state.noTSalert ? <Alert config = {{message: "No Timesheet Records", variant: "warning"}}/> : null}
-        {this.state.fetchTSalert ? <Alert config = {{message: "Fetching Timesheets Failed", variant: "error"}}/> : null}
+        {this.state.errorAlert ? <Alert config = {{message: "Fetching Timesheets API Call Failed", variant: "error"}}/> : null}
         <MUIDatatable 
             className="datatable"
             title={<h1>Timesheet</h1>}
