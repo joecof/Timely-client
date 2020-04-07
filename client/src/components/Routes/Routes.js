@@ -14,7 +14,7 @@ import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo'
 import EmployeeForm from '../Profile/EmployeeForm'
 import CreateEmployeeForm from '../HrPortal/CreateEmployeeForm/CreateEmployeeForm'
-
+import IterationPlanCreate from '../LeadEngineerDetail/IterationPlanCreate'
 import ProjectDetail from '../ProjectDetail/ProjectDetail'
 import LeadEngineer from '../LeadEngineerPortal/LeadEngineer'
 import WorkpackageCreate from '../WorkpackageCreate/WorkpackageCreate';
@@ -210,6 +210,15 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <WorkpackageDetail
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/newIterationPlan"
+              exact
+              render={props => (
+                <IterationPlanCreate
                   {...props}
                 />
               )}

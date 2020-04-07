@@ -25,7 +25,7 @@ const columns = [
 /**
  * Configuration object for the MUI data table. 
  */
-const options = (props, handleCreate) => {
+const options = (props, wpList) => {
   const { history } = props;
   const data = {
     selectableRows: false,
@@ -35,16 +35,16 @@ const options = (props, handleCreate) => {
     filter: false,
     onRowClick: (rowData, rowState) => {
       console.log(rowData);
-      // var wp = null;
-      // this.state.wplist.forEach(x => {
-      //   if (x.work_package_id === rowData[0]) {
-      //     wp = x;
-      //   }
-      // });
-      // this.props.history.push({
-      //   pathname: `/workpackageDetail`,
-      //   state: { wp: wp }
-      // });
+      var wp = null;
+      wpList.forEach(x => {
+        if (x.work_package_id === rowData[0]) {
+          wp = x;
+        }
+      });
+      props.history.push({
+        pathname: `/workpackageDetail`,
+        state: { wp: wp, isPM: false, isRE: true }
+      });
 
     },
     textLabels: {
@@ -66,7 +66,7 @@ class LeadEngineer extends Component {
     this.state = ({
       data: [],
       token: null,
-      wplist: props.wplist,
+      wpList: []
     })
 
 
@@ -106,6 +106,13 @@ class LeadEngineer extends Component {
     const user = JSON.parse(sessionStorage.getItem('user'));
     const userId = user.employee_id;
     const resp = await agent.workpackages.getAllWorkpackageFromRE(userId, token);
+
+    if (resp != null) {
+      this.setState({
+        wpList: resp
+      })
+    }
+
     var resultData = [];
     // console.log(resp);
     resp.forEach(async (item) => {
@@ -143,7 +150,7 @@ class LeadEngineer extends Component {
         <MUIDatatable
           className="datatable"
           title={<h1> WorkPackage Reports</h1>}
-          options={options(this.props, this.handleCreate)}
+          options={options(this.props, this.state.wpList)}
           columns={columns}
           data={this.state.data}
         />

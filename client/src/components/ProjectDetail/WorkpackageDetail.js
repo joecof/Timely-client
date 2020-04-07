@@ -9,6 +9,7 @@ import Modal from "./Modal.js";
 import EmpHours from '../Charts/EmpHours';
 import BudgetVsActual from '../Charts/BudgetVsActual';
 import EstimationRE from '../Charts/EstimationRE';
+import {Link} from 'react-router-dom';
 import "./ProjectDetail.css";
 
 /**
@@ -22,6 +23,7 @@ class WorkpackageDetail extends React.Component {
     this.state = {
       wp: this.props.location.state.wp,
       isProjManager: this.props.location.state.isPM,
+      isRE: this.props.location.state.isRE ? this.props.location.state.isRE : false,
       emps: [],
       timesheets: [],
       week: 0,
@@ -148,6 +150,15 @@ class WorkpackageDetail extends React.Component {
             <BudgetVsActual tsheets={this.state.timesheets} wp={this.state.wp}  />
             <br />
             <EstimationRE wp={this.state.wp} />
+          </>
+        )}
+        {(this.state.isRE) && (
+          <>
+          <BudgetVsActual tsheets={this.state.timesheets} wp={this.state.wp}  />
+          <br />
+          <EstimationRE wp={this.state.wp} />
+          <br />
+          <Button color="primary" component={Link} to="/newIterationPlan">New Plan</Button>
           </>
         )}
       </div>
