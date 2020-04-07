@@ -95,6 +95,7 @@ export default class TimesheetPortal extends Component {
   // Fetching Timesheets
   async fetchTimesheets() {
     // fetch logined user
+
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
@@ -150,6 +151,9 @@ export default class TimesheetPortal extends Component {
 
   // timesheet table UI
   render() {
+
+    console.log(this.props)
+    
     return (
       <>
         {this.state.noTSalert ? <Alert config = {{message: "No Timesheet Records", variant: "warning"}}/> : null}
