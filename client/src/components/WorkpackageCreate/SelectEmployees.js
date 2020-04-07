@@ -15,7 +15,9 @@ const SelectEmployees = props => {
   return (
     <Autocomplete
       multiple
-      options={props.project.employees}
+      options={props.emps ? props.project.employees.filter(y => props.emps.map(e => {
+        return e.employee_id;
+       }).indexOf(y.employee_id) === -1) : props.project.employees}
       onChange={(e, v) => props.handleTagsChange(v)}
       getOptionLabel={(option) => option.first_name + " " + option.last_name + " (" + option.labor_grade_id.labor_grade_id + ")"}
       disabled={props.isDisabled}
