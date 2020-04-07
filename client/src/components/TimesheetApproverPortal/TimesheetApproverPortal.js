@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
-import { withStyles } from '@material-ui/core/styles';
-import RemoveToolBar from './RemoveToolBar';
-import AssignToolBar from './AssignToolBar';
 import agent from '../../api/agent.js'
 
 /**
@@ -17,10 +14,11 @@ const columns = [
 /**
  * Author: John Ham 
  * Version: 1.0 
- * Description: Supervisor Portal Component. 
- * Portal used by supervisor for viewing a list of employees that can be assigned to projects. 
+ * Description: Timesheet Approver Portal Component. 
+ * Portal used by timesheet approver for viewing a list of employees that have timesheets
+ * that need to be approved. 
  */
-class SupervisorPortal extends Component {
+class TimesheetApproverPortal extends Component {
 
   constructor(props) {
     super(props); 
@@ -37,7 +35,7 @@ class SupervisorPortal extends Component {
   }
 
   /**
-   * Gets a list of the employees that are associated with supervisor from the database.
+   * Gets a list of the employees associated with the supervisor from the database.
    */
   async getEmployees() {
     const token = localStorage.getItem("token");
@@ -87,12 +85,9 @@ class SupervisorPortal extends Component {
           print: false,
           download: false,
           filter: false,
-          customToolbar: () => {
-              return <><RemoveToolBar history={this.props.history}/><AssignToolBar history={this.props.history}/></>;
-          },
           onRowClick: (rowData, rowState) => {
-              localStorage.setItem('name', rowData[1] + " " + rowData[2]);
-              this.props.history.push(`/dashboard/supervisor/${rowData[0]}`);
+            localStorage.setItem('name', rowData[1] + " " + rowData[2]);
+            this.props.history.push(`/dashboard/tsapprover/${rowData[0]}`);
           },
         }
       return data;
@@ -112,4 +107,4 @@ class SupervisorPortal extends Component {
   }
 }
 
-export default SupervisorPortal;
+export default TimesheetApproverPortal;

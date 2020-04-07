@@ -19,6 +19,9 @@ import ProjectDetail from '../ProjectDetail/ProjectDetail'
 import LeadEngineer from '../LeadEngineerPortal/LeadEngineer'
 import WorkpackageCreate from '../WorkpackageCreate/WorkpackageCreate';
 import WorkpackageDetail from '../ProjectDetail/WorkpackageDetail'
+import TimesheetApproverPortal from '../TimesheetApproverPortal/TimesheetApproverPortal';
+import TimesheetsToApprove from '../TimesheetApproverPortal/TimesheetsToApprove';
+import CheckTimesheet from '../TimesheetApproverPortal/CheckTimesheet';
 
 /**
  * Author: Joe 
@@ -135,6 +138,33 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <ProjectsAssignedTo
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/tsapprover"
+              exact
+              render={props => (
+                <TimesheetApproverPortal
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/tsapprover/:id"
+              exact
+              render={props => (
+                <TimesheetsToApprove
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/tsapprover/:id/:tsid"
+              exact
+              render={props => (
+                <CheckTimesheet
                   {...props}
                 />
               )}
