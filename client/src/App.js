@@ -46,8 +46,7 @@ class App extends Component {
     const expiryDate = localStorage.getItem('expiryDate');
 
     if (!session) {
-      // this.logoutHandler();
-      this.sessionLogoutHandler();
+      this.logoutHandler();
       return;
     } 
 
@@ -55,6 +54,8 @@ class App extends Component {
       this.setState({
         isAuth: false
       })
+      
+      this.sessionLogoutHandler();
       return; 
     }
 
