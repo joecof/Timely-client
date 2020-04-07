@@ -133,7 +133,6 @@ class App extends Component {
         sessionAlert: false
       }) 
     }, 1000);
-
   }
 
   /**
