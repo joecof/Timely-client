@@ -8,6 +8,7 @@ import MUIDatatable from "mui-datatables";
 import CurrentTimesheetToolBar from './CurrentTimesheetToolBar';
 import './TimesheetPortal.css';
 import agent from "../../api/agent";
+import Alert from '../Alert/Alert'
 
   // static columns
   const columns = [
@@ -77,7 +78,9 @@ export default class TimesheetPortal extends Component {
 
     this.state = ({
       timesheets: [],
-      loadedUserID: {}
+      loadedUserID: {},
+      noTSalert: false,
+      fetchTSalert: false
     })
     this.fetchTimesheets = this.fetchTimesheets.bind(this);
     this.formatWeekEnding = this.formatWeekEnding.bind(this);
@@ -95,36 +98,44 @@ export default class TimesheetPortal extends Component {
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
-    const response = await agent.timesheetsInfo.getAllTimesheetsByEmp(userId, token);
+    try {
+      const response = await agent.timesheetsInfo.getAllTimesheetsByEmp(userId, token);
 
-    if(response.length != 0) {
-      // fetching timesheets
-      var timesheetList = [];
-
-      for (let i = 0; i < response.length; i++) {
-          let timesheetid = response[i].timesheet_id;
-          let weeknumber = response[i].week;
-          let weekending = this.formatWeekEnding(response[i].week_ending);
-          let status = response[i].status;
-
-          let eachTimesheet = [];
-          eachTimesheet.push(timesheetid);
-          eachTimesheet.push(weeknumber);
-          eachTimesheet.push(weekending);
-          eachTimesheet.push(status);
-          timesheetList.push(eachTimesheet);
+      if(response.length != 0) {
+        // fetching timesheets
+        var timesheetList = [];
+  
+        for (let i = 0; i < response.length; i++) {
+            let timesheetid = response[i].timesheet_id;
+            let weeknumber = response[i].week;
+            let weekending = this.formatWeekEnding(response[i].week_ending);
+            let status = response[i].status;
+  
+            let eachTimesheet = [];
+            eachTimesheet.push(timesheetid);
+            eachTimesheet.push(weeknumber);
+            eachTimesheet.push(weekending);
+            eachTimesheet.push(status);
+            timesheetList.push(eachTimesheet);
+        }
+        // sorting timesheet list by week number
+        timesheetList.sort( function(a,b){
+          return b[1] - a[1];
+        });
+        // setting the states
+        this.setState({
+          timesheets: timesheetList,
+          loadedUserID: userId
+        })
+      } else {
+        this.setState({
+          noTSalert: true
+        })
       }
-      // sorting timesheet list by week number
-      timesheetList.sort( function(a,b){
-        return b[1] - a[1];
-      });
-      // setting the states
+    } catch(e) {
       this.setState({
-        timesheets: timesheetList,
-        loadedUserID: userId
+        fetchTSalert: true
       })
-    } else {
-      console.log("no timesheets");
     }
   } 
 
@@ -141,6 +152,8 @@ export default class TimesheetPortal extends Component {
   render() {
     return (
       <>
+        {this.state.noTSalert ? <Alert config = {{message: "No Timesheet Records", variant: "warning"}}/> : null}
+        {this.state.fetchTSalert ? <Alert config = {{message: "Fetching Timesheets Failed", variant: "error"}}/> : null}
         <MUIDatatable 
             className="datatable"
             title={<h1>Timesheet</h1>}

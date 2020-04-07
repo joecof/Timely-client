@@ -84,7 +84,12 @@ class CurrentTimesheetToolBar extends React.Component {
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
-    const logedInUser = await agent.employeeInfo.getCurrentUser(userId, token);
+    var logedInUser;
+    try {
+      logedInUser = await agent.employeeInfo.getCurrentUser(userId, token);
+    } catch(e) {
+      
+    }
 
     // login employee labor grade
     const laborGradeId = logedInUser.labor_grade_id.labor_grade_id;
