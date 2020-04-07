@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from "@material-ui/core/styles"
-import './CreationWizard.css';
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import "./CreationWizard.css";
 
-const useStyles = () => ({
+const useStyles = makeStyles(() => ({
+  budget_container: {
+    width: "70%"
+  },
   budgetInfo: {
-    width: "280px"
-  }
-  });  
+    width: "100%",
+    margin: "-15px 0 0 0"
+  },
+}));
 
 /**
  * Author: Prabh
@@ -15,13 +19,22 @@ const useStyles = () => ({
  * Desc: Third step for project creation
  */
 const ProjectInfo = (props) => {
-
   const classes = useStyles();
 
   return (
-    <form autoComplete="off">
-      <TextField component="span" className="margin" id="standard-basic" label="Cost" value={props.cost} name="cost" onChange={props.handleChange} className={classes.budgetInfo}/>
-    </form>
+    <div className={classes.budget_container}>
+      <form autoComplete="off">
+        <TextField
+          component="span"
+          id="standard-basic"
+          label="Cost"
+          value={props.cost}
+          name="cost"
+          onChange={props.handleChange}
+          className={classes.budgetInfo}
+        />
+      </form>
+    </div>
   );
 };
 

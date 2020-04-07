@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
-import './CreationWizard.css';
+import "./CreationWizard.css";
 
-const useStyles = () => ({
-projDesc: {
-  width: "310px"
-}
-});
+const useStyles = makeStyles(() => ({
+  projDesc: {
+    width: "100%",
+  },
+  projDescContainer: {
+    width: "80%",
+  },
+}));
 
 /**
  * Author: Prabh
@@ -18,8 +21,9 @@ const Desc = (props) => {
   const classes = useStyles();
 
   return (
-    <form autoComplete="off">
-      <TextField
+    <div className={classes.projDescContainer}>
+      <form autoComplete="off">
+        <TextField
           className={classes.projDesc}
           id="outlined-multiline-static"
           label="Project Description"
@@ -30,7 +34,8 @@ const Desc = (props) => {
           value={props.Desc}
           onChange={props.handleChange}
         />
-    </form>
+      </form>
+    </div>
   );
 };
 

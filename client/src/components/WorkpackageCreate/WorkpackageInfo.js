@@ -36,8 +36,8 @@ const WorkpackageInfo = props => {
 
   return (
     <form autoComplete="off">
-      <Grid container direction="column" alignItems="center">
-        <Grid item>
+      <div className="WPInfoContainer">
+        <div>
           <TextField
             component={"span"}
             className="WPInfowidth"
@@ -47,8 +47,8 @@ const WorkpackageInfo = props => {
             onChange={props.handleChange}
             disabled={true}
           />
-        </Grid>
-        <Grid item>
+        </div>
+        <div>
           <FormControlLabel
             control={
               <Checkbox
@@ -59,9 +59,9 @@ const WorkpackageInfo = props => {
             }
             label="Lowest Work Package"
           />
-        </Grid>
+        </div>
         <br />
-        <Grid item>
+        <div>
           <TextField
             component={"span"}
             className="WPInfowidth"
@@ -70,9 +70,9 @@ const WorkpackageInfo = props => {
             value={props.wpName}
             onChange={props.handleChange}
           />
-        </Grid>
+        </div>
         <br />
-        <Grid item>
+        <div>
           <TextField
             select
             label="Responsible Engineer"
@@ -87,9 +87,9 @@ const WorkpackageInfo = props => {
               </MenuItem>
             ))}
           </TextField>
-        </Grid>
+        </div>
         <br />
-        <Grid item>
+        <div>
           <TextField
             component={"span"}
             className="WPInfowidth"
@@ -100,9 +100,9 @@ const WorkpackageInfo = props => {
             onChange={props.handleChange}
             disabled={true}
           />
-        </Grid>
+        </div>
         <br />
-        <Grid item>
+        <div>
           <TextField
             select
             label="Parent Work Package"
@@ -117,8 +117,8 @@ const WorkpackageInfo = props => {
               </MenuItem>
             ))}
           </TextField>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </form>
   );
 };

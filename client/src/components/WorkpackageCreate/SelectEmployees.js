@@ -20,7 +20,7 @@ const SelectEmployees = props => {
   });
 
   return (
-    <div>
+    <div className="selectEmployee_container">
     <Autocomplete
       multiple
       options={wpEmpList}

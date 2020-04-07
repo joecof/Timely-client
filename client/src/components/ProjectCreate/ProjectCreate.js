@@ -51,7 +51,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     height: "280px",
     padding: "0 0 10px 0",
-    borderTop: "3px solid lightgray"
+    borderTop: "3px solid lightgray",
+    borderRadius: "5px"
   },
   backNextButtonContainer: {
     display: "flex",

@@ -5,3 +5,14 @@
 .WPInfowidth {
     width: 20rem;
 }
+
+.WPInfoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selectEmployee_container {
+    width: 70%;
+    margin: -15px 0 0 0;
+}

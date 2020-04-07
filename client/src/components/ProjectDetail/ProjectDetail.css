@@ -5,11 +5,19 @@
   align-items: center;
 }
 
+.topMiddleContainer {
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 35px;
+  width:  1100px;
+}
+
 /******************
 Top Info Container
 ******************/
 .topInfoContainer {
-  width: 1100px !important;
+  /* width: 1100px !important; */
   display: flex;
 }
 
@@ -80,7 +88,7 @@ Top Info Container
 Middle Info Container
 ******************/
 .projectDetail-middleContainer {
-  width: 1100px !important;
+  /* width: 1100px !important; */
   display: flex !important;
   align-items: center;
 }
@@ -162,5 +170,10 @@ display: flex;
 }
 
 .PDWorkpackageTree {
-    margin: 4%;
+  padding: 35px;
+}
+
+
+.projectDetail-treeContainer {
+  width: 1100px;
 }

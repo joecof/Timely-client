@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -7,12 +7,12 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import agent from '../../api/agent.js'
-import WorkpackageInfo from './WorkpackageInfo';
-import WorkpackageDesc from '../CreationWizard/Desc';
-import Budget from '../CreationWizard/Budget';
-import Schedule from '../CreationWizard/Schedule';
-import SelectEmployees from './SelectEmployees';
+import agent from "../../api/agent.js";
+import WorkpackageInfo from "./WorkpackageInfo";
+import WorkpackageDesc from "../CreationWizard/Desc";
+import Budget from "../CreationWizard/Budget";
+import Schedule from "../CreationWizard/Schedule";
+import SelectEmployees from "./SelectEmployees";
 import "./WorkpackageCreate.css";
 import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
 
@@ -21,21 +21,54 @@ import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
  * Version: 1
  * Desc: This component let's the user create a new project
  */
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
+  container: {
+    width: "1300px",
+    display: "flex",
+    justifyContent: "center",
+  },
   root: {
-    width: "100%"
+    width: "1100px",
   },
   backButton: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
+  },
+  stepper: {
+    padding: "40px 0",
+    border: "1px solid lightgray",
+  },
+  instructionContainer: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
   },
   instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  }
+    backgroundColor: "white",
+    width: "450px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "auto",
+    padding: "50px 0 50px 0",
+    borderTop: "3px solid lightgray",
+    margin: "40px 0 0 0",
+    borderRadius: "5px"
+  },
+  backNextButtonContainer: {
+    display: "flex",
+    justifyContent: "center",
+    margin: "20px 0 0 0",
+  },
 }));
 
 function getSteps() {
-  return ["Work-Package Information", "Work-Package Description", "Budget", "Schedule", "Employees"];
+  return [
+    "Work-Package Information",
+    "Work-Package Description",
+    "Budget",
+    "Schedule",
+    "Employees",
+  ];
 }
 
 function getStepContent(
@@ -79,7 +112,7 @@ function getStepContent(
           handleStartChange={handleStartDate}
           handleEndChange={handleEndDate}
         />
-        );
+      );
     case 4:
       return (
         <SelectEmployees
@@ -94,7 +127,7 @@ function getStepContent(
 export default function WorkpackageCreate(props) {
   const classes = useStyles();
 
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   const [inputValues, setInputValues] = useState({
     wpID: "",
@@ -108,10 +141,10 @@ export default function WorkpackageCreate(props) {
     checkedLower: false,
     wpList: props.location.wpList,
     project: props.location.project,
-    wpEmps: []
+    wpEmps: [],
   });
 
-  const handleOnChange = event => {
+  const handleOnChange = (event) => {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
 
@@ -121,28 +154,37 @@ export default function WorkpackageCreate(props) {
       var list = inputValues.wpList;
       list.sort();
       for (var wp in list) {
-        if (list[wp].work_package_id.startsWith(value) && list[wp].work_package_id.length === value.length + 1) {
+        if (
+          list[wp].work_package_id.startsWith(value) &&
+          list[wp].work_package_id.length === value.length + 1
+        ) {
           id = parseInt(list[wp].work_package_id) + 1;
         }
       }
       if (id === -1) {
-        id = parseInt(value)*10 + 1
+        id = parseInt(value) * 10 + 1;
       }
       console.log(id);
       setInputValues({ ...inputValues, wpID: id + inputValues.wpID });
     }
   };
 
-  const handleStartDate = date => {
+  const handleStartDate = (date) => {
     setInputValues({ ...inputValues, startDate: date });
   };
 
-  const handleEndDate = date => {
+  const handleEndDate = (date) => {
     setInputValues({ ...inputValues, endDate: date });
   };
 
   const handleCheckboxChange = (event) => {
-    setInputValues({ ...inputValues, [event.target.name]: event.target.checked, wpID: event.target.checked ? inputValues.wpID+"L" : inputValues.wpID.replace('L', '')});
+    setInputValues({
+      ...inputValues,
+      [event.target.name]: event.target.checked,
+      wpID: event.target.checked
+        ? inputValues.wpID + "L"
+        : inputValues.wpID.replace("L", ""),
+    });
   };
 
   const handleTagsChange = (inputValue) => {
@@ -179,11 +221,11 @@ export default function WorkpackageCreate(props) {
   const steps = getSteps();
 
   const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleReset = () => {
@@ -191,64 +233,70 @@ export default function WorkpackageCreate(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography component={"span"} className={classes.instructions}>
-              All steps completed
-            </Typography>
-            <Button onClick={handleReset}>Reset</Button>
-          </div>
-        ) : (
-          <div>
-            <Typography component={"span"} className={classes.instructions}>
-              {getStepContent(
-                activeStep,
-                inputValues,
-                handleOnChange,
-                handleStartDate,
-                handleEndDate,
-                handleCheckboxChange,
-                handleTagsChange
-              )}
-            </Typography>
+    <div className={classes.container}>
+      <div className={classes.root}>
+        <Stepper
+          activeStep={activeStep}
+          className={classes.stepper}
+          alternativeLabel
+        >
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <div>
+          {activeStep === steps.length ? (
             <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.backButton}
-              >
-                Back
-              </Button>
-              {activeStep === steps.length - 1 && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmit}
-                >
-                  Finish
-                </Button>
-              )}
-              {activeStep != steps.length - 1 && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                >
-                  Next
-                </Button>
-              )}
+              <Typography component={"span"} className={classes.instructions}>
+                All steps completed
+              </Typography>
+              <Button onClick={handleReset}>Reset</Button>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className={classes.instructionContainer}>
+              <Typography component={"span"} className={classes.instructions}>
+                {getStepContent(
+                  activeStep,
+                  inputValues,
+                  handleOnChange,
+                  handleStartDate,
+                  handleEndDate,
+                  handleCheckboxChange,
+                  handleTagsChange
+                )}
+              </Typography>
+              <div className={classes.backNextButtonContainer}>
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.backButton}
+                >
+                  Back
+                </Button>
+                {activeStep === steps.length - 1 && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                  >
+                    Finish
+                  </Button>
+                )}
+                {activeStep != steps.length - 1 && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
