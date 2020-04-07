@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
+import { Button } from '@material-ui/core/';
 import MUIDatatable from "mui-datatables";
 import agent from '../../api/agent.js';
-import AssignApproverToolBar from './AssignApproverToolBar';
 
 /**
- * Defines the columns for the Timesheet approver portal. 
+ * Defines the columns for the assign approver table. 
  */
 const columns = [
   {name:"employeeId", label:"Employee ID", className:"column"},
   {name:"firstName", label:"First Name", className:"column"},
   {name:"lastName", label:"Last Name", className:"column"},
+  {name:"approverStatus", label:"Approver Status", className:"column"},
+  {name:"assign", label:"Assign", className:"column"},
 ];
 
 /**
  * Author: John Ham 
  * Version: 1.0 
  * Description: Timesheet Approver Portal Component. 
- * Portal used by timesheet approver for viewing a list of employees that have timesheets
- * that need to be approved. 
+ * To be used by a supervisor to give or revoke secondary timesheet approver
+ * status to employees. 
  */
 class TimesheetApproverPortal extends Component {
 
@@ -42,17 +44,21 @@ class TimesheetApproverPortal extends Component {
     const token = localStorage.getItem("token");
     const user = JSON.parse(sessionStorage.getItem('user'));
     var response = await agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
-    if (user.is_secondary_approver == true) {
-      var secondary_response = await agent.employeeInfo.getEmployeesBySupervisor(user.supervisor_id, token);
-      if (response == "") {
-        response = secondary_response;
-      } else {
-        for (var i = 0; i < secondary_response.length; i++) {
-          response.push(secondary_response[i]);
-        }
-      }
-    }
     return response;
+  }
+
+  async setApprover(employee) {
+    employee.is_secondary_approver = true;
+    const token = localStorage.getItem("token");
+    var response = await agent.employeeInfo.updateEmployee(employee.employee_id, token, employee);
+    this.props.history.push(`/dashboard/tsapprover/`);
+  }
+
+  async removeApprover(employee) {
+    employee.is_secondary_approver = false;
+    const token = localStorage.getItem("token");
+    var response = await agent.employeeInfo.updateEmployee(employee.employee_id, token, employee);
+    this.props.history.push(`/dashboard/tsapprover/`);
   }
 
   /**
@@ -61,20 +67,26 @@ class TimesheetApproverPortal extends Component {
    */
   async fetchData() {
     const { classes } = this.props;
-    console.log(this.props);
 
-    var employeeData = await this.getEmployees();
-  
+    var employeeData = await this.getEmployees();  
+    console.log(employeeData);
     var resultData = [];
     for (let i = 0; i < employeeData.length; i++) {
         let id = employeeData[i].employee_id;
         let firstName = employeeData[i].first_name;
         let lastName = employeeData[i].last_name;
+        let approverStatus = employeeData[i].is_secondary_approver.toString();
 
         let row = [];
         row.push(id);
         row.push(firstName);
-        row.push(lastName);
+        row.push(lastName); 
+        row.push(approverStatus);
+        if (employeeData[i].is_secondary_approver) {
+            row.push(<Button variant="contained" color="secondary" onClick={() => this.removeApprover(employeeData[i])}>Remove</Button>);
+        } else {
+            row.push(<Button variant="contained" color="primary" onClick={() => this.setApprover(employeeData[i])}>Assign</Button>);
+        }
         resultData.push(row);
     }
     
@@ -96,15 +108,6 @@ class TimesheetApproverPortal extends Component {
           print: false,
           download: false,
           filter: false,
-          onRowClick: (rowData, rowState) => {
-            localStorage.setItem('name', rowData[1] + " " + rowData[2]);
-            this.props.history.push(`/dashboard/tsapprover/${rowData[0]}`);
-          },
-          customToolbar: () => {
-            const user = JSON.parse(sessionStorage.getItem('user'));
-            console.log(user);
-              return <><AssignApproverToolBar history={this.props.history}/></>;
-          },
         }
       return data;
     };
@@ -113,7 +116,7 @@ class TimesheetApproverPortal extends Component {
       <div>
       <MUIDatatable 
         className="datatable"
-        title={<h1>Employees</h1>}
+        title={<h1>Secondary Timesheet Approver</h1>}
         options={options(this.props)}
         columns={columns}
         data={this.state.data}

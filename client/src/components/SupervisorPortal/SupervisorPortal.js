@@ -6,7 +6,7 @@ import AssignToolBar from './AssignToolBar';
 import agent from '../../api/agent.js'
 
 /**
- * Defines the columns for the HR portal. 
+ * Defines the columns for the supervisor portal. 
  */
 const columns = [
   {name:"employeeId", label:"Employee ID", className:"column"},

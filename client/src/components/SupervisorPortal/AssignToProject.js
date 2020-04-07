@@ -37,7 +37,7 @@ const AssignToProject = (props) => {
     const token = localStorage.getItem("token");
 
     const [project, setProject] = React.useState();
-    const [employees, setEmployees] = React.useState();
+    const [employees, setEmployees] = React.useState([]);
 
     const [projectsData, setProjectsData] = React.useState([]);
     const [employeesData, setEmployeesData] = React.useState([]);
@@ -63,8 +63,10 @@ const AssignToProject = (props) => {
 
     const handleSubmit = async () => {
       const token = localStorage.getItem("token");
-      console.log(token);
       if (project == null) {
+        return null;
+      }
+      if (employees.length == 0) {
         return null;
       }
       for (var i = 0; i < employees.length; i++) {

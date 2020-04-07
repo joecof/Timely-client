@@ -9,6 +9,7 @@ const columns = [
   {name:"projectId", label:"Project ID", className:"column"},
   {name:"projectName", label:"Project Name", className:"column"},
   {name:"projectManager", label:"Project Manager", className:"column"},
+  {name:"projectStatus", label:"Status", className:"column"},
 ];
   
 /**
@@ -55,11 +56,13 @@ class ProjectsAssignedTo extends Component {
         let id = projectsData[i].project_code;
         let projectName = projectsData[i].project_name;
         let name = projectsData[i].project_manager_id.first_name + " " + projectsData[i].project_manager_id.last_name;
+        let status = projectsData[i].status
 
         let row = [];
         row.push(id);
         row.push(projectName);
         row.push(name);
+        row.push(status);
 
         resultData.push(row);
     }
