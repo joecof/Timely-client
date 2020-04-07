@@ -136,47 +136,56 @@ class TimesheetDetail extends Component {
         if(this.props.token != null) {
           userId = this.props.userId;
           token = this.props.token;
-          // fetching projects
-          
-          const projects = await agent.projects.getProjectsForUser(userId, token);
-          // fetching employee
-          const curEmp = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
-          this.setState({
-            loadUser: curEmp
-          });
+          var projects, curEmp;
 
-          // looking for the most recent timesheet
-          const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(userId, token);
-
-          if(tsResponse.length != 0) {
-            // fetching timesheets
-            var timesheetList = [];
-
-            for (let i = 0; i < tsResponse.length; i++) {
-                let timesheetid = tsResponse[i].timesheet_id;
-                let weeknumber = tsResponse[i].week;
-                let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
-                let status = tsResponse[i].status;
-                let attribute1 = (tsResponse[i].attribute1==null ? "0|0" : tsResponse[i].attribute1);
-                
-                let eachTimesheet = [];
-                eachTimesheet.push(timesheetid);
-                eachTimesheet.push(weeknumber);
-                eachTimesheet.push(weekending);
-                eachTimesheet.push(status);
-                eachTimesheet.push(attribute1);
-                timesheetList.push(eachTimesheet);
-            }
-            // sorting timesheet list by week number
-            timesheetList.sort( function(a,b){
-              return b[1] - a[1];
+          try {
+            // fetching projects
+            projects = await agent.projects.getProjectsForUser(userId, token);
+            // fetching employee
+            curEmp = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
+            this.setState({
+              loadUser: curEmp
             });
-            tsId = timesheetList[0][0];
-            // returning projects, employee and overFlex time to dashboard
-            this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
-          } else {
-            // returning projects, employee and overFlex time to dashboard
-            this.props.fetchProject(projects, curEmp, "0|0");
+          } catch (e) {
+
+          }
+          
+          // looking for the most recent timesheet
+          try {
+            const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(userId, token);
+
+            if(tsResponse.length != 0) {
+              // fetching timesheets
+              var timesheetList = [];
+
+              for (let i = 0; i < tsResponse.length; i++) {
+                  let timesheetid = tsResponse[i].timesheet_id;
+                  let weeknumber = tsResponse[i].week;
+                  let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
+                  let status = tsResponse[i].status;
+                  let attribute1 = (tsResponse[i].attribute1==null ? "0|0" : tsResponse[i].attribute1);
+                  
+                  let eachTimesheet = [];
+                  eachTimesheet.push(timesheetid);
+                  eachTimesheet.push(weeknumber);
+                  eachTimesheet.push(weekending);
+                  eachTimesheet.push(status);
+                  eachTimesheet.push(attribute1);
+                  timesheetList.push(eachTimesheet);
+              }
+              // sorting timesheet list by week number
+              timesheetList.sort( function(a,b){
+                return b[1] - a[1];
+              });
+              tsId = timesheetList[0][0];
+              // returning projects, employee and overFlex time to dashboard
+              this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
+            } else {
+              // returning projects, employee and overFlex time to dashboard
+              this.props.fetchProject(projects, curEmp, "0|0");
+            }
+          } catch(e) {
+
           }
         }
     }
