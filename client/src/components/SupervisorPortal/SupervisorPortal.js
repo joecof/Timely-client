@@ -52,7 +52,6 @@ class SupervisorPortal extends Component {
    */
   async fetchData() {
     const { classes } = this.props;
-    console.log(this.props);
 
     var employeeData = await this.getEmployees();
   

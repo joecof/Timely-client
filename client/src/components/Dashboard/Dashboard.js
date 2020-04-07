@@ -48,18 +48,25 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { classes } = this.props;
 
+    console.log(this.props);
+
+
+
+    const { classes } = this.props;
     let config = (name) => {
       return ({
         option: name,
-        loadedUser: this.props.loadedUser
+        loadedUser: this.props.loadedUser,
+        logoutHandler: this.props.logoutHandler,
+        sessionLogoutHandler: this.props.sessionLogoutHandler
       })
     }
+    
     /**
      * Defines all routes available to the dashboard.
      */
-    let routes = <Routes { ...this.props} config = {config('dashboard')} token={this.props.token}/>
+    let routes = <Routes { ...this.props} config = {config('dashboard')} logoutHandler = {this.props.logoutHandler} sessionLogoutHandler = {this.props.sessionLogoutHandler} token={this.props.token}/>
     
     return (
       <BrowserRouter>
