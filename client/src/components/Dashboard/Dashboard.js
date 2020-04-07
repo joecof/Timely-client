@@ -48,11 +48,6 @@ class Dashboard extends Component {
   }
 
   render() {
-
-    console.log(this.props);
-
-
-
     const { classes } = this.props;
     let config = (name) => {
       return ({
