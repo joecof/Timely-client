@@ -14,7 +14,7 @@ import AssignToProject from '../SupervisorPortal/AssignToProject'
 import ProjectsAssignedTo from '../SupervisorPortal/ProjectsAssignedTo'
 import EmployeeForm from '../Profile/EmployeeForm'
 import CreateEmployeeForm from '../HrPortal/CreateEmployeeForm/CreateEmployeeForm'
-
+import IterationPlanCreate from '../LeadEngineerDetail/IterationPlanCreate'
 import ProjectDetail from '../ProjectDetail/ProjectDetail'
 import LeadEngineer from '../LeadEngineerPortal/LeadEngineer'
 import WorkpackageCreate from '../WorkpackageCreate/WorkpackageCreate';
@@ -34,7 +34,7 @@ export default class Routes extends Component {
 
   render() {
     let routes;
-    /**
+     /**
      * A switch statement to render the correct routes depending on the option provided. 
      * this.props.config.option is a string that the developer passes into the Routes component 
      * in order to configure what routes they want rendered. 
@@ -58,6 +58,7 @@ export default class Routes extends Component {
               render={props => (
                 <TimesheetDetail
                   loadedUser={this.props.config.loadedUser}
+                  logoutHandler = {this.props.logoutHandler}
                   {...props}
                 />
               )}
@@ -78,6 +79,7 @@ export default class Routes extends Component {
               render={props => (
                 <EmployeeForm
                   hr={false}
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
@@ -215,6 +217,15 @@ export default class Routes extends Component {
               )}
             />
             <Route
+              path="/newIterationPlan"
+              exact
+              render={props => (
+                <IterationPlanCreate
+                  {...props}
+                />
+              )}
+            />
+            <Route
               path="/dashboard/lead"
               exact
               render={props => (
@@ -262,6 +273,7 @@ export default class Routes extends Component {
                 <Dashboard
                   token={this.props.token}
                   {...props}
+                  sessionLogoutHandler={this.props.config.sessionLogoutHandler}
                   logoutHandler={this.props.config.logoutHandler}
                   loadedUser={this.props.config.loadedUser}
                   breadCrumbs={this.props.config.breadCrumbs}

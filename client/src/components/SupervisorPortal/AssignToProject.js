@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import agent from '../../api/agent.js'
+import Alert from '../Alert/Alert'
+
 
 /**
  * Material UI styling JSON object. 
@@ -42,6 +44,9 @@ const AssignToProject = (props) => {
     const [projectsData, setProjectsData] = React.useState([]);
     const [employeesData, setEmployeesData] = React.useState([]);
 
+    const [successAlert, setSuccessAlert] = React.useState(false);
+    const [errorAlert, setErrorAlert] = React.useState(false);
+
     const fetchProjectsData = async () => {
       const response = await agent.projects.getAllProjects(token);
       return response;
@@ -70,13 +75,28 @@ const AssignToProject = (props) => {
       for (var i = 0; i < employees.length; i++) {
         project.employees.push(employees[i]);
       }
-      const response = agent.projects.updateProject(project, token);
-      console.log(response);
-      props.history.push(`/dashboard/supervisor`);
+
+      try {
+        await agent.projects.updateProject(project, token);
+        setSuccessAlert(true);
+        setErrorAlert(false);
+      } catch (e) {
+        setErrorAlert(true);
+        setSuccessAlert(false);
+      }
+
+      setTimeout(() => {
+        setErrorAlert(false);
+        setSuccessAlert(false);
+        props.history.push(`/dashboard/supervisor`);
+      }, 1000);
+
     };
 
     return (
       <div className={classes.root}>
+        {errorAlert ? <Alert config = {{message: "Login Failed", variant: "error"}}/> : null}
+        {successAlert ? <Alert config = {{message: `Login Success!`, variant: "success"}}/> : null}
         <Paper className={classes.supervisorPaper} elevation={2}>
           <Grid container direction="column">
             <Typography variant="h4">Assign To Project</Typography>

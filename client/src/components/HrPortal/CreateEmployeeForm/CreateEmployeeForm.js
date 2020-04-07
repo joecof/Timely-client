@@ -181,8 +181,8 @@ class CreateEmployeeForm extends Component {
 
     return (
       <div className={classes.root}>
-        {this.state.errorAlert ? <Alert config = {{message: "error", variant: "error"}}/> : null}
-        {this.state.successAlert ? <Alert config = {{message: "success", variant: "success"}}/> : null}
+        {this.state.errorAlert ? <Alert config = {{message: "Submission Failed", variant: "error"}}/> : null}
+        {this.state.successAlert ? <Alert config = {{message: "Submission Success!", variant: "success"}}/> : null}
         <Paper className = {classes.paper} elevation = {2}>
           <Grid container spacing={1}>
             <CreateEmployeeInfo  

@@ -15,6 +15,8 @@ import Schedule from "../CreationWizard/Schedule";
 import SelectEmployees from "./SelectEmployees";
 import "./WorkpackageCreate.css";
 import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
+import Alert from '../Alert/Alert'
+
 
 /**
  * Author: Prabh
@@ -124,6 +126,9 @@ export default function WorkpackageCreate(props) {
     project: props.location.project,
     wpEmps: []
   });
+
+  const [successAlert, setSuccessAlert] = React.useState(false);
+  const [errorAlert, setErrorAlert] = React.useState(false);
 
   const handleOnChange = event => {
     const { name, value } = event.target;
@@ -269,12 +274,20 @@ export default function WorkpackageCreate(props) {
     }
     console.log(JSON.stringify(data));
 
-    const response = await agent.workpackages.createWorkpackage(data, token);
-    console.log(response);
+    try {
+      await agent.workpackages.createWorkpackage(data, token);
+      setSuccessAlert(true);
+      setErrorAlert(false);
+    } catch(e) {
+      setSuccessAlert(false);
+      setErrorAlert(false);
+    }
 
-    // console.log(hoursForEach);
-    // console.log(budget);
-    // console.log(laborGrades);
+    setTimeout(() => {
+      setErrorAlert(false);
+      setSuccessAlert(false);
+      props.history.push(`/dashboard/projectDetails`);
+    }, 1000);
   };
 
   const calculateHours = (budget, laborGrades) => {
@@ -306,6 +319,8 @@ export default function WorkpackageCreate(props) {
 
   return (
     <div className={classes.root}>
+      {errorAlert ? <Alert config = {{message: "Work Package Submission Failed", variant: "error"}}/> : null}
+      {successAlert ? <Alert config = {{message: `Work Package Submission Successful!`, variant: "success"}}/> : null}
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map(label => (
           <Step key={label}>
