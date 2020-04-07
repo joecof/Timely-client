@@ -19,12 +19,8 @@ const defaultToolbarStyles = {
  */
 class AssignToolBar extends React.Component {
 
-  /**
-   * Will be used to assign an employee to a project
-   */
   clickAssign = () => {
     this.props.history.push(`/dashboard/supervisor/assign`);
-    console.log("assign an employee!");
   }
 
   render() {

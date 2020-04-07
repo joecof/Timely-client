@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button } from '@material-ui/core/';
 import MUIDatatable from "mui-datatables";
 import agent from '../../api/agent.js';
+import Alert from '../Alert/Alert';
 
 /**
  * Defines the columns for the assign approver table. 
@@ -27,14 +28,28 @@ class TimesheetApproverPortal extends Component {
     super(props); 
 
     this.state = ({
-      data: []
+      data: [],
+      errorAlert: false,
     })
 
     this.fetchData = this.fetchData.bind(this);
+    this.errorHandling = this.errorHandling.bind(this);
   }
 
   componentDidMount() {
     this.fetchData();
+  }
+
+  errorHandling() {
+    this.setState({
+      errorAlert: true,
+    });
+    setTimeout(() => {
+      this.setState({
+        errorAlert: false
+      });
+      this.props.history.push(`/dashboard/tsapprover/`);
+    }, 1000);
   }
 
   /**
@@ -43,21 +58,36 @@ class TimesheetApproverPortal extends Component {
   async getEmployees() {
     const token = localStorage.getItem("token");
     const user = JSON.parse(sessionStorage.getItem('user'));
-    var response = await agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
+    try {
+      var response = await agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
+    } catch (e) {
+      this.errorHandling();
+      return [];
+    }
     return response;
   }
 
   async setApprover(employee) {
     employee.is_secondary_approver = true;
     const token = localStorage.getItem("token");
-    var response = await agent.employeeInfo.updateEmployee(employee.employee_id, token, employee);
+    try {
+      var response = await agent.employeeInfo.updateEmployee(employee.employee_id, token, employee);
+    } catch (e) {
+      this.errorHandling();
+      return;
+    }
     this.props.history.push(`/dashboard/tsapprover/`);
   }
 
   async removeApprover(employee) {
     employee.is_secondary_approver = false;
     const token = localStorage.getItem("token");
-    var response = await agent.employeeInfo.updateEmployee(employee.employee_id, token, employee);
+    try {
+      var response = await agent.employeeInfo.updateEmployee(employee.employee_id, token, employee);
+    } catch (e) {
+      this.errorHandling();
+      return;
+    }
     this.props.history.push(`/dashboard/tsapprover/`);
   }
 
@@ -68,8 +98,7 @@ class TimesheetApproverPortal extends Component {
   async fetchData() {
     const { classes } = this.props;
 
-    var employeeData = await this.getEmployees();  
-    console.log(employeeData);
+    var employeeData = await this.getEmployees();
     var resultData = [];
     for (let i = 0; i < employeeData.length; i++) {
         let id = employeeData[i].employee_id;
@@ -114,13 +143,14 @@ class TimesheetApproverPortal extends Component {
 
     return (
       <div>
-      <MUIDatatable 
-        className="datatable"
-        title={<h1>Secondary Timesheet Approver</h1>}
-        options={options(this.props)}
-        columns={columns}
-        data={this.state.data}
-      />
+        {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
+        <MUIDatatable 
+          className="datatable"
+          title={<h1>Secondary Timesheet Approver</h1>}
+          options={options(this.props)}
+          columns={columns}
+          data={this.state.data}
+        />
     </div>
     )
   }
