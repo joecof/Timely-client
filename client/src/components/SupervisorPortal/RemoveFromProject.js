@@ -82,7 +82,7 @@ const RemoveFromProject = (props) => {
       });
       const response = agent.projects.updateProject(project, token);
       console.log(response);
-      props.history.push(`/dashboard/supervisor`)
+      props.history.push(`/dashboard/supervisor`);
     };
 
     return (

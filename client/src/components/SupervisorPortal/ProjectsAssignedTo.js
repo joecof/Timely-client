@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
-import { withStyles } from '@material-ui/core/styles';
 import agent from '../../api/agent.js'
 
 /**
@@ -89,7 +88,7 @@ class ProjectsAssignedTo extends Component {
       <>
       <MUIDatatable 
         className="datatable"
-        title={<h1>Projects Assigned To</h1>}
+        title={<h1>Projects Assigned To {localStorage.name}</h1>}
         options={options(this.props)}
         columns={columns}
         data={this.state.data}

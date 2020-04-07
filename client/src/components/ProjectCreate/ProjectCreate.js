@@ -148,7 +148,7 @@ export default function ProjectCreate() {
       status: "OPEN",
       start_date: inputValues.startDate.toISOString().split("T", 1)[0],
       end_date: inputValues.endDate.toISOString().split("T", 1)[0],
-      description: inputValues.projectDesc,
+      description: inputValues.Desc,
       budget_dollar: inputValues.cost,
       employees: [
         {
