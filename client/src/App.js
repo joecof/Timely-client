@@ -21,12 +21,14 @@ class App extends Component {
       token: null,
       errorAlert: false,
       successAlert: false,
+      sessionAlert: false
     })
 
     this.loginHandler = this.loginHandler.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
     this.setAutoLogout = this.setAutoLogout.bind(this);
     this.sessionHandler = this.sessionHandler.bind(this);
+    this.sessionLogoutHandler = this.sessionLogoutHandler.bind(this);
 
   }
 
@@ -44,12 +46,15 @@ class App extends Component {
     const expiryDate = localStorage.getItem('expiryDate');
 
     if (!session) {
-      this.logoutHandler();
+      // this.logoutHandler();
+      this.sessionLogoutHandler();
       return;
     } 
 
     if(!token || !expiryDate) {
-      this.props.history.push('/');
+      this.setState({
+        isAuth: false
+      })
       return; 
     }
 
@@ -70,22 +75,18 @@ class App extends Component {
    */
   async loginHandler(event, data){
     event.preventDefault();
+
     
     try {
       const response = await agent.authorization.login(data);
 
       this.setState({
+        isAuth: true,
+        loadedUser: response.loadedUser,
+        token: response.token,
         errorAlert: false,
         successAlert: true,
       })
-
-      setTimeout(() => {
-        this.setState({
-          isAuth: true,
-          loadedUser: response.loadedUser,
-          token: response.token,
-        }) 
-      }, 1000);
       
       const remainingMilliseconds = 60 * 60 * 1000;
       const expiryDate = new Date(
@@ -114,6 +115,26 @@ class App extends Component {
     }, 1000);
   }
 
+  sessionLogoutHandler() {
+    this.setState({
+      isAuth: false,
+      loadedUser: null,
+      sessionAlert: true,
+    })
+
+    localStorage.removeItem('expiryDate');
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem('logged')
+
+    setTimeout(() => {
+      this.setState({
+        sessionAlert: false
+      }) 
+    }, 1000);
+
+  }
+
   /**
    * Logout handler. Logs out the user, and sets state of authentication to false.  
    */
@@ -127,6 +148,7 @@ class App extends Component {
     localStorage.removeItem("token");
     sessionStorage.removeItem("user");
     sessionStorage.removeItem('logged')
+
   }
 
   /**
@@ -153,6 +175,7 @@ class App extends Component {
         loginHandler: this.loginHandler,
         logoutHandler: this.logoutHandler,
         loadedUser: this.state.loadedUser,
+        sessionLogoutHandler: this.sessionLogoutHandler
       })
     }
 
@@ -175,6 +198,7 @@ class App extends Component {
 
     return(
       <div className="App">
+      {this.state.sessionAlert ? <Alert config = {{message: "Session Expired", variant: "error"}}/> : null}
       {this.state.errorAlert ? <Alert config = {{message: "Login Failed", variant: "error"}}/> : null}
       {this.state.successAlert ? <Alert config = {{message: `Login Success!`, variant: "success"}}/> : null}
       <BrowserRouter>

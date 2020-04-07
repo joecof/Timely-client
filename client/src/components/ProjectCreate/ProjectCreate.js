@@ -164,11 +164,8 @@ export default function ProjectCreate() {
     try {
       await agent.projects.createProject(data, token);
       setSuccessAlert(true);
-      setErrorAlert(false);
-
     } catch (e) {
       setErrorAlert(true);
-      setSuccessAlert(false);
     }
 
     setTimeout(() => {
@@ -194,8 +191,8 @@ export default function ProjectCreate() {
 
   return (
     <div className={classes.root}>
-      {errorAlert ? <Alert config = {{message: "Login Failed", variant: "error"}}/> : null}
-      {successAlert ? <Alert config = {{message: `Login Success!`, variant: "success"}}/> : null}
+      {errorAlert ? <Alert config = {{message: "Failed to Create Project", variant: "error"}}/> : null}
+      {successAlert ? <Alert config = {{message: `Project Created!`, variant: "success"}}/> : null}
       <Stepper
         activeStep={activeStep}
         alternativeLabel

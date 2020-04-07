@@ -100,7 +100,7 @@ const RemoveFromProject = (props) => {
         setErrorAlert(false);
         setSuccessAlert(false);
         props.history.push(`/dashboard/supervisor`);
-      }, 1100);
+      }, 1000);
     };
 
     return (
