@@ -39,6 +39,7 @@ class EmployeeForm extends Component {
       marks: laborData,
       laborGradeId: '',
       laborGradeName: '',
+      vacation: '',
       supervisorSelected: false,
       supervisorFirstName:'',
       supervisorLastName: '',
@@ -97,20 +98,23 @@ class EmployeeForm extends Component {
   }
 
   async handleSubmit() {
+    const token = localStorage.getItem("token");
+    let employee = this.state.loadedUser;
+
     const { 
       firstName,
       lastName,
       laborGradeId,
       laborGradeName,
       supervisorId,
+      vacation,
       oldPassword, 
       newPassword, 
       confirmPassword,
       passwordChange
     } = this.state; 
 
-    const token = localStorage.getItem("token");
-    let employee = this.state.loadedUser;
+    console.log(vacation);
 
     if(passwordChange) {
       if(oldPassword != employee.password || newPassword != confirmPassword) {
@@ -123,6 +127,7 @@ class EmployeeForm extends Component {
         employee.last_name = lastName; 
         employee.labor_grade_id.labor_grade_id = laborGradeId;
         employee.labor_grade_id.labor_grade_name = laborGradeName;
+        employee.vacation = vacation;
         employee.supervisor_id = supervisorId
         employee.password = newPassword;
         
@@ -137,9 +142,10 @@ class EmployeeForm extends Component {
       employee.last_name = lastName; 
       employee.labor_grade_id.labor_grade_id = laborGradeId;
       employee.labor_grade_id.labor_grade_name = laborGradeName;
+      employee.vacation = vacation;
       employee.supervisor_id = supervisorId
 
-      const resp = await agent.employeeInfo.updateEmployee(this.props.loadedUser.employee_id, token, employee)
+      await agent.employeeInfo.updateEmployee(this.props.loadedUser.employee_id, token, employee)
 
       this.setState({
         successAlert: true, 
@@ -167,6 +173,7 @@ class EmployeeForm extends Component {
       supervisorId: resp.supervisor_id,
       isAdmin: resp.is_admin,
       isHr: resp.is_hr_staff, 
+      vacation: resp.vacation,
       isSuperTimesheetApprover: resp.is_super_timesheet_approver,
       oldPassword: '',
       newPassword: '',

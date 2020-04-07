@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -7,12 +7,12 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import agent from '../../api/agent.js'
-import WorkpackageInfo from './WorkpackageInfo';
-import WorkpackageDesc from '../CreationWizard/Desc';
-import Budget from '../CreationWizard/Budget';
-import Schedule from '../CreationWizard/Schedule';
-import SelectEmployees from './SelectEmployees';
+import agent from "../../api/agent.js";
+import WorkpackageInfo from "./WorkpackageInfo";
+import WorkpackageDesc from "../CreationWizard/Desc";
+import Budget from "../CreationWizard/Budget";
+import Schedule from "../CreationWizard/Schedule";
+import SelectEmployees from "./SelectEmployees";
 import "./WorkpackageCreate.css";
 import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
 
@@ -35,7 +35,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ["Work-Package Information", "Work-Package Description", "Budget", "Schedule", "Employees"];
+  return [
+    "Work-Package Information",
+    "Work-Package Description",
+    "Budget",
+    "Schedule",
+    "Employees"
+  ];
 }
 
 function getStepContent(
@@ -70,7 +76,13 @@ function getStepContent(
         />
       );
     case 2:
-      return <Budget cost={inputValues.cost} handleChange={handleOnChange} />;
+      return (
+        <Budget
+          cost={inputValues.cost}
+          handleChange={handleOnChange}
+          isDisabled={!inputValues.checkedLower}
+        />
+      );
     case 3:
       return (
         <Schedule
@@ -78,14 +90,16 @@ function getStepContent(
           endDate={inputValues.endDate}
           handleStartChange={handleStartDate}
           handleEndChange={handleEndDate}
+          isDisabled={!inputValues.checkedLower}
         />
-        );
+      );
     case 4:
       return (
         <SelectEmployees
           handleTagsChange={handleTagsChange}
           project={inputValues.project}
           wpEmps={inputValues.wpEmps}
+          isDisabled={!inputValues.checkedLower}
         />
       );
   }
@@ -94,7 +108,7 @@ function getStepContent(
 export default function WorkpackageCreate(props) {
   const classes = useStyles();
 
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   const [inputValues, setInputValues] = useState({
     wpID: "",
@@ -121,15 +135,21 @@ export default function WorkpackageCreate(props) {
       var list = inputValues.wpList;
       list.sort();
       for (var wp in list) {
-        if (list[wp].work_package_id.startsWith(value) && list[wp].work_package_id.length === value.length + 1) {
+        if (
+          list[wp].work_package_id.startsWith(value) &&
+          (parseInt(list[wp].work_package_id)).toString().length === value.length + 1
+        ) {
           id = parseInt(list[wp].work_package_id) + 1;
         }
       }
       if (id === -1) {
-        id = parseInt(value)*10 + 1
+        id = parseInt(value) * 10 + 1;
       }
       console.log(id);
-      setInputValues({ ...inputValues, wpID: id + inputValues.wpID });
+      var newWPID = id;
+      newWPID += inputValues.checkedLower ? "L" : "";
+      console.log(newWPID);
+      setInputValues({ ...inputValues, wpID: newWPID, wpParent: value === ''  ? "0" : value});
     }
   };
 
@@ -141,11 +161,17 @@ export default function WorkpackageCreate(props) {
     setInputValues({ ...inputValues, endDate: date });
   };
 
-  const handleCheckboxChange = (event) => {
-    setInputValues({ ...inputValues, [event.target.name]: event.target.checked, wpID: event.target.checked ? inputValues.wpID+"L" : inputValues.wpID.replace('L', '')});
+  const handleCheckboxChange = event => {
+    setInputValues({
+      ...inputValues,
+      [event.target.name]: event.target.checked,
+      wpID: event.target.checked
+        ? inputValues.wpID + "L"
+        : inputValues.wpID.replace("L", "")
+    });
   };
 
-  const handleTagsChange = (inputValue) => {
+  const handleTagsChange = inputValue => {
     console.log(inputValue);
     setInputValues({ ...inputValues, wpEmps: inputValue });
   };
@@ -153,26 +179,114 @@ export default function WorkpackageCreate(props) {
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
     console.log(token);
-    // const data = {
-    //   "project_code": inputValues.projectID,
-    //   "project_manager_id": {
-    //     "employee_id": user.employee_id
-    //   },
-    //   "project_name": inputValues.projectName,
-    //   "status": "OPEN",
-    //   "start_date": inputValues.startDate.toISOString().split('T', 1)[0],
-    //   "end_date": inputValues.endDate.toISOString().split('T', 1)[0],
-    //   "description": inputValues.projectDesc,
-    //   "budget_dollar": inputValues.cost,
-    //   "employees": [
-    //     {
-    //       "employee_id": user.employee_id
-    //     }
-    //   ]
-    // };
-    // console.log(data);
-    // const response = agent.projects.createProject(data, token);
-    // console.log(response);
+
+    var data;
+    if (inputValues.checkedLower) {
+      const yearlyRateValues = await agent.yearlyRate.getYearlyRate(token);
+      console.log(yearlyRateValues);
+
+      var budget = inputValues.cost;
+
+      var laborGrades = [];
+      var gradeObj = {};
+      var found;
+      for (var item in inputValues.wpEmps) {
+        gradeObj = {};
+        var id = inputValues.wpEmps[item].labor_grade_id.labor_grade_id;
+        found = false;
+        laborGrades.forEach(x => {
+          if (x.id === id) {
+            x.count++;
+            found = true;
+          }
+        });
+        if (!found) {
+          gradeObj.id = id;
+          gradeObj.count = 1;
+          yearlyRateValues.forEach(x => {
+            if (x.labor_grade_id.labor_grade_id === id) {
+              gradeObj.rate = x.charge_rate;
+            }
+          });
+          laborGrades.push(gradeObj);
+        }
+      }
+      var hoursForEach = calculateHours(budget, laborGrades);
+
+      var workPackagePlanObj = {};
+      var workPackagePlanArray = [];
+      laborGrades.forEach(x => {
+        workPackagePlanObj = {};
+        workPackagePlanObj.project_code = inputValues.project.project_code;
+        workPackagePlanObj.work_package_id = inputValues.wpID;
+        workPackagePlanObj.type = "BUDGET";
+        workPackagePlanObj.start_date = inputValues.startDate
+          .toISOString()
+          .split("T", 1)[0];
+        workPackagePlanObj.end_date = inputValues.endDate
+          .toISOString()
+          .split("T", 1)[0];
+        workPackagePlanObj.revision = 1;
+        workPackagePlanObj.labor_grade_id = x.id;
+        workPackagePlanObj.quantity = x.count;
+        workPackagePlanObj.plan_hour = hoursForEach;
+        workPackagePlanObj.project_wp =
+          inputValues.project.project_code + "_" + inputValues.wpID;
+        workPackagePlanArray.push(workPackagePlanObj);
+      });
+
+      var empArray = [];
+      inputValues.wpEmps.forEach(x => {
+        empArray.push(x);
+      });
+
+      data = {
+        project: inputValues.project,
+        work_package_id: inputValues.wpID,
+        higher_work_package_id: inputValues.wpParent,
+        responsible_person_id: {
+          employee_id: inputValues.wpRE
+        },
+        is_open: 1,
+        description: inputValues.wpName+": "+ inputValues.Desc,
+        project_wp: inputValues.project.project_code + "_" + inputValues.wpID,
+        workPackagePlanCollection: workPackagePlanArray,
+        employees: empArray
+      };
+    } else {
+      data = {
+        project: inputValues.project,
+        work_package_id: inputValues.wpID,
+        higher_work_package_id: inputValues.wpParent,
+        responsible_person_id: {
+          employee_id: inputValues.wpRE
+        },
+        is_open: 1,
+        description: inputValues.wpName+": "+ inputValues.Desc,
+        project_wp: inputValues.project.project_code + "_" + inputValues.wpID,
+        employees: []
+      };
+    }
+    console.log(JSON.stringify(data));
+
+    const response = await agent.workpackages.createWorkpackage(data, token);
+    console.log(response);
+
+    // console.log(hoursForEach);
+    // console.log(budget);
+    // console.log(laborGrades);
+  };
+
+  const calculateHours = (budget, laborGrades) => {
+    var avgRate = 0;
+    var count = 0;
+    laborGrades.forEach(x => {
+      avgRate += x.rate * x.count;
+      count += x.count;
+    });
+    avgRate = avgRate / count;
+    var avgHours = parseInt(budget) / avgRate / count;
+    return avgHours.toFixed(2);
   };
 
   const [activeStep, setActiveStep] = React.useState(0);

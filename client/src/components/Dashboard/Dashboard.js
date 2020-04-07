@@ -6,7 +6,6 @@ import SideMenu from '../SideMenu/SideMenu'
 import Container from '../Container/Container'
 import Routes from '../Routes/Routes'
 
-
 /**
  * Material UI styling JSON object. 
  * @param {JSON} theme 
