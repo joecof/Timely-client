@@ -3,7 +3,6 @@ import ProjectsList from "./ProjectsList";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
 import agent from "../../../api/agent";
 import "./Projects.css";
 
@@ -24,7 +23,7 @@ class Projects extends React.Component {
       mineProj: [],
       archivedProj: [],
       closedProj: [],
-      type: "All"
+      type: "All",
     };
     this.setData = this.setData.bind(this);
     this.allProjects = this.allProjects.bind(this);
@@ -41,28 +40,28 @@ class Projects extends React.Component {
   allProjects() {
     this.setState({
       data: this.state.allProj,
-      type: "All"
+      type: "All",
     });
   }
 
   mineProjects() {
     this.setState({
       data: this.state.mineProj,
-      type: "Mine"
+      type: "Mine",
     });
   }
 
   archivedProjects() {
     this.setState({
       data: this.state.archivedProj,
-      type: "Archived"
+      type: "Archived",
     });
   }
 
   closedProjects() {
     this.setState({
       data: this.state.closedProj,
-      type: "Closed"
+      type: "Closed",
     });
   }
 
@@ -106,49 +105,46 @@ class Projects extends React.Component {
       allProj: allProj,
       mineProj: mineProj,
       closedProj: closedProj,
-      archivedProj: archivedProj
+      archivedProj: archivedProj,
     });
   }
 
   render() {
     return (
       <div className="projectPageContainer">
-        <Grid
-          justify="space-between"
-          container
-          spacing={1}
-          className="btnProjects"
-        >
-          <Grid item>
-            <ButtonGroup
-              variant="contained"
-              color="primary"
-              aria-label="contained primary button group"
-              className="buttonGroup"
-            >
-              <Button onClick={this.allProjects}>All</Button>
-              <Button onClick={this.mineProjects}>Mine</Button>
-              <Button onClick={this.archivedProjects}>Archived</Button>
-              <Button onClick={this.closedProjects}>Closed</Button>
-            </ButtonGroup>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              component={Link}
-              to="/createProject"
-              className="createButton"
-            >
-              + Create
-            </Button>
-          </Grid>
-        </Grid>
-        <ProjectsList
-          data={this.state.data}
-          type={this.state.type}
-          history={this.props.history}
-        />
+        <div className="projects-paper-container">
+          <div className="projects-btnProjects">
+            <div>
+              <ButtonGroup
+                variant="contained"
+                color="primary"
+                aria-label="contained primary button group"
+                className="buttonGroup"
+              >
+                <Button onClick={this.allProjects}>All</Button>
+                <Button onClick={this.mineProjects}>Mine</Button>
+                <Button onClick={this.archivedProjects}>Archived</Button>
+                <Button onClick={this.closedProjects}>Closed</Button>
+              </ButtonGroup>
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                color="secondary"
+                component={Link}
+                to="/createProject"
+                className="createButton"
+              >
+                + Create
+              </Button>
+            </div>
+          </div>
+          <ProjectsList
+            data={this.state.data}
+            type={this.state.type}
+            history={this.props.history}
+          />
+        </div>
       </div>
     );
   }

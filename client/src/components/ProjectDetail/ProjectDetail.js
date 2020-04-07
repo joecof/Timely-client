@@ -9,7 +9,9 @@ import Modal from "./Modal.js";
 import WorkpackageList from "./WorkpackageList";
 import WorkpackageTree from "./WorkpackageTree";
 import { Link } from "react-router-dom";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import "./ProjectDetail.css";
+import ProjectReport from "../Charts/ProjectReport";
 
 /**
  * Author: Prabh
@@ -175,7 +177,7 @@ class ProjectDetail extends React.Component {
                     }}
                     style={{ marginRight: "5%" }}
                   >
-                    <b>+ Create Work Package</b>
+                    <b>Create Work Package</b>
                   </Button>
                 </div>
               </div>
@@ -190,13 +192,38 @@ class ProjectDetail extends React.Component {
               wpList={this.state.wpList}
             />
           ) : (
-            <Grid container justify="center" className="PDWorkpackageTree">
+            <Grid
+              container
+              justify="center"
+              className="PDWorkpackageTree"
+              direction="column"
+            >
               <Grid item>
                 <WorkpackageTree
                   wpList={this.state.wpList}
                   history={this.props.history}
                 />
               </Grid>
+              <br />
+              {this.state.wpList.length > 0 && (
+                <Grid item>
+                  <PDFDownloadLink
+                    document={<ProjectReport wpList={this.state.wpList} />}
+                    fileName={this.state.projectID + "_report.pdf"}
+                    style={{
+                      textDecoration: "none",
+                      padding: "10px",
+                      color: "#4a4a4a",
+                      backgroundColor: "#f2f2f2",
+                      border: "1px solid #4a4a4a",
+                    }}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? "Loading document..." : "Get Report"
+                    }
+                  </PDFDownloadLink>
+                </Grid>
+              )}
             </Grid>
           )}
         </div>

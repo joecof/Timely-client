@@ -15,20 +15,21 @@ const styles = () => ({
   outerContainer: {
     width: "1300px",
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   root: {
-    width: "1000px"
+    width: "1000px",
   },
   paper: {
-    height: 750
+    height: "780px",
   },
   divider: {
-    height: 690
+    height: "750px",
+    margin: "15px 0 0 0"
   },
   container: {
-    display: "flex"
-  }
+    display: "flex",
+  },
 });
 
 class CreateEmployeeForm extends Component {
@@ -46,9 +47,11 @@ class CreateEmployeeForm extends Component {
       supervisorFirstName: "",
       supervisorLastName: "",
       supervisorSelected: false,
-      marks: laborData
+      marks: laborData,
     };
 
+    this.valueLabelFormat = this.valueLabelFormat.bind(this);
+    this.getSliderValue = this.getSliderValue.bind(this);
     this.formHandler = this.formHandler.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.isHrSwitch = this.isHrSwitch.bind(this);
@@ -56,10 +59,7 @@ class CreateEmployeeForm extends Component {
     this.isSuperTimesheetApproverSwitch = this.isSuperTimesheetApproverSwitch.bind(
       this
     );
-    this.valueLabelFormat = this.valueLabelFormat.bind(this);
-    this.getSliderValue = this.getSliderValue.bind(this);
     this.selectSupervisor = this.selectSupervisor.bind(this);
-    this.laborGradeFilter = this.laborGradeFilter.bind(this);
   }
 
   componentDidMount() {
@@ -76,59 +76,49 @@ class CreateEmployeeForm extends Component {
       isSuperTimesheetApprover: false,
       vacation: 0,
       laborGradeId: laborData[0].label,
-      laborGradeName: '',
+      laborGradeName: "",
       errorAlert: false,
       successAlert: false,
       marks: laborData,
       supervisorSelected: false,
       supervisorFirstName: "",
-      supervisorLastName: ""
+      supervisorLastName: "",
     });
-  }
-
-  laborGradeFilter(){
-    this.state.marks.forEach((item, i) => {
-      if(this.state.laborGradeId == item.label) {
-        this.setState({
-          laborGradeName: item.name
-        })
-      }
-    })
-  }
-
-  getSliderValue(value) {
-    this.setState({
-      laborGradeId: this.state.marks[value].label,
-      laborGradeName: this.state.marks[value].name
-    })
   }
 
   valueLabelFormat(value) {
     return this.state.marks[value].label;
   }
 
+  getSliderValue(value) {
+    this.setState({
+      laborGradeId: this.state.marks[value].label,
+      laborGradeName: this.state.marks[value].name,
+    });
+  }
+
   formHandler(e) {
     e.preventDefault();
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
   isHrSwitch() {
     this.setState({
-      isHr: !this.state.isHr
+      isHr: !this.state.isHr,
     });
   }
 
   isAdminSwitch() {
     this.setState({
-      isAdmin: !this.state.isAdmin
+      isAdmin: !this.state.isAdmin,
     });
   }
 
   isSuperTimesheetApproverSwitch() {
     this.setState({
-      isSuperTimesheetApprover: !this.state.isSuperTimesheetApprover
+      isSuperTimesheetApprover: !this.state.isSuperTimesheetApprover,
     });
   }
 
@@ -137,7 +127,7 @@ class CreateEmployeeForm extends Component {
       supervisorId: value,
       supervisorFirstName: firstName,
       supervisorLastName: lastName,
-      supervisorSelected: true
+      supervisorSelected: true,
     });
   }
 
@@ -155,15 +145,13 @@ class CreateEmployeeForm extends Component {
       isAdmin,
       isSuperTimesheetApprover,
       vacation,
-    } = this.state; 
+    } = this.state;
 
-    this.laborGradeFilter();
-    
     const employee = {
       supervisor_id: supervisorId,
       labor_grade_id: {
-        laborGradeId: laborGradeId,
-        labor_grade_name: laborGradeName
+        labor_grade_id: laborGradeId,
+        labor_grade_name: laborGradeName,
       },
       password: confirmPassword,
       first_name: firstName,
@@ -175,20 +163,20 @@ class CreateEmployeeForm extends Component {
       is_hr_staff: isHr,
       is_super_timesheet_approver: isSuperTimesheetApprover,
       is_secondary_approver: false,
-      vacation: vacation
+      vacation: vacation,
     };
 
     await agent.employeeInfo.createEmployee(token, employee);
 
     this.setState({
       successAlert: true,
-      errorAlert: false
+      errorAlert: false,
     });
 
     setTimeout(() => {
       this.setState({
         successAlert: false,
-        errorAlert: false
+        errorAlert: false,
       });
     }, 1000);
   }
@@ -229,22 +217,16 @@ class CreateEmployeeForm extends Component {
                 formHandler={this.formHandler}
                 valueLabelFormat={this.valueLabelFormat}
                 marks={this.state.marks}
-                getSliderValue={this.getSliderValue}
+                laborGradeId={this.state.laborGradeId}
                 selectSupervisor={this.selectSupervisor}
                 supervisorName={`${this.state.supervisorFirstName} ${this.state.supervisorLastName}`}
                 supervisorSelected={this.state.supervisorSelected}
+                getSliderValue={this.getSliderValue}
               />
-            <Divider orientation="vertical" flexItem className = {classes.divider} />
-            <CreateEmployeeBasicInfo  
-              hr={hr} 
-              formHandler = {this.formHandler} 
-              valueLabelFormat = {this.valueLabelFormat}
-              marks = {this.state.marks}
-              laborGradeId = {this.state.laborGradeId}
-              getSliderValue = {this.getSliderValue}
-              selectSupervisor = {this.selectSupervisor}
-              supervisorName = {`${this.state.supervisorFirstName} ${this.state.supervisorLastName}`}
-              supervisorSelected = {this.state.supervisorSelected}
+              <Divider
+                orientation="vertical"
+                flexItem
+                className={classes.divider}
               />
               <CreateEmployeePassword
                 hr={hr}

@@ -125,10 +125,7 @@ class ProjectsAssignedTo extends Component {
    */
   async fetchData() {
     const { classes } = this.props; 
-  
-    console.log(this.props);
     var projectsData = await this.getProjects();
-    console.log(projectsData);
 
     var resultData = [];
     for (let i = 0; i < projectsData.length; i++) {
@@ -171,7 +168,7 @@ class ProjectsAssignedTo extends Component {
         <MuiThemeProvider theme={this.getCustomTheme()}>
           <MUIDatatable
             className="datatable"
-            title={<div className={classes.projectAssignedToTitle}>Projects Assigned To</div>}
+            title={<div className={classes.projectAssignedToTitle}>Projects Assigned To {localStorage.name}</div>}
             options={options(this.props)}
             columns={columns}
             data={this.state.data}

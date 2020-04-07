@@ -13,7 +13,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import BreadCrumb from '../BreadCrumb/BreadCrumb'
 import { NAVBAR_PARAMETERS } from '../../constants/constants'
 
-
 /**
  * Defined breaking points for navbar size upon resizing. 
  */
@@ -26,7 +25,6 @@ const navbarShrinkedWidth = NAVBAR_PARAMETERS.NAVBAR_SHRINKED_WIDTH;
  */
 const styles = theme => ({
   root: {
-
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -50,7 +48,8 @@ const styles = theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
+    backgroundColor:'#fafafa',
     position: 'fixed',
     width: `calc(100% - ${navbarShrinkedWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
@@ -61,6 +60,7 @@ const styles = theme => ({
   },
   appBarShift: { 
     marginLeft: navbarExpandedWidth,
+    backgroundColor:'#fafafa',
     width: `calc(100% - ${navbarExpandedWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,

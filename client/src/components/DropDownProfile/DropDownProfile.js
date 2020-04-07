@@ -37,6 +37,7 @@ export default function SimpleMenu(props) {
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <Link to= {`/dashboard/profile/${props.loadedUser.employee_id}`} style = {{textDecoration: 'none', color: 'black'}}>
           <MenuItem onClick={handleClose}> Profile </MenuItem> 
+          <Link to="/" style = {{textDecoration: 'none', color: 'black'}}><MenuItem onClick={props.logoutHandler}> Logout </MenuItem> </Link>
         </Link>
       </Menu>
     </div>

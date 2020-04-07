@@ -26,7 +26,7 @@ Top Info Container
   }
 
 .projectDetail-projectTitle {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -177,3 +177,82 @@ display: flex;
 .projectDetail-treeContainer {
   width: 1100px;
 }
+
+/**********************************
+ WORK PACKAGE DETAIL CSS 
+ *********************************/
+
+ .wpDetail-top-container {
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 35px;
+  width:  1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ }
+
+.wpDetail-projTitleDesc-container {
+  display: flex;
+  flex-direction: column;
+}
+
+ .wpDetail-projectTitle {
+   font-size: 16px;
+   font-weight: bold;
+ }
+
+.wpDetail-teamInfo-container {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wpDetail-REInfo {
+  display: flex;
+  align-items: center;
+}
+
+ .wpDetail-RE-title {
+   width: 180px;
+   font-size: 16px;
+   font-weight: bold;
+ }
+
+ .wpDetail-avatar-container {
+   margin: 0 0 0 10px;
+ }
+
+ .wpDetail-RE-name-container {
+   margin: 0 0 0 10px;
+ }
+
+ .wpDetail-teamTitle {
+   width: 180px;
+   font-size: 16px;
+   font-weight: bold;
+ }
+
+ .wpDetail-avatar-container {
+   margin: 0 0 0 5px;
+ }
+
+ .wpDetail-teamTitleAvatar-container {
+   width: 480px;
+   display: flex;
+   align-items: center;
+   margin: 5px 0 0 0;
+ }
+
+/**********************************
+ WORK PACKAGE TREE CSS 
+ *********************************/
+
+ .wpTree-expandIcon {
+   font-size: 30px !important;
+ }
+
+ .wpTree-chevronRightIcon {
+  font-size: 30px !important;
+ }

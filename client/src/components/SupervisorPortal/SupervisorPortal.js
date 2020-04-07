@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import MUIDatatable from "mui-datatables";
-import agent from '../../api/agent.js'
+import RemoveToolBar from "./RemoveToolBar";
+import AssignToolBar from "./AssignToolBar";
+import agent from "../../api/agent.js";
 import {
   withStyles,
   ThemeProvider,
   createMuiTheme,
-  MuiThemeProvider
+  MuiThemeProvider,
 } from "@material-ui/core/styles";
-import AssignToolBar from "./AssignToolBar";
 
 /**
  * Material UI styling JSON object.
@@ -16,14 +17,14 @@ const styles = () => ({
   container: {
     width: "1300px",
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   pictureUrl: {
-    width: 50
+    width: 50,
   },
   employeeTitle: {
     fontSize: "16px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
 });
 
@@ -34,14 +35,14 @@ const columns = [
   { name: "pictureUrl", label: "Photo", className: "column" },
   { name: "employeeId", label: "Employee ID", className: "column" },
   { name: "firstName", label: "First Name", className: "column" },
-  { name: "lastName", label: "Last Name", className: "column" }
+  { name: "lastName", label: "Last Name", className: "column" },
 ];
 
 /**
- * Author: John Ham 
- * Version: 1.0 
- * Description: Supervisor Portal Component. 
- * Portal used by supervisor for viewing a list of employees that can be assigned to projects. 
+ * Author: John Ham
+ * Version: 1.0
+ * Description: Supervisor Portal Component.
+ * Portal used by supervisor for viewing a list of employees that can be assigned to projects.
  */
 class SupervisorPortal extends Component {
   getCustomTheme = () =>
@@ -49,33 +50,33 @@ class SupervisorPortal extends Component {
       overrides: {
         MUIDataTableHeadCell: {
           data: {
-            fontSize: "16px"
-          }
+            fontSize: "16px",
+          },
         },
         MUIDataTable: {
           paper: {
-            padding: "25px"
-          }
+            padding: "25px",
+          },
         },
         MUIDataTableBodyCell: {
           root: {
-            fontSize: "14px"
-          }
+            fontSize: "14px",
+          },
         },
         MUIDataTableToolbar: {
           root: {
-            padding: "0px 0 0 16px"
-          }
-        }
-      }
+            padding: "0px 0 0 16px",
+          },
+        },
+      },
     });
 
   constructor(props) {
     super(props);
 
-    this.state = ({
-      data: []
-    })
+    this.state = {
+      data: [],
+    };
 
     this.fetchData = this.fetchData.bind(this);
   }
@@ -85,11 +86,15 @@ class SupervisorPortal extends Component {
   }
 
   /**
-   * Gets a list of all the employess from the database.
+   * Gets a list of the employees that are associated with supervisor from the database.
    */
   async getEmployees() {
     const token = localStorage.getItem("token");
-    const response = agent.employeeInfo.getAllEmployees(token);
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    const response = agent.employeeInfo.getEmployeesBySupervisor(
+      user.employee_id,
+      token
+    );
     return response;
   }
 
@@ -102,23 +107,22 @@ class SupervisorPortal extends Component {
     console.log(this.props);
 
     var employeeData = await this.getEmployees();
-    // console.log(employeeData);
-  
+
     var resultData = [];
     for (let i = 0; i < employeeData.length; i++) {
-        let id = employeeData[i].employee_id;
-        let firstName = employeeData[i].first_name;
-        let lastName = employeeData[i].last_name;
+      let id = employeeData[i].employee_id;
+      let firstName = employeeData[i].first_name;
+      let lastName = employeeData[i].last_name;
 
-        let row = [];
-        row.push(id);
-        row.push(firstName);
-        row.push(lastName);
-        resultData.push(row);
+      let row = [];
+      row.push(id);
+      row.push(firstName);
+      row.push(lastName);
+      resultData.push(row);
     }
 
     this.setState({
-      data: resultData
+      data: resultData,
     });
   }
 
@@ -136,11 +140,17 @@ class SupervisorPortal extends Component {
         download: false,
         filter: false,
         customToolbar: () => {
-          return <AssignToolBar history={this.props.history} />;
+          return (
+            <>
+              <RemoveToolBar history={this.props.history} />
+              <AssignToolBar history={this.props.history} />
+            </>
+          );
         },
         onRowClick: (rowData, rowState) => {
+          localStorage.setItem("name", rowData[1] + " " + rowData[2]);
           this.props.history.push(`/dashboard/supervisor/${rowData[0]}`);
-        }
+        },
       };
       return data;
     };

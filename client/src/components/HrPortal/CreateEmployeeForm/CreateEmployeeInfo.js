@@ -13,27 +13,32 @@ import Switch from "@material-ui/core/Switch";
 const styles = () => ({
   container: {
     display: "flex",
-    width: "250px",
+    width: "300px",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
+    padding: "45px"
   },
   avatar: {
     width: 100,
     height: 100,
-    margin: "0 auto"
+    margin: "10px 0 0"
   },
   textContainer: {
     display: "flex",
-    width: 135
+    flexDirection: "column",
+    width: "100%"
   },
   textHeader: {
     color: "black",
-    marginBottom: 10,
-    marginTop: 10
+    marginTop: "35px",
+    fontWeight: "bold",
+    fontSize: "16px"
   },
   textHeaderRole: {
-    marginTop: 50,
-    marginBottom: 25
+    marginTop: "30px",
+    marginBottom: "25px",
+    fontWeight: "bold",
+    fontSize: "16px"
   },
   text: {
     borderBottom: "1px solid lightgray"
@@ -45,6 +50,18 @@ const styles = () => ({
   switch: {
     color: "green",
     marginLeft: 100
+  },
+  hrTitle: {
+    fontWeight: "bold",
+    fontSize: "16px"
+  },
+  adminTitle: {
+    fontWeight: "bold",
+    fontSize: "16px"
+  },
+  superTimesheetApproverTitle: {
+    fontWeight: "bold",
+    fontSize: "16px"
   }
 });
 
@@ -82,7 +99,7 @@ class CreateEmployeeInfo extends Component {
             <div className={classes.textHeaderRole}>Role</div>
             <div className={classes.innerContainer}>
               <div className={classes.hrTitle}>
-                <p>HR</p>
+                <p>Human Resource</p>
               </div>
               <div className={classes.hrCheckBox}>
                 <Switch
@@ -93,7 +110,7 @@ class CreateEmployeeInfo extends Component {
                 />
               </div>
               <div className={classes.adminTitle}>
-                <p>Admin</p>
+                <p>Administrator</p>
               </div>
               <div className={classes.adminCheckBox}>
                 <Switch

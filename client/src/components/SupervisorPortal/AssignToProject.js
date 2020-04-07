@@ -44,18 +44,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * Demo data for now. 
- */
-const demoEmployee = 
-    [{ employeeId: "1", name: "John Doe" },
-    { employeeId: "2", name: "Jane Kelly" },
-    { employeeId: "3", name: "Henry Peter" }]
-const demoProject = 
-        [{ number: "1" },
-        { number: "2" },
-        { number: "3" }]
-
-/**
  * Author: John Ham 
  * Version: 1.0 
  * Description: Supervisor portal component. 
@@ -68,8 +56,8 @@ const AssignToProject = (props) => {
     const [project, setProject] = React.useState();
     const [employees, setEmployees] = React.useState();
 
-    const [projectsData, setProjectsData] = React.useState();
-    const [employeesData, setEmployeesData] = React.useState();
+    const [projectsData, setProjectsData] = React.useState([]);
+    const [employeesData, setEmployeesData] = React.useState([]);
 
     const fetchProjectsData = async () => {
       const response = await agent.projects.getAllProjects(token);
@@ -78,7 +66,7 @@ const AssignToProject = (props) => {
 
     const fetchEmployeesData = async () => {
       const user = JSON.parse(sessionStorage.getItem('user'));
-      const response = await agent.employeeInfo.getEmployeesBySupervisor(user.supervisor_id, token);
+      const response = await agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
       return response;
     }
 
@@ -93,11 +81,15 @@ const AssignToProject = (props) => {
     const handleSubmit = async () => {
       const token = localStorage.getItem("token");
       console.log(token);
+      if (project == null) {
+        return null;
+      }
       for (var i = 0; i < employees.length; i++) {
         project.employees.push(employees[i]);
       }
-      const response = agent.projects.assignToProject(project, token);
+      const response = agent.projects.updateProject(project, token);
       console.log(response);
+      props.history.push(`/dashboard/supervisor`);
     };
 
     return (
@@ -117,7 +109,7 @@ const AssignToProject = (props) => {
             <Autocomplete
                 multiple
                 className={classes.supervisorMargin}
-                options={demoEmployee}
+                // options={demoEmployee}
                 getOptionLabel={option => option.name}
                 style={{ width: 500 }}
                 onChange={(event, value) => setEmployeesData(value)}

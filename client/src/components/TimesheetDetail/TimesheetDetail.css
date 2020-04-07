@@ -83,3 +83,12 @@
 .empName {
   margin-left: 10px;
 }
+
+/* css for project code dropdown */
+.projCode{
+  width: 8rem;
+}
+/* css for wp id dropdown */
+.wpId{
+  width: 4rem;
+}

@@ -5,11 +5,11 @@ import "./CreationWizard.css";
 
 const useStyles = makeStyles(() => ({
   budget_container: {
-    width: "70%"
+    width: "70%",
   },
   budgetInfo: {
     width: "100%",
-    margin: "-15px 0 0 0"
+    margin: "-15px 0 0 0",
   },
 }));
 
@@ -26,11 +26,13 @@ const ProjectInfo = (props) => {
       <form autoComplete="off">
         <TextField
           component="span"
+          className="margin"
           id="standard-basic"
           label="Cost"
           value={props.cost}
           name="cost"
           onChange={props.handleChange}
+          disabled={props.isDisabled}
           className={classes.budgetInfo}
         />
       </form>

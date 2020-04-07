@@ -25,6 +25,32 @@ class ProjectsList extends React.Component {
             height: "80px",
           },
         },
+        MUIDataTable: {
+          paper: {
+            border: "none",
+            width: "100%",
+          },
+        },
+        MUIDataTableHeadCell: {
+          data: {
+            fontSize: "16px",
+            fontWeight: "bold",
+          },
+        },
+        MUIDataTableBodyCell: {
+          root: {
+            fontSize: "16px"
+          }
+        },
+        MUIDataTableToolbar: {
+          titleText: {
+            fontSize: "16px",
+            fontWeight: "bold"
+          },
+          root: {
+            padding: "0px"
+          }
+        }
       },
     });
 

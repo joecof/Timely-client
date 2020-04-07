@@ -31,7 +31,7 @@ class CurrentTimesheetToolBar extends React.Component {
     this.currentDate = this.currentDate.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.currentWeekNumber = this.currentWeekNumber.bind(this);
-    this.getSundayOfCurrentWeek = this.getSundayOfCurrentWeek.bind(this);
+    this.getFridayOfCurrentWeek = this.getFridayOfCurrentWeek.bind(this);
   }
 
   // get current date
@@ -43,10 +43,11 @@ class CurrentTimesheetToolBar extends React.Component {
     return (year + "-" + month + "-" + day);
   }
 
-  // week ending of every sunday
-  getSundayOfCurrentWeek() {
+  // week ending of every friday
+  getFridayOfCurrentWeek() {
     var curr = new Date(); // get current date
-    var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+    var thisDate = new Date(curr.getFullYear(), curr.getMonth(), curr.getDate() + 1);
+    var first = thisDate.getDate() - thisDate.getDay() - 1; // First day is the day of the month - the day of the week
     var last = first + 6; // last day is the first day + 6
     return new Date(curr.setDate(last));
   }
@@ -56,7 +57,7 @@ class CurrentTimesheetToolBar extends React.Component {
     const today = new Date();
     const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
     const pastDaysOfYear = (today.getTime() - firstDayOfYear.getTime()) / 86400000;
-    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 7.1) / 7);
+    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1.1) / 7);
   }
 
   // check if fetched timesheets has currentTimesheet
@@ -92,14 +93,14 @@ class CurrentTimesheetToolBar extends React.Component {
     // current week number
     const currentWeekNumber = this.currentWeekNumber();
     // current week ending
-    const currentWeekEnding = this.getSundayOfCurrentWeek();
+    const currentWeekEnding = this.getFridayOfCurrentWeek();
     // current timesheet creation
     const timesheetCreation = {
       "labor_grade_id": laborGradeId,
       "year": currentYear,
       "week": currentWeekNumber,
       "week_ending": currentWeekEnding,
-      "status": "InProgress",
+      "status": "OPEN",
       "approver_id": 3,
       "approve_date": null,
       "attribute1": null,
@@ -115,7 +116,7 @@ class CurrentTimesheetToolBar extends React.Component {
               "thursday": 0.0,
               "friday": 0.0,
               "notes": "",
-              "project_wp": "PJT19257_2"
+              "project_wp": "PJT38001_1L"
           }
       ]
     };

@@ -17,11 +17,10 @@ class WorkpackageTree extends React.Component {
     this.setData = this.setData.bind(this);
     this.addChildren = this.addChildren.bind(this);
     this.renderTree = this.renderTree.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-      console.log("Received props");
+    console.log("Received props");
     this.setState(
       {
         wpList: nextProps.wpList
@@ -80,26 +79,33 @@ class WorkpackageTree extends React.Component {
       <Box
         display="flex"
         onClick={event => {
+          var wp = null;
+          this.state.wpList.forEach(x => {
+            if (x.work_package_id === nodes.id) {
+              wp = x;
+            }
+          });
           this.props.history.push({
             pathname: `/workpackageDetail`,
-            state: {wpID: nodes.id}
+            state: { wp: wp, isPM: true }
           });
           event.stopPropagation();
           event.preventDefault();
         }}
       >
-        <Typography>
-          {"WP" + nodes.id + ": " + nodes.name}
-        </Typography>
+        <Typography>{"WP" + nodes.id + ": " + nodes.name}</Typography>
       </Box>
     );
-  };
+  }
 
   renderTree(nodes) {
     console.log(nodes);
     return (
-      <TreeItem key={nodes.id} nodeId={nodes.id} 
-        label={this.renderLabel(nodes)}>
+      <TreeItem
+        key={nodes.id}
+        nodeId={nodes.id}
+        label={this.renderLabel(nodes)}
+      >
         <Typography variant="h5">
           {Array.isArray(nodes.children)
             ? nodes.children.map(node => this.renderTree(node))
@@ -107,16 +113,6 @@ class WorkpackageTree extends React.Component {
         </Typography>
       </TreeItem>
     );
-  }
-
-  handleClick(event, nodeId) {
-      event.preventDefault();
-      console.log(event);
-      console.log(nodeId);
-      this.props.history.push({
-        pathname: `/workpackageDetail`,
-        state: {wpID: nodeId}
-      })
   }
 
   handleToggle(event, nodeIds) {
@@ -128,8 +124,8 @@ class WorkpackageTree extends React.Component {
     return (
       <TreeView
         className="PDWPTreeView"
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
+        defaultCollapseIcon={<ExpandMoreIcon className="wpTree-expandIcon"/>}
+        defaultExpandIcon={<ChevronRightIcon className="wpTree-chevronRightIcon"/>}
       >
         {this.state.data.map(thisData => {
           return this.renderTree(thisData);

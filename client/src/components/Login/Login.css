@@ -9,6 +9,8 @@ body {
 
 /* css for wrapper*/
 .loginWrapper {
+    width: 400px;
+    margin: 0 auto;
     margin-top: 200px;
 }
 
@@ -30,6 +32,7 @@ body {
 .loginHint {
     font-size: 14pt;
 }
+
 
 /* css for login form */
 .loginForm {

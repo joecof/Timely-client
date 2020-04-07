@@ -10,30 +10,27 @@ import TextField from "@material-ui/core/TextField";
  */
 const styles = () => ({
   container: {
-    marginTop: 20,
-    width: "475px",
-    padding: "0 50px 0 70px",
+    width: "350px",
+    padding: "45px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
   },
-  title: {
-    marginBottom: 5
-  },
   input: {
-    width: "90%",
-    margin: "3px 0 0 !important"
+    width: "100%",
+    margin: "5px 0 0 0"
   },
   field: {
-    marginTop: 30
+
   },
   button: {
-    width: "160px",
+    width: "60%",
     marginTop: "35px"
   },
   title: {
     fontSize: "16px",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    margin: "35px 0 0 0 !important"
   }
 });
 
@@ -54,7 +51,7 @@ class ChangePassword extends Component {
       <>
       <div className={classes.container}>
           <div className = {classes.field}>
-          <div className={classes.title} variant="h6">
+          <div className={classes.title}>
             Change Password
           </div>
             <TextField
