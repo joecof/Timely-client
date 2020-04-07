@@ -116,7 +116,7 @@ class CurrentTimesheetToolBar extends React.Component {
               "thursday": 0.0,
               "friday": 0.0,
               "notes": "",
-              "project_wp": "PJT19257_2L"
+              "project_wp": "PJT38001_1L"
           }
       ]
     };
