@@ -285,7 +285,7 @@ export default class Routes extends Component {
         break;
       default:
         routes = (
-          <Switch>å
+          <Switch>
             <Route
               path="/"
               exact
