@@ -15,6 +15,7 @@ const styles = theme => ({
     paddingRight: theme.spacing(3),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(1),
+    // backgroundColor: '#272624'
   },
   text: {
     marginLeft: 30,

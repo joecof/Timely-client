@@ -13,7 +13,8 @@ const styles = () => ({
   text: {
     marginLeft: 30,
     color: 'black'
-  },
+  }
+
 });
 
 /**
