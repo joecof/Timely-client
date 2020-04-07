@@ -10,12 +10,17 @@
   justify-content: center;
 }
 
+.tsDetail-outerContainer {
+  display: flex;
+  justify-content: center;
+}
+
 .container {
   /* box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.1), 0px 4px 5px 0px rgba(0,0,0,0.1), 0px 1px 10px 0px rgba(0,0,0,0.1); */
   background-color: white;
   width: 1000px;
   padding: 30px 0px 45px 0px;
-  border: solid 1px lightgray;
+  border: solid 1px lightgray !important;
   border-radius: 5px;
 }
 .timesheetTitle {
@@ -68,7 +73,7 @@
 }
 /* week ending */
 .weekEnd {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 /* second row */
 .empNameAttribute {
@@ -85,10 +90,10 @@
 }
 
 /* css for project code dropdown */
-.projCode{
+.projCode {
   width: 8rem;
 }
 /* css for wp id dropdown */
-.wpId{
+.wpId {
   width: 4rem;
 }

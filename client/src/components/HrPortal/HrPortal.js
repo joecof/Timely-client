@@ -180,9 +180,9 @@ class HrPortal extends Component {
 
       let dateEnd =
         endDate == null ? (
-          <p style={{ color: "green" }}> Currently Employed </p>
+          <p style={{ color: "green", fontWeight: "bold" }}> Currently Employed </p>
         ) : (
-          <p style={{ color: "red" }}> Archived </p>
+          <p style={{ color: "red", fontWeight: "bold" }}> Archived </p>
         );
 
       let row = [];

@@ -1,14 +1,6 @@
-.leadEngineer-outerContainer {
+.leadEngineer-container {
     width: 1300px;
     display: flex;
     justify-content: center;
-}
-
-.leadEngineer-container {
-    width: 1100px;
-    padding: 25px;
-    background-color: white;
-    border: solid 1px lightgray;
-    border-radius: 5px;
 }
 

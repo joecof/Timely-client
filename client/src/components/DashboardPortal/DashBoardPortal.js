@@ -88,7 +88,6 @@ const styles = () => ({
     margin: "22px 0 0 4px"
   },
   timesheetDetailContainer: {
-    border: "solid 1px lightgray",
     minWidth: '1000px',
     textAlign: 'center',
     height: '500px',
