@@ -1,0 +1,207 @@
+[
+    {
+        "project": {
+            "project_code": "PJT19257",
+            "project_manager_id": {
+                "employee_id": 9,
+                "supervisor_id": 3,
+                "labor_grade_id": {
+                    "labor_grade_id": "P2",
+                    "labor_grade_name": "P-level 2"
+                },
+                "password": "9",
+                "first_name": "Thor",
+                "middle_name": "",
+                "last_name": "Odinson",
+                "start_date": 1546675200000,
+                "end_date": null,
+                "is_admin": false,
+                "is_hr_staff": false,
+                "is_super_timesheet_approver": false,
+                "is_secondary_approver": false,
+                "vacation": 12
+            },
+            "project_name": "Saving moon from corona virus",
+            "status": "COMPLETE",
+            "start_date": 1575100800000,
+            "end_date": 1577433600000,
+            "description": "EZ project",
+            "budget_dollar": 24640.00,
+            "employees": [
+                {
+                    "employee_id": 33,
+                    "supervisor_id": 7,
+                    "labor_grade_id": {
+                        "labor_grade_id": "P6",
+                        "labor_grade_name": "P-level 6"
+                    },
+                    "password": "33",
+                    "first_name": "Peter",
+                    "middle_name": "Spiderman",
+                    "last_name": "Parker",
+                    "start_date": 1546675200000,
+                    "end_date": null,
+                    "is_admin": false,
+                    "is_hr_staff": false,
+                    "is_super_timesheet_approver": false,
+                    "is_secondary_approver": false,
+                    "vacation": 12
+                },
+                {
+                    "employee_id": 26,
+                    "supervisor_id": 6,
+                    "labor_grade_id": {
+                        "labor_grade_id": "P4",
+                        "labor_grade_name": "P-level 4"
+                    },
+                    "password": "26",
+                    "first_name": "Max",
+                    "middle_name": "Magneto",
+                    "last_name": "Eisenhardt",
+                    "start_date": 1546675200000,
+                    "end_date": null,
+                    "is_admin": false,
+                    "is_hr_staff": false,
+                    "is_super_timesheet_approver": false,
+                    "is_secondary_approver": false,
+                    "vacation": 12
+                },
+                {
+                    "employee_id": 9,
+                    "supervisor_id": 3,
+                    "labor_grade_id": {
+                        "labor_grade_id": "P2",
+                        "labor_grade_name": "P-level 2"
+                    },
+                    "password": "9",
+                    "first_name": "Thor",
+                    "middle_name": "",
+                    "last_name": "Odinson",
+                    "start_date": 1546675200000,
+                    "end_date": null,
+                    "is_admin": false,
+                    "is_hr_staff": false,
+                    "is_super_timesheet_approver": false,
+                    "is_secondary_approver": false,
+                    "vacation": 12
+                },
+                {
+                    "employee_id": 13,
+                    "supervisor_id": 3,
+                    "labor_grade_id": {
+                        "labor_grade_id": "P6",
+                        "labor_grade_name": "P-level 6"
+                    },
+                    "password": "13",
+                    "first_name": "Wade",
+                    "middle_name": "Deadpool",
+                    "last_name": "Wilson",
+                    "start_date": 1546675200000,
+                    "end_date": null,
+                    "is_admin": false,
+                    "is_hr_staff": false,
+                    "is_super_timesheet_approver": false,
+                    "is_secondary_approver": false,
+                    "vacation": 12
+                },
+                {
+                    "employee_id": 32,
+                    "supervisor_id": 7,
+                    "labor_grade_id": {
+                        "labor_grade_id": "P5",
+                        "labor_grade_name": "P-level 5"
+                    },
+                    "password": "32",
+                    "first_name": "Rocket",
+                    "middle_name": "",
+                    "last_name": "Raccoon",
+                    "start_date": 1546675200000,
+                    "end_date": null,
+                    "is_admin": false,
+                    "is_hr_staff": false,
+                    "is_super_timesheet_approver": false,
+                    "is_secondary_approver": false,
+                    "vacation": 12
+                },
+                {
+                    "employee_id": 15,
+                    "supervisor_id": 4,
+                    "labor_grade_id": {
+                        "labor_grade_id": "P3",
+                        "labor_grade_name": "P-level 3"
+                    },
+                    "password": "15",
+                    "first_name": "Selina",
+                    "middle_name": "Catwoman",
+                    "last_name": "Kyle",
+                    "start_date": 1546675200000,
+                    "end_date": null,
+                    "is_admin": false,
+                    "is_hr_staff": false,
+                    "is_super_timesheet_approver": false,
+                    "is_secondary_approver": false,
+                    "vacation": 12
+                }
+            ]
+        },
+        "work_package_id": "2L",
+        "higher_work_package_id": "0",
+        "responsible_person_id": {
+            "employee_id": 9,
+            "supervisor_id": 3,
+            "labor_grade_id": {
+                "labor_grade_id": "P2",
+                "labor_grade_name": "P-level 2"
+            },
+            "password": "9",
+            "first_name": "Thor",
+            "middle_name": "",
+            "last_name": "Odinson",
+            "start_date": 1546675200000,
+            "end_date": null,
+            "is_admin": false,
+            "is_hr_staff": false,
+            "is_super_timesheet_approver": false,
+            "is_secondary_approver": false,
+            "vacation": 12
+        },
+        "is_open": false,
+        "description": "Project managing",
+        "project_wp": "PJT19257_2L",
+        "workPackagePlanCollection": [
+            {
+                "seq_id": 10,
+                "project_code": "PJT19257",
+                "work_package_id": "2L",
+                "type": "BUDGET",
+                "start_date": 1575100800000,
+                "end_date": 1577433600000,
+                "revision": 1,
+                "labor_grade_id": "P2",
+                "quantity": 1,
+                "plan_hour": 160.0
+            }
+        ],
+        "employees": [
+            {
+                "employee_id": 9,
+                "supervisor_id": 3,
+                "labor_grade_id": {
+                    "labor_grade_id": "P2",
+                    "labor_grade_name": "P-level 2"
+                },
+                "password": "9",
+                "first_name": "Thor",
+                "middle_name": "",
+                "last_name": "Odinson",
+                "start_date": 1546675200000,
+                "end_date": null,
+                "is_admin": false,
+                "is_hr_staff": false,
+                "is_super_timesheet_approver": false,
+                "is_secondary_approver": false,
+                "vacation": 12
+            }
+        ]
+    }
+]

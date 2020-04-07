@@ -67,6 +67,8 @@ const timesheetsInfo = {
 
 const workpackages = {
   createWorkpackage: (data, token) => requests.post(`/workpackages/createWP`, token, data),
+  getAllWorkpackageFromRE: (empId,token) => requests.get(`/workpackages/RE/${empId}`,token)
+
 }
 
 const yearlyRate = {
