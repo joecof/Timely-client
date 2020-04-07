@@ -2,34 +2,25 @@ import React, {Component} from 'react';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
 
-export default class Alert extends Component {
+function MyApp(props) {
+  const { enqueueSnackbar } = useSnackbar();
+  const { config } = props
 
-  constructor(props) {
-    super(props);
-  }
 
-  render() {
+  const alert = enqueueSnackbar(config.message, { variant: config.variant, autoHideDuration: 2500 });
 
-    const ShowAlert = () => {
+  return (
+    <React.Fragment>
+      {alert}
+    </React.Fragment>
+  );
+}
 
-      const { config } = this.props;
-      const { enqueueSnackbar } = useSnackbar();
-      
-      const alertMessage = (message, variant, autoHideDuration) => {
-        enqueueSnackbar(message, { variant, autoHideDuration });
-      }
+export default function IntegrationNotistack(props) {
 
-      return (
-        <React.Fragment>
-          {alertMessage(config.message, config.variant, 2000)}
-        </React.Fragment>
-      )
-    }
-
-    return(
-      <SnackbarProvider preventDuplicate={true}>
-        <ShowAlert { ...this.props }/>
-      </SnackbarProvider>
-    )
-  }
+  return (
+    <SnackbarProvider preventDuplicate={true}>
+      <MyApp {...props}/>
+    </SnackbarProvider>
+  );
 }

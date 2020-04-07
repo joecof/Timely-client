@@ -35,7 +35,7 @@ export default class Routes extends Component {
 
   render() {
     let routes;
-    /**
+     /**
      * A switch statement to render the correct routes depending on the option provided. 
      * this.props.config.option is a string that the developer passes into the Routes component 
      * in order to configure what routes they want rendered. 
@@ -59,6 +59,7 @@ export default class Routes extends Component {
               render={props => (
                 <TimesheetDetail
                   loadedUser={this.props.config.loadedUser}
+                  logoutHandler = {this.props.logoutHandler}
                   {...props}
                 />
               )}
@@ -79,6 +80,7 @@ export default class Routes extends Component {
               render={props => (
                 <EmployeeForm
                   hr={false}
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   loadedUser={this.props.config.loadedUser}
                   {...props}
                 />
@@ -281,6 +283,7 @@ export default class Routes extends Component {
                 <Dashboard
                   token={this.props.token}
                   {...props}
+                  sessionLogoutHandler={this.props.config.sessionLogoutHandler}
                   logoutHandler={this.props.config.logoutHandler}
                   loadedUser={this.props.config.loadedUser}
                   breadCrumbs={this.props.config.breadCrumbs}
@@ -292,7 +295,7 @@ export default class Routes extends Component {
         break;
       default:
         routes = (
-          <Switch>å
+          <Switch>
             <Route
               path="/"
               exact
