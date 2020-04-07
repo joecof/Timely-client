@@ -173,7 +173,7 @@ class DashBoardPortal extends Component {
     });
     // if user does not have any projects
     if(this.state.projects.length == 0) {
-      document.getElementById("recentNewProjTitle").innerHTML = "You don't have any projects"
+      document.getElementById("recentNewProjTitle").innerHTML = "You don't have any open projects"
     }
   }
   
