@@ -1,6 +1,17 @@
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import agent from '../../api/agent'
+import Alert from '../Alert/Alert'
+
+
+
+/**
+ * Author : Lawrence, Prabh
+ * Version : 1.0
+ * Lead engineer portal component. A portal used by lead engineer to view the lowest level workpcakges
+ * he/she is responsible for.
+ */
+
 
 /**
  * Defines the columns for the RE portal. 
@@ -55,7 +66,8 @@ class LeadEngineer extends Component {
     this.state = ({
       data: [],
       token: null,
-      wpList: []
+      wpList: [],
+      errorAlert:false,
     })
 
 
@@ -73,45 +85,55 @@ class LeadEngineer extends Component {
   }
 
   async fetchData(token) {
-    const { classes } = this.props;
-    const user = JSON.parse(sessionStorage.getItem('user'));
-    const userId = user.employee_id;
-    const resp = await agent.workpackages.getAllWorkpackageFromRE(userId, token);
 
-    if (resp != null) {
-      this.setState({
-        wpList: resp
-      })
-    }
+    try {
+      const { classes } = this.props;
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      const userId = user.employee_id;
+      const resp = await agent.workpackages.getAllWorkpackageFromRE(userId, token);
 
-    console.log(resp);
-    var resultData = [];
-    resp.forEach(async (item) => {
-      let id = item.work_package_id;
-      let pm = item.project.project_manager_id.first_name + " " +
-        item.project.project_manager_id.last_name;
-      let team = item.employees.length;
-      let row = [];
-
-      //Check if the wp is the lowest level
-      if (id.endsWith("L")) {
-        row.push(id);
-        row.push(pm);
-        row.push(team);
-        resultData.push(row);
+      if (resp != null) {
+        this.setState({
+          wpList: resp
+        })
       }
 
-    })
+      // console.log(resp);
+      var resultData = [];
+      resp.forEach(async (item) => {
+        let id = item.work_package_id;
+        let pm = item.project.project_manager_id.first_name + " " +
+          item.project.project_manager_id.last_name;
+        let team = item.employees.length;
+        let row = [];
 
-    this.setState({
-      data: resultData
-    })
+        //Check if the wp is the lowest level
+        if (id.endsWith("L")) {
+          row.push(id);
+          row.push(pm);
+          row.push(team);
+          resultData.push(row);
+        }
+
+      })
+
+      this.setState({
+        data: resultData
+      })
+    } catch (e) {
+      console.error(e);
+      this.setState({
+        errorAlert: true
+      })
+      this.props.sessionLogoutHandler();
+    }
   }
 
   render() {
 
     return (
       <>
+      {this.state.errorAlert ? <Alert config = {{message: "WorkPackage API Call Failed", variant: "error"}}/> : null}
         <MUIDatatable
           className="datatable"
           title={<h1> WorkPackage Reports</h1>}
