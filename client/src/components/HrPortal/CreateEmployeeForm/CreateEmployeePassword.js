@@ -51,47 +51,49 @@ class CreateEmployeePassword extends Component {
 
     return (
       <div className={classes.container}>
-        <div className={classes.field}>
-          <div className={classes.title}>Password</div>
-          <TextValidator
-            className={classes.input}
-            name="newPassword"
-            type="password"
-            helperText="New Password"
-            fullWidth
-            onChange={(e) => this.props.formHandler(e)}
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={this.props.newPassword}
-            validators={["isPassword"]}
-            errorMessages={["Password length has to be greater than 6"]}
-          />
-          <TextValidator
-            className={classes.input}
-            name="confirmPassword"
-            type="password"
-            helperText="Confirm New Password"
-            fullWidth
-            onChange={(e) => this.props.formHandler(e)}
-            margin="normal"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            value={this.props.confirmPassword}
-            validators={["isPassword"]}
-            errorMessages={["Password length has to be greater than 6"]}
-          />
-        </div>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={this.props.handleSubmit}
-        >
-          Submit
-        </Button>
+        <ValidatorForm onSubmit = {this.props.handleSubmit}>
+          <div className={classes.field}>
+            <div className={classes.title}>Password</div>
+            <TextValidator
+              className={classes.input}
+              name="newPassword"
+              type="password"
+              helperText="New Password"
+              fullWidth
+              onChange={(e) => this.props.formHandler(e)}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={this.props.newPassword}
+              validators={["isPassword"]}
+              errorMessages={["Password length has to be greater than 6"]}
+            />
+            <TextValidator
+              className={classes.input}
+              name="confirmPassword"
+              type="password"
+              helperText="Confirm New Password"
+              fullWidth
+              onChange={(e) => this.props.formHandler(e)}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              value={this.props.confirmPassword}
+              validators={["isPassword"]}
+              errorMessages={["Password length has to be greater than 6"]}
+            />
+          </div>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={this.props.handleSubmit}
+          >
+            Submit
+          </Button>
+        </ValidatorForm>
       </div>
     );
   }
