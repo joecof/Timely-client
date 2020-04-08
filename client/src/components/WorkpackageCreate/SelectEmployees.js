@@ -15,6 +15,7 @@ const SelectEmployees = props => {
   return (
     <Autocomplete
       multiple
+      fullWidth
       options={props.emps ? props.project.employees.filter(y => props.emps.map(e => {
         return e.employee_id;
        }).indexOf(y.employee_id) === -1) : props.project.employees}
@@ -23,9 +24,9 @@ const SelectEmployees = props => {
       disabled={props.isDisabled}
       renderInput={params => (
         <TextField
+        className="selectEmployee-textfield"
           {...params}
           variant="standard"
-          label="Select Employees"
         />
       )}
     /> 

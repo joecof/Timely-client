@@ -26,7 +26,7 @@ class ProjectDetail extends React.Component {
       project: {},
       wpList: [],
       isProjManager: null,
-      openModal: false
+      openModal: false,
     };
 
     this.openModal = this.openModal.bind(this);
@@ -34,7 +34,7 @@ class ProjectDetail extends React.Component {
 
   openModal() {
     this.setState({
-      openModal: true
+      openModal: true,
     });
   }
 
@@ -48,67 +48,70 @@ class ProjectDetail extends React.Component {
     this.setState({
       project: response.project,
       wpList: response.wpList,
-      isProjManager: response.projManager
+      isProjManager: response.projManager,
     });
     console.log(this.state.project.project_manager_id.first_name);
   }
 
   render() {
     return (
-      <div>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} className="gridBorder">
-            <Typography variant="h4">
-              {this.state.project.project_name}
-            </Typography>
-            <Typography variant="h6">
-              {this.state.project.description}
-            </Typography>
-          </Grid>
-          {this.state.project.hasOwnProperty("project_manager_id") && (
-            <>
-              <Grid item xs={12} sm={3}>
-                <Typography variant="h6">Project Manager:</Typography>
-                <Grid container direction="row" alignItems="center">
-                  <Grid item className="projectDetailsMargin">
+      <div className="projectDetailContainer">
+        <div className="topMiddleContainer">
+          <div className="topInfoContainer">
+            <div className="gridBorder">
+              <div className="projectDetail-projectTitle">
+                {this.state.project.project_name}
+              </div>
+              <div className="projectDetail-projectDescription">
+                {" "}
+                {this.state.project.description}
+              </div>
+            </div>
+            {this.state.project.hasOwnProperty("project_manager_id") && (
+              <div className="projectDetail-teamInfoContainer">
+                <div className="projectDetail-projectManagerContainer">
+                  <div className="projectDetail-projectManager">
+                    Project Manager:
+                  </div>
+                  <div className="projectDetailMargin">
                     <Avatar
                       variant="circle"
                       aria-controls="simple-menu"
                       aria-haspopup="true"
+                      className="projectDetail-AvatarCircle"
                     >
-                      {this.state.project.project_manager_id.first_name
-                        .slice(0, 1)
-                        .toUpperCase()}
-                      {this.state.project.project_manager_id.last_name
-                        .slice(0, 1)
-                        .toUpperCase()}
+                      <div className="projectDetail-avatarInitials">
+                        {this.state.project.project_manager_id.first_name
+                          .slice(0, 1)
+                          .toUpperCase()}
+                        {this.state.project.project_manager_id.last_name
+                          .slice(0, 1)
+                          .toUpperCase()}
+                      </div>
                     </Avatar>
-                  </Grid>
-                  <Grid item>
-                    <Typography>
-                      {this.state.project.project_manager_id.first_name +
-                        " " +
-                        this.state.project.project_manager_id.last_name}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                <Typography variant="h6">Team:</Typography>
-                <Grid container direction="row" alignItems="center">
-                  {this.state.project.employees.slice(0, 5).map(e => (
-                    <Grid item className="projectDetailsMargin">
-                      <Tooltip title={e.first_name + " " + e.last_name}>
-                        <Avatar
-                          variant="circle"
-                          aria-controls="simple-menu"
-                          aria-haspopup="true"
-                        >
+                  </div>
+                  <div className="projectDetail-projectManager-name">
+                    {this.state.project.project_manager_id.first_name +
+                      " " +
+                      this.state.project.project_manager_id.last_name}
+                  </div>
+                </div>
+                <div className="projectDetail-teamMemberInfoContainer">
+                  <div className="projectDetail-teamTitle">Team:</div>
+                  {this.state.project.employees.slice(0, 5).map((e) => (
+                    <Tooltip title={e.first_name + " " + e.last_name}>
+                      <Avatar
+                        variant="circle"
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        className="projectDetail-AvatarCircle"
+                      >
+                        <div className="projectDetail-avatarInitials">
                           {e.first_name.slice(0, 1).toUpperCase()}
                           {e.last_name.slice(0, 1).toUpperCase()}
-                        </Avatar>
-                      </Tooltip>
-                    </Grid>
+                        </div>
+                      </Avatar>
+                    </Tooltip>
                   ))}
                   {this.state.project.employees.length > 5 && (
                     <>
@@ -119,95 +122,111 @@ class ProjectDetail extends React.Component {
                       />
                     </>
                   )}
-                </Grid>
-              </Grid>
+                </div>
+              </div>
+            )}
+          </div>
+          {this.state.isProjManager && (
+            <>
+              <br />
+              <div className="projectDetail-middleContainer">
+                <div className="projectDetail-bugetDateInfoContainer">
+                  <div className="projectDetail-budgetContainer">
+                    <div className="projectDetail-budgetTitle">Budget:</div>
+                    <div className="projectDetail-budgetAmount">
+                      ${this.state.project.budget_dollar}
+                    </div>
+                  </div>
+                  <div className="projectDetail-dateContainer">
+                    <div className="projectDetail-startDateContainer">
+                      <div className="projectDetail-startDateTitle">
+                        Start Date:
+                      </div>
+                      <div className="projectDetail-startDate">
+                        {new Date(this.state.project.start_date)
+                          .toDateString()
+                          .split(" ")
+                          .slice(1)
+                          .join(" ")}{" "}
+                        &nbsp; &nbsp;
+                      </div>
+                    </div>
+                    <div className="projectDetail-endDateContainer">
+                      <div className="projectDetail-endDateTitle">
+                        End Date:
+                      </div>
+                      <div className="projectDetail-endDate">
+                        {new Date(this.state.project.end_date)
+                          .toDateString()
+                          .split(" ")
+                          .slice(1)
+                          .join(" ")}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="projectDetail-createWPbuttonContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component={Link}
+                    to={{
+                      pathname: "/createWorkpackage",
+                      project: this.state.project,
+                      wpList: this.state.wpList,
+                    }}
+                    style={{ marginRight: "5%" }}
+                  >
+                    <b>Create Work Package</b>
+                  </Button>
+                </div>
+              </div>
             </>
           )}
-        </Grid>
-        {this.state.isProjManager && (
-          <>
-            <br />
-            <br />
-            <Grid justify="space-between" container spacing={1}>
+        </div>
+        <div className="projectDetail-treeContainer">
+          {this.state.isProjManager === false ? (
+            <WorkpackageList
+              history={this.props.history}
+              type={this.state.isProjManager ? "PM" : "Emp"}
+              wpList={this.state.wpList}
+            />
+          ) : (
+            <Grid
+              container
+              justify="center"
+              className="PDWorkpackageTree"
+              direction="column"
+            >
               <Grid item>
-                <Typography variant="h6">
-                  <b>Budget:</b> ${this.state.project.budget_dollar}
-                </Typography>
-                <Typography variant="h6">
-                  <b>Start Date:</b>{" "}
-                  {new Date(this.state.project.start_date)
-                    .toDateString()
-                    .split(" ")
-                    .slice(1)
-                    .join(" ")}{" "}
-                  &nbsp; &nbsp;
-                  <b>End Date:</b>{" "}
-                  {new Date(this.state.project.end_date)
-                    .toDateString()
-                    .split(" ")
-                    .slice(1)
-                    .join(" ")}
-                </Typography>
+                <WorkpackageTree
+                  wpList={this.state.wpList}
+                  history={this.props.history}
+                />
               </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={Link}
-                  to={{
-                    pathname: "/createWorkpackage",
-                    project: this.state.project,
-                    wpList: this.state.wpList
-                  }}
-                  style={{ marginRight: "5%" }}
-                >
-                  <b>+ Create Work Package</b>
-                </Button>
-              </Grid>
+              <br />
+              {this.state.wpList.length > 0 && (
+                <Grid item>
+                  <PDFDownloadLink
+                    document={<ProjectReport wpList={this.state.wpList} />}
+                    fileName={this.state.projectID + "_report.pdf"}
+                    style={{
+                      textDecoration: "none",
+                      padding: "10px",
+                      color: "#4a4a4a",
+                      backgroundColor: "#f2f2f2",
+                      border: "1px solid #4a4a4a",
+                    }}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? "Loading document..." : "Get Report"
+                    }
+                  </PDFDownloadLink>
+                </Grid>
+              )}
             </Grid>
-          </>
-        )}
-        {this.state.isProjManager === false ? (
-          <WorkpackageList
-            history={this.props.history}
-            type={this.state.isProjManager ? "PM" : "Emp"}
-            wpList={this.state.wpList}
-          />
-        ) : (
-          <Grid
-            container
-            justify="center"
-            className="PDWorkpackageTree"
-            direction="column"
-          >
-            <Grid item>
-              <WorkpackageTree
-                wpList={this.state.wpList}
-                history={this.props.history}
-              />
-            </Grid>
-            <br />
-            {this.state.wpList.length > 0 && (
-              <Grid item>
-                <PDFDownloadLink
-                  document={<ProjectReport wpList={this.state.wpList} />}
-                  fileName={this.state.projectID + "_report.pdf"}
-                  style={{
-                    textDecoration: "none",
-                    padding: "10px",
-                    color: "#4a4a4a",
-                    backgroundColor: "#f2f2f2",
-                    border: "1px solid #4a4a4a"
-                  }}
-                >
-                  {({ blob, url, loading, error }) =>
-                    loading ? "Loading document..." : "Get Report"
-                  }
-                </PDFDownloadLink>
-              </Grid>
-            )}
-          </Grid>
-        )}
+          )}
+        </div>
       </div>
     );
   }

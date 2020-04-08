@@ -1,23 +1,23 @@
-import React from 'react';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import React from "react";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import Avatar from "@material-ui/core/Avatar";
 import { Link } from "react-router-dom";
 import Face from '../Icon/Face'
 
 
 /**
- * Author: Joe 
- * Version: 1.0 
- * Description: A dropdown component for the profile icon. 
- * @param {JSON} props 
+ * Author: Joe
+ * Version: 1.0
+ * Description: A dropdown component for the profile icon.
+ * @param {JSON} props
  */
 export default function SimpleMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   /**
-   * Opens the drop down menu. 
-   * @param {event} event 
+   * Opens the drop down menu.
+   * @param {event} event
    */
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -37,8 +37,8 @@ export default function SimpleMenu(props) {
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <Link to= {`/dashboard/profile/${props.loadedUser.employee_id}`} style = {{textDecoration: 'none', color: 'black'}}>
           <MenuItem onClick={handleClose}> Profile </MenuItem> 
+          <Link to="/" style = {{textDecoration: 'none', color: 'black'}}><MenuItem onClick={props.logoutHandler}> Logout </MenuItem> </Link>
         </Link>
-        <Link to="/" style = {{textDecoration: 'none', color: 'black'}}><MenuItem onClick={props.logoutHandler}> Logout </MenuItem> </Link>
       </Menu>
     </div>
   );

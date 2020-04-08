@@ -124,8 +124,8 @@ class WorkpackageTree extends React.Component {
     return (
       <TreeView
         className="PDWPTreeView"
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
+        defaultCollapseIcon={<ExpandMoreIcon className="wpTree-expandIcon"/>}
+        defaultExpandIcon={<ChevronRightIcon className="wpTree-chevronRightIcon"/>}
       >
         {this.state.data.map(thisData => {
           return this.renderTree(thisData);

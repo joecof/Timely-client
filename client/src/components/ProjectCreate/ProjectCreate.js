@@ -20,6 +20,11 @@ import "./ProjectCreate.css";
  * Desc: This component let's the user create a new project
  */
 const useStyles = makeStyles(theme => ({
+  container: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center"
+  },
   root: {
     width: "1100px"
   },
@@ -46,7 +51,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     height: "280px",
     padding: "0 0 10px 0",
-    borderTop: "3px solid lightgray"
+    borderTop: "3px solid lightgray",
+    borderRadius: "5px"
   },
   backNextButtonContainer: {
     display: "flex",
@@ -211,6 +217,7 @@ export default function ProjectCreate() {
   };
 
   return (
+    <div className={classes.container}>
     <div className={classes.root}>
       {errorAlert ? <Alert config = {{message: "Failed to Create Project", variant: "error"}}/> : null}
       {successAlert ? <Alert config = {{message: `Project Created!`, variant: "success"}}/> : null}
@@ -278,6 +285,7 @@ export default function ProjectCreate() {
         )}
       </div>
       </ValidatorForm>
+    </div>
     </div>
   );
 }

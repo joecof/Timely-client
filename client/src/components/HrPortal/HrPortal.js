@@ -1,44 +1,49 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import MUIDatatable from "mui-datatables";
-import { withStyles } from '@material-ui/core/styles';
+import {
+  ThemeProvider,
+  createMuiTheme,
+  MuiThemeProvider,
+} from "@material-ui/core/styles";
 import MoreVertOption from './MoreVertOption'
 import CustomToolbar from './CustomToolBar';
 import agent from '../../api/agent'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Face from '../Icon/Face'
 import { HTTP_STATUS } from '../../constants/constants'
+import "./HrPortal.css";
 require('datejs');
 
 /**
- * Material UI styling JSON object. 
+ * Material UI styling JSON object.
  */
 const styles = () => ({
   pictureUrl: {
-    width: 50
-  }
+    width: 50,
+  },
 });
 
 /**
- * Defines the columns for the HR portal. 
+ * Defines the columns for the HR portal.
  */
 const columns = [
-  {name:"photo", label:"Photo", className:"column"},
-  {name:"employeeId", label:"ID", className:"column"},
-  {name:"firstName", label:"First Name", className:"column"},
-  {name:"lastName", label:"Last Name", className:"column"},
-  {name:"startDate", label:"Start Date", className:"column"},
-  {name:"endDate", label:"End Date", className:"column"},
-  {name:"laborGrade", label:"Labor Grade", className:"column"},
-  {name:"vacation", label:"Vacation Days", className:"column"},
-  {name:"supervisor", label:"Supervisor", className:"column"},
-  {name:"edit", label:"Edit", className:"column"},
+  { name: "photo", label: "Photo", className: "column" },
+  { name: "employeeId", label: "ID", className: "column" },
+  { name: "firstName", label: "First Name", className: "column" },
+  { name: "lastName", label: "Last Name", className: "column" },
+  { name: "startDate", label: "Start Date", className: "column" },
+  { name: "endDate", label: "End Date", className: "column" },
+  { name: "laborGrade", label: "Labor Grade", className: "column" },
+  { name: "vacation", label: "Vacation Days", className: "column" },
+  { name: "supervisor", label: "Supervisor", className: "column" },
+  { name: "edit", label: "Edit", className: "column" },
 ];
 
 /**
- * Configuration object for the MUI data table. 
+ * Configuration object for the MUI data table.
  */
 const options = (props, handleCreate) => {
-  const { history } = props; 
+  const { history } = props;
 
   const data = {
     selectableRows: false,
@@ -47,31 +52,58 @@ const options = (props, handleCreate) => {
     download: false,
     filter: false,
     customToolbar: () => {
-      return <CustomToolbar history = {history} handleCreate = {handleCreate}/>;
+      return (
+          <CustomToolbar history={history} handleCreate={handleCreate} className="customToolBarContainer" />
+      );
     },
     textLabels: {
       body: {
-          noMatch: <CircularProgress />       
+        noMatch: <CircularProgress />,
       },
-    }
-  }
+    },
+  };
   return data;
 };
 
 /**
- * Author: Joe 
- * Version: 1.0 
- * Description: HR Portal Component. Portal used by HR employee for editing/adding/archiving employee information. 
+ * Author: Joe
+ * Version: 1.0
+ * Description: HR Portal Component. Portal used by HR employee for editing/adding/archiving employee information.
  */
 class HrPortal extends Component {
+  getCustomTheme = () =>
+    createMuiTheme({
+      overrides: {
+        MUIDataTableHeadCell: {
+          data: {
+            fontSize: "15px",
+          },
+        },
+        MUIDataTableBodyCell: {
+          root: {
+            fontSize: "14px",
+          },
+        },
+        MUIDataTableToolbar: {
+          root: {
+            padding: "0px 0 0 16px",
+          },
+        },
+        MUIDataTable: {
+          paper: {
+            margin: "0 0 45px 0"
+          }
+        }
+      },
+    });
 
   constructor(props) {
-    super(props); 
+    super(props);
 
-    this.state = ({
+    this.state = {
       data: [],
-      token: null
-    })
+      token: null,
+    };
 
     this.fetchData = this.fetchData.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
@@ -83,8 +115,8 @@ class HrPortal extends Component {
     const token = localStorage.getItem("token");
 
     this.setState({
-      token: token
-    })
+      token: token,
+    });
 
     this.fetchData(token);
   }
@@ -92,7 +124,7 @@ class HrPortal extends Component {
   handleCreate = () => {
     const { history } = this.props;
     history.push(`/dashboard/hr/create`);
-  }
+  };
 
   handleArchive = async (id, body) => {
     
@@ -174,19 +206,20 @@ class HrPortal extends Component {
   } 
 
   render() {
-
     return (
-      <>
-      <MUIDatatable 
-        className="datatable"
-        title={<h1> Manage Employees</h1>}
-        options={options(this.props, this.handleCreate)}
-        columns={columns}
-        data={this.state.data}
-      />
-    </>
-    )
+      <div className="hrPortal-container">
+        <MuiThemeProvider theme={this.getCustomTheme()}>
+          <MUIDatatable
+            className="hrPortal-datatable"
+            title={<div className="hrPortal-title"> Manage Employees</div>}
+            options={options(this.props, this.handleCreate)}
+            columns={columns}
+            data={this.state.data}
+          />
+        </MuiThemeProvider>
+      </div>
+    );
   }
 }
 
-export default withStyles(styles, { withTheme: true })(HrPortal);
+export default HrPortal;
