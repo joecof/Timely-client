@@ -8,6 +8,7 @@ import {
   MuiThemeProvider,
 } from "@material-ui/core/styles";
 import "./LeadEngineer.css";
+import Alert from '../Alert/Alert'
 
 /**
  * Defines the columns for the RE portal.
@@ -86,6 +87,7 @@ class LeadEngineer extends Component {
       data: [],
       token: null,
       wpList: [],
+      errorAlert:false,
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -102,43 +104,48 @@ class LeadEngineer extends Component {
   }
 
   async fetchData(token) {
-    const { classes } = this.props;
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    const userId = user.employee_id;
-    const resp = await agent.workpackages.getAllWorkpackageFromRE(
-      userId,
-      token
-    );
 
-    if (resp != null) {
-      this.setState({
-        wpList: resp,
-      });
-    }
+    try {
+      const { classes } = this.props;
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      const userId = user.employee_id;
+      const resp = await agent.workpackages.getAllWorkpackageFromRE(userId, token);
 
-    console.log(resp);
-    var resultData = [];
-    resp.forEach(async (item) => {
-      let id = item.work_package_id;
-      let pm =
-        item.project.project_manager_id.first_name +
-        " " +
-        item.project.project_manager_id.last_name;
-      let team = item.employees.length;
-      let row = [];
-
-      //Check if the wp is the lowest level
-      if (id.endsWith("L")) {
-        row.push(id);
-        row.push(pm);
-        row.push(team);
-        resultData.push(row);
+      if (resp != null) {
+        this.setState({
+          wpList: resp
+        })
       }
-    });
 
-    this.setState({
-      data: resultData,
-    });
+      // console.log(resp);
+      var resultData = [];
+      resp.forEach(async (item) => {
+        let id = item.work_package_id;
+        let pm = item.project.project_manager_id.first_name + " " +
+          item.project.project_manager_id.last_name;
+        let team = item.employees.length;
+        let row = [];
+
+        //Check if the wp is the lowest level
+        if (id.endsWith("L")) {
+          row.push(id);
+          row.push(pm);
+          row.push(team);
+          resultData.push(row);
+        }
+
+      })
+
+      this.setState({
+        data: resultData
+      })
+    } catch (e) {
+      console.error(e);
+      this.setState({
+        errorAlert: true
+      })
+      this.props.sessionLogoutHandler();
+    }
   }
 
   render() {
@@ -146,6 +153,7 @@ class LeadEngineer extends Component {
       <>
         <div className="leadEngineer-container">
           <MuiThemeProvider theme={this.getCustomTheme()}>
+          {this.state.errorAlert ? <Alert config = {{message: "WorkPackage API Call Failed", variant: "error"}}/> : null}
             <MUIDatatable
               className="datatable"
               title={"WorkPackage Reports"}

@@ -1,15 +1,18 @@
-import React, { Component } from 'react'
-import { Paper } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import EmployeeInfo from './EmployeeInfo'
-import BasicInfo from './BasicInfo'
-import ChangePassword from './ChangePassword'
-import agent from '../../api/agent'
-import Alert from '../Alert/Alert'
-import CircularProgress from '@material-ui/core/CircularProgress';
-const laborData = require('../HrPortal/CreateEmployeeForm/labor')
+import React, { Component } from "react";
+import { Paper } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
+import EmployeeInfo from "./EmployeeInfo";
+import BasicInfo from "./BasicInfo";
+import ChangePassword from "./ChangePassword";
+import agent from "../../api/agent";
+import Alert from "../Alert/Alert";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { HTTP_STATUS } from "../../constants/constants";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+
+const laborData = require("../HrPortal/CreateEmployeeForm/labor");
 
 const styles = () => ({
   container: {
@@ -27,13 +30,12 @@ const styles = () => ({
     boxShadow: "none",
     border: "solid 1px lightgray",
     borderRadius: "5px",
-    height: "680px"
-    
+    height: "680px",
   },
   divider: {
     height: "630px",
     width: "1px",
-    margin: "25px 0 0 0"
+    margin: "25px 0 0 0",
   },
   employeeInfoContainer: {
     display: "flex",
@@ -57,7 +59,11 @@ class EmployeeForm extends Component {
       supervisorSelected: false,
       supervisorFirstName: "",
       supervisorLastName: "",
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
       marksValue: 0,
+      passwordChange: false,
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -75,7 +81,16 @@ class EmployeeForm extends Component {
     this.setState({
       errorAlert: false,
       successAlert: false,
+      passwordChange: false,
     });
+
+    ValidatorForm.addValidationRule("isPassword", (value) => {
+      return value.length < 6 && value.length > 0 ? false : true;
+    });
+  }
+
+  componentWillUnmount() {
+    ValidatorForm.removeValidationRule("isPassword");
   }
 
   valueLabelFormat(value) {
@@ -94,17 +109,18 @@ class EmployeeForm extends Component {
       supervisorId: value,
       supervisorFirstName: firstName,
       supervisorLastName: lastName,
-    })
+    });
   }
 
-  formHandler(e) { 
-     this.setState({
-      [e.target.name]: e.target.value
+  formHandler(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
     });
 
     if (
-      this.state.newPassword.length > 0 &&
-      this.state.confirmPassword.length > 0
+      this.state.newPassword.length > 0 ||
+      this.state.confirmPassword.length > 0 ||
+      this.state.oldPassword.length > 0
     ) {
       this.setState({
         passwordChange: true,
@@ -126,35 +142,99 @@ class EmployeeForm extends Component {
       oldPassword,
       newPassword,
       confirmPassword,
-    } = this.state; 
-
+    } = this.state;
 
     try {
-      if(oldPassword != employee.password || newPassword != confirmPassword) {
-        this.setState({
-          errorAlert: true,
-        })
+      /**
+       * Checks if the user is inputting a password change submission
+       */
+      if (
+        oldPassword.length > 0 ||
+        newPassword.length > 0 ||
+        confirmPassword.length > 0
+      ) {
+        if (this.props.hr) {
+          if (newPassword !== confirmPassword) {
+            this.setState({
+              errorAlert: true,
+            });
+          } else {
+            employee.first_name = firstName;
+            employee.last_name = lastName;
+            employee.labor_grade_id.labor_grade_id = laborGradeId;
+            employee.labor_grade_id.labor_grade_name = laborGradeName;
+            employee.vacation = vacation;
+            employee.supervisor_id = supervisorId;
+            employee.password = newPassword;
+
+            await agent.employeeInfo.updateEmployee(
+              this.props.loadedUser.employee_id,
+              token,
+              employee
+            );
+
+            this.setState({
+              successAlert: true,
+              errorAlert: false,
+              passwordChange: false,
+            });
+          }
+        } else {
+          if (
+            oldPassword !== employee.password ||
+            newPassword !== confirmPassword
+          ) {
+            this.setState({
+              errorAlert: true,
+            });
+          } else {
+            employee.first_name = firstName;
+            employee.last_name = lastName;
+            employee.labor_grade_id.labor_grade_id = laborGradeId;
+            employee.labor_grade_id.labor_grade_name = laborGradeName;
+            employee.vacation = vacation;
+            employee.supervisor_id = supervisorId;
+            employee.password = newPassword;
+
+            await agent.employeeInfo.updateEmployee(
+              this.props.loadedUser.employee_id,
+              token,
+              employee
+            );
+
+            this.setState({
+              successAlert: true,
+              errorAlert: false,
+              passwordChange: false,
+            });
+          }
+        }
+        /**
+         * Checks if the user is not inputting a password change submission, but wants to change other fields in their profile.
+         */
       } else {
-        employee.first_name = firstName; 
-        employee.last_name = lastName; 
+        employee.first_name = firstName;
+        employee.last_name = lastName;
         employee.labor_grade_id.labor_grade_id = laborGradeId;
         employee.labor_grade_id.labor_grade_name = laborGradeName;
         employee.vacation = vacation;
         employee.supervisor_id = supervisorId;
-        employee.password = newPassword;
-    
-        console.log(employee);
-        
-        await agent.employeeInfo.updateEmployee(this.props.loadedUser.employee_id, token, employee)
-  
+        await agent.employeeInfo.updateEmployee(
+          this.props.loadedUser.employee_id,
+          token,
+          employee
+        );
+
         this.setState({
-          successAlert: true, 
-        })
+          successAlert: true,
+          errorAlert: false,
+        });
       }
-    } catch(e) {
+    } catch (e) {
       this.setState({
-        errorAlert: true, 
-      })
+        successAlert: false,
+        errorAlert: true,
+      });
     }
 
     setTimeout(() => {
@@ -163,44 +243,50 @@ class EmployeeForm extends Component {
         errorAlert: false,
       });
     }, 1000);
-
   }
 
   async fetchData(token) {
-
     try {
-      const resp = await agent.employeeInfo.getEmployeeById(this.props.match.params.id, token)
-      const supervisor = await agent.employeeInfo.getEmployeeById(resp.supervisor_id, token)
+      const resp = await agent.employeeInfo.getEmployeeById(
+        this.props.match.params.id,
+        token
+      );
+      const supervisor = await agent.employeeInfo.getEmployeeById(
+        resp.supervisor_id,
+        token
+      );
 
       this.setState({
         loadedUser: resp,
         firstName: resp.first_name,
-        lastName: resp.last_name, 
+        lastName: resp.last_name,
         laborGradeId: resp.labor_grade_id.labor_grade_id,
         laborGradeName: resp.labor_grade_id.labor_grade_name,
         supervisorId: resp.supervisor_id,
         isAdmin: resp.is_admin,
-        isHr: resp.is_hr_staff, 
+        isHr: resp.is_hr_staff,
         vacation: resp.vacation,
         isSuperTimesheetApprover: resp.is_super_timesheet_approver,
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: '',
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
         supervisor: supervisor,
         supervisorFirstName: supervisor.first_name,
-        supervisorLastName: supervisor.last_name
-      })
+        supervisorLastName: supervisor.last_name,
+        passwordChange: false,
+      });
 
-      for(const key in this.state.marks) {
-        if(this.state.marks[key].label == this.state.laborGradeId) {
+      for (const key in this.state.marks) {
+        if (this.state.marks[key].label === this.state.laborGradeId) {
           this.setState({
-            marksValue: key
-          }) 
+            marksValue: key,
+          });
         }
       }
-    } catch(e) {
-      console.error(e);
-      this.props.sessionLogoutHandler();
+    } catch (e) {
+      if (e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
     }
   }
 
@@ -226,9 +312,7 @@ class EmployeeForm extends Component {
                   isAdmin={this.state.isAdmin}
                   isSuperTimesheetApprover={this.state.isSuperTimesheetApprover}
                 />
-                <Divider
-                  className={classes.divider}
-                />
+                <Divider className={classes.divider} />
                 <BasicInfo
                   loadedUser={loadedUser}
                   supervisor={supervisor}
@@ -242,18 +326,21 @@ class EmployeeForm extends Component {
                   marks={this.state.marks}
                   marksValue={this.state.marksValue}
                 />
-                <Divider
-                  className={classes.divider}
-                />
+                <Divider className={classes.divider} />
                 <ChangePassword
                   loadedUser={loadedUser}
                   hr={hr}
                   formHandler={this.formHandler}
                   handleSubmit={this.handleSubmit}
+                  oldPassword={this.state.oldPassword}
+                  newPassword={this.state.newPassword}
+                  confirmPassword={this.state.confirmPassword}
                 />
               </div>
             </Paper>
-          ) : <CircularProgress /> }
+          ) : (
+            <CircularProgress />
+          )}
         </div>
       </div>
     );

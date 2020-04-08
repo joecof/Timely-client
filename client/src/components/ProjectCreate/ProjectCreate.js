@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ProjectInfo from "./ProjectInfo";
 import Desc from "../CreationWizard/Desc";
@@ -13,6 +11,7 @@ import Budget from "../CreationWizard/Budget";
 import Schedule from "../CreationWizard/Schedule";
 import agent from '../../api/agent.js'
 import Alert from '../Alert/Alert'
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import "./ProjectCreate.css";
 
 /**
@@ -95,12 +94,17 @@ function getStepContent(
     case 1:
       return (
         <Desc
-          Desc={inputValues.projectDesc}
+          Desc={inputValues.Desc}
           handleChange={handleOnChange}
         />
       );
     case 2:
-      return <Budget cost={inputValues.cost} handleChange={handleOnChange} />;
+      return (
+        <Budget 
+          cost={inputValues.cost} 
+          handleChange={handleOnChange}   
+        />
+      );
     case 3:
       return (
         <Schedule
@@ -130,6 +134,23 @@ export default function ProjectCreate() {
     cost: ""
   });
 
+  useEffect(() => {
+    ValidatorForm.addValidationRule('isRequired', (value) => {
+      
+      if(value.length === 0) {
+        console.log(valid)
+
+        setValid(false);
+        return false;
+      } else {
+        setValid(true);
+        return true;
+      }
+
+    });    
+  }, []);
+
+  const [valid, setValid] = useState(false);
   const [successAlert, setSuccessAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
 
@@ -148,7 +169,6 @@ export default function ProjectCreate() {
 
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
-    console.log(token);
     const data = {
       project_code: inputValues.projectID,
       project_manager_id: {
@@ -185,6 +205,7 @@ export default function ProjectCreate() {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setValid(false);
   };
 
   const handleBack = () => {
@@ -200,6 +221,7 @@ export default function ProjectCreate() {
     <div className={classes.root}>
       {errorAlert ? <Alert config = {{message: "Failed to Create Project", variant: "error"}}/> : null}
       {successAlert ? <Alert config = {{message: `Project Created!`, variant: "success"}}/> : null}
+      <ValidatorForm onSubmit = {handleSubmit}>
       <Stepper
         activeStep={activeStep}
         alternativeLabel
@@ -253,6 +275,7 @@ export default function ProjectCreate() {
                   variant="contained"
                   color="primary"
                   onClick={handleNext}
+                  disabled = {!valid}
                 >
                   Next
                 </Button>
@@ -261,6 +284,7 @@ export default function ProjectCreate() {
           </div>
         )}
       </div>
+      </ValidatorForm>
     </div>
     </div>
   );

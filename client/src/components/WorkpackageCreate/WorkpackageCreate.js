@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -16,6 +16,7 @@ import SelectEmployees from "./SelectEmployees";
 import "./WorkpackageCreate.css";
 import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
 import Alert from "../Alert/Alert";
+import { ValidatorForm } from "react-material-ui-form-validator";
 
 /**
  * Author: Prabh
@@ -153,12 +154,28 @@ export default function WorkpackageCreate(props) {
     wpEmps: [],
   });
 
+  useEffect(() => {
+    ValidatorForm.addValidationRule("isRequired", (value) => {
+      console.log(value);
+
+      if (value.length === 0) {
+        setValid(false);
+        return false;
+      } else {
+        setValid(true);
+        return true;
+      }
+    });
+  }, []);
+
   const [successAlert, setSuccessAlert] = React.useState(false);
   const [errorAlert, setErrorAlert] = React.useState(false);
+  const [valid, setValid] = useState(false);
 
   const handleOnChange = (event) => {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
+    console.log(valid);
 
     // calculating the wp id here
     if (name === "wpParent") {
@@ -174,13 +191,13 @@ export default function WorkpackageCreate(props) {
           id = parseInt(list[wp].work_package_id) + 1;
         }
       }
-      
+
       if (value === 0) {
-        list.forEach(x => {
-          if((parseInt(x.work_package_id)).toString().length === 1) {
+        list.forEach((x) => {
+          if (parseInt(x.work_package_id).toString().length === 1) {
             id = parseInt(x.work_package_id) + 1;
           }
-        })
+        });
       }
 
       if (id === -1) {
@@ -200,10 +217,14 @@ export default function WorkpackageCreate(props) {
 
   const handleStartDate = (date) => {
     setInputValues({ ...inputValues, startDate: date });
+
+    setValid(true);
   };
 
   const handleEndDate = (date) => {
     setInputValues({ ...inputValues, endDate: date });
+
+    setValid(true);
   };
 
   const handleCheckboxChange = (event) => {
@@ -217,7 +238,10 @@ export default function WorkpackageCreate(props) {
   };
 
   const handleTagsChange = (inputValue) => {
-    console.log(inputValue);
+    if (inputValue.length > 0) {
+      setValid(true);
+    }
+
     setInputValues({ ...inputValues, wpEmps: inputValue });
   };
 
@@ -326,7 +350,7 @@ export default function WorkpackageCreate(props) {
     setTimeout(() => {
       setErrorAlert(false);
       setSuccessAlert(false);
-      props.history.push(`/dashboard/projectDetails`);
+      props.history.push(`/dashboard/projects`);
     }, 1000);
   };
 
@@ -347,6 +371,7 @@ export default function WorkpackageCreate(props) {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setValid(false);
   };
 
   const handleBack = () => {
@@ -376,65 +401,86 @@ export default function WorkpackageCreate(props) {
             }}
           />
         ) : null}
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <div>
-          {activeStep === steps.length ? (
-            <div>
-              <Typography component={"span"} className={classes.instructions}>
-                All steps completed
-              </Typography>
-              <Button onClick={handleReset}>Reset</Button>
-            </div>
-          ) : (
-            <div>
-              <Typography component={"span"} className={classes.instructions}>
-                {getStepContent(
-                  activeStep,
-                  inputValues,
-                  handleOnChange,
-                  handleStartDate,
-                  handleEndDate,
-                  handleCheckboxChange,
-                  handleTagsChange
-                )}
-              </Typography>
-
-              <div className={classes.backNextButtonContainer}>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.backButton}
-                >
-                  Back
-                </Button>
-                {activeStep === steps.length - 1 && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                  >
-                    Finish
-                  </Button>
-                )}
-                {activeStep != steps.length - 1 && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                  >
-                    Next
-                  </Button>
-                )}
+        <ValidatorForm onSubmit={handleSubmit}>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <div>
+            {activeStep === steps.length ? (
+              <div>
+                <Typography component={"span"} className={classes.instructions}>
+                  All steps completed
+                </Typography>
+                <Button onClick={handleReset}>Reset</Button>
               </div>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div>
+                <Typography component={"span"} className={classes.instructions}>
+                  {getStepContent(
+                    activeStep,
+                    inputValues,
+                    handleOnChange,
+                    handleStartDate,
+                    handleEndDate,
+                    handleCheckboxChange,
+                    handleTagsChange
+                  )}
+                </Typography>
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.backButton}
+                  >
+                    Back
+                  </Button>
+                  {activeStep === steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmit}
+                      disabled={!valid}
+                    >
+                      Finish
+                    </Button>
+                  )}
+                  {activeStep != steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      disabled={!valid}
+                    >
+                      Back
+                    </Button>
+                  )}
+                  {activeStep === steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmit}
+                    >
+                      Finish
+                    </Button>
+                  )}
+                  {activeStep != steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Next
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </ValidatorForm>
       </div>
     </div>
   );

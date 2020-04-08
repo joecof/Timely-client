@@ -3,7 +3,7 @@
  * Version: 1
  * Desc: Timesheet Detail Component displaying timesheet details after user click on a row on Timesheet Portal lists
  */
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -20,8 +20,7 @@ import Paper from "@material-ui/core/Paper";
 import ContentEditable from "react-contenteditable";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import Alert from '../Alert/Alert'
-
+import Alert from "../Alert/Alert";
 
 // timesheet table css
 const timesheetStyle = (theme) => ({
@@ -107,7 +106,7 @@ class TimesheetDetail extends Component {
   isEditable() {
     const thisStatus = this.state.loadedTimesheet.status;
     let isEditable = false;
-    if (thisStatus == "OPEN" && this.props.dashboardTimesheet == undefined) {
+    if (thisStatus === "OPEN" && this.props.dashboardTimesheet === undefined) {
       isEditable = true;
     }
     // setting the state
@@ -122,7 +121,7 @@ class TimesheetDetail extends Component {
     var userId, token, tsId;
 
     // setting userId token and tsId for fetching
-    if (ifDashboardTs == undefined) {
+    if (ifDashboardTs === undefined) {
       var user = JSON.parse(sessionStorage.getItem("user"));
       userId = user.employee_id;
       token = localStorage.getItem("token");
@@ -132,60 +131,70 @@ class TimesheetDetail extends Component {
         loadUser: user,
       });
     } else {
-        if(this.props.token != null) {
-          userId = this.props.userId;
-          token = this.props.token;
-          var projects, curEmp;
+      if (this.props.token != null) {
+        userId = this.props.userId;
+        token = this.props.token;
+        var projects, curEmp;
 
-          try {
-            // fetching projects
-            projects = await agent.projects.getProjectsForUser(userId, token);
-            // fetching employee
-            curEmp = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
-            this.setState({
-              loadUser: curEmp
-            });
-          } catch (e) {
-            // this.props.sessionLogoutHandler();
-          }
-          
-          // looking for the most recent timesheet
-          try {
-            const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(userId, token);
+        try {
+          // fetching projects
+          projects = await agent.projects.getProjectsForUser(userId, token);
+          // fetching employee
+          curEmp = await agent.employeeInfo.getCurrentUser(
+            this.props.userId,
+            this.props.token
+          );
+          this.setState({
+            loadUser: curEmp,
+          });
+        } catch (e) {
+          console.log(this.props);
+          this.props.sessionLogoutHandler();
+        }
 
-            if(tsResponse.length != 0) {
-              // fetching timesheets
-              var timesheetList = [];
+        // looking for the most recent timesheet
+        try {
+          const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(
+            userId,
+            token
+          );
 
-              for (let i = 0; i < tsResponse.length; i++) {
-                  let timesheetid = tsResponse[i].timesheet_id;
-                  let weeknumber = tsResponse[i].week;
-                  let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
-                  let status = tsResponse[i].status;
-                  let attribute1 = (tsResponse[i].attribute1==null ? "0|0" : tsResponse[i].attribute1);
-                  
-                  let eachTimesheet = [];
-                  eachTimesheet.push(timesheetid);
-                  eachTimesheet.push(weeknumber);
-                  eachTimesheet.push(weekending);
-                  eachTimesheet.push(status);
-                  eachTimesheet.push(attribute1);
-                  timesheetList.push(eachTimesheet);
-              }
-              // sorting timesheet list by week number
-              timesheetList.sort( function(a,b){
-                return b[1] - a[1];
-              });
-              tsId = timesheetList[0][0];
-              // returning projects, employee and overFlex time to dashboard
-              this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
-            } else {
-              // returning projects, employee and overFlex time to dashboard
-              this.props.fetchProject(projects, curEmp, "0|0");
+          if (tsResponse.length != 0) {
+            // fetching timesheets
+            var timesheetList = [];
+
+            for (let i = 0; i < tsResponse.length; i++) {
+              let timesheetid = tsResponse[i].timesheet_id;
+              let weeknumber = tsResponse[i].week;
+              let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
+              let status = tsResponse[i].status;
+              let attribute1 =
+                tsResponse[i].attribute1 == null
+                  ? "0|0"
+                  : tsResponse[i].attribute1;
+
+              let eachTimesheet = [];
+              eachTimesheet.push(timesheetid);
+              eachTimesheet.push(weeknumber);
+              eachTimesheet.push(weekending);
+              eachTimesheet.push(status);
+              eachTimesheet.push(attribute1);
+              timesheetList.push(eachTimesheet);
             }
-          } catch(e) {
-            // this.props.sessionLogoutHandler();
+            // sorting timesheet list by week number
+            timesheetList.sort(function (a, b) {
+              return b[1] - a[1];
+            });
+            tsId = timesheetList[0][0];
+            // returning projects, employee and overFlex time to dashboard
+            this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
+          } else {
+            // returning projects, employee and overFlex time to dashboard
+            this.props.fetchProject(projects, curEmp, "0|0");
           }
+        } catch (e) {
+          // this.props.sessionLogoutHandler();
+        }
       }
     }
 
@@ -451,8 +460,9 @@ class TimesheetDetail extends Component {
 
   // updating timesheet
   async updateTS() {
-    var tsRows = [], thisRow;
-    for(let i = 0; i < this.state.timesheetrows.length; i++) {
+    var tsRows = [],
+      thisRow;
+    for (let i = 0; i < this.state.timesheetrows.length; i++) {
       var tsId = this.state.timesheetrows[i][0];
       var proj = this.state.timesheetrows[i][1];
       var wp = this.state.timesheetrows[i][2];
@@ -516,36 +526,42 @@ class TimesheetDetail extends Component {
 
     // updating timesheets
     try {
-      const response = await agent.timesheetsInfo.updateTimesheetById(empId, updateToken, updateTsId, updateTs);
-      if(response != "exception throw") {
+      const response = await agent.timesheetsInfo.updateTimesheetById(
+        empId,
+        updateToken,
+        updateTsId,
+        updateTs
+      );
+      if (response != "exception throw") {
         this.setState({
           successAlert: true,
-        })
+        });
       }
-      if(response == "exception throw") {
+      if (response == "exception throw") {
         this.setState({
           projWpDontMatch: true,
-        })
+        });
       }
     } catch (e) {
       this.setState({
         errorAlert: true,
-      })
+      });
       this.props.sessionLogoutHandler();
     }
     setTimeout(() => {
       this.setState({
-        successAlert: false, 
+        successAlert: false,
         errorAlert: false,
         projWpDontMatch: false,
-      })
+      });
     }, 2000);
   }
 
   // updating timesheet
-  async submitTS(){
-    var tsRows = [], thisRow;
-    for(let i = 0; i < this.state.timesheetrows.length; i++) {
+  async submitTS() {
+    var tsRows = [],
+      thisRow;
+    for (let i = 0; i < this.state.timesheetrows.length; i++) {
       var tsId = this.state.timesheetrows[i][0];
       var proj = this.state.timesheetrows[i][1];
       var wp = this.state.timesheetrows[i][2];
@@ -606,41 +622,46 @@ class TimesheetDetail extends Component {
     const empId = this.state.loadUser.employee_id;
     const submitToken = localStorage.getItem("token");
     const submitTsId = this.state.loadedTimesheet.timesheet_id;
-    
+
     // updating timesheet
     try {
-      const response = await agent.timesheetsInfo.updateTimesheetById(empId, submitToken, submitTsId, submitTs);
-      if(response != "exception throw") {
+      const response = await agent.timesheetsInfo.updateTimesheetById(
+        empId,
+        submitToken,
+        submitTsId,
+        submitTs
+      );
+      if (response != "exception throw") {
         this.fetchTimesheetRows();
         this.setState({
           successAlert: true,
-        })
+        });
         setTimeout(() => {
           this.setState({
-            successAlert: false, 
+            successAlert: false,
             errorAlert: false,
             projWpDontMatch: false,
-          })
+          });
           this.props.history.push(`/dashboard/timesheet/`);
-        }, 2000);
+        }, 1500);
       }
-      if(response == "exception throw") {
+      if (response == "exception throw") {
         this.setState({
           projWpDontMatch: true,
-        })
+        });
       }
     } catch (e) {
       this.setState({
         errorAlert: true,
-      })
+      });
       this.props.sessionLogoutHandler();
     }
     setTimeout(() => {
       this.setState({
-        successAlert: false, 
+        successAlert: false,
         errorAlert: false,
         projWpDontMatch: false,
-      })
+      });
     }, 2000);
   }
 
@@ -893,231 +914,245 @@ class TimesheetDetail extends Component {
     const { classes } = this.props;
     return (
       <div className="tsDetail-outerContainer">
-      <div className="container" onClick={() => { this.gotoTimesheetDetail() }}>
-      {this.state.projWpDontMatch ? <Alert config = {{message: "Project and WP Don't Match. Please Check Again!", variant: "Warning"}}/> : null}
-        {this.state.errorAlert ? <Alert config = {{message: "Failed", variant: "error"}}/> : null}
-        {this.state.successAlert ? <Alert config = {{message: `Successful!`, variant: "success"}}/> : null}
-        {/* employee info header */}
-        <div className="timesheetTitle">
-          <div className="attributeRow">
-            <div className="empNumContainer">
-              <div className="empNumTitle">
-                Employee Number:
-              </div>
-              <div className="empNum">
-                {this.state.loadUser.employee_id}
-              </div>
-              <div className="weekNumContainer">
-                <div className="weekNumTitle">Week Number:</div>
-                <div className="weekNum">{this.state.loadedTimesheet.week}</div>
-              </div>
-              <div className="weekEndContainer">
-                <div className="weekEndTitle">Week Ending:</div>
-                <div className="weekEnd">
-                  {this.formatWeekEnding(
-                    this.state.loadedTimesheet.week_ending
-                  )}
+        <div
+          className="container"
+          onClick={() => {
+            this.gotoTimesheetDetail();
+          }}
+        >
+          {this.state.projWpDontMatch ? (
+            <Alert
+              config={{
+                message: "Project and WP Don't Match. Please Check Again!",
+                variant: "Warning",
+              }}
+            />
+          ) : null}
+          {this.state.errorAlert ? (
+            <Alert config={{ message: "Failed", variant: "error" }} />
+          ) : null}
+          {this.state.successAlert ? (
+            <Alert config={{ message: `Successful!`, variant: "success" }} />
+          ) : null}
+          {/* employee info header */}
+          <div className="timesheetTitle">
+            <div className="attributeRow">
+              <div className="empNumContainer">
+                <div className="empNumTitle">Employee Number:</div>
+                <div className="empNum">{this.state.loadUser.employee_id}</div>
+                <div className="weekNumContainer">
+                  <div className="weekNumTitle">Week Number:</div>
+                  <div className="weekNum">
+                    {this.state.loadedTimesheet.week}
+                  </div>
                 </div>
+                <div className="weekEndContainer">
+                  <div className="weekEndTitle">Week Ending:</div>
+                  <div className="weekEnd">
+                    {this.formatWeekEnding(
+                      this.state.loadedTimesheet.week_ending
+                    )}
+                  </div>
+                </div>
+                {!this.state.isEditable ? null : (
+                  <AddIcon
+                    fontSize="large"
+                    onClick={this.addRow}
+                    color="primary"
+                    variant="contained"
+                  />
+                )}
               </div>
-              {!this.state.isEditable ? null : (
-                <AddIcon
-                  fontSize="large"
-                  onClick={this.addRow}
-                  color="primary"
-                  variant="contained"
-                />
+              {this.props.dashboardTimesheet ? null : (
+                <div className="empNameAttribute">
+                  <div className="empNameTitle">Name:</div>
+                  <div className="empName">
+                    {this.state.loadUser.first_name}{" "}
+                    {this.state.loadUser.last_name}
+                  </div>
+                </div>
               )}
             </div>
-            {this.props.dashboardTimesheet ? null : (
-              <div className="empNameAttribute">
-                <div className="empNameTitle">Name:</div>
-                <div className="empName">
-                  {this.state.loadUser.first_name}{" "}
-                  {this.state.loadUser.last_name}
-                </div>
+            {/* add row button */}
+
+            {/* timesheet table */}
+            <TableContainer className={classes.timesheetTable}>
+              <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell id="proj" className={classes.tableTitle}>
+                      Project
+                    </TableCell>
+                    <TableCell
+                      id="wp"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      WP
+                    </TableCell>
+                    <TableCell
+                      id="tol"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Total
+                    </TableCell>
+                    <TableCell
+                      id="sat"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Sat
+                    </TableCell>
+                    <TableCell
+                      id="sun"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Sun
+                    </TableCell>
+                    <TableCell
+                      id="mon"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Mon
+                    </TableCell>
+                    <TableCell
+                      id="tue"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Tue
+                    </TableCell>
+                    <TableCell
+                      id="wed"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Wed
+                    </TableCell>
+                    <TableCell
+                      id="thu"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Thu
+                    </TableCell>
+                    <TableCell
+                      id="fri"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Fri
+                    </TableCell>
+                    <TableCell
+                      id="notes"
+                      align="right"
+                      className={classes.tableTitle}
+                    >
+                      Notes
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {/* timesheet row date mapping */}
+                  {this.state.timesheetrows.map((x, i) =>
+                    this.timesheetRow(x, i)
+                  )}
+
+                  {/* total span column */}
+                  <TableRow>
+                    <TableCell className={classes.tableTitle}>Total</TableCell>
+                    <TableCell colSpan={2} align="right">
+                      {this.ccyFormat(this.state.totalWeek)}
+                    </TableCell>
+                    <TableCell align="right">
+                      {this.ccyFormat(this.state.totalDay[0])}
+                    </TableCell>
+                    <TableCell align="right">
+                      {this.ccyFormat(this.state.totalDay[1])}
+                    </TableCell>
+                    <TableCell align="right">
+                      {this.ccyFormat(this.state.totalDay[2])}
+                    </TableCell>
+                    <TableCell align="right">
+                      {this.ccyFormat(this.state.totalDay[3])}
+                    </TableCell>
+                    <TableCell align="right">
+                      {this.ccyFormat(this.state.totalDay[4])}
+                    </TableCell>
+                    <TableCell align="right">
+                      {this.ccyFormat(this.state.totalDay[5])}
+                    </TableCell>
+                    <TableCell align="right">
+                      {this.ccyFormat(this.state.totalDay[6])}
+                    </TableCell>
+                  </TableRow>
+                  {/* overtime span column */}
+                  <TableRow>
+                    <TableCell colSpan={2} className={classes.tableTitle}>
+                      Overtime
+                    </TableCell>
+                    <TableCell align="right">
+                      {!this.state.isEditable ? (
+                        this.ccyFormat(this.state.overtime)
+                      ) : (
+                        <ContentEditable
+                          html={this.ccyFormat(this.state.overtime)}
+                          data-column="item"
+                          className="content-editable"
+                          onKeyDown={this.checkKey}
+                          onChange={(e) => this.handleOverFlexTime(e, "over")}
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                  {/* flex span column */}
+                  <TableRow>
+                    <TableCell colSpan={2} className={classes.tableTitle}>
+                      Flextime
+                    </TableCell>
+                    <TableCell align="right">
+                      {!this.state.isEditable ? (
+                        this.ccyFormat(this.state.flextime)
+                      ) : (
+                        <ContentEditable
+                          html={this.ccyFormat(this.state.flextime)}
+                          data-column="item"
+                          className="content-editable"
+                          onKeyDown={this.checkKey}
+                          onChange={(e) => this.handleOverFlexTime(e, "flex")}
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {/* update and submite button */}
+            {!this.state.isEditable || !this.hasProject() ? null : (
+              <div className={classes.updateSubmitButton}>
+                <Button
+                  onClick={this.updateTS}
+                  color="primary"
+                  variant="contained"
+                >
+                  Update
+                </Button>
+                <Button
+                  className={classes.submitButton}
+                  onClick={this.submitTS}
+                  color="secondary"
+                  variant="contained"
+                >
+                  Submit
+                </Button>
               </div>
             )}
           </div>
-          {/* add row button */}
-
-          {/* timesheet table */}
-          <TableContainer className={classes.timesheetTable}>
-            <Table className={classes.table} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell id="proj" className={classes.tableTitle}>
-                    Project
-                  </TableCell>
-                  <TableCell
-                    id="wp"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    WP
-                  </TableCell>
-                  <TableCell
-                    id="tol"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Total
-                  </TableCell>
-                  <TableCell
-                    id="sat"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Sat
-                  </TableCell>
-                  <TableCell
-                    id="sun"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Sun
-                  </TableCell>
-                  <TableCell
-                    id="mon"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Mon
-                  </TableCell>
-                  <TableCell
-                    id="tue"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Tue
-                  </TableCell>
-                  <TableCell
-                    id="wed"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Wed
-                  </TableCell>
-                  <TableCell
-                    id="thu"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Thu
-                  </TableCell>
-                  <TableCell
-                    id="fri"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Fri
-                  </TableCell>
-                  <TableCell
-                    id="notes"
-                    align="right"
-                    className={classes.tableTitle}
-                  >
-                    Notes
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {/* timesheet row date mapping */}
-                {this.state.timesheetrows.map((x, i) =>
-                  this.timesheetRow(x, i)
-                )}
-
-                {/* total span column */}
-                <TableRow>
-                  <TableCell className={classes.tableTitle}>Total</TableCell>
-                  <TableCell colSpan={2} align="right">
-                    {this.ccyFormat(this.state.totalWeek)}
-                  </TableCell>
-                  <TableCell align="right">
-                    {this.ccyFormat(this.state.totalDay[0])}
-                  </TableCell>
-                  <TableCell align="right">
-                    {this.ccyFormat(this.state.totalDay[1])}
-                  </TableCell>
-                  <TableCell align="right">
-                    {this.ccyFormat(this.state.totalDay[2])}
-                  </TableCell>
-                  <TableCell align="right">
-                    {this.ccyFormat(this.state.totalDay[3])}
-                  </TableCell>
-                  <TableCell align="right">
-                    {this.ccyFormat(this.state.totalDay[4])}
-                  </TableCell>
-                  <TableCell align="right">
-                    {this.ccyFormat(this.state.totalDay[5])}
-                  </TableCell>
-                  <TableCell align="right">
-                    {this.ccyFormat(this.state.totalDay[6])}
-                  </TableCell>
-                </TableRow>
-                {/* overtime span column */}
-                <TableRow>
-                  <TableCell colSpan={2} className={classes.tableTitle}>
-                    Overtime
-                  </TableCell>
-                  <TableCell align="right">
-                    {!this.state.isEditable ? (
-                      this.ccyFormat(this.state.overtime)
-                    ) : (
-                      <ContentEditable
-                        html={this.ccyFormat(this.state.overtime)}
-                        data-column="item"
-                        className="content-editable"
-                        onKeyDown={this.checkKey}
-                        onChange={(e) => this.handleOverFlexTime(e, "over")}
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-                {/* flex span column */}
-                <TableRow>
-                  <TableCell colSpan={2} className={classes.tableTitle}>
-                    Flextime
-                  </TableCell>
-                  <TableCell align="right">
-                    {!this.state.isEditable ? (
-                      this.ccyFormat(this.state.flextime)
-                    ) : (
-                      <ContentEditable
-                        html={this.ccyFormat(this.state.flextime)}
-                        data-column="item"
-                        className="content-editable"
-                        onKeyDown={this.checkKey}
-                        onChange={(e) => this.handleOverFlexTime(e, "flex")}
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {/* update and submite button */}
-          {!this.state.isEditable || !this.hasProject() ? null : (
-            <div className={classes.updateSubmitButton}>
-              <Button
-                onClick={this.updateTS}
-                color="primary"
-                variant="contained"
-              >
-                Update
-              </Button>
-              <Button
-                className={classes.submitButton}
-                onClick={this.submitTS}
-                color="secondary"
-                variant="contained"
-              >
-                Submit
-              </Button>
-            </div>
-          )}
         </div>
       </div>
-    </div>
     );
   }
 }

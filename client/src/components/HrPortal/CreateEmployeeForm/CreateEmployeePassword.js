@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { Button } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 /**
  * Material UI styling JSON object.
@@ -14,21 +14,21 @@ const styles = () => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "45px"
+    padding: "45px",
   },
   title: {
     fontSize: "16px",
     fontWeight: "bold",
-    width: "100%"
+    width: "100%",
   },
   input: {
     display: "block",
     width: "100%",
-    margin: "10px 0 0 0"
+    margin: "10px 0 0 0",
   },
   field: {
     marginTop: "50px",
-    width: "100%"
+    width: "100%",
   },
   button: {
     width: "60%",
@@ -50,45 +50,49 @@ class CreateEmployeePassword extends Component {
     const { classes } = this.props;
 
     return (
-        <div className={classes.container}>
-          <div className={classes.field}>
-            <div className={classes.title}>
-              Password
-            </div>
-            <TextField
-              className={classes.input}
-              name="newPassword"
-              type="password"
-              helperText="New Password"
-              fullWidth
-              onChange={(e) => this.props.formHandler(e)}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              className={classes.input}
-              name="confirmPassword"
-              type="password"
-              helperText="Confirm New Password"
-              fullWidth
-              onChange={(e) => this.props.formHandler(e)}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </div>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={this.props.handleSubmit}
-          >
-            Submit
-          </Button>
+      <div className={classes.container}>
+        <div className={classes.field}>
+          <div className={classes.title}>Password</div>
+          <TextValidator
+            className={classes.input}
+            name="newPassword"
+            type="password"
+            helperText="New Password"
+            fullWidth
+            onChange={(e) => this.props.formHandler(e)}
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={this.props.newPassword}
+            validators={["isPassword"]}
+            errorMessages={["Password length has to be greater than 6"]}
+          />
+          <TextValidator
+            className={classes.input}
+            name="confirmPassword"
+            type="password"
+            helperText="Confirm New Password"
+            fullWidth
+            onChange={(e) => this.props.formHandler(e)}
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={this.props.confirmPassword}
+            validators={["isPassword"]}
+            errorMessages={["Password length has to be greater than 6"]}
+          />
         </div>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={this.props.handleSubmit}
+        >
+          Submit
+        </Button>
+      </div>
     );
   }
 }

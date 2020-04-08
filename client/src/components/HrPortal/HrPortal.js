@@ -5,13 +5,13 @@ import {
   createMuiTheme,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
-import MoreVertOption from "./MoreVertOption";
-import CustomToolbar from "./CustomToolBar";
-import "./HrPortal.css";
-import agent from "../../api/agent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Face from "../Icon/Face";
-require("datejs");
+import MoreVertOption from './MoreVertOption'
+import CustomToolbar from './CustomToolBar';
+import agent from '../../api/agent'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Face from '../Icon/Face'
+import { HTTP_STATUS } from '../../constants/constants'
+require('datejs');
 
 /**
  * Material UI styling JSON object.
@@ -63,36 +63,6 @@ const options = (props, handleCreate) => {
   };
   return data;
 };
-
-/**
- * Demo data for now.
- */
-const demoData = [
-  {
-    pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-    employeeId: "1",
-    firstName: "John",
-    lastName: "Doe",
-    laborGrade: "A",
-    supervisor: "Bruce Link",
-  },
-  {
-    pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-    employeeId: "2",
-    firstName: "Jane",
-    lastName: "Kelly",
-    laborGrade: "A",
-    supervisor: "Bruce Link",
-  },
-  {
-    pictureUrl: "https://api4u.azurewebsites.net/images/flintstone/fred.png",
-    employeeId: "3",
-    firstName: "Henry",
-    lastName: "Peter",
-    laborGrade: "A",
-    supervisor: "Bruce Link",
-  },
-];
 
 /**
  * Author: Joe
@@ -151,7 +121,7 @@ class HrPortal extends Component {
   };
 
   handleArchive = async (id, body) => {
-
+    
     try {
       const date = new Date().getTime();
       body.end_date = date;
@@ -159,8 +129,9 @@ class HrPortal extends Component {
       this.fetchData(this.state.token);
       
     } catch(e) {
-      console.error(e);
-      this.props.sessionLogoutHandler();
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
     }
   }
 
@@ -170,16 +141,17 @@ class HrPortal extends Component {
       body.end_date = null;
       await agent.employeeInfo.updateEmployee(id, this.state.token, body);
       this.fetchData(this.state.token);
+
     } catch(e) {
-      console.error(e);
-      this.props.sessionLogoutHandler();
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
     }
   }
 
   async fetchData(token) {
 
     try {
-
       const resp = await agent.employeeInfo.getAllEmployees(token);
       var resultData = [];
       resp.forEach(async (item) => {
@@ -221,8 +193,9 @@ class HrPortal extends Component {
       })
       
     } catch(e) {
-      console.error(e);
-      this.props.sessionLogoutHandler();
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
     }
   } 
 

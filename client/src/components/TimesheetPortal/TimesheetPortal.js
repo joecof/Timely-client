@@ -43,41 +43,26 @@ const columns = [
       filter: false,
       // display false
     },
-  },
-  {
-    name: "status",
-    label: "Status",
-    className: "column",
-    options: {
-      filter: true,
-    },
-  },
-];
+  }
+  ];
 
-// static options
-const options = (props, states, fetchTimesheets) => {
-  const data = {
-    selectableRows: false,
-    search: true,
-    print: false,
-    download: false,
-    rowHover: true,
-    onRowClick: (rowData) => {
-      console.log(rowData);
-      props.history.push(`/dashboard/timesheet/${rowData[0]}`);
-      localStorage.setItem("timesheetId", rowData[0]);
-    },
-    customToolbar: () => {
-      return (
-        <CurrentTimesheetToolBar
-          {...props}
-          fetchTimesheets={fetchTimesheets}
-          states={states}
-        />
-      );
-    },
-  };
-  return data;
+  // static options
+  const options = (props, states, fetchTimesheets) => {
+    const data = {
+      selectableRows: false,
+      search: true,
+      print: false,
+      download: false,
+      rowHover: true,
+      onRowClick: (rowData) => {
+        props.history.push(`/dashboard/timesheet/${rowData[0]}`);
+        localStorage.setItem("timesheetId", rowData[0]);
+      },
+      customToolbar: () => {
+        return <CurrentTimesheetToolBar {...props} fetchTimesheets={fetchTimesheets} states={states}/>
+      }
+    }
+    return data;
 };
 
 // TimesheetPortal Component
@@ -191,8 +176,6 @@ export default class TimesheetPortal extends Component {
 
   // timesheet table UI
   render() {
-    console.log(this.props);
-
     return (
       <div className="timesheetPortal-container">
         <MuiThemeProvider theme={this.getCustomTheme()}>

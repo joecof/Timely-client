@@ -2,8 +2,8 @@ import React from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link } from "react-router-dom";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import EditIcon from "@material-ui/icons/Edit";
+import EditIcon from '@material-ui/icons/Edit';
+
 
 /**
  * Author: Joe
