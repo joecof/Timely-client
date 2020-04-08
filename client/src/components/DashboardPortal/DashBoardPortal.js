@@ -28,7 +28,7 @@ const styles = () => ({
     maxHeight: '800px',
     overflow: "auto",
     width: "310px",
-    margin: "0 20px 0 0",
+    margin: "0px 20px 0 35px",
     boxShadow: "none",
     border: "solid 1px lightgray",
     borderRadius: "5px"

@@ -1,5 +1,5 @@
 .projectDetailContainer {
-  width: 1300px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -170,7 +170,7 @@ display: flex;
 }
 
 .WorkpackageListDT{
-    margin: 7%;
+    margin: 45px 0 0 0;
 }
 
 .PDWorkpackageTree {

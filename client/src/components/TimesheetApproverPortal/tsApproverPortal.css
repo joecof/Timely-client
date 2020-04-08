@@ -1,5 +1,5 @@
 .tsApproverPortal-container {
-    width: 1300px;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -11,12 +11,24 @@
 }
 
 .assignApprover-container {
-    width: 1300px;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
 
 .assignApprover-secondaryTsApproverTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 0 16px;
+}
+
+.tsToApprove-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.tsToApprove-title {
     font-size: 16px;
     font-weight: bold;
     margin: 0 0 0 16px;

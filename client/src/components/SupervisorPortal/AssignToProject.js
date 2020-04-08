@@ -13,7 +13,7 @@ import Alert from "../Alert/Alert";
  */
 const useStyles = makeStyles((theme) => ({
   assignToProjContainer: {
-    width: "1300px",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

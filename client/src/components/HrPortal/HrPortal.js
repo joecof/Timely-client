@@ -11,6 +11,7 @@ import agent from '../../api/agent'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Face from '../Icon/Face'
 import { HTTP_STATUS } from '../../constants/constants'
+import "./HrPortal.css";
 require('datejs');
 
 /**
@@ -75,7 +76,7 @@ class HrPortal extends Component {
       overrides: {
         MUIDataTableHeadCell: {
           data: {
-            fontSize: "16px",
+            fontSize: "15px",
           },
         },
         MUIDataTableBodyCell: {
@@ -88,6 +89,11 @@ class HrPortal extends Component {
             padding: "0px 0 0 16px",
           },
         },
+        MUIDataTable: {
+          paper: {
+            margin: "0 0 45px 0"
+          }
+        }
       },
     });
 

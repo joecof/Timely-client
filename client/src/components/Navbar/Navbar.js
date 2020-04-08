@@ -87,16 +87,6 @@ class Navbar extends Component {
           position="fixed" elevation={0}         
           className={clsx(classes.appBar, {[classes.appBarShift]: this.props.resize})}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick = {this.props.resizeDashboard}
-            >
-              {/* Will render a different 'icon' depending on if the user has resized the navbar or not. */}
-              {this.props.resize ?  <ArrowBackIcon/>  : <MenuIcon/>  }
-            </IconButton>
             <Typography className={classes.title} variant="h6" noWrap> 
               <BreadCrumb { ...this.props } />
             </Typography>

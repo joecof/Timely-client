@@ -54,9 +54,9 @@ class ExpansionMenuHeader extends Component {
 
     return (
       <ExpansionPanelSummary
-        expandIcon={
-              <ArrowDropDownIcon className={classes.materialIconLight} className="dropDown-arrow"/>
-        }
+        // expandIcon={
+        //       <ArrowDropDownIcon className={classes.materialIconLight} className="dropDown-arrow"/>
+        // }
         aria-controls="panel1d-content"
         id="panel1d-header"
         className={classes.expansionPanelSummary}
@@ -65,14 +65,14 @@ class ExpansionMenuHeader extends Component {
           <div className={classes.expansionMenuHeaderAvatar}>
             <Avatar variant="circle" className={classes.avatar} />
           </div>
-          {this.props.resize ? (
+          {/* {this.props.resize ? (
             <div className={classes.expansionMenuHeaderProfileName}>
               {" "}
               {this.props.loadedUser.first_name +
                 " " +
                 this.props.loadedUser.last_name}{" "}
             </div>
-          ) : null}
+          ) : null} */}
         </div>
       </ExpansionPanelSummary>
     );

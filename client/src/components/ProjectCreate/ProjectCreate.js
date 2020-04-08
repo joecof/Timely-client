@@ -21,7 +21,7 @@ import "./ProjectCreate.css";
  */
 const useStyles = makeStyles(theme => ({
   container: {
-    width: "1300px",
+    width: "100%",
     display: "flex",
     justifyContent: "center"
   },

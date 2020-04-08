@@ -89,6 +89,11 @@ export default class TimesheetPortal extends Component {
             fontSize: "16px",
           },
         },
+        MUIDataTableBodyCell: {
+          root: {
+            fontSize: "16px"
+          }
+        }
       },
     });
 

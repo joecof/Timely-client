@@ -1,8 +1,16 @@
 .hrPortal-container{
-    width: 1300px;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
+
+/* .hrPortal-container {
+    width: 1100px;
+    box-shadow: none !important;
+    border: solid 1px lightgray;
+    border-radius: 5px;
+    padding: 25px;
+} */
 
 .hrPortal-datatable {
     width: 1100px;

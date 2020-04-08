@@ -25,6 +25,7 @@ const drawerShrinkedWidth = NAVBAR_PARAMETERS.DRAWER_SHRINKED_WIDTH;
  * @param {JSON} theme
  */
 const styles = theme => ({
+  
   root: {
     display: "flex",
   },
@@ -38,6 +39,11 @@ const styles = theme => ({
     backgroundColor: "white",
     width: "90%",
     margin: "0 auto"
+  },
+  btnDivider: {
+    backgroundColor: "white",
+    width: "90%",
+    margin: "20px auto 0 auto"
   },
   drawerOpen: {
     backgroundColor: "transparent !important",
@@ -87,7 +93,7 @@ class SideMenu extends Component {
 
 
           {/* Top Section */}
-          <p className="side-title">Timely</p>
+          <p className="side-title"> <b>Timely</b></p>
           <Divider className={classes.divider} />
 
           {/* <MenuItem isMenuLogo = {true} />
@@ -97,7 +103,7 @@ class SideMenu extends Component {
             resize={this.props.resize}
           />
 
-          <Divider className={classes.divider} />
+          <Divider className={classes.btnDivider} />
  
         
           <div className="menuItems-sections">

@@ -35,7 +35,7 @@ const timesheetStyle = (theme) => ({
   },
   tableTitle: {
     fontWeight: "bold",
-    fontSize: "10pt !important",
+    fontSize: "16px !important",
   },
   updateSubmitButton: {
     position: "absolute",
@@ -44,6 +44,9 @@ const timesheetStyle = (theme) => ({
   submitButton: {
     marginLeft: 25,
   },
+  projHours: {
+
+  }
 });
 
 // TimesheetDetail Component
@@ -938,40 +941,50 @@ class TimesheetDetail extends Component {
           <div className="timesheetTitle">
             <div className="attributeRow">
               <div className="empNumContainer">
-                <div className="empNumTitle">Employee Number:</div>
-                <div className="empNum">{this.state.loadUser.employee_id}</div>
-                <div className="weekNumContainer">
-                  <div className="weekNumTitle">Week Number:</div>
-                  <div className="weekNum">
-                    {this.state.loadedTimesheet.week}
+                <div className="tsDetail-empNumContainer">
+                  <div className="empNumTitle">Employee Number:</div>
+                  <div className="empNum">
+                    {this.state.loadUser.employee_id}
                   </div>
                 </div>
-                <div className="weekEndContainer">
-                  <div className="weekEndTitle">Week Ending:</div>
-                  <div className="weekEnd">
-                    {this.formatWeekEnding(
-                      this.state.loadedTimesheet.week_ending
-                    )}
+                {this.props.dashboardTimesheet ? null : (
+                  <div className="empNameAttribute">
+                    <div className="empNameTitle">Name:</div>
+                    <div className="empName">
+                      {this.state.loadUser.first_name}{" "}
+                      {this.state.loadUser.last_name}
+                    </div>
                   </div>
-                </div>
-                {!this.state.isEditable ? null : (
-                  <AddIcon
-                    fontSize="large"
-                    onClick={this.addRow}
-                    color="primary"
-                    variant="contained"
-                  />
                 )}
               </div>
-              {this.props.dashboardTimesheet ? null : (
-                <div className="empNameAttribute">
-                  <div className="empNameTitle">Name:</div>
-                  <div className="empName">
-                    {this.state.loadUser.first_name}{" "}
-                    {this.state.loadUser.last_name}
+              <div className="weekNumEndingIcon-container">
+                <div class="weekNumbEnd-container">
+                  <div className="weekNumContainer">
+                    <div className="weekNumTitle">Week Number:</div>
+                    <div className="weekNum">
+                      {this.state.loadedTimesheet.week}
+                    </div>
+                  </div>
+                  <div className="weekEndContainer">
+                    <div className="weekEndTitle">Week Ending:</div>
+                    <div className="weekEnd">
+                      {this.formatWeekEnding(
+                        this.state.loadedTimesheet.week_ending
+                      )}
+                    </div>
                   </div>
                 </div>
-              )}
+                <div className="tsDetail-iconContainer">
+                  {!this.state.isEditable ? null : (
+                    <AddIcon
+                      fontSize="large"
+                      onClick={this.addRow}
+                      color="primary"
+                      variant="contained"
+                    />
+                  )}
+                </div>
+              </div>
             </div>
             {/* add row button */}
 
@@ -1064,28 +1077,28 @@ class TimesheetDetail extends Component {
                   {/* total span column */}
                   <TableRow>
                     <TableCell className={classes.tableTitle}>Total</TableCell>
-                    <TableCell colSpan={2} align="right">
+                    <TableCell colSpan={2} align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalWeek)}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[0])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[1])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[2])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[3])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[4])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[5])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[6])}
                     </TableCell>
                   </TableRow>
