@@ -24,7 +24,7 @@ const styles = () => ({
   input: {
     display: "block",
     width: "100%",
-    margin: "10px 0 0 0",
+    margin: "5px 0 0 0",
   },
   field: {
     marginTop: "50px",
