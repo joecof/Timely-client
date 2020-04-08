@@ -248,7 +248,7 @@ class WorkpackageDetail extends React.Component {
           </>
         )}
         {(this.state.isProjManager && this.state.wp.project.status === 'OPEN' && this.state.wp.is_open) && (
-          <Button style={{background: 'red', color: "white"}} onClick={this.closeWP}>Close</Button>
+          <Button style={{background: 'red', color: "white"}} onClick={this.closeWP}>Close Work Package</Button>
         )}
         </div>
       </div>
