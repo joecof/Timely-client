@@ -16,7 +16,7 @@ const laborData = require("../HrPortal/CreateEmployeeForm/labor");
 
 const styles = () => ({
   container: {
-    width: "1300px",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
   },
