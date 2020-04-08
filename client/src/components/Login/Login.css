@@ -1,90 +1,68 @@
-/* google font */
-@import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Muli:ital,wght@0,400;1,800&display=swap');
 
-/* css for body */
-body {
-    background-color: #f9f6f2;
-    font-family: Nunito,HelveticaNeue-Light,sans-serif;
+/* Container Of All Login Information */
+.login-container {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    -webkit-transform: translate(-50%, -50%) !important;
+    transform: translate(-50%, -50%) !important;
+    width: 500px;
+    border-radius: 1%;
+    padding: 40px;
+    padding-bottom: 110px;
+    box-shadow: 0 6px 2px -2px rgba(0,0,0,0.22);
+    border: solid lightgray 1px;
 }
 
-/* css for wrapper*/
-.loginWrapper {
-    width: 400px;
-    margin: 0 auto;
-    margin-top: 200px;
-}
-
-/* css for login title */
-.prjMng {
-    text-align: center!important;
-    font-size: 16pt;
-}
-
-/* css for login container */
-.loginContainer {
-    max-width: 340px;
-    margin: 0 auto;
-    padding: 35px!important;
-    background: #fff;
-}
-
-/* css for login hint */
-.loginHint {
-    font-size: 14pt;
-}
-
-
-/* css for login form */
-.loginForm {
-    margin-top: 20px;
-    padding-left: auto;
-}
-
-/* css for input email */
-.loginEmail {
-    width: 90%;
-}
-
-/* css for input pwd */
-.loginPwd {
-    margin-top: 10px;
-    width: 90%;
-}
-
-/* css for login bottom section */
-.loginBsection {
-    margin-top: 10px;
-}
-
-/* css for button login */
-.loginBtn {
-    color: #fff;
-    font-size: 10pt;
-    background-color: #1ab394;
-    border-color: #1ab394;
-    text-align: center;
-    border: none;
-    outline: none;
-    margin-left: 76.5%;
-}
-
-/* css for input fields */
-.loginInputs {
+/* Login Text and Image */
+.loginText {
+    font-family: 'Muli', sans-serif;
+    font-weight: 900;
+    font-size: 30px;
     width: 100%;
-    border: none;
-    height: 30px;
-    font-size: 13px;
-    text-indent: 10px;
-    background-color: #f2f2f2;
-    outline: none;
+    margin: 0 auto;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    margin-bottom: 1.4em;
+    letter-spacing: .8px;
 }
 
-/* input focus */
-.loginInputs:focus {
-    border: 1px solid #ccc transparent;
+.login-logo {
+    height: 1.5em;
 }
 
-/* button hover */
-.loginBtn:hover {
-    background-color: #ccc;
+.text-title {
+    padding-left: 20px;
+}
+
+.lowercaseText {
+    /* font-size: 22px; */
+    font-weight: 900;
+    text-transform: lowercase;
+}
+
+/* Input Field Information */
+.inputFields {
+    width: 100% !important;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 1.9em;
+}
+
+.textfields {
+    width: 100% !important;
+}
+
+/* Button Information */
+.button-container {
+    text-align: center;
+}
+
+.loginButton {
+    width: 100% !important;
+    text-transform: uppercase;
+    margin-top: 3em !important;
 }

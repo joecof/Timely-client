@@ -1,0 +1,109 @@
+/* Styling for all Side Menu components including Expansion Menu and Menu Items */
+
+/* Expansion Menu Styling */
+.expansion-root {
+    background-color: transparent !important;
+}
+
+/* Side Menu Styling */
+.side-root, .SideMenu-drawerOpen-131 {
+    background-image: url(../../images/sideBarBackgroundImage.png);
+    background-attachment: fixed !important;
+    position: relative;
+    height: "100%" !important;
+    min-height: 100vh !important;
+    width: "100%" !important;
+    background-size: contain;
+}
+
+.side-root::after, .SideMenu-drawerOpen-131::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+    opacity: 0.66;
+    z-index: 0;
+    background-size: contain;
+}
+
+.side-root > *, .SideMenu-drawerOpen-131 > * {
+    position: relative;
+    z-index: 1;
+    background-size: contain;
+}
+
+.side-title {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    text-transform: uppercase;
+    font-size: 18px ;
+    text-align: center;
+    color: white;
+    margin-top: 35px;
+}
+
+/* Expansion Menu Header */
+.dropDown-arrow {
+    color: white !important;
+}
+
+/* Expansion Menu Items 
+    - these will overwrite some of the menu item styling to distinguish the difference between menu items and expansion menu items
+    - padding top and bottom will be smaller
+    - margin spacing will also be slightly smaller
+*/
+#menuItems-expansion {
+    padding: 0.35px 15px !important;
+}
+
+/* Menu Items */
+.menuItems {
+    border-radius: 3px !important;
+    width: 90%;
+    padding: 8px 15px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5em;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 7px;
+}
+
+.menuItems:hover::after {       
+    transition: 2s;
+    z-index: 1;
+}
+
+.menuItems:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: whitesmoke;
+    opacity: 0.35;
+    z-index: -10;
+}
+
+.menuItems:root { 
+    /* Temporary */
+    background-color: #00ACC1;
+}
+
+.menuItems-sections {
+    margin-top: 12.5px;
+}
+
+.itemIcon {
+    /* Material UI Icons for the Side Bar */
+    color: white;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: 28px !important;
+}

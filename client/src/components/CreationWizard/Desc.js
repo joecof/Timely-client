@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextValidator} from 'react-material-ui-form-validator';
 
 import './CreationWizard.css';
 
-const useStyles = () => ({
-projDesc: {
-  width: "310px"
-}
-});
+const useStyles = makeStyles(() => ({
+  projDesc: {
+    width: "100%",
+  },
+  projDescContainer: {
+    width: "80%",
+  },
+}));
 
 /**
  * Author: Prabh
@@ -20,8 +23,8 @@ const Desc = (props) => {
   const classes = useStyles();
 
   return (
-    <form autoComplete="off">
-
+    <div className={classes.projDescContainer}>
+      <form autoComplete="off">
       <TextValidator
         className={classes.projDesc}
         id="outlined-multiline-static"
@@ -35,7 +38,8 @@ const Desc = (props) => {
         validators={['isRequired']}
         errorMessages={['Input is required.']}
       />
-    </form>
+      </form>
+    </div>
   );
 };
 

@@ -15,27 +15,57 @@ import Schedule from "../CreationWizard/Schedule";
 import SelectEmployees from "./SelectEmployees";
 import "./WorkpackageCreate.css";
 import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
-import Alert from '../Alert/Alert'
-import { ValidatorForm } from 'react-material-ui-form-validator';
-
-
+import Alert from "../Alert/Alert";
+import { ValidatorForm } from "react-material-ui-form-validator";
 
 /**
  * Author: Prabh
  * Version: 1
  * Desc: This component let's the user create a new project
  */
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
+  container: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
   root: {
-    width: "100%"
+    width: "1100px",
   },
   backButton: {
-    marginRight: theme.spacing(1)
+    marginRight: theme.spacing(1),
+  },
+  stepper: {
+    padding: "40px 0",
+    border: "1px solid lightgray",
+  },
+  bottomContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  instructionContainer: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
   },
   instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  }
+    backgroundColor: "white",
+    width: "450px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "auto",
+    padding: "50px 0 50px 0",
+    borderTop: "3px solid lightgray",
+    margin: "40px 0 0 0",
+    borderRadius: "5px",
+  },
+  backNextButtonContainer: {
+    display: "flex",
+    justifyContent: "center",
+    margin: "20px 0 0 0",
+  },
 }));
 
 function getSteps() {
@@ -44,7 +74,7 @@ function getSteps() {
     "Work-Package Description",
     "Budget",
     "Schedule",
-    "Employees"
+    "Employees",
   ];
 }
 
@@ -126,32 +156,31 @@ export default function WorkpackageCreate(props) {
     checkedLower: false,
     wpList: props.location.wpList,
     project: props.location.project,
-    wpEmps: []
+    wpEmps: [],
   });
 
   useEffect(() => {
-    ValidatorForm.addValidationRule('isRequired', (value) => {
+    ValidatorForm.addValidationRule("isRequired", (value) => {
       console.log(value);
-      
-      if(value.length === 0) {
+
+      if (value.length === 0) {
         setValid(false);
         return false;
       } else {
         setValid(true);
         return true;
       }
-    });    
+    });
   }, []);
-  
+
   const [successAlert, setSuccessAlert] = React.useState(false);
   const [errorAlert, setErrorAlert] = React.useState(false);
   const [valid, setValid] = useState(false);
 
-  const handleOnChange = event => {
+  const handleOnChange = (event) => {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
     console.log(valid);
-
 
     // calculating the wp id here
     if (name === "wpParent") {
@@ -161,18 +190,19 @@ export default function WorkpackageCreate(props) {
       for (var wp in list) {
         if (
           list[wp].work_package_id.startsWith(value) &&
-          (parseInt(list[wp].work_package_id)).toString().length === value.length + 1
+          parseInt(list[wp].work_package_id).toString().length ===
+            value.length + 1
         ) {
           id = parseInt(list[wp].work_package_id) + 1;
         }
       }
-      
+
       if (value === 0) {
-        list.forEach(x => {
-          if((parseInt(x.work_package_id)).toString().length === 1) {
+        list.forEach((x) => {
+          if (parseInt(x.work_package_id).toString().length === 1) {
             id = parseInt(x.work_package_id) + 1;
           }
-        })
+        });
       }
 
       if (id === -1) {
@@ -182,34 +212,38 @@ export default function WorkpackageCreate(props) {
       var newWPID = id;
       newWPID += inputValues.checkedLower ? "L" : "";
       console.log(newWPID);
-      setInputValues({ ...inputValues, wpID: newWPID, wpParent: value === ''  ? "0" : value});
+      setInputValues({
+        ...inputValues,
+        wpID: newWPID,
+        wpParent: value === "" ? "0" : value,
+      });
     }
   };
 
-  const handleStartDate = date => {
+  const handleStartDate = (date) => {
     setInputValues({ ...inputValues, startDate: date });
 
-    setValid(true)
+    setValid(true);
   };
 
-  const handleEndDate = date => {
+  const handleEndDate = (date) => {
     setInputValues({ ...inputValues, endDate: date });
 
-    setValid(true)
+    setValid(true);
   };
 
-  const handleCheckboxChange = event => {
+  const handleCheckboxChange = (event) => {
     setInputValues({
       ...inputValues,
       [event.target.name]: event.target.checked,
       wpID: event.target.checked
         ? inputValues.wpID + "L"
-        : inputValues.wpID.replace("L", "")
+        : inputValues.wpID.replace("L", ""),
     });
   };
 
-  const handleTagsChange = inputValue => {
-    if(inputValue.length > 0) {
+  const handleTagsChange = (inputValue) => {
+    if (inputValue.length > 0) {
       setValid(true);
     }
 
@@ -234,7 +268,7 @@ export default function WorkpackageCreate(props) {
         gradeObj = {};
         var id = inputValues.wpEmps[item].labor_grade_id.labor_grade_id;
         found = false;
-        laborGrades.forEach(x => {
+        laborGrades.forEach((x) => {
           if (x.id === id) {
             x.count++;
             found = true;
@@ -243,7 +277,7 @@ export default function WorkpackageCreate(props) {
         if (!found) {
           gradeObj.id = id;
           gradeObj.count = 1;
-          yearlyRateValues.forEach(x => {
+          yearlyRateValues.forEach((x) => {
             if (x.labor_grade_id.labor_grade_id === id) {
               gradeObj.rate = x.charge_rate;
             }
@@ -255,7 +289,7 @@ export default function WorkpackageCreate(props) {
 
       var workPackagePlanObj = {};
       var workPackagePlanArray = [];
-      laborGrades.forEach(x => {
+      laborGrades.forEach((x) => {
         workPackagePlanObj = {};
         workPackagePlanObj.project_code = inputValues.project.project_code;
         workPackagePlanObj.work_package_id = inputValues.wpID;
@@ -276,7 +310,7 @@ export default function WorkpackageCreate(props) {
       });
 
       var empArray = [];
-      inputValues.wpEmps.forEach(x => {
+      inputValues.wpEmps.forEach((x) => {
         empArray.push(x);
       });
 
@@ -285,13 +319,13 @@ export default function WorkpackageCreate(props) {
         work_package_id: inputValues.wpID,
         higher_work_package_id: inputValues.wpParent,
         responsible_person_id: {
-          employee_id: inputValues.wpRE
+          employee_id: inputValues.wpRE,
         },
         is_open: 1,
-        description: inputValues.wpName+": "+ inputValues.Desc,
+        description: inputValues.wpName + ": " + inputValues.Desc,
         project_wp: inputValues.project.project_code + "_" + inputValues.wpID,
         workPackagePlanCollection: workPackagePlanArray,
-        employees: empArray
+        employees: empArray,
       };
     } else {
       data = {
@@ -299,12 +333,12 @@ export default function WorkpackageCreate(props) {
         work_package_id: inputValues.wpID,
         higher_work_package_id: inputValues.wpParent,
         responsible_person_id: {
-          employee_id: inputValues.wpRE
+          employee_id: inputValues.wpRE,
         },
         is_open: 1,
-        description: inputValues.wpName+": "+ inputValues.Desc,
+        description: inputValues.wpName + ": " + inputValues.Desc,
         project_wp: inputValues.project.project_code + "_" + inputValues.wpID,
-        employees: []
+        employees: [],
       };
     }
     console.log(JSON.stringify(data));
@@ -313,7 +347,7 @@ export default function WorkpackageCreate(props) {
       await agent.workpackages.createWorkpackage(data, token);
       setSuccessAlert(true);
       setErrorAlert(false);
-    } catch(e) {
+    } catch (e) {
       setSuccessAlert(false);
       setErrorAlert(false);
     }
@@ -328,7 +362,7 @@ export default function WorkpackageCreate(props) {
   const calculateHours = (budget, laborGrades) => {
     var avgRate = 0;
     var count = 0;
-    laborGrades.forEach(x => {
+    laborGrades.forEach((x) => {
       avgRate += x.rate * x.count;
       count += x.count;
     });
@@ -341,12 +375,12 @@ export default function WorkpackageCreate(props) {
   const steps = getSteps();
 
   const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setValid(false);
   };
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleReset = () => {
@@ -354,72 +388,105 @@ export default function WorkpackageCreate(props) {
   };
 
   return (
-    <div className={classes.root}>
-      {errorAlert ? <Alert config = {{message: "Work Package Submission Failed", variant: "error"}}/> : null}
-      {successAlert ? <Alert config = {{message: `Work Package Submission Successful!`, variant: "success"}}/> : null}
-      <ValidatorForm onSubmit = {handleSubmit}>
-
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <div>
-        {activeStep === steps.length ? (
+    <div className={classes.container}>
+      <div className={classes.root}>
+        {errorAlert ? (
+          <Alert
+            config={{
+              message: "Work Package Submission Failed",
+              variant: "error",
+            }}
+          />
+        ) : null}
+        {successAlert ? (
+          <Alert
+            config={{
+              message: `Work Package Submission Successful!`,
+              variant: "success",
+            }}
+          />
+        ) : null}
+        <ValidatorForm onSubmit={handleSubmit}>
+          <Stepper activeStep={activeStep} className={classes.stepper} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
           <div>
-            <Typography component={"span"} className={classes.instructions}>
-              All steps completed
-            </Typography>
-            <Button onClick={handleReset}>Reset</Button>
+            {activeStep === steps.length ? (
+              <div className={classes.instructionContainer}>
+                <Typography component={"span"} className={classes.instructions}>
+                  All steps completed
+                </Typography>
+                <Button onClick={handleReset}>Reset</Button>
+              </div>
+            ) : (
+              <div className={classes.bottomContainer}>
+                <Typography component={"span"} className={classes.instructions}>
+                  {getStepContent(
+                    activeStep,
+                    inputValues,
+                    handleOnChange,
+                    handleStartDate,
+                    handleEndDate,
+                    handleCheckboxChange,
+                    handleTagsChange
+                  )}
+                </Typography>
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={classes.backButton}
+                  >
+                    Back
+                  </Button>
+                  {activeStep === steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmit}
+                      disabled={!valid}
+                    >
+                      Finish
+                    </Button>
+                  )}
+                  {activeStep != steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      disabled={!valid}
+                    >
+                      Back
+                    </Button>
+                  )}
+                  {activeStep === steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmit}
+                    >
+                      Finish
+                    </Button>
+                  )}
+                  {activeStep != steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Next
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        ) : (
-          <div>
-            <Typography component={"span"} className={classes.instructions}>
-              {getStepContent(
-                activeStep,
-                inputValues,
-                handleOnChange,
-                handleStartDate,
-                handleEndDate,
-                handleCheckboxChange,
-                handleTagsChange
-              )}
-            </Typography>
-            <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.backButton}
-              >
-                Back
-              </Button>
-              {activeStep === steps.length - 1 && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmit}
-                  disabled = {!valid}
-                >
-                  Finish
-                </Button>
-              )}
-              {activeStep != steps.length - 1 && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                  disabled = {!valid}
-                >
-                  Next
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
+        </ValidatorForm>
       </div>
-      </ValidatorForm>
     </div>
   );
 }
