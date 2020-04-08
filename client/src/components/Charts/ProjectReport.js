@@ -151,7 +151,7 @@ class ProjectReport extends React.Component {
               Report for {this.state.wpList[0].project.project_code}
             </Text>
             <Text style={styles.date}>
-              {new Date().toISOString().split("T", 1)[0]}
+              {new Date().toDateString()}
             </Text>
           </View>
           {this.state.data
