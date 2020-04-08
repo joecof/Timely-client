@@ -1,20 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import MUIDatatable from "mui-datatables";
-import agent from '../../api/agent'
+import agent from "../../api/agent";
+import {
+  withStyles,
+  ThemeProvider,
+  createMuiTheme,
+  MuiThemeProvider,
+} from "@material-ui/core/styles";
+import "./LeadEngineer.css";
 import Alert from '../Alert/Alert'
 
-
-
 /**
- * Author : Lawrence, Prabh
- * Version : 1.0
- * Lead engineer portal component. A portal used by lead engineer to view the lowest level workpcakges
- * he/she is responsible for.
- */
-
-
-/**
- * Defines the columns for the RE portal. 
+ * Defines the columns for the RE portal.
  */
 const columns = [
   { name: "WpId", label: "WorkPackage ID", className: "column" },
@@ -23,7 +20,7 @@ const columns = [
 ];
 
 /**
- * Configuration object for the MUI data table. 
+ * Configuration object for the MUI data table.
  */
 const options = (props, wpList) => {
   const { history } = props;
@@ -36,40 +33,67 @@ const options = (props, wpList) => {
     onRowClick: (rowData, rowState) => {
       console.log(rowData);
       var wp = null;
-      wpList.forEach(x => {
+      wpList.forEach((x) => {
         if (x.work_package_id === rowData[0]) {
           wp = x;
         }
       });
       props.history.push({
         pathname: `/workpackageDetail`,
-        state: { wp: wp, isPM: false, isRE: true }
+        state: { wp: wp, isPM: false, isRE: true },
       });
-
     },
     textLabels: {
       body: {
-        noMatch: <p>Sorry, you are not responsible for any work pacakges.</p>
+        noMatch: <p>Sorry, you are not responsible for any work pacakges.</p>,
       },
-    }
-  }
+    },
+  };
   return data;
 };
 
-
-
 class LeadEngineer extends Component {
+  getCustomTheme = () =>
+    createMuiTheme({
+      overrides: {
+        MUIDataTableHeadCell: {
+          data: {
+            fontSize: "16px",
+            fontWeight: "bold",
+          },
+        },
+        MUIDataTable: {
+          paper: {
+            padding: "45px",
+          },
+        },
+        MUIDataTableToolbar: {
+          titleText: {
+            fontSize: "16px",
+            fontWeight: "bold",
+            margin: "0 0 0 15px"
+          },
+          root: {
+            padding: "0px"
+          }
+        },
+        MUIDataTableBodyCell: {
+          root: {
+            fontSize: "16px"
+          }
+        }
+      },
+    });
 
   constructor(props) {
     super(props);
 
-    this.state = ({
+    this.state = {
       data: [],
       token: null,
       wpList: [],
       errorAlert:false,
-    })
-
+    };
 
     this.fetchData = this.fetchData.bind(this);
   }
@@ -78,8 +102,8 @@ class LeadEngineer extends Component {
     const token = localStorage.getItem("token");
 
     this.setState({
-      token: token
-    })
+      token: token,
+    });
 
     this.fetchData(token);
   }
@@ -130,19 +154,22 @@ class LeadEngineer extends Component {
   }
 
   render() {
-
     return (
       <>
-      {this.state.errorAlert ? <Alert config = {{message: "WorkPackage API Call Failed", variant: "error"}}/> : null}
-        <MUIDatatable
-          className="datatable"
-          title={<h1> WorkPackage Reports</h1>}
-          options={options(this.props, this.state.wpList)}
-          columns={columns}
-          data={this.state.data}
-        />
+        <div className="leadEngineer-container">
+          <MuiThemeProvider theme={this.getCustomTheme()}>
+          {this.state.errorAlert ? <Alert config = {{message: "WorkPackage API Call Failed", variant: "error"}}/> : null}
+            <MUIDatatable
+              className="datatable"
+              title={"WorkPackage Reports"}
+              options={options(this.props, this.state.wpList)}
+              columns={columns}
+              data={this.state.data}
+            />
+          </MuiThemeProvider>
+        </div>
       </>
-    )
+    );
   }
 }
 

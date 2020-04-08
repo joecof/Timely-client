@@ -1,0 +1,38 @@
+.enhancedTable-tableContainer {
+
+}
+
+.enhancedTable-tableHead {
+
+}
+
+.enhancedTable-tableToolBar
+{
+    padding: 0 0 0 0;
+}
+
+.enhancedTable-tableCell {
+    /* padding: 0 !important; */
+}
+
+.enhancedTable-headerRow {
+    font-size: 16px;
+}
+
+.enhancedTable-headerPlaceholder {
+    height: 25px;
+}
+
+.enhancedTable-tableCell {
+    /* font-size: 16px !important; */
+}
+
+.enhancedTable-tableFooter {
+    display: flex !important;
+    justify-content: center;
+}
+
+.enhancedTable-footer-tableRow {
+display: flex !important;
+justify-content: center !important;
+}

@@ -5,21 +5,26 @@ import { TextValidator} from 'react-material-ui-form-validator';
 
 import "./CreationWizard.css";
 
-const useStyles = () => ({
+const useStyles = makeStyles(() => ({
+  budget_container: {
+    width: "70%",
+  },
   budgetInfo: {
-    width: "280px"
-  }
-});
+    width: "100%",
+    margin: "-15px 0 0 0",
+  },
+}));
 
 /**
  * Author: Prabh
  * Version: 1
  * Desc: Third step for project creation
  */
-const ProjectInfo = props => {
+const ProjectInfo = (props) => {
   const classes = useStyles();
 
   return (
+    <div className={classes.budget_container}>
     <form autoComplete="off">
       <TextValidator
         component="span"
@@ -35,6 +40,7 @@ const ProjectInfo = props => {
         errorMessages={['Input is required.']}
       />
     </form>
+    </div>
   );
 };
 

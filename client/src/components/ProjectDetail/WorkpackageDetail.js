@@ -1,6 +1,4 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 import agent from "../../api/agent";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
@@ -32,7 +30,7 @@ class WorkpackageDetail extends React.Component {
       week: 0,
       openModal: false,
       selectDisabled: true,
-      selectEmps: []
+      selectEmps: [],
     };
 
     this.openModal = this.openModal.bind(this);
@@ -52,7 +50,7 @@ class WorkpackageDetail extends React.Component {
 
   openModal() {
     this.setState({
-      openModal: true
+      openModal: true,
     });
   }
 
@@ -66,7 +64,7 @@ class WorkpackageDetail extends React.Component {
   async calcValuesEmpHours() {
     const token = localStorage.getItem("token");
     var emps = [];
-    this.state.wp.employees.forEach(x => {
+    this.state.wp.employees.forEach((x) => {
       emps.push(x.employee_id);
     });
     // console.log(emps);
@@ -90,12 +88,12 @@ class WorkpackageDetail extends React.Component {
     console.log(response);
   }
 
-  handleTagsChange = e => {
+  handleTagsChange = (e) => {
     console.log(e);
     // console.log(this.state.selectEmps);
     this.setState(
       {
-        selectEmps: e
+        selectEmps: e,
       },
       console.log(this.state.selectEmps)
     );
@@ -105,12 +103,15 @@ class WorkpackageDetail extends React.Component {
     console.log("SUbmit");
     // console.log(this.state.wp);
     var wp = this.state.wp;
-    this.state.selectEmps.forEach(x => wp.employees.push(x));
+    this.state.selectEmps.forEach((x) => wp.employees.push(x));
     console.log(wp);
-    this.setState({
-      wp: wp,
-      selectDisabled: true
-    }, console.log(this.state.wp));
+    this.setState(
+      {
+        wp: wp,
+        selectDisabled: true,
+      },
+      console.log(this.state.wp)
+    );
     const token = localStorage.getItem("token");
     const response = await agent.workpackages.updateWorkpackage(wp, token);
     console.log(response);
@@ -118,17 +119,24 @@ class WorkpackageDetail extends React.Component {
 
   render() {
     return (
-      <div>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} className="gridBorder">
-            <Typography variant="h4">{this.state.wp.description.split(":", 1)[0]}</Typography>
-            <Typography variant="h6">{this.state.wp.description.split(":", 2)[1] ? this.state.wp.description.split(":", 2)[1] : ''}</Typography>
-          </Grid>
-          <>
-            <Grid item xs={12} sm={3}>
-              <Typography variant="h6">Responsible Engineer:</Typography>
-              <Grid container direction="row" alignItems="center">
-                <Grid item className="projectDetailsMargin">
+      <div className="projectDetailContainer">
+        <div className="wpDetail-innerContainer">
+          <div className="wpDetail-top-container">
+            <div className="wpDetail-projTitleDesc-container">
+              <div className="wpDetail-projectTitle">
+                {this.state.wp.description.split(":", 1)[0]}
+                {this.state.wp.project_name}
+              </div>
+              <div className="projectDetail-projectDescription">
+                {this.state.wp.description.split(":", 2)[1]
+                  ? this.state.wp.description.split(":", 2)[1]
+                  : ""}
+              </div>
+            </div>
+            <div className="wpDetail-teamInfo-container">
+              <div className="wpDetail-REInfo">
+                <div className="wpDetail-RE-title">Responsible Engineer:</div>
+                <div className="wpDetail-avatar-container">
                   <Avatar
                     variant="circle"
                     aria-controls="simple-menu"
@@ -141,42 +149,39 @@ class WorkpackageDetail extends React.Component {
                       .slice(0, 1)
                       .toUpperCase()}
                   </Avatar>
-                </Grid>
-                <Grid item>
-                  <Typography>
-                    {this.state.wp.responsible_person_id.first_name +
-                      " " +
-                      this.state.wp.responsible_person_id.last_name}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-              <Typography variant="h6">Team:</Typography>
-              <Grid container direction="row" alignItems="center">
-                {this.state.wp.employees.slice(0, 5).map(e => (
-                  <Grid item className="projectDetailsMargin">
-                    <Tooltip title={e.first_name + " " + e.last_name}>
-                      <Avatar
-                        variant="circle"
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                      >
-                        {e.first_name.slice(0, 1).toUpperCase()}
-                        {e.last_name.slice(0, 1).toUpperCase()}
-                      </Avatar>
-                    </Tooltip>
-                  </Grid>
-                ))}
-                {this.state.wp.employees.length > 5 && (
-                  <>
-                    <Button onClick={this.openModal}>Show More</Button>
-                    <Modal
-                      open={this.state.openModal}
-                      members={this.state.wp.employees}
-                    />
-                  </>
-                )}
+                </div>
+                <div className="wpDetail-RE-name-container">
+                  {this.state.wp.responsible_person_id.first_name +
+                    " " +
+                    this.state.wp.responsible_person_id.last_name}
+                </div>
+              </div>
+              <div className="wpDetail-teamTitleAvatar-container">
+                <div className="wpDetail-teamTitle">Team:</div>
+                <div className="wpDetail-teamMemberAvatar-container">
+                  {this.state.wp.employees.slice(0, 5).map((e) => (
+                    <div className="wpDetail-avatar-container">
+                      <Tooltip title={e.first_name + " " + e.last_name}>
+                        <Avatar
+                          variant="circle"
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                        >
+                          {e.first_name.slice(0, 1).toUpperCase()}
+                          {e.last_name.slice(0, 1).toUpperCase()}
+                        </Avatar>
+                      </Tooltip>
+                    </div>
+                  ))}
+                  {this.state.wp.employees.length > 5 && (
+                    <>
+                      <Button onClick={this.openModal}>Show More</Button>
+                      <Modal
+                        open={this.state.openModal}
+                        members={this.state.wp.employees}
+                      />
+                    </>
+                  )}
                 {(this.state.selectDisabled && this.state.isProjManager && this.state.wp.work_package_id.includes("L") && this.state.wp.project.status === 'OPEN' && this.state.wp.is_open) && (
                   <Button
                     onClick={() => {
@@ -198,10 +203,10 @@ class WorkpackageDetail extends React.Component {
                   <Button onClick={this.submitNewEmployees}>Add</Button>
                   </>
                 )}
-              </Grid>
-            </Grid>
-          </>
-        </Grid>
+                </div>
+              </div>
+            </div>
+          </div>
         {this.state.isProjManager && this.state.emps.length > 0 && this.state.wp.work_package_id.includes("L") && (
           //NOTE: chagne week
           <>
@@ -243,6 +248,7 @@ class WorkpackageDetail extends React.Component {
         {(this.state.isProjManager && this.state.wp.project.status === 'OPEN' && this.state.wp.is_open) && (
           <Button style={{background: 'red', color: "white"}} onClick={this.closeWP}>Close</Button>
         )}
+        </div>
       </div>
     );
   }
