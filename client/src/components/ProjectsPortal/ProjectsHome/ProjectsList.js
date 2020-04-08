@@ -21,7 +21,11 @@ class ProjectsList extends React.Component {
       print: false,
       responsive: "scroll",
       selectableRows : true,
-      customToolbarSelect: (selectedRows) => <CustomSelectProject selectedRows={selectedRows} type={this.state.type}/>,
+      customToolbarSelect: (selectedRows, data) => {
+        return (
+          <CustomSelectProject data={data[0].data} type={this.state.type} />
+        );
+      },
       onRowClick: (rowData, rowState) => {
         this.props.history.push({
           pathname: `/projectDetails`,

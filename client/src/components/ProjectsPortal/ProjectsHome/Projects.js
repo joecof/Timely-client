@@ -84,13 +84,13 @@ class Projects extends React.Component {
       projData.push(response[i].project_name);
       var manager = response[i].project_manager_id.first_name + " " + response[i].project_manager_id.last_name;
       projData.push(manager);
-      if (response[i].project_manager_id.employee_id === parseInt(ID)) {
+      if (response[i].project_manager_id.employee_id === parseInt(ID) && response[i].status === "OPEN") {
         mineProj.push(projData);
       }
-      if (response[i].status === "COMPLETE") {
+      if (response[i].status === "CLOSE") {
         closedProj.push(projData);
       }
-      if (response[i].status === "ARCHIVED") {
+      if (response[i].status === "ARCHIVE") {
           archivedProj.push(projData);
       }
       allProj.push(projData);
