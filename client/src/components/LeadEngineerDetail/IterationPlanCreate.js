@@ -205,7 +205,6 @@ class IterationPlanCreate extends React.Component {
       this.setState({
         errorAlert: true,
       });
-      this.props.sessionLogoutHandler();
     }
   }
 
