@@ -714,7 +714,7 @@ class TimesheetDetail extends Component {
   }
   // has project for submit
   hasProject() {
-    if (this.state.projectCodes.length > 0) {
+    if (this.state.projectCodes.length > 0 && this.state.wpIds.length > 0) {
       return true;
     }
     return false;
@@ -755,7 +755,7 @@ class TimesheetDetail extends Component {
       <TableCell scope="row">
         {!this.state.isEditable ? (
           row[1]
-        ) : this.state.projectCodes.length > 0 ? (
+        ) : this.hasProject() ? (
           <TextField
             select
             className="projCode"
@@ -774,9 +774,9 @@ class TimesheetDetail extends Component {
         )}
       </TableCell>
       <TableCell align="right">
-        {!this.state.isEditable ? (
+        {!this.state.isEditable  ? (
           row[2]
-        ) : this.state.projectCodes.length > 0 ? (
+        ) : this.hasProject() ? (
           <TextField
             select
             className="wpId"
