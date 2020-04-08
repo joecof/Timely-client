@@ -53,29 +53,25 @@ const columns = [
   },
 ];
 
-// static options
-const options = (props, states, fetchTimesheets) => {
-  const data = {
-    selectableRows: false,
-    search: true,
-    print: false,
-    download: false,
-    rowHover: true,
-    onRowClick: (rowData) => {
-      props.history.push(`/dashboard/timesheet/${rowData[0]}`);
-      localStorage.setItem("timesheetId", rowData[0]);
-    },
-    customToolbar: () => {
-      return (
-        <CurrentTimesheetToolBar
-          {...props}
-          fetchTimesheets={fetchTimesheets}
-          states={states}
-        />
-      );
-    },
-  };
-  return data;
+  // static options
+  const options = (props, states, fetchTimesheets) => {
+    const data = {
+      selectableRows: false,
+      search: true,
+      print: false,
+      download: false,
+      rowHover: true,
+      onRowClick: (rowData) => {
+
+        console.log(rowData)
+        props.history.push(`/dashboard/timesheet/${rowData[0]}`);
+        localStorage.setItem("timesheetId", rowData[0]);
+      },
+      customToolbar: () => {
+        return <CurrentTimesheetToolBar {...props} fetchTimesheets={fetchTimesheets} states={states}/>
+      }
+    }
+    return data;
 };
 
 // TimesheetPortal Component
@@ -126,7 +122,8 @@ export default class TimesheetPortal extends Component {
   // Fetching Timesheets
   async fetchTimesheets() {
     // fetch logined user
-    const user = JSON.parse(sessionStorage.getItem("user"));
+
+    const user = JSON.parse(sessionStorage.getItem('user'));
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
     const response = await agent.timesheetsInfo.getAllTimesheetsByEmp(
@@ -176,6 +173,9 @@ export default class TimesheetPortal extends Component {
 
   // timesheet table UI
   render() {
+
+    console.log(this.props)
+    
     return (
       <div className="timesheetPortal-container">
         <MuiThemeProvider theme={this.getCustomTheme()}>

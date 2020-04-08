@@ -5,6 +5,8 @@ import Avatar from "@material-ui/core/Avatar";
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Face from '../../Icon/Face'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import '../SideMenu.css'
 
 /**
  * Material UI styling JSON object.
@@ -53,10 +55,10 @@ class ExpansionMenuHeader extends Component {
     return (
       <ExpansionPanelSummary
         expandIcon={
-              <ExpandMoreIcon className={classes.materialIconLight} />
+              <ArrowDropDownIcon className={classes.materialIconLight} className="dropDown-arrow"/>
         }
-        aria-controls="panel1a-content"
-        id="panel1a-header"
+        aria-controls="panel1d-content"
+        id="panel1d-header"
         className={classes.expansionPanelSummary}
       >
         <div className={classes.expansionMenuHeaderContainer}>

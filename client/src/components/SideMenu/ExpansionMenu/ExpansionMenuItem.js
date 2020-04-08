@@ -1,64 +1,61 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 import Avatar from "@material-ui/core/Avatar";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import { Link } from "react-router-dom";
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import classNames from 'classnames';
 
 /**
- * Material UI styling JSON object.
+ * Material UI styling JSON object. 
+ * @param {JSON} theme 
  */
-const styles = () => ({
-  expansionPanelDetails: {
-    // backgroundColor: '#272624'
+const styles = theme => ({
+  menuItem: {
+    // paddingLeft: theme.spacing(1.4),
+    // paddingTop: theme.spacing(0.5),
+    // paddingBottom: theme.spacing(0.5),
   },
   text: {
-    color: "black"
-  },
+    marginLeft: 50,
+    color: 'white',
+    // font: '14px, Roboto, Helvetica, Arial, sans-serif',
+  }, 
   link: {
-    textDecoration: "none"
+    textDecoration: 'none',
   },
-  expansionPanelDetails: {
-    display: "flex",
-    padding: "10px 0 0 30px"
-  },
-  avatarRoleContainer: {
-    display: "flex",
-    alignItems: "center"
-  },
-  avatarContainer: {
-    margin: "0 15px 0 0"
-  },
-  roleContainer: {
-
-  }
 });
 
+
 /**
- * Author: Joe
- * Version: 1.0
- * Description: ExpansionMenuHeader component. Menu item component for each item on the expansion menu.
+ * Author: Joe 
+ * Version: 1.0 
+ * Description: ExpansionMenuHeader component. Menu item component for each item on the expansion menu. 
  */
 class ExpansionMenuItem extends Component {
   render() {
     const { classes } = this.props;
 
     return (
-      <Link className={classes.link} to={this.props.link}>
-        <ExpansionPanelDetails className={classes.expansionPanelDetails}>
-          <div className={classes.avatarRoleContainer}>
-            <div className={classes.avatarContainer}>
-              <Avatar variant="circle" className={classes.avatar} />
-            </div>
-            <div className={classes.roleContainer}>
-              {this.props.resize ? (
-                <p className={classes.text}>{this.props.text}</p>
-              ) : null}
-            </div>
-          </div>
-        </ExpansionPanelDetails>
+      <div  className="menuItems" id="menuItems-expansion">
+      <Link className = {classes.link} to = { this.props.link }>
+        <Grid container direction="row" alignItems="center" className = {classes.menuItem} >
+          <Grid item >
+            {/* {this.props.isMenuLogo ? 
+              <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>} */}
+            
+            <DashboardIcon className="itemIcon"/>
+            
+          </Grid>
+          <Grid item onClick = {this.props.handleClick}>
+            {this.props.text && this.props.resize ? 
+              <p className = {classes.text}> {this.props.text} </p> : null}
+          </Grid>
+        </Grid>
       </Link>
-    );
+      </div>
+    )
   }
 }
 

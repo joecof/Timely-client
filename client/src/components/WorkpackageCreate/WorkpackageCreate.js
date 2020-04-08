@@ -15,6 +15,7 @@ import Schedule from "../CreationWizard/Schedule";
 import SelectEmployees from "./SelectEmployees";
 import "./WorkpackageCreate.css";
 import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
+import Alert from "../Alert/Alert";
 
 /**
  * Author: Prabh
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "50px 0 50px 0",
     borderTop: "3px solid lightgray",
     margin: "40px 0 0 0",
-    borderRadius: "5px"
+    borderRadius: "5px",
   },
   backNextButtonContainer: {
     display: "flex",
@@ -67,7 +68,7 @@ function getSteps() {
     "Work-Package Description",
     "Budget",
     "Schedule",
-    "Employees"
+    "Employees",
   ];
 }
 
@@ -152,6 +153,9 @@ export default function WorkpackageCreate(props) {
     wpEmps: [],
   });
 
+  const [successAlert, setSuccessAlert] = React.useState(false);
+  const [errorAlert, setErrorAlert] = React.useState(false);
+
   const handleOnChange = (event) => {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
@@ -164,7 +168,8 @@ export default function WorkpackageCreate(props) {
       for (var wp in list) {
         if (
           list[wp].work_package_id.startsWith(value) &&
-          (parseInt(list[wp].work_package_id)).toString().length === value.length + 1
+          parseInt(list[wp].work_package_id).toString().length ===
+            value.length + 1
         ) {
           id = parseInt(list[wp].work_package_id) + 1;
         }
@@ -176,7 +181,11 @@ export default function WorkpackageCreate(props) {
       var newWPID = id;
       newWPID += inputValues.checkedLower ? "L" : "";
       console.log(newWPID);
-      setInputValues({ ...inputValues, wpID: newWPID, wpParent: value === ''  ? "0" : value});
+      setInputValues({
+        ...inputValues,
+        wpID: newWPID,
+        wpParent: value === "" ? "0" : value,
+      });
     }
   };
 
@@ -188,17 +197,17 @@ export default function WorkpackageCreate(props) {
     setInputValues({ ...inputValues, endDate: date });
   };
 
-  const handleCheckboxChange = event => {
+  const handleCheckboxChange = (event) => {
     setInputValues({
       ...inputValues,
       [event.target.name]: event.target.checked,
       wpID: event.target.checked
         ? inputValues.wpID + "L"
-        : inputValues.wpID.replace("L", "")
+        : inputValues.wpID.replace("L", ""),
     });
   };
 
-  const handleTagsChange = inputValue => {
+  const handleTagsChange = (inputValue) => {
     console.log(inputValue);
     setInputValues({ ...inputValues, wpEmps: inputValue });
   };
@@ -221,7 +230,7 @@ export default function WorkpackageCreate(props) {
         gradeObj = {};
         var id = inputValues.wpEmps[item].labor_grade_id.labor_grade_id;
         found = false;
-        laborGrades.forEach(x => {
+        laborGrades.forEach((x) => {
           if (x.id === id) {
             x.count++;
             found = true;
@@ -230,7 +239,7 @@ export default function WorkpackageCreate(props) {
         if (!found) {
           gradeObj.id = id;
           gradeObj.count = 1;
-          yearlyRateValues.forEach(x => {
+          yearlyRateValues.forEach((x) => {
             if (x.labor_grade_id.labor_grade_id === id) {
               gradeObj.rate = x.charge_rate;
             }
@@ -242,7 +251,7 @@ export default function WorkpackageCreate(props) {
 
       var workPackagePlanObj = {};
       var workPackagePlanArray = [];
-      laborGrades.forEach(x => {
+      laborGrades.forEach((x) => {
         workPackagePlanObj = {};
         workPackagePlanObj.project_code = inputValues.project.project_code;
         workPackagePlanObj.work_package_id = inputValues.wpID;
@@ -263,7 +272,7 @@ export default function WorkpackageCreate(props) {
       });
 
       var empArray = [];
-      inputValues.wpEmps.forEach(x => {
+      inputValues.wpEmps.forEach((x) => {
         empArray.push(x);
       });
 
@@ -272,13 +281,13 @@ export default function WorkpackageCreate(props) {
         work_package_id: inputValues.wpID,
         higher_work_package_id: inputValues.wpParent,
         responsible_person_id: {
-          employee_id: inputValues.wpRE
+          employee_id: inputValues.wpRE,
         },
         is_open: 1,
-        description: inputValues.wpName+": "+ inputValues.Desc,
+        description: inputValues.wpName + ": " + inputValues.Desc,
         project_wp: inputValues.project.project_code + "_" + inputValues.wpID,
         workPackagePlanCollection: workPackagePlanArray,
-        employees: empArray
+        employees: empArray,
       };
     } else {
       data = {
@@ -286,28 +295,36 @@ export default function WorkpackageCreate(props) {
         work_package_id: inputValues.wpID,
         higher_work_package_id: inputValues.wpParent,
         responsible_person_id: {
-          employee_id: inputValues.wpRE
+          employee_id: inputValues.wpRE,
         },
         is_open: 1,
-        description: inputValues.wpName+": "+ inputValues.Desc,
+        description: inputValues.wpName + ": " + inputValues.Desc,
         project_wp: inputValues.project.project_code + "_" + inputValues.wpID,
-        employees: []
+        employees: [],
       };
     }
     console.log(JSON.stringify(data));
 
-    const response = await agent.workpackages.createWorkpackage(data, token);
-    console.log(response);
+    try {
+      await agent.workpackages.createWorkpackage(data, token);
+      setSuccessAlert(true);
+      setErrorAlert(false);
+    } catch (e) {
+      setSuccessAlert(false);
+      setErrorAlert(false);
+    }
 
-    // console.log(hoursForEach);
-    // console.log(budget);
-    // console.log(laborGrades);
+    setTimeout(() => {
+      setErrorAlert(false);
+      setSuccessAlert(false);
+      props.history.push(`/dashboard/projectDetails`);
+    }, 1000);
   };
 
   const calculateHours = (budget, laborGrades) => {
     var avgRate = 0;
     var count = 0;
-    laborGrades.forEach(x => {
+    laborGrades.forEach((x) => {
       avgRate += x.rate * x.count;
       count += x.count;
     });
@@ -334,11 +351,23 @@ export default function WorkpackageCreate(props) {
   return (
     <div className={classes.container}>
       <div className={classes.root}>
-        <Stepper
-          activeStep={activeStep}
-          className={classes.stepper}
-          alternativeLabel
-        >
+        {errorAlert ? (
+          <Alert
+            config={{
+              message: "Work Package Submission Failed",
+              variant: "error",
+            }}
+          />
+        ) : null}
+        {successAlert ? (
+          <Alert
+            config={{
+              message: `Work Package Submission Successful!`,
+              variant: "success",
+            }}
+          />
+        ) : null}
+        <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -354,7 +383,7 @@ export default function WorkpackageCreate(props) {
               <Button onClick={handleReset}>Reset</Button>
             </div>
           ) : (
-            <div className={classes.instructionContainer}>
+            <div>
               <Typography component={"span"} className={classes.instructions}>
                 {getStepContent(
                   activeStep,
@@ -366,6 +395,7 @@ export default function WorkpackageCreate(props) {
                   handleTagsChange
                 )}
               </Typography>
+
               <div className={classes.backNextButtonContainer}>
                 <Button
                   disabled={activeStep === 0}

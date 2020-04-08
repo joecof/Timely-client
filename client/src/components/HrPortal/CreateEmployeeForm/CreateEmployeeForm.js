@@ -185,33 +185,26 @@ class CreateEmployeeForm extends Component {
     const { classes, hr } = this.props;
 
     return (
-      <div className={classes.outerContainer}>
-        <div className={classes.root}>
-          {this.state.errorAlert ? (
-            <Alert config={{ message: "error", variant: "error" }} />
-          ) : null}
-          {this.state.successAlert ? (
-            <Alert config={{ message: "success", variant: "success" }} />
-          ) : null}
-          <Paper className={classes.paper} elevation={2}>
-            <div className={classes.container}>
-              <CreateEmployeeInfo
-                hr={hr}
-                formHandler={this.formHandler}
-                isHrSwitch={this.isHrSwitch}
-                isHr={this.state.isHr}
-                isAdminSwitch={this.isAdminSwitch}
-                isAdmin={this.state.isAdmin}
-                isSuperTimesheetApproverSwitch={
-                  this.isSuperTimesheetApproverSwitch
-                }
-                isSuperTimesheetApprover={this.state.isSuperTimesheetApprover}
+<div className={classes.outerContainer}>
+      <div className={classes.root}>
+        {this.state.errorAlert ? <Alert config = {{message: "Submission Failed", variant: "error"}}/> : null}
+        {this.state.successAlert ? <Alert config = {{message: "Submission Success!", variant: "success"}}/> : null}
+        <Paper className = {classes.paper} elevation = {2}>
+        <div className={classes.container}>
+            <CreateEmployeeInfo  
+              hr={hr} 
+              formHandler = {this.formHandler} 
+              isHrSwitch = {this.isHrSwitch} 
+              isHr = {this.state.isHr}  
+              isAdminSwitch = {this.isAdminSwitch} 
+              isAdmin = {this.state.isAdmin} 
+              isSuperTimesheetApproverSwitch = {this.isSuperTimesheetApproverSwitch}
+              isSuperTimesheetApprover = {this.state.isSuperTimesheetApprover}
               />
               <Divider
                 orientation="vertical"
                 flexItem
-                className={classes.divider}
-              />
+                className={classes.divider} />
               <CreateEmployeeBasicInfo
                 hr={hr}
                 formHandler={this.formHandler}

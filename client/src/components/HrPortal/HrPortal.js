@@ -151,66 +151,80 @@ class HrPortal extends Component {
   };
 
   handleArchive = async (id, body) => {
-    const date = new Date().getTime();
-    body.end_date = date;
-    await agent.employeeInfo.updateEmployee(id, this.state.token, body);
-    this.fetchData(this.state.token);
-  };
+
+    try {
+      const date = new Date().getTime();
+      body.end_date = date;
+      await agent.employeeInfo.updateEmployee(id, this.state.token, body);
+      this.fetchData(this.state.token);
+      
+    } catch(e) {
+      console.error(e);
+      this.props.sessionLogoutHandler();
+    }
+  }
 
   handleOpen = async (id, body) => {
-    body.end_date = null;
-    await agent.employeeInfo.updateEmployee(id, this.state.token, body);
-    this.fetchData(this.state.token);
-  };
+
+    try {
+      body.end_date = null;
+      await agent.employeeInfo.updateEmployee(id, this.state.token, body);
+      this.fetchData(this.state.token);
+    } catch(e) {
+      console.error(e);
+      this.props.sessionLogoutHandler();
+    }
+  }
 
   async fetchData(token) {
-    const { classes } = this.props;
-    const resp = await agent.employeeInfo.getAllEmployees(token);
 
-    var resultData = [];
-    resp.forEach(async (item) => {
-      let id = item.employee_id;
-      let firstName = item.first_name;
-      let lastName = item.last_name;
-      let startDate = new Date(item.start_date).toString("MMM dd");
-      let endDate = item.end_date;
-      let laborGrade = item.labor_grade_id.labor_grade_id;
-      let vacation = item.vacation;
-      let supervisor = item.supervisor_id;
+    try {
 
-      let dateEnd =
-        endDate == null ? (
-          <p style={{ color: "green", fontWeight: "bold" }}> Currently Employed </p>
-        ) : (
-          <p style={{ color: "red", fontWeight: "bold" }}> Archived </p>
-        );
+      const resp = await agent.employeeInfo.getAllEmployees(token);
+      var resultData = [];
+      resp.forEach(async (item) => {
+        let id = item.employee_id;
+        let firstName = item.first_name;
+        let lastName = item.last_name;
+        let startDate = new Date(item.start_date).toString("MMM dd");
+        let endDate = item.end_date;
+        let laborGrade = item.labor_grade_id.labor_grade_id
+        let vacation = item.vacation;
+        let supervisor = item.supervisor_id;
 
-      let row = [];
-      row.push(<Face avatar={{ width: 25, height: 25, margin: "0 auto" }} />);
-      row.push(id);
-      row.push(firstName);
-      row.push(lastName);
-      row.push(startDate);
-      row.push(dateEnd);
-      row.push(laborGrade);
-      row.push(vacation);
-      row.push(supervisor);
-      row.push(
-        <MoreVertOption
-          link={`/dashboard/hr/${id}`}
-          id={id}
-          employee={item}
-          handleArchive={this.handleArchive}
-          handleOpen={this.handleOpen}
-        />
-      );
-      resultData.push(row);
-    });
+        let dateEnd = endDate == null ? 
+          (<p style = {{color: 'green' }} > Currently Employed </p>) : 
+          (<p style = {{color: 'red' }}> Archived </p>)
 
-    this.setState({
-      data: resultData,
-    });
-  }
+        let row = [];
+        row.push(<Face  avatar = {{width: 25, height: 25, margin: '0 auto'}}/>)
+        row.push(id);
+        row.push(firstName);
+        row.push(lastName);
+        row.push(startDate);
+        row.push(dateEnd);
+        row.push(laborGrade);
+        row.push(vacation);
+        row.push(supervisor);
+        row.push(<MoreVertOption 
+          link={`/dashboard/hr/${id}`} 
+          id = {id} 
+          employee = {item} 
+          handleArchive = {this.handleArchive} 
+          handleOpen = {this.handleOpen}  
+          />);
+        resultData.push(row);
+      })
+      
+      this.setState({
+        data: resultData
+      })
+      
+    } catch(e) {
+      console.error(e);
+      this.props.sessionLogoutHandler();
+    }
+  } 
 
   render() {
     return (

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import agent from './api/agent'
 import { BrowserRouter, Redirect} from "react-router-dom";
 import Routes from './components/Routes/Routes'
-import "./App.css";
+import Alert from './components/Alert/Alert'
 
 
 /**
@@ -18,13 +18,17 @@ class App extends Component {
     this.state = ({
       isAuth: false,
       loadedUser: null,
-      token: null
+      token: null,
+      errorAlert: false,
+      successAlert: false,
+      sessionAlert: false
     })
 
     this.loginHandler = this.loginHandler.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
     this.setAutoLogout = this.setAutoLogout.bind(this);
     this.sessionHandler = this.sessionHandler.bind(this);
+    this.sessionLogoutHandler = this.sessionLogoutHandler.bind(this);
 
   }
 
@@ -47,7 +51,11 @@ class App extends Component {
     } 
 
     if(!token || !expiryDate) {
-      this.props.history.push('/');
+      this.setState({
+        isAuth: false
+      })
+      
+      this.sessionLogoutHandler();
       return; 
     }
 
@@ -68,19 +76,17 @@ class App extends Component {
    */
   async loginHandler(event, data){
     event.preventDefault();
+
     
     try {
       const response = await agent.authorization.login(data);
 
-      if(!response) {
-        //probably some error message / incorrect credentials 
-        return;  
-      }
-
       this.setState({
         isAuth: true,
         loadedUser: response.loadedUser,
-        token: response.token
+        token: response.token,
+        errorAlert: false,
+        successAlert: true,
       })
       
       const remainingMilliseconds = 60 * 60 * 1000;
@@ -96,8 +102,37 @@ class App extends Component {
       this.setAutoLogout(remainingMilliseconds);   
 
     } catch(e) {
-      console.error(e);
+      this.setState({
+        errorAlert: true,
+        successAlert: false,
+      })
     }
+
+    setTimeout(() => {
+      this.setState({
+        successAlert: false, 
+        errorAlert: false
+      }) 
+    }, 1000);
+  }
+
+  sessionLogoutHandler() {
+    this.setState({
+      isAuth: false,
+      loadedUser: null,
+      sessionAlert: true,
+    })
+
+    localStorage.removeItem('expiryDate');
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem('logged')
+
+    setTimeout(() => {
+      this.setState({
+        sessionAlert: false
+      }) 
+    }, 1000);
   }
 
   /**
@@ -113,6 +148,7 @@ class App extends Component {
     localStorage.removeItem("token");
     sessionStorage.removeItem("user");
     sessionStorage.removeItem('logged')
+
   }
 
   /**
@@ -139,6 +175,7 @@ class App extends Component {
         loginHandler: this.loginHandler,
         logoutHandler: this.logoutHandler,
         loadedUser: this.state.loadedUser,
+        sessionLogoutHandler: this.sessionLogoutHandler
       })
     }
 
@@ -161,6 +198,9 @@ class App extends Component {
 
     return(
       <div className="App">
+      {this.state.sessionAlert ? <Alert config = {{message: "Session Expired", variant: "error"}}/> : null}
+      {this.state.errorAlert ? <Alert config = {{message: "Login Failed", variant: "error"}}/> : null}
+      {this.state.successAlert ? <Alert config = {{message: `Login Success!`, variant: "success"}}/> : null}
       <BrowserRouter>
         {this.state.isAuth ? <Redirect to= {`/dashboard/${this.state.loadedUser.employee_id}`}  /> : <Redirect to='/'  />}
         {routes}

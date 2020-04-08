@@ -20,6 +20,8 @@ import Paper from "@material-ui/core/Paper";
 import ContentEditable from "react-contenteditable";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
+import Alert from '../Alert/Alert'
+
 
 // timesheet table css
 const timesheetStyle = (theme) => ({
@@ -64,6 +66,8 @@ class TimesheetDetail extends Component {
       flextime: 0,
       projectCodes: [],
       wpIds: [],
+      errorAlert: false,
+      successAlert: false,
     };
 
     // functions
@@ -127,19 +131,17 @@ class TimesheetDetail extends Component {
         loadUser: user,
       });
     } else {
-      if (this.props.token != null) {
-        userId = this.props.userId;
-        token = this.props.token;
-        // fetching projects
-        const projects = await agent.projects.getProjectsForUser(userId, token);
-        // fetching employee
-        const curEmp = await agent.employeeInfo.getCurrentUser(
-          this.props.userId,
-          this.props.token
-        );
-        this.setState({
-          loadUser: curEmp,
-        });
+        if(this.props.token != null) {
+          userId = this.props.userId;
+          token = this.props.token;
+          // fetching projects
+          
+          const projects = await agent.projects.getProjectsForUser(userId, token);
+          // fetching employee
+          const curEmp = await agent.employeeInfo.getCurrentUser(this.props.userId, this.props.token);
+          this.setState({
+            loadUser: curEmp
+          });
 
         // looking for the most recent timesheet
         const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(
@@ -589,17 +591,34 @@ class TimesheetDetail extends Component {
     const submitToken = localStorage.getItem("token");
     const submitTsId = this.state.loadedTimesheet.timesheet_id;
     console.log(submitTs);
-    const response = await agent.timesheetsInfo.updateTimesheetById(
-      empId,
-      submitToken,
-      submitTsId,
-      submitTs
-    );
-    if (response == "exception throw") {
-      alert("Porjct and Wp don't match, please check again");
-    } else {
-      this.fetchTimesheetRows();
+    
+
+    try {
+      const response = await agent.timesheetsInfo.updateTimesheetById(empId, submitToken, submitTsId, submitTs);
+      if(!response) {
+        this.fetchTimesheetRows();
+      }
+
+      this.setState({
+        successAlert: true,
+      })
+
+    } catch (e) {
+      this.setState({
+        errorAlert: true,
+      })
     }
+
+    setTimeout(() => {
+      this.setState({
+        successAlert: false, 
+        errorAlert: false
+      })
+      
+      this.props.history.push(`/dashboard/timesheet/`);
+    }, 1000);
+
+    
   }
 
   // go to timesheetdetail if on dashboard
@@ -851,18 +870,18 @@ class TimesheetDetail extends Component {
     const { classes } = this.props;
     return (
       <div className="tsDetail-outerContainer">
-        <div
-          className="container"
-          onClick={() => {
-            this.gotoTimesheetDetail();
-          }}
-        >
-          {/* employee info header */}
-          <div className="timesheetTitle">
-            <div className="attributeRow">
-              <div className="empNumContainer">
-                <div className="empNumTitle">Employee Number:</div>
-                <div className="empNum">{this.state.loadUser.employee_id}</div>
+      <div className="container" onClick={() => { this.gotoTimesheetDetail() }}>
+       {this.state.errorAlert ? <Alert config = {{message: "Timesheet Submission Failed", variant: "error"}}/> : null}
+       {this.state.successAlert ? <Alert config = {{message: `Timesheet Submission Successful!`, variant: "success"}}/> : null}
+        {/* employee info header */}
+        <div className="timesheetTitle">
+          <div className="attributeRow">
+            <div className="empNumContainer">
+              <div className="empNumTitle">
+                Employee Number:
+              </div>
+              <div className="empNum">
+                {this.state.loadUser.employee_id}
               </div>
               <div className="weekNumContainer">
                 <div className="weekNumTitle">Week Number:</div>
@@ -1074,6 +1093,7 @@ class TimesheetDetail extends Component {
           )}
         </div>
       </div>
+    </div>
     );
   }
 }

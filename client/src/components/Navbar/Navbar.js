@@ -110,6 +110,7 @@ class Navbar extends Component {
   }
 
   render() {
+    
     const { classes } = this.props; 
     return(
       this.resizeNavbar(classes)

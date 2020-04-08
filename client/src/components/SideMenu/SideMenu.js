@@ -8,6 +8,11 @@ import MenuItem from "./MenuItem";
 import ExpansionMenu from "./ExpansionMenu/ExpansionMenu";
 import { NAVBAR_PARAMETERS } from "../../constants/constants";
 import sideBarBackgroundImage from "../../images/sideBarBackgroundImage.png";
+import './SideMenu.css'
+import { Grid } from "@material-ui/core";
+import ReactDOM from 'react-dom'
+
+
 
 /**
  * Defined breaking points for drawer size (side menu) upon resizing.
@@ -22,16 +27,15 @@ const drawerShrinkedWidth = NAVBAR_PARAMETERS.DRAWER_SHRINKED_WIDTH;
 const styles = theme => ({
   root: {
     display: "flex",
-    backgroundSize: "cover",
-    backgroundImage: "url(" + sideBarBackgroundImage + ")"
   },
   toolbar: theme.mixins.toolbar,
   paper: {
     width: drawerExpandedWidth,
-    height: "100%"
+    height: "100%",
+
   },
   divider: {
-    backgroundColor: "light gray",
+    backgroundColor: "white",
     width: "90%",
     margin: "0 auto"
   },
@@ -44,17 +48,15 @@ const styles = theme => ({
     })
   },
   drawerClose: {
+    backgroundColor: "transparent !important",
     width: drawerShrinkedWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     })
   },
-  paper: {
-    // backgroundSize: "cover",
-    // backgroundImage: "url(" + sideBarBackgroundImage + ")"
-  }
 });
+
 
 /**
  * Author: Lawrence
@@ -66,7 +68,7 @@ class SideMenu extends Component {
     const { classes, loadedUser } = this.props;
 
     return (
-      <div className={classes.root}>
+      <div className={classes.root} className="side-root">
         <CssBaseline />
         <Drawer
           variant="permanent"
@@ -82,6 +84,12 @@ class SideMenu extends Component {
             })
           }}
         >
+
+
+          {/* Top Section */}
+          <p className="side-title">Timely</p>
+          <Divider className={classes.divider} />
+
           {/* <MenuItem isMenuLogo = {true} />
           <Divider className={classes.divider} /> */}
           <ExpansionMenu
@@ -90,7 +98,9 @@ class SideMenu extends Component {
           />
 
           <Divider className={classes.divider} />
-          <div>
+ 
+        
+          <div className="menuItems-sections">
             <MenuItem
               text="Dashboard"
               resize={this.props.resize}

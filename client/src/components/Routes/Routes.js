@@ -34,12 +34,14 @@ export default class Routes extends Component {
 
   render() {
     let routes;
+
     /**
      * A switch statement to render the correct routes depending on the option provided. 
      * this.props.config.option is a string that the developer passes into the Routes component 
      * in order to configure what routes they want rendered. 
      */
     switch (this.props.config.option) {
+
       case 'dashboard':
         routes = (
           <Switch>
@@ -49,6 +51,7 @@ export default class Routes extends Component {
               render={props => (
                 <TimesheetPortal
                   {...props}
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                 />
               )}
             />
@@ -58,6 +61,8 @@ export default class Routes extends Component {
               render={props => (
                 <TimesheetDetail
                   loadedUser={this.props.config.loadedUser}
+                  logoutHandler = {this.props.logoutHandler}
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -68,6 +73,7 @@ export default class Routes extends Component {
               render={props => (
                 <HrPortal
                   loadedUser={this.props.config.loadedUser}
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -79,6 +85,7 @@ export default class Routes extends Component {
                 <EmployeeForm
                   hr={false}
                   loadedUser={this.props.config.loadedUser}
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -90,6 +97,7 @@ export default class Routes extends Component {
                   hr = {true}
                   createEmployee = {true}
                   loadedUser={this.props.config.loadedUser}
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -102,6 +110,7 @@ export default class Routes extends Component {
                   hr = {true}
                   createEmployee = {false}
                   loadedUser={this.props.config.loadedUser}
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -111,6 +120,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <SupervisorPortal
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -120,6 +130,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <RemoveFromProject
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -129,6 +140,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <AssignToProject
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -138,6 +150,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <ProjectsAssignedTo
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -147,6 +160,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <TimesheetApproverPortal
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -165,6 +179,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <CheckTimesheet
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -174,6 +189,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <Projects
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -183,6 +199,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <ProjectCreate
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -192,6 +209,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <ProjectDetail
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -201,6 +219,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <WorkpackageCreate
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -210,6 +229,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <WorkpackageDetail
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -219,6 +239,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <IterationPlanCreate
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -228,6 +249,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <LeadEngineer
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -237,6 +259,7 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <DashboardPortal
+                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   token={this.props.token}
                   {...props}
                 />
@@ -271,6 +294,7 @@ export default class Routes extends Component {
                 <Dashboard
                   token={this.props.token}
                   {...props}
+                  sessionLogoutHandler={this.props.config.sessionLogoutHandler}
                   logoutHandler={this.props.config.logoutHandler}
                   loadedUser={this.props.config.loadedUser}
                   breadCrumbs={this.props.config.breadCrumbs}
@@ -282,7 +306,7 @@ export default class Routes extends Component {
         break;
       default:
         routes = (
-          <Switch>å
+          <Switch>
             <Route
               path="/"
               exact

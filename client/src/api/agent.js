@@ -7,10 +7,9 @@ import axios from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_DEV_BASE_URL
 
-if(process.env.REACT_APP_NODE_ENV == "production") {
+if(process.env.REACT_APP_NODE_ENV === "production") {
   axios.defaults.baseURL = process.env.REACT_APP_PRODUCTION_BASE_URL
 } 
-
 
 /**
  * Contains the data of the response body 
@@ -69,6 +68,7 @@ const timesheetsInfo = {
 
 const workpackages = {
   createWorkpackage: (data, token) => requests.post(`/workpackages/createWP`, token, data),
+  updateWorkpackage: (data, token) => requests.put(`/workpackages`, token, data),
   getAllWorkpackageFromRE: (empId,token) => requests.get(`/workpackages/RE/${empId}`,token),
 }
 

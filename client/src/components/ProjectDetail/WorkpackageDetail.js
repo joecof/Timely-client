@@ -8,6 +8,7 @@ import EmpHours from "../Charts/EmpHours";
 import BudgetVsActual from "../Charts/BudgetVsActual";
 import EstimationRE from "../Charts/EstimationRE";
 import { Link } from "react-router-dom";
+import SelectEmployees from "../WorkpackageCreate/SelectEmployees";
 import "./ProjectDetail.css";
 
 /**
@@ -28,10 +29,14 @@ class WorkpackageDetail extends React.Component {
       timesheets: [],
       week: 0,
       openModal: false,
+      selectDisabled: true,
+      selectEmps: [],
     };
 
     this.openModal = this.openModal.bind(this);
     this.calcValuesEmpHours = this.calcValuesEmpHours.bind(this);
+    this.handleTagsChange = this.handleTagsChange.bind(this);
+    this.submitNewEmployees = this.submitNewEmployees.bind(this);
   }
 
   openModal() {
@@ -42,7 +47,9 @@ class WorkpackageDetail extends React.Component {
 
   async componentDidMount() {
     //need to change this later
-    await this.calcValuesEmpHours();
+    if (this.state.wp.work_package_id.includes("L")) {
+      await this.calcValuesEmpHours();
+    }
   }
 
   async calcValuesEmpHours() {
@@ -69,6 +76,35 @@ class WorkpackageDetail extends React.Component {
       timesheets: response,
     });
 
+    console.log(response);
+  }
+
+  handleTagsChange = (e) => {
+    console.log(e);
+    // console.log(this.state.selectEmps);
+    this.setState(
+      {
+        selectEmps: e,
+      },
+      console.log(this.state.selectEmps)
+    );
+  };
+
+  async submitNewEmployees() {
+    console.log("SUbmit");
+    // console.log(this.state.wp);
+    var wp = this.state.wp;
+    this.state.selectEmps.forEach((x) => wp.employees.push(x));
+    console.log(wp);
+    this.setState(
+      {
+        wp: wp,
+        selectDisabled: true,
+      },
+      console.log(this.state.wp)
+    );
+    const token = localStorage.getItem("token");
+    const response = await agent.workpackages.updateWorkpackage(wp, token);
     console.log(response);
   }
 
@@ -102,7 +138,7 @@ class WorkpackageDetail extends React.Component {
                     .toUpperCase()}
                 </Avatar>
               </div>
-              <div className="wpDetail-RE-name-container"> 
+              <div className="wpDetail-RE-name-container">
                 {this.state.wp.responsible_person_id.first_name +
                   " " +
                   this.state.wp.responsible_person_id.last_name}
@@ -134,27 +170,54 @@ class WorkpackageDetail extends React.Component {
                     />
                   </>
                 )}
+                {this.state.selectDisabled &&
+                  this.state.isProjManager &&
+                  this.state.wp.work_package_id.includes("L") && (
+                    <Button
+                      onClick={() => {
+                        console.log("clicked");
+                        this.setState({ selectDisabled: false });
+                      }}
+                    >
+                      Assign Employees
+                    </Button>
+                  )}
+                {!this.state.selectDisabled &&
+                  this.state.isProjManager &&
+                  this.state.wp.work_package_id.includes("L") && (
+                    <>
+                      <SelectEmployees
+                        handleTagsChange={this.handleTagsChange}
+                        project={this.state.wp.project}
+                        isDisabled={false}
+                        emps={this.state.emps}
+                      />
+                      <Button onClick={this.submitNewEmployees}>Add</Button>
+                    </>
+                  )}
               </div>
             </div>
           </div>
         </div>
-        {this.state.isProjManager && this.state.emps.length > 0 && (
-          //NOTE: chagne week
-          <>
-            <EmpHours
-              EmpsX={this.state.emps}
-              week={50}
-              EmpsY={this.state.timesheets}
-              wp={this.state.wp}
-            />
-            <br />
-            <BudgetVsActual
-              tsheets={this.state.timesheets}
-              wp={this.state.wp}
-            />
-            <br />
-          </>
-        )}
+        {this.state.isProjManager &&
+          this.state.emps.length > 0 &&
+          this.state.wp.work_package_id.includes("L") && (
+            //NOTE: chagne week
+            <>
+              <EmpHours
+                EmpsX={this.state.emps}
+                week={this.state.week}
+                EmpsY={this.state.timesheets}
+                wp={this.state.wp}
+              />
+              <br />
+              <BudgetVsActual
+                tsheets={this.state.timesheets}
+                wp={this.state.wp}
+              />
+              <br />
+            </>
+          )}
         {this.state.isRE && (
           <>
             <BudgetVsActual
