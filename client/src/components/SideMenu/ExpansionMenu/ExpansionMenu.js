@@ -32,7 +32,7 @@ class ExpansionMenu extends Component {
             null
         }
         {
-          sessionStorage.is_supervisor == "true" || this.props.loadedUser.is_secondary_approver ?
+          sessionStorage.is_supervisor == "true" || this.props.loadedUser.is_secondary_approver  || this.props.loadedUser.is_super_timesheet_approver ?
             <ExpansionMenuItem text="Timesheet Approver" resize = {this.props.resize} link="/dashboard/tsapprover"/>
             :
             null
