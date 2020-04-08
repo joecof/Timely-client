@@ -6,6 +6,7 @@ import CustomToolbar from './CustomToolBar';
 import agent from '../../api/agent'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Face from '../Icon/Face'
+import { HTTP_STATUS } from '../../constants/constants'
 require('datejs');
 
 /**
@@ -57,7 +58,6 @@ const options = (props, handleCreate) => {
   return data;
 };
 
-
 /**
  * Author: Joe 
  * Version: 1.0 
@@ -77,7 +77,6 @@ class HrPortal extends Component {
     this.handleCreate = this.handleCreate.bind(this);
     this.handleArchive = this.handleArchive.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
-
   }
 
   componentDidMount() {
@@ -96,7 +95,7 @@ class HrPortal extends Component {
   }
 
   handleArchive = async (id, body) => {
-
+    
     try {
       const date = new Date().getTime();
       body.end_date = date;
@@ -104,8 +103,9 @@ class HrPortal extends Component {
       this.fetchData(this.state.token);
       
     } catch(e) {
-      console.error(e);
-      this.props.sessionLogoutHandler();
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
     }
   }
 
@@ -115,16 +115,17 @@ class HrPortal extends Component {
       body.end_date = null;
       await agent.employeeInfo.updateEmployee(id, this.state.token, body);
       this.fetchData(this.state.token);
+
     } catch(e) {
-      console.error(e);
-      this.props.sessionLogoutHandler();
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
     }
   }
 
   async fetchData(token) {
 
     try {
-
       const resp = await agent.employeeInfo.getAllEmployees(token);
       var resultData = [];
       resp.forEach(async (item) => {
@@ -166,8 +167,9 @@ class HrPortal extends Component {
       })
       
     } catch(e) {
-      console.error(e);
-      this.props.sessionLogoutHandler();
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
     }
   } 
 

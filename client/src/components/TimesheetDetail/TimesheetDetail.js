@@ -3,7 +3,7 @@
  * Version: 1
  * Desc: Timesheet Detail Component displaying timesheet details after user click on a row on Timesheet Portal lists
  */
-import React, { Component, useState  } from 'react'
+import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -108,7 +108,7 @@ class TimesheetDetail extends Component {
   isEditable() {
     const thisStatus = this.state.loadedTimesheet.status;
     let isEditable = false;
-    if((thisStatus == "OPEN") && this.props.dashboardTimesheet == undefined) {
+    if((thisStatus === "OPEN") && this.props.dashboardTimesheet === undefined) {
       isEditable = true;
     }
     // setting the state
@@ -123,7 +123,7 @@ class TimesheetDetail extends Component {
     var userId, token, tsId;
 
     // setting userId token and tsId for fetching
-    if(ifDashboardTs == undefined) {
+    if(ifDashboardTs === undefined) {
       var user = JSON.parse(sessionStorage.getItem('user'));
       userId = user.employee_id;
       token = localStorage.getItem("token");
@@ -147,6 +147,7 @@ class TimesheetDetail extends Component {
               loadUser: curEmp
             });
           } catch (e) {
+            console.log(this.props);
             this.props.sessionLogoutHandler();
           }
           

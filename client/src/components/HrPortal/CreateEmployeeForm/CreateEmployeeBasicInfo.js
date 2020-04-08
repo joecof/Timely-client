@@ -8,13 +8,6 @@ import FaceIcon from '@material-ui/icons/Face';
 import Chip from '@material-ui/core/Chip';
 import LaborGradeSlider from './LaborGradeSlider';
 
-
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-
 /**
  * Material UI styling JSON object. 
  */
