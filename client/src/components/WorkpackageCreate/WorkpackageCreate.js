@@ -381,6 +381,7 @@ export default function WorkpackageCreate(props) {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setValid(true);
   };
 
   const handleReset = () => {

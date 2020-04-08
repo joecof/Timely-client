@@ -54,14 +54,13 @@ class Dashboard extends Component {
         option: name,
         loadedUser: this.props.loadedUser,
         logoutHandler: this.props.logoutHandler,
-        sessionLogoutHandler: this.props.sessionLogoutHandler
       })
     }
     
     /**
      * Defines all routes available to the dashboard.
      */
-    let routes = <Routes { ...this.props} config = {config('dashboard')} logoutHandler = {this.props.logoutHandler} sessionLogoutHandler = {this.props.sessionLogoutHandler} token={this.props.token}/>
+    let routes = <Routes { ...this.props} config = {config('dashboard')} logoutHandler = {this.props.logoutHandler}  token={this.props.token}/>
     
     return (
       <BrowserRouter>

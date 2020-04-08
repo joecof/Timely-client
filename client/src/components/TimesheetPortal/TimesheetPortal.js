@@ -160,7 +160,6 @@ export default class TimesheetPortal extends Component {
       this.setState({
         errorAlert: true,
       });
-      this.props.sessionLogoutHandler();
     }
     // set back
     setTimeout(() => {
