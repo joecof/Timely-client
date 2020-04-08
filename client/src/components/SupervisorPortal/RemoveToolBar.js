@@ -28,7 +28,7 @@ class RemoveToolBar extends React.Component {
 
     return (
       <>
-        <Tooltip title={"Assign an employee to a project"}>
+        <Tooltip title={"Remove an employee to a project"}>
           <Button 
             className={classes.iconButton} 
             onClick={this.clickRemove} 
