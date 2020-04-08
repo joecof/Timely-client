@@ -41,11 +41,14 @@ class ProjectReport extends React.Component {
       }
     });
 
-    const token = localStorage.getItem("token");
-    const response = await agent.timesheetsInfo.getTimesheetsByEmps(
-      empList.toString(),
-      token
-    );
+    var response = [];
+    if (empList.length > 0) {
+      const token = localStorage.getItem("token");
+      response = await agent.timesheetsInfo.getTimesheetsByEmps(
+        empList.toString(),
+        token
+      );
+    }
 
     var obj = {};
     wpLowerList.forEach(wp => {
@@ -148,7 +151,7 @@ class ProjectReport extends React.Component {
               Report for {this.state.wpList[0].project.project_code}
             </Text>
             <Text style={styles.date}>
-              {new Date().toISOString().split("T", 1)[0]}
+              {new Date().toDateString()}
             </Text>
           </View>
           {this.state.data
