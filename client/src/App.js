@@ -97,7 +97,8 @@ class App extends Component {
       localStorage.setItem('expiryDate', expiryDate.toISOString());
       localStorage.setItem("token", response.token);
       sessionStorage.setItem("user", JSON.stringify(response.loadedUser));
-      sessionStorage.setItem('logged', true)
+      sessionStorage.setItem("is_supervisor", response.is_supervisor);
+      sessionStorage.setItem('logged', true);
 
       this.setAutoLogout(remainingMilliseconds);   
 

@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import MUIDatatable from "mui-datatables";
-import agent from '../../api/agent.js'
+import agent from '../../api/agent.js';
+import Alert from '../Alert/Alert';
 
 /**
  * Defines the columns for the HR portal. 
@@ -9,6 +10,7 @@ const columns = [
   {name:"projectId", label:"Project ID", className:"column"},
   {name:"projectName", label:"Project Name", className:"column"},
   {name:"projectManager", label:"Project Manager", className:"column"},
+  {name:"projectStatus", label:"Status", className:"column"},
 ];
   
 /**
@@ -23,7 +25,8 @@ class ProjectsAssignedTo extends Component {
     super(props); 
 
     this.state = ({
-      data: []
+      data: [],
+      errorAlert: false,
     })
 
     this.fetchData = this.fetchData.bind(this);
@@ -38,7 +41,20 @@ class ProjectsAssignedTo extends Component {
    */
   async getProjects() {
     const token = localStorage.getItem("token");
-    const response = agent.projects.getProjectsForUser(this.props.match.params.id, token);
+    try {
+      var response = await agent.projects.getProjectsForUser(this.props.match.params.id, token);
+    } catch (e) {
+      this.setState({
+        errorAlert: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          errorAlert: false
+        });
+        this.props.history.push(`/dashboard/supervisor`);
+      }, 1000);
+      return [];
+    }
     return response;
   }
 
@@ -55,11 +71,13 @@ class ProjectsAssignedTo extends Component {
         let id = projectsData[i].project_code;
         let projectName = projectsData[i].project_name;
         let name = projectsData[i].project_manager_id.first_name + " " + projectsData[i].project_manager_id.last_name;
+        let status = projectsData[i].status
 
         let row = [];
         row.push(id);
         row.push(projectName);
         row.push(name);
+        row.push(status);
 
         resultData.push(row);
     }
@@ -86,13 +104,14 @@ class ProjectsAssignedTo extends Component {
 
     return (
       <>
-      <MUIDatatable 
-        className="datatable"
-        title={<h1>Projects Assigned To {localStorage.name}</h1>}
-        options={options(this.props)}
-        columns={columns}
-        data={this.state.data}
-      />
+        {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
+        <MUIDatatable 
+          className="datatable"
+          title={<h1>Projects Assigned To {localStorage.name}</h1>}
+          options={options(this.props)}
+          columns={columns}
+          data={this.state.data}
+        />
     </>
     )
   }

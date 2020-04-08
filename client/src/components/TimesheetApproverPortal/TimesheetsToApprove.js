@@ -1,11 +1,7 @@
-/**
- * Author: Kang Wang
- * Version: 1
- * Desc: TimesheetPortal Component displaying the past timesheet lists, create timesheet for current week
- */
 import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import agent from "../../api/agent";
+import Alert from "../Alert/Alert";
 
   // static columns
   const columns = [
@@ -53,16 +49,20 @@ import agent from "../../api/agent";
     return data;
   };
 
-  // TimesheetPortal Component
+/**
+ * Author: John Ham
+ * Version: 1
+ * Desc: Timesheet Approver Portal Component 
+ * Displays a list of timesheets that need approving for an employee
+ */
 export default class TimesheetPortal extends Component {
-
-  // Constructor for props, states and functions
   constructor(props) {
     super(props); 
 
     this.state = ({
       timesheets: [],
-      loadedUserID: {}
+      loadedUserID: {},
+      errorAlert: false,
     })
     this.fetchTimesheets = this.fetchTimesheets.bind(this);
     this.formatWeekEnding = this.formatWeekEnding.bind(this);
@@ -79,7 +79,20 @@ export default class TimesheetPortal extends Component {
     // fetch logined user
     const token = localStorage.getItem("token");
     const userId = this.props.match.params.id;
-    const response = await agent.timesheetsInfo.getAllCloseTimesheetsByEmp(userId, token);
+    try {
+      var response = await agent.timesheetsInfo.getAllCloseTimesheetsByEmp(userId, token);
+    } catch (e) {
+      this.setState({
+        errorAlert: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          errorAlert: false
+        });
+        this.props.history.push(`/dashboard/tsapprover/`);
+      }, 1000);
+      return [];
+    }
 
     if(response.length != 0) {
       // fetching timesheets
@@ -123,6 +136,7 @@ export default class TimesheetPortal extends Component {
   render() {
     return (
       <>
+        {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
         <MUIDatatable 
             className="datatable"
             title={<h1>Timesheets To Approve For {localStorage.name}</h1>}
