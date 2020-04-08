@@ -8,8 +8,10 @@ import CreateEmployeeBasicInfo from './CreateEmployeeBasicInfo'
 import CreateEmployeePassword from './CreateEmployeePassword'
 import Alert from '../../Alert/Alert'
 import agent from '../../../api/agent'
-require('datejs');
+import { HTTP_STATUS } from '../../../constants/constants'
+import { ValidatorForm } from 'react-material-ui-form-validator';
 const laborData = require('./labor')
+require('datejs');
 
 const styles = () => ({
   root: {
@@ -37,6 +39,8 @@ class CreateEmployeeForm extends Component {
       supervisorId: '',
       labelGradeId: '',
       labelGradeName: '',
+      newPassword: '',
+      confirmPassword: '',
       supervisorFirstName:'',
       supervisorLastName: '',
       supervisorSelected: false,
@@ -56,7 +60,6 @@ class CreateEmployeeForm extends Component {
   componentDidMount() {
 
     this.setState({
-      // employeeId: '',
       firstName: '',
       middleName: '',
       lastName: '', 
@@ -76,12 +79,17 @@ class CreateEmployeeForm extends Component {
       supervisorFirstName:'',
       supervisorLastName: ''
     })
+
+    ValidatorForm.addValidationRule('isPassword', (value) => {return value.length < 6 && value.length > 0 ? false : true;});
+  }
+
+  componentWillUnmount() {
+    ValidatorForm.removeValidationRule('isPassword');
   }
 
   valueLabelFormat(value) {
     return this.state.marks[value].label;
   }
-
 
   getSliderValue(value) {
     this.setState({
@@ -126,54 +134,61 @@ class CreateEmployeeForm extends Component {
   }
 
   async handleSubmit() {
-    const token = localStorage.getItem("token");
-    const { 
-      firstName,
-      middleName,
-      lastName,
-      supervisorId,
-      laborGradeId,
-      laborGradeName,
-      confirmPassword,
-      isHr, 
-      isAdmin,
-      isSuperTimesheetApprover,
-      vacation,
-    } = this.state; 
-    
-    const employee = {
-      supervisor_id: supervisorId,
-      labor_grade_id: {
-        labor_grade_id: laborGradeId,
-        labor_grade_name: laborGradeName
-      },
-      password: confirmPassword,
-      first_name: firstName, 
-      middle_name: middleName,
-      last_name: lastName,
-      start_date: new Date().getTime(),
-      end_date: null,
-      is_admin: isAdmin,
-      is_hr_staff: isHr, 
-      is_super_timesheet_approver: isSuperTimesheetApprover,
-      is_secondary_approver: false, 
-      vacation: vacation
-    }
 
-    await agent.employeeInfo.createEmployee(token, employee);
+    try {
+      const token = localStorage.getItem("token");
+      const { 
+        firstName,
+        middleName,
+        lastName,
+        supervisorId,
+        laborGradeId,
+        laborGradeName,
+        confirmPassword,
+        isHr, 
+        isAdmin,
+        isSuperTimesheetApprover,
+        vacation,
+      } = this.state; 
+      
+      const employee = {
+        supervisor_id: supervisorId,
+        labor_grade_id: {
+          labor_grade_id: laborGradeId,
+          labor_grade_name: laborGradeName
+        },
+        password: confirmPassword,
+        first_name: firstName, 
+        middle_name: middleName,
+        last_name: lastName,
+        start_date: new Date().getTime(),
+        end_date: null,
+        is_admin: isAdmin,
+        is_hr_staff: isHr, 
+        is_super_timesheet_approver: isSuperTimesheetApprover,
+        is_secondary_approver: false, 
+        vacation: vacation
+      }
 
-    this.setState({
-      successAlert: true, 
-      errorAlert: false
-    })
-            
-    setTimeout(() => {
+      await agent.employeeInfo.createEmployee(token, employee);
+
       this.setState({
-        successAlert: false, 
+        successAlert: true, 
         errorAlert: false
-      }) 
-    }, 1000);
+      })
+              
+      setTimeout(() => {
+        this.setState({
+          successAlert: false, 
+          errorAlert: false
+        }) 
+      }, 1000);
 
+    } catch (e) {
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
+    }
   }
 
   render() {
@@ -208,7 +223,13 @@ class CreateEmployeeForm extends Component {
               getSliderValue = {this.getSliderValue}
               />
             <Divider orientation="vertical" flexItem className = {classes.divider}/>
-            <CreateEmployeePassword hr={hr} formHandler = {this.formHandler} handleSubmit = {this.handleSubmit} />
+            <CreateEmployeePassword 
+              hr={hr} 
+              formHandler = {this.formHandler} 
+              handleSubmit = {this.handleSubmit} 
+              newPassword = {this.state.newPassword}
+              confirmPassword = {this.state.confirmPassword}
+              />
           </Grid>
         </Paper> 
       </div>

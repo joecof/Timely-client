@@ -93,7 +93,7 @@ class WorkpackageTree extends React.Component {
           event.preventDefault();
         }}
       >
-        <Typography>{"WP" + nodes.id + ": " + nodes.name}</Typography>
+        <Typography>{"WP" + nodes.id + ": " + nodes.name.split(":", 1)[0]}</Typography>
       </Box>
     );
   }

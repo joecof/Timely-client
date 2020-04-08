@@ -9,6 +9,9 @@ import ChangePassword from './ChangePassword'
 import agent from '../../api/agent'
 import Alert from '../Alert/Alert'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { HTTP_STATUS } from '../../constants/constants'
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+
 const laborData = require('../HrPortal/CreateEmployeeForm/labor')
 
 const styles = () => ({
@@ -42,7 +45,11 @@ class EmployeeForm extends Component {
       supervisorSelected: false,
       supervisorFirstName:'',
       supervisorLastName: '',
-      marksValue: 0
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      marksValue: 0,
+      passwordChange: false 
     })
 
     this.fetchData = this.fetchData.bind(this);
@@ -60,8 +67,15 @@ class EmployeeForm extends Component {
 
     this.setState({
       errorAlert: false,
-      successAlert: false
+      successAlert: false,
+      passwordChange: false 
     })
+
+    ValidatorForm.addValidationRule('isPassword', (value) => {return value.length < 6 && value.length > 0 ? false : true;});
+  }
+
+  componentWillUnmount() {
+    ValidatorForm.removeValidationRule('isPassword');
   }
 
   valueLabelFormat(value) {
@@ -88,7 +102,7 @@ class EmployeeForm extends Component {
       [e.target.name]: e.target.value
     });
 
-    if(this.state.newPassword.length > 0 && this.state.confirmPassword.length > 0) {
+    if(this.state.newPassword.length > 0 || this.state.confirmPassword.length > 0 || this.state.oldPassword.length > 0) {
       this.setState({
         passwordChange: true
       })
@@ -101,7 +115,7 @@ class EmployeeForm extends Component {
 
     const { 
       firstName,
-      lastName,
+      lastName, 
       laborGradeId,
       laborGradeName,
       supervisorId,
@@ -111,12 +125,59 @@ class EmployeeForm extends Component {
       confirmPassword,
     } = this.state; 
 
-
     try {
-      if(oldPassword != employee.password || newPassword != confirmPassword) {
-        this.setState({
-          errorAlert: true,
-        })
+      /**
+       * Checks if the user is inputting a password change submission 
+       */
+      if(oldPassword.length > 0 || newPassword.length > 0 || confirmPassword.length > 0) {
+        if(this.props.hr) {
+          if(newPassword !== confirmPassword) {
+            this.setState({
+              errorAlert: true,
+            })
+          } else {
+            employee.first_name = firstName; 
+            employee.last_name = lastName; 
+            employee.labor_grade_id.labor_grade_id = laborGradeId;
+            employee.labor_grade_id.labor_grade_name = laborGradeName;
+            employee.vacation = vacation;
+            employee.supervisor_id = supervisorId
+            employee.password = newPassword;
+
+            await agent.employeeInfo.updateEmployee(this.props.loadedUser.employee_id, token, employee)
+
+            this.setState({
+              successAlert: true, 
+              errorAlert: false,
+              passwordChange: false
+            })
+          }
+        } else {
+          if(oldPassword !== employee.password || newPassword !== confirmPassword) {
+            this.setState({
+              errorAlert: true,
+            })
+          } else {
+            employee.first_name = firstName; 
+            employee.last_name = lastName; 
+            employee.labor_grade_id.labor_grade_id = laborGradeId;
+            employee.labor_grade_id.labor_grade_name = laborGradeName;
+            employee.vacation = vacation;
+            employee.supervisor_id = supervisorId
+            employee.password = newPassword;
+  
+            await agent.employeeInfo.updateEmployee(this.props.loadedUser.employee_id, token, employee)
+  
+            this.setState({
+              successAlert: true, 
+              errorAlert: false,
+              passwordChange: false
+            })
+          }
+        }
+        /**
+         * Checks if the user is not inputting a password change submission, but wants to change other fields in their profile. 
+         */
       } else {
         employee.first_name = firstName; 
         employee.last_name = lastName; 
@@ -124,18 +185,16 @@ class EmployeeForm extends Component {
         employee.labor_grade_id.labor_grade_name = laborGradeName;
         employee.vacation = vacation;
         employee.supervisor_id = supervisorId
-        employee.password = newPassword;
-    
-        console.log(employee);
-        
         await agent.employeeInfo.updateEmployee(this.props.loadedUser.employee_id, token, employee)
-  
+
         this.setState({
           successAlert: true, 
+          errorAlert: false
         })
       }
     } catch(e) {
       this.setState({
+        successAlert: false,
         errorAlert: true, 
       })
     }
@@ -146,7 +205,6 @@ class EmployeeForm extends Component {
         errorAlert: false
       }) 
     }, 1000);
-
   }
 
   async fetchData(token) {
@@ -171,19 +229,22 @@ class EmployeeForm extends Component {
         confirmPassword: '',
         supervisor: supervisor,
         supervisorFirstName: supervisor.first_name,
-        supervisorLastName: supervisor.last_name
+        supervisorLastName: supervisor.last_name,
+        passwordChange: false
+
       })
 
       for(const key in this.state.marks) {
-        if(this.state.marks[key].label == this.state.laborGradeId) {
+        if(this.state.marks[key].label === this.state.laborGradeId) {
           this.setState({
             marksValue: key
           }) 
         }
       }
     } catch(e) {
-      console.error(e);
-      this.props.sessionLogoutHandler();
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
     }
   }
 
@@ -215,7 +276,15 @@ class EmployeeForm extends Component {
                   marksValue = {this.state.marksValue}
                   />
                 <Divider orientation="vertical" flexItem className = {classes.divider}/>
-                <ChangePassword loadedUser = {loadedUser} hr={hr} formHandler = {this.formHandler} handleSubmit = {this.handleSubmit} />
+                <ChangePassword 
+                  loadedUser = {loadedUser} 
+                  hr={hr} 
+                  formHandler = {this.formHandler} 
+                  handleSubmit = {this.handleSubmit} 
+                  oldPassword = {this.state.oldPassword}
+                  newPassword = {this.state.newPassword}
+                  confirmPassword = {this.state.confirmPassword}
+                  />
               </Grid>
             </Paper> )
             :

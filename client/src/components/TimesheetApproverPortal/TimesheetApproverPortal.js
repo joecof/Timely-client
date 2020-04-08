@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import MUIDatatable from "mui-datatables";
-import agent from '../../api/agent.js'
+import agent from '../../api/agent.js';
+import AssignApproverToolBar from './AssignApproverToolBar';
+import Alert from '../Alert/Alert';
 
 /**
- * Defines the columns for the HR portal. 
+ * Defines the columns for the Timesheet approver portal. 
  */
 const columns = [
   {name:"employeeId", label:"Employee ID", className:"column"},
@@ -24,7 +26,8 @@ class TimesheetApproverPortal extends Component {
     super(props); 
 
     this.state = ({
-      data: []
+      data: [],
+      errorAlert: false,
     })
 
     this.fetchData = this.fetchData.bind(this);
@@ -40,8 +43,46 @@ class TimesheetApproverPortal extends Component {
   async getEmployees() {
     const token = localStorage.getItem("token");
     const user = JSON.parse(sessionStorage.getItem('user'));
-    const response = agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
-    return response;
+    var employees = [];
+    if (sessionStorage.getItem("is_supervisor")) {
+      try {
+        var response = await agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
+      } catch (e) {
+        this.setState({
+          errorAlert: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            errorAlert: false
+          });
+          this.props.history.push(`/dashboard/${user.employee_id}`);
+        }, 1000);
+        return [];
+      }
+      for (var i = 0; i < response.length; i++) {
+        employees.push(response[i]);
+      }
+    }
+    if (user.is_secondary_approver == true) {
+      try {
+        var secondary_response = await agent.employeeInfo.getEmployeesBySupervisor(user.supervisor_id, token);
+      } catch (e) {
+        this.setState({
+          errorAlert: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            errorAlert: false
+          });
+          this.props.history.push(`/dashboard/${user.employee_id}`);
+        }, 1000);
+        return [];
+      }
+      for (var i = 0; i < secondary_response.length; i++) {
+        employees.push(secondary_response[i]);
+      }
+    }
+    return employees;
   }
 
   /**
@@ -50,7 +91,6 @@ class TimesheetApproverPortal extends Component {
    */
   async fetchData() {
     const { classes } = this.props;
-    console.log(this.props);
 
     var employeeData = await this.getEmployees();
   
@@ -89,20 +129,27 @@ class TimesheetApproverPortal extends Component {
             localStorage.setItem('name', rowData[1] + " " + rowData[2]);
             this.props.history.push(`/dashboard/tsapprover/${rowData[0]}`);
           },
+          customToolbar: () => {
+            const is_supervisor = sessionStorage.getItem("is_supervisor");
+            if (is_supervisor == "true") {
+              return <><AssignApproverToolBar history={this.props.history}/></>;
+            }
+          },
         }
       return data;
     };
 
     return (
       <div>
-      <MUIDatatable 
-        className="datatable"
-        title={<h1>Employees</h1>}
-        options={options(this.props)}
-        columns={columns}
-        data={this.state.data}
-      />
-    </div>
+        {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
+        <MUIDatatable 
+          className="datatable"
+          title={<h1>Employees</h1>}
+          options={options(this.props)}
+          columns={columns}
+          data={this.state.data}
+        />
+      </div>
     )
   }
 }

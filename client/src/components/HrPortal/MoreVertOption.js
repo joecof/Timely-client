@@ -2,7 +2,6 @@ import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Link } from "react-router-dom";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 
 
@@ -22,7 +21,6 @@ export default function MoreVertOption(props) {
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
-
 
   /**
    * Closes the drop down menu.
