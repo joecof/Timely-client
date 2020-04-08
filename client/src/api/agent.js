@@ -52,7 +52,7 @@ const projects = {
   getProjectsForUser: (id, token) => requests.get(`/projects/emp/${id}`, token),
   getProjectsForSupervisor: (id, token) => requests.get(`projects/supervisor/${id}`, token),
   createProject: (data, token) => requests.post(`/projects/createProject`, token, data),
-  updateProject: (project, token) => requests.post(`/projects/updateProject/`, token, project),
+  updateProject: (project, token) => requests.put(`/projects/updateProject`, token, project),
   getDetailsById: (id, token) => requests.get(`/projects/projectDetails/${id}`, token),
   getById: (id, token) => requests.get(`/projects/${id}`, token)
 }
