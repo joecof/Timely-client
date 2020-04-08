@@ -146,12 +146,24 @@ export default class TimesheetPortal extends Component {
           let weeknumber = response[i].week;
           let weekending = this.formatWeekEnding(response[i].week_ending);
           let status = response[i].status;
+          let color = null;
+          // different colors based on timesheet status
+          if(status == "OPEN") {
+            color  = 'green';
+          }
+          if(status == "CLOSE") {
+            color  = 'blue';
+          }
+          if(status == "APPROVED") {
+            color  = 'black';
+          }
 
+          // each row
           let eachTimesheet = [];
           eachTimesheet.push(timesheetid);
           eachTimesheet.push(weeknumber);
           eachTimesheet.push(weekending);
-          eachTimesheet.push(status);
+          eachTimesheet.push(<span style = {{color:  `${color}`}}>{status}</span>)
           timesheetList.push(eachTimesheet);
         }
         // sorting timesheet list by week number
