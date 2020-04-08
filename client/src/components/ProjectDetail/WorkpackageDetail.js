@@ -46,6 +46,8 @@ class WorkpackageDetail extends React.Component {
     var wp = this.state.wp;
     wp.is_open = 0;
     const response = agent.workpackages.closeWorkpackage(wp, token)
+    
+    window.location.href = window.location.href;
   }
 
   openModal() {
