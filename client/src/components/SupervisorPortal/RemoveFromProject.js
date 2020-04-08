@@ -44,11 +44,20 @@ const RemoveFromProject = (props) => {
     const [projectsData, setProjectsData] = React.useState();
     const [successAlert, setSuccessAlert] = React.useState(false);
     const [errorAlert, setErrorAlert] = React.useState(false);
-
-    var employeesToRemove = [];
+    const [employeesToRemove, setEmployeesToRemove] = React.useState([]);
 
     const fetchProjectsData = async () => {
-      const response = await agent.projects.getProjectsForSupervisor(user.employee_id, token);
+      try {
+        var response = await agent.projects.getProjectsForSupervisor(user.employee_id, token);
+      } catch (e) {
+        setSuccessAlert(false);
+        setErrorAlert(true);
+        setTimeout(() => {
+          setErrorAlert(false);
+          setSuccessAlert(false);
+          props.history.push(`/dashboard/supervisor`);
+        }, 1000);
+      }
       setProjectsData(response);
       return response;
     }
@@ -57,11 +66,10 @@ const RemoveFromProject = (props) => {
         if (project == null) {
              return;
         }
-        for (var i = 0; i < project.employees.length; i++) {
-            if (project.employees[i].supervisor_id == user.employee_id) {
-                employeesToRemove.push(project.employees[i]);
-            }
-        }
+        var curEmployees = project.employees.filter(function(o) {
+          return o.end_date == null && o.supervisor_id == user.employee_id;
+        });
+        setEmployeesToRemove(curEmployees);
         return employeesToRemove;
     }
 
@@ -95,7 +103,6 @@ const RemoveFromProject = (props) => {
         setSuccessAlert(false);
       }
 
-
       setTimeout(() => {
         setErrorAlert(false);
         setSuccessAlert(false);
@@ -105,8 +112,8 @@ const RemoveFromProject = (props) => {
 
     return (
       <div className={classes.root}>
-        {errorAlert ? <Alert config = {{message: "Login Failed", variant: "error"}}/> : null}
-        {successAlert ? <Alert config = {{message: `Login Success!`, variant: "success"}}/> : null}
+        {errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
+        {successAlert ? <Alert config = {{message: `Success!`, variant: "success"}}/> : null}
         <Paper className={classes.supervisorPaper} elevation={2}>
           <Grid container direction="column">
             <Typography variant="h4">Remove From Project</Typography>

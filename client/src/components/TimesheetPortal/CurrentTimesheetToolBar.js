@@ -9,6 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
 import { Button } from '@material-ui/core/';
 import agent from "../../api/agent";
+import Alert from '../Alert/Alert'
 
 /**
  * Material UI styling JSON object. 
@@ -26,6 +27,9 @@ class CurrentTimesheetToolBar extends React.Component {
   constructor(props) {
     super(props); 
 
+    this.state = ({
+      errorAlert: false
+    })
     this.createCurrentTimesheet = this.createCurrentTimesheet.bind(this);
     this.hasCurrentTimesheet = this.hasCurrentTimesheet.bind(this);
     this.currentDate = this.currentDate.bind(this);
@@ -84,7 +88,22 @@ class CurrentTimesheetToolBar extends React.Component {
     const user = JSON.parse(sessionStorage.getItem('user'));
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
-    const logedInUser = await agent.employeeInfo.getCurrentUser(userId, token);
+    var logedInUser;
+    try {
+      logedInUser = await agent.employeeInfo.getCurrentUser(userId, token);
+    } catch(e) {
+      this.setState({
+        errorAlert: true
+      })
+      // set back
+      setTimeout(() => {
+        this.setState({
+          errorAlert: false
+        });
+      }, 1000);
+      this.props.sessionLogoutHandler();
+    }
+    
 
     // login employee labor grade
     const laborGradeId = logedInUser.labor_grade_id.labor_grade_id;
@@ -120,8 +139,21 @@ class CurrentTimesheetToolBar extends React.Component {
           }
       ]
     };
-    const response = await agent.timesheetsInfo.createCurrentWeekTimesheet(userId, token, timesheetCreation);
-    this.props.fetchTimesheets();
+    try {
+      const response = await agent.timesheetsInfo.createCurrentWeekTimesheet(userId, token, timesheetCreation);
+      this.props.fetchTimesheets();
+    } catch(e) {
+      this.setState({
+        errorAlert: true
+      })
+      // set back
+      setTimeout(() => {
+        this.setState({
+          errorAlert: false
+        });
+      }, 1000);
+      this.props.sessionLogoutHandler();
+    }
   }
   
   /**
@@ -152,6 +184,7 @@ class CurrentTimesheetToolBar extends React.Component {
     const { classes } = this.props;
     return (
       <>
+        {this.state.errorAlert ? <Alert config = {{message: "Fetching Timesheets API Call Failed", variant: "error"}}/> : null}
         <Tooltip title={"Create Current Timesheet"}>
           <Button 
             className={classes.iconButton} 

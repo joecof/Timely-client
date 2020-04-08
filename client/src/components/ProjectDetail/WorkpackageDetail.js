@@ -114,11 +114,11 @@ class WorkpackageDetail extends React.Component {
         <div className="wpDetail-top-container">
           <div className="wpDetail-projTitleDesc-container">
             <div className="wpDetail-projectTitle">
-              Work Package Title
+            {this.state.wp.description.split(":", 1)[0]}
               {this.state.wp.project_name}
             </div>
             <div className="projectDetail-projectDescription">
-              {this.state.wp.description}
+              {this.state.wp.description.split(":", 2)[1] ? this.state.wp.description.split(":", 2)[1] : ''}
             </div>
           </div>
           <div className="wpDetail-teamInfo-container">

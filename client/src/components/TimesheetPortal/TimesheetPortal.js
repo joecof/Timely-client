@@ -14,6 +14,7 @@ import {
   createMuiTheme,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
+import Alert from "../Alert/Alert";
 
 // static columns
 const columns = [
@@ -53,25 +54,30 @@ const columns = [
   },
 ];
 
-  // static options
-  const options = (props, states, fetchTimesheets) => {
-    const data = {
-      selectableRows: false,
-      search: true,
-      print: false,
-      download: false,
-      rowHover: true,
-      onRowClick: (rowData) => {
-
-        console.log(rowData)
-        props.history.push(`/dashboard/timesheet/${rowData[0]}`);
-        localStorage.setItem("timesheetId", rowData[0]);
-      },
-      customToolbar: () => {
-        return <CurrentTimesheetToolBar {...props} fetchTimesheets={fetchTimesheets} states={states}/>
-      }
-    }
-    return data;
+// static options
+const options = (props, states, fetchTimesheets) => {
+  const data = {
+    selectableRows: false,
+    search: true,
+    print: false,
+    download: false,
+    rowHover: true,
+    onRowClick: (rowData) => {
+      console.log(rowData);
+      props.history.push(`/dashboard/timesheet/${rowData[0]}`);
+      localStorage.setItem("timesheetId", rowData[0]);
+    },
+    customToolbar: () => {
+      return (
+        <CurrentTimesheetToolBar
+          {...props}
+          fetchTimesheets={fetchTimesheets}
+          states={states}
+        />
+      );
+    },
+  };
+  return data;
 };
 
 // TimesheetPortal Component
@@ -108,6 +114,7 @@ export default class TimesheetPortal extends Component {
     this.state = {
       timesheets: [],
       loadedUserID: {},
+      errorAlert: false,
     };
     this.fetchTimesheets = this.fetchTimesheets.bind(this);
     this.formatWeekEnding = this.formatWeekEnding.bind(this);
@@ -123,43 +130,54 @@ export default class TimesheetPortal extends Component {
   async fetchTimesheets() {
     // fetch logined user
 
-    const user = JSON.parse(sessionStorage.getItem('user'));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const token = localStorage.getItem("token");
     const userId = user.employee_id;
-    const response = await agent.timesheetsInfo.getAllTimesheetsByEmp(
-      userId,
-      token
-    );
+    try {
+      const response = await agent.timesheetsInfo.getAllTimesheetsByEmp(
+        userId,
+        token
+      );
 
-    if (response.length != 0) {
-      // fetching timesheets
-      var timesheetList = [];
+      if (response.length != 0) {
+        // fetching timesheets
+        var timesheetList = [];
 
-      for (let i = 0; i < response.length; i++) {
-        let timesheetid = response[i].timesheet_id;
-        let weeknumber = response[i].week;
-        let weekending = this.formatWeekEnding(response[i].week_ending);
-        let status = response[i].status;
+        for (let i = 0; i < response.length; i++) {
+          let timesheetid = response[i].timesheet_id;
+          let weeknumber = response[i].week;
+          let weekending = this.formatWeekEnding(response[i].week_ending);
+          let status = response[i].status;
 
-        let eachTimesheet = [];
-        eachTimesheet.push(timesheetid);
-        eachTimesheet.push(weeknumber);
-        eachTimesheet.push(weekending);
-        eachTimesheet.push(status);
-        timesheetList.push(eachTimesheet);
+          let eachTimesheet = [];
+          eachTimesheet.push(timesheetid);
+          eachTimesheet.push(weeknumber);
+          eachTimesheet.push(weekending);
+          eachTimesheet.push(status);
+          timesheetList.push(eachTimesheet);
+        }
+        // sorting timesheet list by week number
+        timesheetList.sort(function (a, b) {
+          return b[1] - a[1];
+        });
+        // setting the states
+        this.setState({
+          timesheets: timesheetList,
+          loadedUserID: userId,
+        });
       }
-      // sorting timesheet list by week number
-      timesheetList.sort(function (a, b) {
-        return b[1] - a[1];
-      });
-      // setting the states
+    } catch (e) {
       this.setState({
-        timesheets: timesheetList,
-        loadedUserID: userId,
+        errorAlert: true,
       });
-    } else {
-      console.log("no timesheets");
+      this.props.sessionLogoutHandler();
     }
+    // set back
+    setTimeout(() => {
+      this.setState({
+        errorAlert: false,
+      });
+    }, 1000);
   }
 
   // converting weekending api from milliseconds to date format
@@ -173,12 +191,19 @@ export default class TimesheetPortal extends Component {
 
   // timesheet table UI
   render() {
+    console.log(this.props);
 
-    console.log(this.props)
-    
     return (
       <div className="timesheetPortal-container">
         <MuiThemeProvider theme={this.getCustomTheme()}>
+          {this.state.errorAlert ? (
+            <Alert
+              config={{
+                message: "Fetching Timesheets API Call Failed",
+                variant: "error",
+              }}
+            />
+          ) : null}
           <MUIDatatable
             className="datatable"
             title={"Timesheet Information"}

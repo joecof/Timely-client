@@ -174,6 +174,15 @@ export default function WorkpackageCreate(props) {
           id = parseInt(list[wp].work_package_id) + 1;
         }
       }
+      
+      if (value === 0) {
+        list.forEach(x => {
+          if((parseInt(x.work_package_id)).toString().length === 1) {
+            id = parseInt(x.work_package_id) + 1;
+          }
+        })
+      }
+
       if (id === -1) {
         id = parseInt(value) * 10 + 1;
       }

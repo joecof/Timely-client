@@ -22,6 +22,7 @@ import WorkpackageDetail from '../ProjectDetail/WorkpackageDetail'
 import TimesheetApproverPortal from '../TimesheetApproverPortal/TimesheetApproverPortal';
 import TimesheetsToApprove from '../TimesheetApproverPortal/TimesheetsToApprove';
 import CheckTimesheet from '../TimesheetApproverPortal/CheckTimesheet';
+import AssignApprover from '../TimesheetApproverPortal/AssignApprover';
 
 /**
  * Author: Joe 
@@ -161,6 +162,15 @@ export default class Routes extends Component {
               render={props => (
                 <TimesheetApproverPortal
                   sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/dashboard/tsapprover/assign"
+              exact
+              render={props => (
+                <AssignApprover
                   {...props}
                 />
               )}

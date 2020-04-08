@@ -1,82 +1,35 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
-import RemoveToolBar from "./RemoveToolBar";
-import AssignToolBar from "./AssignToolBar";
-import agent from "../../api/agent.js";
-import {
-  withStyles,
-  ThemeProvider,
-  createMuiTheme,
-  MuiThemeProvider,
-} from "@material-ui/core/styles";
+import { withStyles } from '@material-ui/core/styles';
+import RemoveToolBar from './RemoveToolBar';
+import AssignToolBar from './AssignToolBar';
+import agent from '../../api/agent.js';
+import Alert from '../Alert/Alert';
 
 /**
- * Material UI styling JSON object.
- */
-const styles = () => ({
-  container: {
-    width: "1300px",
-    display: "flex",
-    justifyContent: "center",
-  },
-  pictureUrl: {
-    width: 50,
-  },
-  employeeTitle: {
-    fontSize: "16px",
-    fontWeight: "bold",
-  },
-});
-
-/**
- * Defines the columns for the HR portal.
+ * Defines the columns for the supervisor portal. 
  */
 const columns = [
-  { name: "pictureUrl", label: "Photo", className: "column" },
-  { name: "employeeId", label: "Employee ID", className: "column" },
-  { name: "firstName", label: "First Name", className: "column" },
-  { name: "lastName", label: "Last Name", className: "column" },
+  {name:"employeeId", label:"Employee ID", className:"column"},
+  {name:"firstName", label:"First Name", className:"column"},
+  {name:"lastName", label:"Last Name", className:"column"},
 ];
 
 /**
- * Author: John Ham
- * Version: 1.0
- * Description: Supervisor Portal Component.
- * Portal used by supervisor for viewing a list of employees that can be assigned to projects.
+ * Author: John Ham 
+ * Version: 1.0 
+ * Description: Supervisor Portal Component. 
+ * Portal used by supervisor for viewing a list of employees that can be assigned to projects. 
  */
 class SupervisorPortal extends Component {
-  getCustomTheme = () =>
-    createMuiTheme({
-      overrides: {
-        MUIDataTableHeadCell: {
-          data: {
-            fontSize: "16px",
-          },
-        },
-        MUIDataTable: {
-          paper: {
-            padding: "25px",
-          },
-        },
-        MUIDataTableBodyCell: {
-          root: {
-            fontSize: "14px",
-          },
-        },
-        MUIDataTableToolbar: {
-          root: {
-            padding: "0px 0 0 16px",
-          },
-        },
-      },
-    });
 
   constructor(props) {
-    super(props);
+    super(props); 
 
-    this.state = {
+    this.state = ({
       data: [],
-    };
+      errorAlert: false,
+    })
 
     this.fetchData = this.fetchData.bind(this);
   }
@@ -90,11 +43,21 @@ class SupervisorPortal extends Component {
    */
   async getEmployees() {
     const token = localStorage.getItem("token");
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    const response = agent.employeeInfo.getEmployeesBySupervisor(
-      user.employee_id,
-      token
-    );
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    try {
+      var response = await agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
+    } catch (e) {
+      this.setState({
+        errorAlert: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          errorAlert: false
+        });
+        this.props.history.push(`/dashboard/${user.employee_id}`);
+      }, 1000);
+      return [];
+    }
     return response;
   }
 
@@ -106,68 +69,62 @@ class SupervisorPortal extends Component {
     const { classes } = this.props;
 
     var employeeData = await this.getEmployees();
-
+  
     var resultData = [];
     for (let i = 0; i < employeeData.length; i++) {
-      let id = employeeData[i].employee_id;
-      let firstName = employeeData[i].first_name;
-      let lastName = employeeData[i].last_name;
+        let id = employeeData[i].employee_id;
+        let firstName = employeeData[i].first_name;
+        let lastName = employeeData[i].last_name;
 
-      let row = [];
-      row.push(id);
-      row.push(firstName);
-      row.push(lastName);
-      resultData.push(row);
+        let row = [];
+        row.push(id);
+        row.push(firstName);
+        row.push(lastName);
+        resultData.push(row);
     }
-
+    
     this.setState({
-      data: resultData,
-    });
-  }
+      data: resultData
+    })
+  } 
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props; 
 
     /**
-     * Configuration object for the MUI data table.
+     * Configuration object for the MUI data table. 
      */
     const options = () => {
-      const data = {
-        selectableRows: false,
-        search: true,
-        print: false,
-        download: false,
-        filter: false,
-        customToolbar: () => {
-          return (
-            <>
-              <RemoveToolBar history={this.props.history} />
-              <AssignToolBar history={this.props.history} />
-            </>
-          );
-        },
-        onRowClick: (rowData, rowState) => {
-          localStorage.setItem("name", rowData[1] + " " + rowData[2]);
-          this.props.history.push(`/dashboard/supervisor/${rowData[0]}`);
-        },
-      };
+        const data = {
+          selectableRows: false,
+          search: true,
+          print: false,
+          download: false,
+          filter: false,
+          customToolbar: () => {
+              return <><RemoveToolBar history={this.props.history}/><AssignToolBar history={this.props.history}/></>;
+          },
+          onRowClick: (rowData, rowState) => {
+              localStorage.setItem('name', rowData[1] + " " + rowData[2]);
+              this.props.history.push(`/dashboard/supervisor/${rowData[0]}`);
+          },
+        }
       return data;
     };
 
     return (
-      <div className={classes.container}>
-        <MuiThemeProvider theme={this.getCustomTheme()}>
-          <MUIDatatable
-            className="datatable"
-            title={<div className={classes.employeeTitle}>Employees</div>}
-            options={options(this.props)}
-            columns={columns}
-            data={this.state.data}
-          />
-        </MuiThemeProvider>
+      <div>
+        {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
+        <MUIDatatable 
+          className="datatable"
+          title={<h1>Employees</h1>}
+          options={options(this.props)}
+          columns={columns}
+          data={this.state.data}
+        />
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(SupervisorPortal);
+export default SupervisorPortal;
