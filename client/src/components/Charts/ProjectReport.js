@@ -41,7 +41,7 @@ class ProjectReport extends React.Component {
       }
     });
 
-    const response = [];
+    var response = [];
     if (empList.length > 0) {
       const token = localStorage.getItem("token");
       response = await agent.timesheetsInfo.getTimesheetsByEmps(

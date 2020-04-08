@@ -50,7 +50,7 @@ class WorkpackageList extends React.Component {
       wpList.map(function(wp) {
         curData = [];
         curData.push(wp.work_package_id);
-        curData.push(wp.description);
+        curData.push(wp.description.split(":",1)[0]);
         curData.push(wp.responsible_person_id.first_name + " " + wp.responsible_person_id.last_name);
         curData.push(wp.employees.length);
         data.push(curData);
