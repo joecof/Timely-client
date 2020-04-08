@@ -9,7 +9,7 @@ import "./ProjectDetail.css"
  * Desc: List component to list all the workpackages visible to the user
 */
 
-const columns = ["ID", "Name", "Supervisor", "Team"];
+const columns = ["ID", "Name", "Responsible Engineer", "Team"];
 
 class WorkpackageList extends React.Component {
   constructor(props) {
