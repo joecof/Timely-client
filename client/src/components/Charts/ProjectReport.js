@@ -41,11 +41,14 @@ class ProjectReport extends React.Component {
       }
     });
 
-    const token = localStorage.getItem("token");
-    const response = await agent.timesheetsInfo.getTimesheetsByEmps(
-      empList.toString(),
-      token
-    );
+    const response = [];
+    if (empList.length > 0) {
+      const token = localStorage.getItem("token");
+      response = await agent.timesheetsInfo.getTimesheetsByEmps(
+        empList.toString(),
+        token
+      );
+    }
 
     var obj = {};
     wpLowerList.forEach(wp => {

@@ -147,7 +147,7 @@ class TimesheetDetail extends Component {
               loadUser: curEmp
             });
           } catch (e) {
-
+            this.props.sessionLogoutHandler();
           }
           
           // looking for the most recent timesheet
@@ -185,7 +185,7 @@ class TimesheetDetail extends Component {
               this.props.fetchProject(projects, curEmp, "0|0");
             }
           } catch(e) {
-
+            this.props.sessionLogoutHandler();
           }
         }
     }
@@ -508,6 +508,7 @@ class TimesheetDetail extends Component {
       this.setState({
         errorAlert: true,
       })
+      this.props.sessionLogoutHandler();
     }
     setTimeout(() => {
       this.setState({
@@ -610,6 +611,7 @@ class TimesheetDetail extends Component {
       this.setState({
         errorAlert: true,
       })
+      this.props.sessionLogoutHandler();
     }
     setTimeout(() => {
       this.setState({
