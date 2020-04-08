@@ -15,16 +15,12 @@ const defaultToolbarStyles = {
 /**
  * Author: John Ham
  * Version: 1.0 
- * Description: AssignToolBar component for the MUI data table  
+ * Description: RemoveToolBar component for the MUI data table  
  */
-class AssignToolBar extends React.Component {
+class RemoveToolBar extends React.Component {
 
-  /**
-   * Will be used to assign an employee to a project
-   */
   clickRemove = () => {
     this.props.history.push(`/dashboard/supervisor/remove`);
-    console.log("remove an employee!");
   }
 
   render() {
@@ -46,4 +42,4 @@ class AssignToolBar extends React.Component {
   }
 }
 
-export default withStyles(defaultToolbarStyles, { name: "CustomToolbar" })(AssignToolBar);
+export default withStyles(defaultToolbarStyles, { name: "CustomToolbar" })(RemoveToolBar);

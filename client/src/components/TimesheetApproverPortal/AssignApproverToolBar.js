@@ -15,12 +15,15 @@ const defaultToolbarStyles = {
 /**
  * Author: John Ham
  * Version: 1.0 
- * Description: AssignToolBar component for the MUI data table  
+ * Description: AssignApproverToolBar component for the MUI data table  
  */
-class AssignToolBar extends React.Component {
+class AssignApproverToolBar extends React.Component {
 
+  /**
+   * Will be used to assign an employee the privilege to approve timesheets
+   */
   clickAssign = () => {
-    this.props.history.push(`/dashboard/supervisor/assign`);
+    this.props.history.push(`/dashboard/tsapprover/assign`);
   }
 
   render() {
@@ -28,7 +31,7 @@ class AssignToolBar extends React.Component {
 
     return (
       <>
-        <Tooltip title={"Assign an employee to a project"}>
+        <Tooltip title={"Assign an employee to as a timesheet approver"}>
           <Button 
             className={classes.iconButton} 
             onClick={this.clickAssign} 
@@ -42,4 +45,4 @@ class AssignToolBar extends React.Component {
   }
 }
 
-export default withStyles(defaultToolbarStyles, { name: "CustomToolbar" })(AssignToolBar);
+export default withStyles(defaultToolbarStyles, { name: "CustomToolbar" })(AssignApproverToolBar);
