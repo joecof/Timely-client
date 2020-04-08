@@ -3,10 +3,11 @@ import MUIDatatable from "mui-datatables";
 import { withStyles } from '@material-ui/core/styles';
 import RemoveToolBar from './RemoveToolBar';
 import AssignToolBar from './AssignToolBar';
-import agent from '../../api/agent.js'
+import agent from '../../api/agent.js';
+import Alert from '../Alert/Alert';
 
 /**
- * Defines the columns for the HR portal. 
+ * Defines the columns for the supervisor portal. 
  */
 const columns = [
   {name:"employeeId", label:"Employee ID", className:"column"},
@@ -26,7 +27,8 @@ class SupervisorPortal extends Component {
     super(props); 
 
     this.state = ({
-      data: []
+      data: [],
+      errorAlert: false,
     })
 
     this.fetchData = this.fetchData.bind(this);
@@ -42,7 +44,20 @@ class SupervisorPortal extends Component {
   async getEmployees() {
     const token = localStorage.getItem("token");
     const user = JSON.parse(sessionStorage.getItem('user'));
-    const response = agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
+    try {
+      var response = await agent.employeeInfo.getEmployeesBySupervisor(user.employee_id, token);
+    } catch (e) {
+      this.setState({
+        errorAlert: true,
+      });
+      setTimeout(() => {
+        this.setState({
+          errorAlert: false
+        });
+        this.props.history.push(`/dashboard/${user.employee_id}`);
+      }, 1000);
+      return [];
+    }
     return response;
   }
 
@@ -99,14 +114,15 @@ class SupervisorPortal extends Component {
 
     return (
       <div>
-      <MUIDatatable 
-        className="datatable"
-        title={<h1>Employees</h1>}
-        options={options(this.props)}
-        columns={columns}
-        data={this.state.data}
-      />
-    </div>
+        {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
+        <MUIDatatable 
+          className="datatable"
+          title={<h1>Employees</h1>}
+          options={options(this.props)}
+          columns={columns}
+          data={this.state.data}
+        />
+      </div>
     )
   }
 }
