@@ -95,10 +95,8 @@ export default class CheckTimesheet extends Component {
                     loadedUser={this.props.match.params.tsid}
                     {...this.props}
                 />
-                <div style={{position: 'absolute', marginLeft: '900px', marginTop: '5px'}}>
-                    <Button variant='contained' color="primary" onClick={this.approveTimesheet}>Approve</Button>
-                    <Button style={{marginLeft: '20px', width: '102.5px'}} variant='contained' color="secondary" onClick={this.rejectTimesheet}>Reject</Button>
-                </div>
+                <Button variant='contained' color="primary" onClick={this.approveTimesheet}>Approve</Button>
+                <Button variant='contained' color="secondary" onClick={this.rejectTimesheet}>Reject</Button>
             </>
         )
     }
