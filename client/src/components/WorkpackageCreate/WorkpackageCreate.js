@@ -295,7 +295,7 @@ export default function WorkpackageCreate(props) {
     setTimeout(() => {
       setErrorAlert(false);
       setSuccessAlert(false);
-      props.history.push(`/dashboard/projectDetails`);
+      props.history.push(`/dashboard/projects`);
     }, 1000);
   };
 
