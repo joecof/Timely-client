@@ -38,7 +38,8 @@ const styles = theme => ({
   divider: {
     backgroundColor: "white",
     width: "90%",
-    margin: "0 auto"
+    margin: "0 auto",
+    marginTop: -13
   },
   btnDivider: {
     backgroundColor: "white",

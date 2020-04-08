@@ -1,5 +1,6 @@
 /**
- * Author: Kang Wang
+ * Author: Backend: Kang Wang
+ *         Frontend: Oscar Au, Jovan Sekon
  * Version: 1
  * Desc: Timesheet Detail Component displaying timesheet details after user click on a row on Timesheet Portal lists
  */
@@ -16,7 +17,6 @@ import "./TimesheetDetail.css";
 import agent from "../../api/agent";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
-import Paper from "@material-ui/core/Paper";
 import ContentEditable from "react-contenteditable";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
@@ -38,7 +38,6 @@ const timesheetStyle = (theme) => ({
     fontSize: "16px !important",
   },
   updateSubmitButton: {
-    position: "absolute",
     margin: "0 0 0 780px",
   },
   submitButton: {
@@ -958,7 +957,7 @@ class TimesheetDetail extends Component {
                 )}
               </div>
               <div className="weekNumEndingIcon-container">
-                <div class="weekNumbEnd-container">
+                <div className="weekNumbEnd-container">
                   <div className="weekNumContainer">
                     <div className="weekNumTitle">Week Number:</div>
                     <div className="weekNum">

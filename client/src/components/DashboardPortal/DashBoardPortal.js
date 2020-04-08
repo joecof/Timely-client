@@ -1,5 +1,6 @@
 /**
- * Author: Kang W
+* Author: Backend: Kang Wang
+ *         Frontend: Oscar Au, Jovan Sekon
  * Version: 1.0
  * Description: Dashboard component, showing the current timesheet detail,
  * vacation days taken, FlexTime allocted, and information regarding on the projets and wps
