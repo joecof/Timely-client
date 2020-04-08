@@ -165,7 +165,7 @@ class SupervisorPortal extends Component {
           ) : null}
           <MUIDatatable
             className="datatable"
-            title={<div className="supervisorPortal-employeesTitle">Employees</div>}
+            title={<div className="supervisorPortal-employeesTitle">Supervisor Portal</div>}
             options={options(this.props)}
             columns={columns}
             data={this.state.data}
