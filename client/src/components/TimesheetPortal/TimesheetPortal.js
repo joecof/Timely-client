@@ -1,5 +1,6 @@
 /**
- * Author: Kang Wang
+ * Author: Backend: Kang Wang
+ *         Frontend: Oscar Au, Jovan Sekon
  * Version: 1
  * Desc: TimesheetPortal Component displaying the past timesheet lists, create timesheet for current week
  */
@@ -18,32 +19,39 @@ import Alert from "../Alert/Alert";
 
 // static columns
 const columns = [
-  {
+  { // timesheet id
     name: "timesheetid",
     label: "Timesheet ID",
     className: "column",
     options: {
       filter: false,
-    },
+    }
   },
-  {
+  { // weeknumber
     name: "weeknumber",
     label: "Week Number",
     className: "column",
     options: {
       filter: false,
-    },
+    }
   },
-  {
+  { // week_ending
     name: "weekending",
     label: "Week Ending",
     className: "column",
     options: {
       sort: true,
       filter: false,
-      // display false
-    },
-  }
+    }
+  },
+  { // status
+    name:"status", 
+    label:"Status", 
+    className:"column",
+    options: {
+      filter: true
+    }
+  },
   ];
 
   // static options

@@ -1,5 +1,6 @@
 /**
- * Author: Joe, Kang
+ * Author: Backend: Kang Wang, Joeco Fong
+ *         Frontend: Oscar Au, Jovan Sekon
  * Version: 1
  * Desc: Create Current Timesheet Button Function if employee does not have timesheet for current week
  * Direct to curent week timesheet if it's already been created
@@ -30,6 +31,7 @@ class CurrentTimesheetToolBar extends React.Component {
     this.state = ({
       errorAlert: false
     })
+
     this.createCurrentTimesheet = this.createCurrentTimesheet.bind(this);
     this.hasCurrentTimesheet = this.hasCurrentTimesheet.bind(this);
     this.currentDate = this.currentDate.bind(this);

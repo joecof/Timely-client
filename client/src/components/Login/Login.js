@@ -37,52 +37,30 @@ export default class Login extends Component {
           {/* Login Form */}
           <form onSubmit={(e) => this.props.loginHandler(e, {id: this.state.employee_id, password: this.state.password})}>
             
+            {/* employee Id input field */}
             <div className="inputFields">
               <TextField className="textfields" id="standard-basic" label="Employee ID"
                   name="employee_id"
                   onChange = {this.updateInputValue}
-                  // required
-                  // autoFocus
-                
-             
-                />
-              </div>
-
-              <div className="inputFields">              
-                <TextField className="textfields" id="standard-password-input" label="Password" 
-                  name="password"
-                  onChange = {this.updateInputValue}
-                  type="password"
-                  // required
-                  // autoFocus
-                />
-
-              </div>
-            
-            {/* 
-              <input
-                name="employee_id"
-                placeholder="Employee Id"
-                required
-                autoFocus
-                onChange = {this.updateInputValue}
-              />
-
-              <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
                   required
-                  onChange = {this.updateInputValue}
-              /> */}
-
+                  autoFocus
+                />
+            </div>
+            {/* password input field */}
+            <div className="inputFields">              
+              <TextField className="textfields" id="standard-password-input" label="Password" 
+                name="password"
+                onChange = {this.updateInputValue}
+                type="password"
+                required
+              />
+            </div>
+            {/* login button */}
             <div className="button-container">
               <Button className="loginButton" variant="contained" color="primary" type="submit">
                   Login
               </Button>
             </div>
-              {/* <button type="submit"> Login </button> */}
-  
           </form>
         </div>
     );

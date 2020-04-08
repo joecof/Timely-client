@@ -32,6 +32,8 @@ class Projects extends React.Component {
     this.closedProjects = this.closedProjects.bind(this);
   }
 
+
+
   async componentDidMount() {
     await this.setData();
     this.allProjects();
@@ -90,14 +92,14 @@ class Projects extends React.Component {
         " " +
         response[i].project_manager_id.last_name;
       projData.push(manager);
-      if (response[i].project_manager_id.employee_id === parseInt(ID)) {
+      if (response[i].project_manager_id.employee_id === parseInt(ID) && response[i].status === "OPEN") {
         mineProj.push(projData);
       }
-      if (response[i].status === "COMPLETE") {
+      if (response[i].status === "CLOSE") {
         closedProj.push(projData);
       }
-      if (response[i].status === "ARCHIVED") {
-        archivedProj.push(projData);
+      if (response[i].status === "ARCHIVE") {
+          archivedProj.push(projData);
       }
       allProj.push(projData);
     }
