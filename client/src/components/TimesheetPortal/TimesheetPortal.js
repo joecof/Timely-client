@@ -57,8 +57,6 @@ import Alert from '../Alert/Alert'
       download: false,
       rowHover: true,
       onRowClick: (rowData) => {
-
-        console.log(rowData)
         props.history.push(`/dashboard/timesheet/${rowData[0]}`);
         localStorage.setItem("timesheetId", rowData[0]);
       },
@@ -153,7 +151,6 @@ export default class TimesheetPortal extends Component {
 
   // timesheet table UI
   render() {
-    
     return (
       <>
         {this.state.errorAlert ? <Alert config = {{message: "Fetching Timesheets API Call Failed", variant: "error"}}/> : null}

@@ -25,7 +25,7 @@ const WorkpackageInfo = props => {
 
   const parentWP = [];
   parentWP.push({
-    value: '',
+    value: 0,
     label: "Project Level"
   })
   props.wpList.map(wp => {

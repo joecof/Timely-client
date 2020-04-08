@@ -112,8 +112,8 @@ class WorkpackageDetail extends React.Component {
       <div>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} className="gridBorder">
-            <Typography variant="h4">{this.state.wp.description}</Typography>
-            <Typography variant="h6">{this.state.wp.description}</Typography>
+            <Typography variant="h4">{this.state.wp.description.split(":", 1)[0]}</Typography>
+            <Typography variant="h6">{this.state.wp.description.split(":", 2)[1] ? this.state.wp.description.split(":", 2)[1] : ''}</Typography>
           </Grid>
           <>
             <Grid item xs={12} sm={3}>

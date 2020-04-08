@@ -601,7 +601,7 @@ class TimesheetDetail extends Component {
             projWpDontMatch: false,
           })
           this.props.history.push(`/dashboard/timesheet/`);
-        }, 2000);
+        }, 1500);
       }
       if(response == "exception throw") {
         this.setState({
