@@ -5,8 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import SupervisorList from '../HrPortal/CreateEmployeeForm/SupervisorList'
 import FaceIcon from '@material-ui/icons/Face';
-import LaborGradeSlider from '../HrPortal/CreateEmployeeForm/LaborGradeSlider'
-
+import LaborGradeSlider from '../HrPortal/CreateEmployeeForm/LaborGradeSlider';
 import Chip from '@material-ui/core/Chip';
 
 /**
@@ -45,6 +44,7 @@ class BasicInfo extends Component {
   constructor(props) {
     super(props); 
   }
+
 
   render() {
     const { classes, supervisor } = this.props;

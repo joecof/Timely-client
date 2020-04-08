@@ -10,6 +10,8 @@ import agent from '../../api/agent'
 import Alert from '../Alert/Alert'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { HTTP_STATUS } from '../../constants/constants'
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+
 const laborData = require('../HrPortal/CreateEmployeeForm/labor')
 
 const styles = () => ({
@@ -43,6 +45,9 @@ class EmployeeForm extends Component {
       supervisorSelected: false,
       supervisorFirstName:'',
       supervisorLastName: '',
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
       marksValue: 0,
       passwordChange: false 
     })
@@ -65,6 +70,12 @@ class EmployeeForm extends Component {
       successAlert: false,
       passwordChange: false 
     })
+
+    ValidatorForm.addValidationRule('isPassword', (value) => {return value.length < 6 && value.length > 0 ? false : true;});
+  }
+
+  componentWillUnmount() {
+    ValidatorForm.removeValidationRule('isPassword');
   }
 
   valueLabelFormat(value) {
@@ -270,7 +281,9 @@ class EmployeeForm extends Component {
                   hr={hr} 
                   formHandler = {this.formHandler} 
                   handleSubmit = {this.handleSubmit} 
-                  passwordChange = {this.state.passwordChange}  
+                  oldPassword = {this.state.oldPassword}
+                  newPassword = {this.state.newPassword}
+                  confirmPassword = {this.state.confirmPassword}
                   />
               </Grid>
             </Paper> )

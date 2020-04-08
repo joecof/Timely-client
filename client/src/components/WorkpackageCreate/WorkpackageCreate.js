@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -16,6 +16,8 @@ import SelectEmployees from "./SelectEmployees";
 import "./WorkpackageCreate.css";
 import WorkpackageList from "../ProjectDetail/WorkpackageList.js";
 import Alert from '../Alert/Alert'
+import { ValidatorForm } from 'react-material-ui-form-validator';
+
 
 
 /**
@@ -127,12 +129,29 @@ export default function WorkpackageCreate(props) {
     wpEmps: []
   });
 
+  useEffect(() => {
+    ValidatorForm.addValidationRule('isRequired', (value) => {
+      console.log(value);
+      
+      if(value.length === 0) {
+        setValid(false);
+        return false;
+      } else {
+        setValid(true);
+        return true;
+      }
+    });    
+  }, []);
+  
   const [successAlert, setSuccessAlert] = React.useState(false);
   const [errorAlert, setErrorAlert] = React.useState(false);
+  const [valid, setValid] = useState(false);
 
   const handleOnChange = event => {
     const { name, value } = event.target;
     setInputValues({ ...inputValues, [name]: value });
+    console.log(valid);
+
 
     // calculating the wp id here
     if (name === "wpParent") {
@@ -160,10 +179,14 @@ export default function WorkpackageCreate(props) {
 
   const handleStartDate = date => {
     setInputValues({ ...inputValues, startDate: date });
+
+    setValid(true)
   };
 
   const handleEndDate = date => {
     setInputValues({ ...inputValues, endDate: date });
+
+    setValid(true)
   };
 
   const handleCheckboxChange = event => {
@@ -177,7 +200,10 @@ export default function WorkpackageCreate(props) {
   };
 
   const handleTagsChange = inputValue => {
-    console.log(inputValue);
+    if(inputValue.length > 0) {
+      setValid(true);
+    }
+
     setInputValues({ ...inputValues, wpEmps: inputValue });
   };
 
@@ -307,6 +333,7 @@ export default function WorkpackageCreate(props) {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setValid(false);
   };
 
   const handleBack = () => {
@@ -321,6 +348,8 @@ export default function WorkpackageCreate(props) {
     <div className={classes.root}>
       {errorAlert ? <Alert config = {{message: "Work Package Submission Failed", variant: "error"}}/> : null}
       {successAlert ? <Alert config = {{message: `Work Package Submission Successful!`, variant: "success"}}/> : null}
+      <ValidatorForm onSubmit = {handleSubmit}>
+
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map(label => (
           <Step key={label}>
@@ -362,6 +391,7 @@ export default function WorkpackageCreate(props) {
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
+                  disabled = {!valid}
                 >
                   Finish
                 </Button>
@@ -371,6 +401,7 @@ export default function WorkpackageCreate(props) {
                   variant="contained"
                   color="primary"
                   onClick={handleNext}
+                  disabled = {!valid}
                 >
                   Next
                 </Button>
@@ -379,6 +410,7 @@ export default function WorkpackageCreate(props) {
           </div>
         )}
       </div>
+      </ValidatorForm>
     </div>
   );
 }

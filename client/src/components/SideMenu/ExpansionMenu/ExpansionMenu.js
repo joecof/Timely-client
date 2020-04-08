@@ -37,7 +37,6 @@ class ExpansionMenu extends Component {
             :
             null
         }
-        <ExpansionMenuItem text="HR" resize = {this.props.resize} link = "/dashboard/hr"/>
       </ExpansionPanel>
     )
   }

@@ -9,6 +9,7 @@ import CreateEmployeePassword from './CreateEmployeePassword'
 import Alert from '../../Alert/Alert'
 import agent from '../../../api/agent'
 import { HTTP_STATUS } from '../../../constants/constants'
+import { ValidatorForm } from 'react-material-ui-form-validator';
 const laborData = require('./labor')
 require('datejs');
 
@@ -38,6 +39,8 @@ class CreateEmployeeForm extends Component {
       supervisorId: '',
       labelGradeId: '',
       labelGradeName: '',
+      newPassword: '',
+      confirmPassword: '',
       supervisorFirstName:'',
       supervisorLastName: '',
       supervisorSelected: false,
@@ -76,6 +79,12 @@ class CreateEmployeeForm extends Component {
       supervisorFirstName:'',
       supervisorLastName: ''
     })
+
+    ValidatorForm.addValidationRule('isPassword', (value) => {return value.length < 6 && value.length > 0 ? false : true;});
+  }
+
+  componentWillUnmount() {
+    ValidatorForm.removeValidationRule('isPassword');
   }
 
   valueLabelFormat(value) {
@@ -214,7 +223,13 @@ class CreateEmployeeForm extends Component {
               getSliderValue = {this.getSliderValue}
               />
             <Divider orientation="vertical" flexItem className = {classes.divider}/>
-            <CreateEmployeePassword hr={hr} formHandler = {this.formHandler} handleSubmit = {this.handleSubmit} />
+            <CreateEmployeePassword 
+              hr={hr} 
+              formHandler = {this.formHandler} 
+              handleSubmit = {this.handleSubmit} 
+              newPassword = {this.state.newPassword}
+              confirmPassword = {this.state.confirmPassword}
+              />
           </Grid>
         </Paper> 
       </div>
