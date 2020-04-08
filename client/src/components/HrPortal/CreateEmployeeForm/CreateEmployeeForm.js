@@ -15,7 +15,7 @@ require("datejs");
 
 const styles = () => ({
   outerContainer: {
-    width: "1300px",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
   },
