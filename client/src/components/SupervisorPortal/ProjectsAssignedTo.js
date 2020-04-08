@@ -103,7 +103,7 @@ class ProjectsAssignedTo extends Component {
     };
 
     return (
-      <>
+      <div className="supervisorPortal-container">
         {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
         <MUIDatatable 
           className="datatable"
@@ -112,7 +112,7 @@ class ProjectsAssignedTo extends Component {
           columns={columns}
           data={this.state.data}
         />
-    </>
+      </div>
     )
   }
 }
