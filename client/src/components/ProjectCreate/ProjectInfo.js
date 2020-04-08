@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import TextField from '@material-ui/core/TextField';
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { TextValidator } from 'react-material-ui-form-validator';
 import './ProjectCreate.css';
 
 const useStyles = makeStyles(theme => ({
@@ -18,15 +18,43 @@ const ProjectInfo = (props) => {
     const classes = useStyles();
 
   return (
-    <form autoComplete="off">
-      <TextField component={'span'} className="margin" label="Project ID" name="projectID" 
-      value={props.projectID} onChange={props.handleChange} className={classes.projInfo}/>
+    <form>
+      <TextValidator
+        component={'span'} 
+        className="margin" 
+        label="Project ID" 
+        name="projectID" 
+        value={props.projectID} 
+        onChange={props.handleChange} 
+        className={classes.projInfo}
+        validators={['isRequired']}
+        errorMessages={['Input is required.']}
+      />
       <br />
-      <TextField component={'span'} className="margin" label="Project Name" name="projectName" 
-      value={props.projectName} onChange={props.handleChange} className={classes.projInfo}/>
+      <TextValidator
+        component={'span'} 
+        className="margin" 
+        label="Project Name" 
+        name="projectName" 
+        value={props.projectName} 
+        onChange={props.handleChange} 
+        className={classes.projInfo}
+        validators={['isRequired']}
+        errorMessages={['Input is required.']}
+      />
       <br />
-      <TextField component={'span'} className="margin" label="Project Manager" name="projectManager" 
-      value={props.projectManager} onChange={props.handleChange} className={classes.projInfo}/>
+      <TextValidator
+        component={'span'} 
+        className="margin" 
+        label="Project Manager" 
+        name="projectManager" 
+        value={props.projectManager} 
+        onChange={props.handleChange} 
+        className={classes.projInfo}
+        validators={['isRequired']}
+        errorMessages={['Input is required.']}
+      />
+      <br />
     </form>
   );
 };

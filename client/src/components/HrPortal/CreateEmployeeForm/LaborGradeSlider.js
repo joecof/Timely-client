@@ -7,13 +7,15 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = () => ({
   title: {
-    marginBottom: 5,
+    fontSize: "16px",
+    fontWeight: "bold",
+    margin: "0 0 10px 0"
   },
   field: {
     marginTop: 50
   },
   slider: {
-    width: '90%'
+    width: '100%'
   },
 });
 

@@ -1,0 +1,23 @@
+.budgetActual-cotainer {
+  width: 1100px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0 35px 0;
+  margin: 20px 0 0 0;
+  border: 1px solid lightgray;
+}
+
+.budgetActual-chart {
+  width: 1100px;
+  display: flex;
+  justify-content: center;
+}
+
+.budgetActual-date-container {
+    font-size: 16px;
+    width: 100%;
+    padding: 0 0 0 158px;
+    margin: 0 0 20px 0;
+}

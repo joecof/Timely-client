@@ -1,25 +1,51 @@
-import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { Grid } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Face from '../../Icon/Face'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import '../SideMenu.css'
 
 /**
- * Material UI styling JSON object. 
+ * Material UI styling JSON object.
  */
 const styles = () => ({
   text: {
     marginLeft: 30,
-    color: 'black'
+    color: "black"
+  },
+  expansionPanelSummary: {
+    height: "180px",
+    margin: "25px 0 0 0",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  expansionMenuHeaderContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  avatar: {
+    width: "80px",
+    height: "80px",
+    margin: "0 0 15px 0"
+  },
+  arrowIconLight: {
+    // margin: "0 12px 0 0"
+  },
+  materialIconLight: {
+    // margin: "0 12px 0 0"
   }
-
 });
 
 /**
- * Author: Joe 
- * Version: 1.0 
+ * Author: Joe
+ * Version: 1.0
  * Description: ExpansionMenuHeader component. Header component for the expansion menu.
  */
 class ExpansionMenuHeader extends Component {
@@ -28,23 +54,28 @@ class ExpansionMenuHeader extends Component {
 
     return (
       <ExpansionPanelSummary
-        expandIcon={this.props.resize ? <ExpandMoreIcon className={classes.materialIconLight}/> : null}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
+        // expandIcon={
+        //       <ArrowDropDownIcon className={classes.materialIconLight} className="dropDown-arrow"/>
+        // }
+        aria-controls="panel1d-content"
+        id="panel1d-header"
+        className={classes.expansionPanelSummary}
       >
-      <Grid container direction="row" alignItems="center">
-        <Grid item>
-          {/* <Avatar variant="circle" className={classes.avatar} /> */}
-          <Face avatar = {{width: 30, height: 30, margin: '0 auto'}} />
-        </Grid>
-        <Grid item>
-          {this.props.resize ? 
-            <h4 className = {classes.text}> {this.props.loadedUser.first_name + " " + this.props.loadedUser.last_name} </h4> : null
-          }
-        </Grid>
-      </Grid> 
-    </ExpansionPanelSummary>
-    )
+        <div className={classes.expansionMenuHeaderContainer}>
+          <div className={classes.expansionMenuHeaderAvatar}>
+            <Avatar variant="circle" className={classes.avatar} />
+          </div>
+          {/* {this.props.resize ? (
+            <div className={classes.expansionMenuHeaderProfileName}>
+              {" "}
+              {this.props.loadedUser.first_name +
+                " " +
+                this.props.loadedUser.last_name}{" "}
+            </div>
+          ) : null} */}
+        </div>
+      </ExpansionPanelSummary>
+    );
   }
 }
 

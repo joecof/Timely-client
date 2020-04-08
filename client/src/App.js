@@ -3,6 +3,7 @@ import agent from './api/agent'
 import { BrowserRouter, Redirect} from "react-router-dom";
 import Routes from './components/Routes/Routes'
 import Alert from './components/Alert/Alert'
+import { HTTP_STATUS } from './constants/constants'
 
 
 /**
@@ -77,7 +78,6 @@ class App extends Component {
   async loginHandler(event, data){
     event.preventDefault();
 
-    
     try {
       const response = await agent.authorization.login(data);
 
@@ -103,10 +103,12 @@ class App extends Component {
       this.setAutoLogout(remainingMilliseconds);   
 
     } catch(e) {
-      this.setState({
-        errorAlert: true,
-        successAlert: false,
-      })
+      if(e.response.status === HTTP_STATUS.BAD_REQUEST || e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.setState({
+          errorAlert: true,
+          successAlert: false,
+        })
+      }
     }
 
     setTimeout(() => {
@@ -117,6 +119,9 @@ class App extends Component {
     }, 1000);
   }
 
+  /**
+   * Session Logout handler. Logs out the user if there session is invalid. 
+   */
   sessionLogoutHandler() {
     this.setState({
       isAuth: false,
@@ -131,7 +136,8 @@ class App extends Component {
 
     setTimeout(() => {
       this.setState({
-        sessionAlert: false
+        sessionAlert: false,
+        errorAlert: false
       }) 
     }, 1000);
   }
@@ -149,7 +155,6 @@ class App extends Component {
     localStorage.removeItem("token");
     sessionStorage.removeItem("user");
     sessionStorage.removeItem('logged')
-
   }
 
   /**
@@ -192,7 +197,7 @@ class App extends Component {
         loadToken = localStorage.getItem('token');
       }
       routes = <Routes { ...this.props} config = {config('authentication')} token={loadToken}/>
-      
+
     } else {
       routes = <Routes { ...this.props} config = {config('login')} />
     }

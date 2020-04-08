@@ -3,10 +3,9 @@ import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
-import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
+import { TextValidator } from "react-material-ui-form-validator";
+
 import "./WorkpackageCreate.css";
 
 /**
@@ -14,10 +13,10 @@ import "./WorkpackageCreate.css";
  * Version: 1
  * Desc: first step for wp creation
  */
-const WorkpackageInfo = props => {
+const WorkpackageInfo = (props) => {
   //ResponsibleEngineerData
   const REdata = [];
-  props.project.employees.map(e => {
+  props.project.employees.map((e) => {
     var data = {};
     data.value = e.employee_id;
     data.label = e.first_name + " " + e.last_name;
@@ -27,9 +26,9 @@ const WorkpackageInfo = props => {
   const parentWP = [];
   parentWP.push({
     value: 0,
-    label: "Project Level"
-  })
-  props.wpList.map(wp => {
+    label: "Project Level",
+  });
+  props.wpList.map((wp) => {
     if (wp.work_package_id.substring(wp.work_package_id.length - 1) !== "L") {
       var data = {};
       data.value = wp.work_package_id;
@@ -40,89 +39,117 @@ const WorkpackageInfo = props => {
 
   return (
     <form autoComplete="off">
-      <Grid container direction="column" alignItems="center">
-        <Grid item>
-          <TextField
+      <div className="wpInfo-container">
+        <div>
+          <TextValidator
             component={"span"}
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             label="Work Package ID"
             name="wpID"
-            value={"WP"+props.wpID}
+            value={"WP" + props.wpID}
             onChange={props.handleChange}
             disabled={true}
+            validators={["isRequired"]}
+            errorMessages={["Input is required."]}
           />
-        </Grid>
-        <Grid item>
+        </div>
+        <div>
           <FormControlLabel
             control={
               <Checkbox
                 checked={props.checkedLower}
                 onChange={props.handleCheckboxChange}
                 name="checkedLower"
+                required={true}
               />
             }
             label="Lowest Work Package"
           />
-        </Grid>
+        </div>
         <br />
-        <Grid item>
-          <TextField
+        <div>
+          <TextValidator
             component={"span"}
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             label="Work Package Name"
             name="wpName"
             value={props.wpName}
             onChange={props.handleChange}
+            validators={["isRequired"]}
+            errorMessages={["Input is required."]}
           />
-        </Grid>
+        </div>
         <br />
-        <Grid item>
-          <TextField
+        <div>
+          <TextValidator
             select
             label="Responsible Engineer"
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             name="wpRE"
             value={props.wpRE}
             onChange={props.handleChange}
+            validators={["isRequired"]}
+            errorMessages={["Input is required."]}
           >
-            {REdata.map(option => (
+            {/* <TextField
+            select
+            label="Responsible Engineer"
+            className="wpInfo-textValidator"
+            name="wpRE"
+            value={props.wpRE}
+            onChange={props.handleChange}
+          > */}
+            {REdata.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
             ))}
-          </TextField>
-        </Grid>
+            {/* </TextField> */}
+          </TextValidator>
+        </div>
         <br />
-        <Grid item>
-          <TextField
+        <div>
+          <TextValidator
             component={"span"}
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             label="Parent Project"
             value={
               props.project.project_code + ": " + props.project.project_name
             }
             onChange={props.handleChange}
             disabled={true}
+            validators={["isRequired"]}
+            errorMessages={["Input is required."]}
           />
-        </Grid>
+        </div>
         <br />
-        <Grid item>
-          <TextField
+        <div>
+          <TextValidator
             select
             label="Parent Work Package"
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             name="wpParent"
             value={props.wpParent}
             onChange={props.handleChange}
+            validators={["isRequired"]}
+            errorMessages={["Input is required."]}
           >
-            {parentWP.map(option => (
+            {/* <TextField
+            select
+            label="Parent Work Package"
+            className="wpInfo-textValidator"
+            name="wpParent"
+            value={props.wpParent}
+            onChange={props.handleChange}
+          > */}
+            {parentWP.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
             ))}
-          </TextField>
-        </Grid>
-      </Grid>
+          </TextValidator>
+        </div>
+      </div>
     </form>
   );
 };

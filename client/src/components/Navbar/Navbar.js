@@ -55,7 +55,8 @@ const styles = theme => ({
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    border: "solid 1px lightgray",
   },
   appBarShift: { 
     marginLeft: navbarExpandedWidth,
@@ -86,20 +87,9 @@ class Navbar extends Component {
           position="fixed" elevation={0}         
           className={clsx(classes.appBar, {[classes.appBarShift]: this.props.resize})}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick = {this.props.resizeDashboard}
-            >
-              {/* Will render a different 'icon' depending on if the user has resized the navbar or not. */}
-              {this.props.resize ?  <ArrowBackIcon/>  : <MenuIcon/>  }
-            </IconButton>
             <Typography className={classes.title} variant="h6" noWrap> 
               <BreadCrumb { ...this.props } />
             </Typography>
-            <Searchbar/>
             <Divider className = {classes.divider} orientation="vertical" flexItem />
             <h4 className = {classes.userName}> {this.props.loadedUser.first_name} {this.props.loadedUser.last_name}</h4>
             <DropDownProfile logoutHandler = {this.props.logoutHandler} loadedUser={this.props.loadedUser}/>

@@ -1,0 +1,10 @@
+.iterationPlanCreate-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.iteration-tableTitle {
+    font-size: 16px;
+    font-weight: bold;
+}

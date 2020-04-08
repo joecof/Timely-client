@@ -1,5 +1,6 @@
 /**
- * Author: Kang W
+* Author: Backend: Kang Wang
+ *         Frontend: Oscar Au, Jovan Sekon
  * Version: 1.0
  * Description: Dashboard component, showing the current timesheet detail,
  * vacation days taken, FlexTime allocted, and information regarding on the projets and wps
@@ -28,7 +29,7 @@ const styles = () => ({
     maxHeight: '800px',
     overflow: "auto",
     width: "310px",
-    margin: "0 20px 0 0",
+    margin: "0px 20px 0 35px",
     boxShadow: "none",
     border: "solid 1px lightgray",
     borderRadius: "5px"
@@ -88,7 +89,6 @@ const styles = () => ({
     margin: "22px 0 0 4px"
   },
   timesheetDetailContainer: {
-    border: "solid 1px lightgray",
     minWidth: '1000px',
     textAlign: 'center',
     height: '500px',
