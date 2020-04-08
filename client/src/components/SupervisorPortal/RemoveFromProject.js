@@ -44,8 +44,7 @@ const RemoveFromProject = (props) => {
     const [projectsData, setProjectsData] = React.useState();
     const [successAlert, setSuccessAlert] = React.useState(false);
     const [errorAlert, setErrorAlert] = React.useState(false);
-
-    var employeesToRemove = [];
+    const [employeesToRemove, setEmployeesToRemove] = React.useState([]);
 
     const fetchProjectsData = async () => {
       try {
@@ -67,14 +66,10 @@ const RemoveFromProject = (props) => {
         if (project == null) {
              return;
         }
-        project.employees = project.employees.filter(function(o) {
-          return o.end_date == null;
+        var curEmployees = project.employees.filter(function(o) {
+          return o.end_date == null && o.supervisor_id == user.employee_id;
         });
-        for (var i = 0; i < project.employees.length; i++) {
-            if (project.employees[i].supervisor_id == user.employee_id) {
-                employeesToRemove.push(project.employees[i]);
-            }
-        }
+        setEmployeesToRemove(curEmployees);
         return employeesToRemove;
     }
 
