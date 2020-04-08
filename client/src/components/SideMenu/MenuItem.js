@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import './SideMenu.css'
 
 import DashboardIcon from '@material-ui/icons/Dashboard';
-
 /**
  * Material UI styling JSON object. 
  * @param {JSON} theme 
@@ -19,7 +18,7 @@ const styles = theme => ({
     // paddingBottom: theme.spacing(0.5),
   },
   text: {
-    marginLeft: 45,
+    marginLeft: 50,
     color: 'white',
     // font: '14px, Roboto, Helvetica, Arial, sans-serif',
   }, 

@@ -10,6 +10,7 @@ import { NAVBAR_PARAMETERS } from "../../constants/constants";
 import sideBarBackgroundImage from "../../images/sideBarBackgroundImage.png";
 import './SideMenu.css'
 import { Grid } from "@material-ui/core";
+import ReactDOM from 'react-dom'
 
 
 
@@ -30,7 +31,8 @@ const styles = theme => ({
   toolbar: theme.mixins.toolbar,
   paper: {
     width: drawerExpandedWidth,
-    height: "100%"
+    height: "100%",
+
   },
   divider: {
     backgroundColor: "white",
@@ -98,7 +100,7 @@ class SideMenu extends Component {
           <Divider className={classes.divider} />
  
         
-          <div>
+          <div className="menuItems-sections">
             <MenuItem
               text="Dashboard"
               resize={this.props.resize}

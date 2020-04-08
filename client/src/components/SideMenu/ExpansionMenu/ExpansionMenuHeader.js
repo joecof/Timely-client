@@ -57,8 +57,8 @@ class ExpansionMenuHeader extends Component {
         expandIcon={
               <ArrowDropDownIcon className={classes.materialIconLight} className="dropDown-arrow"/>
         }
-        aria-controls="panel1a-content"
-        id="panel1a-header"
+        aria-controls="panel1d-content"
+        id="panel1d-header"
         className={classes.expansionPanelSummary}
       >
         <div className={classes.expansionMenuHeaderContainer}>
