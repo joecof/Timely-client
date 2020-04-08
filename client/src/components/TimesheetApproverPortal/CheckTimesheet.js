@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TimesheetDetail from '../TimesheetDetail/TimesheetDetail';
-import { Button } from '@material-ui/core/';
+import { Button, Grid } from '@material-ui/core/';
 import agent from '../../api/agent.js'
 import Alert from '../Alert/Alert';
 
@@ -89,15 +89,19 @@ export default class CheckTimesheet extends Component {
 
     render() {
         return (
-            <>
-                {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
-                <TimesheetDetail
-                    loadedUser={this.props.match.params.tsid}
-                    {...this.props}
-                />
-                <Button variant='contained' color="primary" onClick={this.approveTimesheet}>Approve</Button>
-                <Button variant='contained' color="secondary" onClick={this.rejectTimesheet}>Reject</Button>
-            </>
+            <div className="tsApproverPortal-container">
+                <Grid container direction="column">
+                    {this.state.errorAlert ? <Alert config = {{message: "An error has occurred. Please try again.", variant: "error"}}/> : null}
+                    <TimesheetDetail
+                        loadedUser={this.props.match.params.tsid}
+                        {...this.props}
+                    />
+                    <Grid container direction="row" justify="center">
+                        <Button className="tsButton" variant='contained' color="primary" onClick={this.approveTimesheet}>Approve</Button>
+                        <Button className="tsButton" variant='contained' color="secondary" onClick={this.rejectTimesheet}>Reject</Button>
+                    </Grid>
+                </Grid>
+            </div>
         )
     }
 }
