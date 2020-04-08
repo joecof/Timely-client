@@ -19,7 +19,12 @@ class ExpansionMenu extends Component {
         <ExpansionMenuItem text="Lead Engineer" resize = {this.props.resize} link = "/dashboard/lead"/>
         <ExpansionMenuItem text="Supervisor" resize = {this.props.resize} link = "/dashboard/supervisor"/>
         <ExpansionMenuItem text="Timesheet Approver" resize = {this.props.resize} link="/dashboard/tsapprover"/>
-        <ExpansionMenuItem text="HR" resize = {this.props.resize} link = "/dashboard/hr"/>
+        {
+          this.props.loadedUser.is_hr_staff ? 
+            <ExpansionMenuItem text="HR" resize = {this.props.resize} link = "/dashboard/hr"/>
+            :
+            null
+        }
       </ExpansionPanel>
     )
   }

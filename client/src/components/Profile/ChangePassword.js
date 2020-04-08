@@ -47,18 +47,22 @@ class ChangePassword extends Component {
         <Grid item xs={4} className = {classes.container}>
           <div className = {classes.field}>
             <Typography className = {classes.title} variant="h6"> Change Password </Typography>
-            <TextField
-              className = {classes.input}
-              name="oldPassword"
-              type="password"
-              helperText="Old Password"
-              fullWidth
-              onChange = {(e) => this.props.formHandler(e)}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+            {
+              !this.props.hr ? 
+                <TextField
+                className = {classes.input}
+                name="oldPassword"
+                type="password"
+                helperText="Old Password"
+                fullWidth
+                onChange = {(e) => this.props.formHandler(e)}
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              /> : null 
+            }
+           
             <TextField
               className = {classes.input}
               name="newPassword"

@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import MUIDatatable from "mui-datatables";
 import agent from '../../api/agent'
 
-
-
-
 /**
  * Defines the columns for the RE portal. 
  */

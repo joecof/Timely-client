@@ -8,8 +8,9 @@ import CreateEmployeeBasicInfo from './CreateEmployeeBasicInfo'
 import CreateEmployeePassword from './CreateEmployeePassword'
 import Alert from '../../Alert/Alert'
 import agent from '../../../api/agent'
-require('datejs');
+import { HTTP_STATUS } from '../../../constants/constants'
 const laborData = require('./labor')
+require('datejs');
 
 const styles = () => ({
   root: {
@@ -56,7 +57,6 @@ class CreateEmployeeForm extends Component {
   componentDidMount() {
 
     this.setState({
-      // employeeId: '',
       firstName: '',
       middleName: '',
       lastName: '', 
@@ -81,7 +81,6 @@ class CreateEmployeeForm extends Component {
   valueLabelFormat(value) {
     return this.state.marks[value].label;
   }
-
 
   getSliderValue(value) {
     this.setState({
@@ -126,54 +125,61 @@ class CreateEmployeeForm extends Component {
   }
 
   async handleSubmit() {
-    const token = localStorage.getItem("token");
-    const { 
-      firstName,
-      middleName,
-      lastName,
-      supervisorId,
-      laborGradeId,
-      laborGradeName,
-      confirmPassword,
-      isHr, 
-      isAdmin,
-      isSuperTimesheetApprover,
-      vacation,
-    } = this.state; 
-    
-    const employee = {
-      supervisor_id: supervisorId,
-      labor_grade_id: {
-        labor_grade_id: laborGradeId,
-        labor_grade_name: laborGradeName
-      },
-      password: confirmPassword,
-      first_name: firstName, 
-      middle_name: middleName,
-      last_name: lastName,
-      start_date: new Date().getTime(),
-      end_date: null,
-      is_admin: isAdmin,
-      is_hr_staff: isHr, 
-      is_super_timesheet_approver: isSuperTimesheetApprover,
-      is_secondary_approver: false, 
-      vacation: vacation
-    }
 
-    await agent.employeeInfo.createEmployee(token, employee);
+    try {
+      const token = localStorage.getItem("token");
+      const { 
+        firstName,
+        middleName,
+        lastName,
+        supervisorId,
+        laborGradeId,
+        laborGradeName,
+        confirmPassword,
+        isHr, 
+        isAdmin,
+        isSuperTimesheetApprover,
+        vacation,
+      } = this.state; 
+      
+      const employee = {
+        supervisor_id: supervisorId,
+        labor_grade_id: {
+          labor_grade_id: laborGradeId,
+          labor_grade_name: laborGradeName
+        },
+        password: confirmPassword,
+        first_name: firstName, 
+        middle_name: middleName,
+        last_name: lastName,
+        start_date: new Date().getTime(),
+        end_date: null,
+        is_admin: isAdmin,
+        is_hr_staff: isHr, 
+        is_super_timesheet_approver: isSuperTimesheetApprover,
+        is_secondary_approver: false, 
+        vacation: vacation
+      }
 
-    this.setState({
-      successAlert: true, 
-      errorAlert: false
-    })
-            
-    setTimeout(() => {
+      await agent.employeeInfo.createEmployee(token, employee);
+
       this.setState({
-        successAlert: false, 
+        successAlert: true, 
         errorAlert: false
-      }) 
-    }, 1000);
+      })
+              
+      setTimeout(() => {
+        this.setState({
+          successAlert: false, 
+          errorAlert: false
+        }) 
+      }, 1000);
 
+    } catch (e) {
+      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        this.props.sessionLogoutHandler();
+      }
+    }
   }
 
   render() {

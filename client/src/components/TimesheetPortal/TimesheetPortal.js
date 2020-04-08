@@ -140,8 +140,6 @@ export default class TimesheetPortal extends Component {
 
   // timesheet table UI
   render() {
-
-    console.log(this.props)
     
     return (
       <>
