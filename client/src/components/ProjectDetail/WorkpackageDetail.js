@@ -39,6 +39,15 @@ class WorkpackageDetail extends React.Component {
     this.calcValuesEmpHours = this.calcValuesEmpHours.bind(this);
     this.handleTagsChange = this.handleTagsChange.bind(this);
     this.submitNewEmployees = this.submitNewEmployees.bind(this);
+    this.closeWP = this.closeWP.bind(this);
+  }
+
+  closeWP() {
+    console.log(this.state.wp);
+    const token = localStorage.getItem("token");
+    var wp = this.state.wp;
+    wp.is_open = 0;
+    const response = agent.workpackages.closeWorkpackage(wp, token)
   }
 
   openModal() {
@@ -168,7 +177,7 @@ class WorkpackageDetail extends React.Component {
                     />
                   </>
                 )}
-                {(this.state.selectDisabled && this.state.isProjManager && this.state.wp.work_package_id.includes("L")) && (
+                {(this.state.selectDisabled && this.state.isProjManager && this.state.wp.work_package_id.includes("L") && this.state.wp.project.status === 'OPEN' && this.state.wp.is_open) && (
                   <Button
                     onClick={() => {
                       console.log("clicked");
@@ -230,6 +239,9 @@ class WorkpackageDetail extends React.Component {
               New Plan
             </Button>
           </>
+        )}
+        {(this.state.isProjManager && this.state.wp.project.status === 'OPEN' && this.state.wp.is_open) && (
+          <Button style={{background: 'red', color: "white"}} onClick={this.closeWP}>Close</Button>
         )}
       </div>
     );

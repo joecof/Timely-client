@@ -149,21 +149,23 @@ class ProjectDetail extends React.Component {
                     .join(" ")}
                 </Typography>
               </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={Link}
-                  to={{
-                    pathname: "/createWorkpackage",
-                    project: this.state.project,
-                    wpList: this.state.wpList
-                  }}
-                  style={{ marginRight: "5%" }}
-                >
-                  <b>+ Create Work Package</b>
-                </Button>
-              </Grid>
+              {this.state.project.status === "OPEN" && (
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    component={Link}
+                    to={{
+                      pathname: "/createWorkpackage",
+                      project: this.state.project,
+                      wpList: this.state.wpList
+                    }}
+                    style={{ marginRight: "5%" }}
+                  >
+                    <b>+ Create Work Package</b>
+                  </Button>
+                </Grid>
+              )}
             </Grid>
           </>
         )}

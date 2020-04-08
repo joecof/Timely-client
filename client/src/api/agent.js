@@ -70,6 +70,7 @@ const workpackages = {
   createWorkpackage: (data, token) => requests.post(`/workpackages/createWP`, token, data),
   updateWorkpackage: (data, token) => requests.put(`/workpackages`, token, data),
   getAllWorkpackageFromRE: (empId,token) => requests.get(`/workpackages/RE/${empId}`,token),
+  closeWorkpackage: (data, token) => requests.put(`/workpackages/closeWP`, token, data),
 }
 
 const workpackagePlan = {

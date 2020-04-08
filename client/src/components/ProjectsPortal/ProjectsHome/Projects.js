@@ -23,7 +23,7 @@ class Projects extends React.Component {
       mineProj: [],
       archivedProj: [],
       closedProj: [],
-      type: "All"
+      type: "All",
     };
     this.setData = this.setData.bind(this);
     this.allProjects = this.allProjects.bind(this);
@@ -31,6 +31,8 @@ class Projects extends React.Component {
     this.archivedProjects = this.archivedProjects.bind(this);
     this.closedProjects = this.closedProjects.bind(this);
   }
+
+
 
   async componentDidMount() {
     await this.setData();

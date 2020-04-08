@@ -18,8 +18,9 @@ class CustomSelectProject extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick = async (str) => {
-    console.log("click!", this.props.data); // a user can do something with these selectedRow values
+  handleClick = async (event, str) => {
+    event.preventDefault();
+    console.log("click!", str); // a user can do something with these selectedRow values
     
     const user = JSON.parse(sessionStorage.getItem('user'));
     // console.log(user);
@@ -31,6 +32,7 @@ class CustomSelectProject extends React.Component {
       console.log(response);
       response.status = str;
       const nextResponse = await agent.projects.updateProject(response, token);
+      window.location.href = window.location.href;
     }
   }
 
@@ -43,8 +45,8 @@ class CustomSelectProject extends React.Component {
             color="primary"
             aria-label="contained primary button group"
           >
-            <Button onClick={this.handleClick("ARCHIVE")}>Archive</Button>
-            <Button onClick={this.handleClick("CLOSE")}>Close</Button>
+            <Button onClick={e => this.handleClick(e, "ARCHIVE")}>Archive</Button>
+            <Button onClick={e => this.handleClick(e, "CLOSE")}>Close</Button>
           </ButtonGroup>
         )}
         {this.state.type === "Archived" && (
@@ -53,8 +55,8 @@ class CustomSelectProject extends React.Component {
             color="primary"
             aria-label="contained primary button group"
           >
-            <Button onClick={this.handleClick("OPEN")}>Open</Button>
-            <Button onClick={this.handleClick("CLOSE")}>Close</Button>
+            <Button onClick={e => this.handleClick(e, "OPEN")}>Open</Button>
+            <Button onClick={e => this.handleClick(e, "CLOSE")}>Close</Button>
           </ButtonGroup>
         )}
       </div>

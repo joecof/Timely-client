@@ -23,7 +23,7 @@ class ProjectsList extends React.Component {
       selectableRows : true,
       customToolbarSelect: (selectedRows, data) => {
         return (
-          <CustomSelectProject data={data[0].data} type={this.state.type} />
+          <CustomSelectProject data={data[selectedRows.data[0].index].data} type={this.state.type} history={this.props.history} />
         );
       },
       onRowClick: (rowData, rowState) => {
