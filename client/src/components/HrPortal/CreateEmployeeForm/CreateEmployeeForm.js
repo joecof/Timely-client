@@ -15,7 +15,7 @@ require("datejs");
 
 const styles = () => ({
   outerContainer: {
-    width: "1300px",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
   },
@@ -192,9 +192,7 @@ class CreateEmployeeForm extends Component {
         });
       }, 1000);
     } catch (e) {
-      if (e.response.status === HTTP_STATUS.UNAUTHORIZED) {
-        this.props.sessionLogoutHandler();
-      }
+      console.log(e);
     }
   }
 

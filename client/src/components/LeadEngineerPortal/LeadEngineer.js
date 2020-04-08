@@ -149,7 +149,6 @@ class LeadEngineer extends Component {
       this.setState({
         errorAlert: true
       })
-      this.props.sessionLogoutHandler();
     }
   }
 

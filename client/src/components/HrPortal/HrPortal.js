@@ -135,9 +135,7 @@ class HrPortal extends Component {
       this.fetchData(this.state.token);
       
     } catch(e) {
-      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
-        this.props.sessionLogoutHandler();
-      }
+      console.error(e);
     }
   }
 
@@ -149,9 +147,7 @@ class HrPortal extends Component {
       this.fetchData(this.state.token);
 
     } catch(e) {
-      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
-        this.props.sessionLogoutHandler();
-      }
+      console.error(e);
     }
   }
 
@@ -199,9 +195,7 @@ class HrPortal extends Component {
       })
       
     } catch(e) {
-      if(e.response.status === HTTP_STATUS.UNAUTHORIZED) {
-        this.props.sessionLogoutHandler();
-      }
+      console.error(e);
     }
   } 
 

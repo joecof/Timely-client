@@ -29,7 +29,6 @@ class App extends Component {
     this.logoutHandler = this.logoutHandler.bind(this);
     this.setAutoLogout = this.setAutoLogout.bind(this);
     this.sessionHandler = this.sessionHandler.bind(this);
-    this.sessionLogoutHandler = this.sessionLogoutHandler.bind(this);
 
   }
 
@@ -56,7 +55,6 @@ class App extends Component {
         isAuth: false
       })
       
-      this.sessionLogoutHandler();
       return; 
     }
 
@@ -119,28 +117,6 @@ class App extends Component {
     }, 1000);
   }
 
-  /**
-   * Session Logout handler. Logs out the user if there session is invalid. 
-   */
-  sessionLogoutHandler() {
-    this.setState({
-      isAuth: false,
-      loadedUser: null,
-      sessionAlert: true,
-    })
-
-    localStorage.removeItem('expiryDate');
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-    sessionStorage.removeItem('logged')
-
-    setTimeout(() => {
-      this.setState({
-        sessionAlert: false,
-        errorAlert: false
-      }) 
-    }, 1000);
-  }
 
   /**
    * Logout handler. Logs out the user, and sets state of authentication to false.  
@@ -181,7 +157,6 @@ class App extends Component {
         loginHandler: this.loginHandler,
         logoutHandler: this.logoutHandler,
         loadedUser: this.state.loadedUser,
-        sessionLogoutHandler: this.sessionLogoutHandler
       })
     }
 
