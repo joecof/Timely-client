@@ -118,6 +118,7 @@ class TimesheetDetail extends Component {
   }
   // Fetching Timesheet Rows
   async fetchTimesheetRows() {
+    console.log("fuck")
     // check if its dash board timesheet
     const ifDashboardTs = this.props.dashboardTimesheet;
     var userId, token, tsId;
@@ -133,70 +134,67 @@ class TimesheetDetail extends Component {
         loadUser: user,
       });
     } else {
-      if (this.props.token != null) {
-        userId = this.props.userId;
-        token = this.props.token;
-        var projects, curEmp;
+      userId = this.props.userId;
+      token = this.props.token;
+      // project and current logged in employee json
+      var projects, curEmp;
+      try {
+        // fetching projects
+        projects = await agent.projects.getProjectsForUser(userId, token);
+        // fetching employee
+        curEmp = await agent.employeeInfo.getCurrentUser(
+          this.props.userId,
+          this.props.token
+        );
+        this.setState({
+          loadUser: curEmp,
+        });
+      } catch (e) {
+        console.log(this.props);
+      }
 
-        try {
-          // fetching projects
-          projects = await agent.projects.getProjectsForUser(userId, token);
-          // fetching employee
-          curEmp = await agent.employeeInfo.getCurrentUser(
-            this.props.userId,
-            this.props.token
-          );
-          this.setState({
-            loadUser: curEmp,
-          });
-        } catch (e) {
-          console.log(this.props);
-          this.props.sessionLogoutHandler();
-        }
+      // looking for the most recent timesheet
+      try {
+        const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(
+          userId,
+          token
+        );
 
-        // looking for the most recent timesheet
-        try {
-          const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(
-            userId,
-            token
-          );
+        if (tsResponse.length != 0) {
+          // fetching timesheets
+          var timesheetList = [];
 
-          if (tsResponse.length != 0) {
-            // fetching timesheets
-            var timesheetList = [];
+          for (let i = 0; i < tsResponse.length; i++) {
+            let timesheetid = tsResponse[i].timesheet_id;
+            let weeknumber = tsResponse[i].week;
+            let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
+            let status = tsResponse[i].status;
+            let attribute1 =
+              tsResponse[i].attribute1 == null
+                ? "0|0"
+                : tsResponse[i].attribute1;
 
-            for (let i = 0; i < tsResponse.length; i++) {
-              let timesheetid = tsResponse[i].timesheet_id;
-              let weeknumber = tsResponse[i].week;
-              let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
-              let status = tsResponse[i].status;
-              let attribute1 =
-                tsResponse[i].attribute1 == null
-                  ? "0|0"
-                  : tsResponse[i].attribute1;
-
-              let eachTimesheet = [];
-              eachTimesheet.push(timesheetid);
-              eachTimesheet.push(weeknumber);
-              eachTimesheet.push(weekending);
-              eachTimesheet.push(status);
-              eachTimesheet.push(attribute1);
-              timesheetList.push(eachTimesheet);
-            }
-            // sorting timesheet list by week number
-            timesheetList.sort(function (a, b) {
-              return b[1] - a[1];
-            });
-            tsId = timesheetList[0][0];
-            // returning projects, employee and overFlex time to dashboard
-            this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
-          } else {
-            // returning projects, employee and overFlex time to dashboard
-            this.props.fetchProject(projects, curEmp, "0|0");
+            let eachTimesheet = [];
+            eachTimesheet.push(timesheetid);
+            eachTimesheet.push(weeknumber);
+            eachTimesheet.push(weekending);
+            eachTimesheet.push(status);
+            eachTimesheet.push(attribute1);
+            timesheetList.push(eachTimesheet);
           }
-        } catch (e) {
-          // this.props.sessionLogoutHandler();
+          // sorting timesheet list by week number
+          timesheetList.sort(function (a, b) {
+            return b[1] - a[1];
+          });
+          tsId = timesheetList[0][0];
+          // returning projects, employee and overFlex time to dashboard
+          this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
+        } else {
+          // returning projects, employee and overFlex time to dashboard
+          this.props.fetchProject(projects, curEmp, "0|0");
         }
+      } catch (e) {
+        // this.props.sessionLogoutHandler();
       }
     }
 
@@ -548,7 +546,6 @@ class TimesheetDetail extends Component {
       this.setState({
         errorAlert: true,
       });
-      this.props.sessionLogoutHandler();
     }
     setTimeout(() => {
       this.setState({
@@ -656,7 +653,6 @@ class TimesheetDetail extends Component {
       this.setState({
         errorAlert: true,
       });
-      this.props.sessionLogoutHandler();
     }
     setTimeout(() => {
       this.setState({
