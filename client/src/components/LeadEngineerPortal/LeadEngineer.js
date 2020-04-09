@@ -11,6 +11,12 @@ import "./LeadEngineer.css";
 import Alert from '../Alert/Alert'
 
 /**
+ * Author : Lawrence , Prabh
+ * Version: 1.0
+ * RE portal componet for RE to view all workpackages he responsible for.
+ */
+
+/**
  * Defines the columns for the RE portal.
  */
 const columns = [
@@ -38,8 +44,9 @@ const options = (props, wpList) => {
           wp = x;
         }
       });
+      var wpId = wp.work_package_id;
       props.history.push({
-        pathname: `/workpackageDetail`,
+        pathname: `/workpackageDetail/${wpId}`,
         state: { wp: wp, isPM: false, isRE: true },
       });
     },
@@ -92,25 +99,20 @@ class LeadEngineer extends Component {
       data: [],
       token: null,
       wpList: [],
-      errorAlert:false,
+      errorAlert: false,
     };
 
     this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount() {
-    const token = localStorage.getItem("token");
-
-    this.setState({
-      token: token,
-    });
-
-    this.fetchData(token);
+    this.fetchData();
   }
 
-  async fetchData(token) {
+  async fetchData() {
 
     try {
+      const token = localStorage.getItem("token");
       const { classes } = this.props;
       const user = JSON.parse(sessionStorage.getItem('user'));
       const userId = user.employee_id;
@@ -147,7 +149,7 @@ class LeadEngineer extends Component {
     } catch (e) {
       console.error(e);
       this.setState({
-        errorAlert: true
+        errorAlert: true,
       })
     }
   }
@@ -155,9 +157,10 @@ class LeadEngineer extends Component {
   render() {
     return (
       <>
+        {this.state.errorAlert ? <Alert config={{ message: "WorkPackage API Call Failed", variant: "error" }} /> : null}
         <div className="leadEngineer-container">
           <MuiThemeProvider theme={this.getCustomTheme()}>
-          {this.state.errorAlert ? <Alert config = {{message: "WorkPackage API Call Failed", variant: "error"}}/> : null}
+
             <MUIDatatable
               className="datatable"
               title={"WorkPackage Reports"}
