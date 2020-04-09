@@ -22,7 +22,7 @@ const Desc = (props) => {
       <TextField
           className={classes.projDesc}
           id="outlined-multiline-static"
-          label="Project Description"
+          label="Work Pacakge Description"
           multiline
           rows="8"
           variant="outlined"

@@ -219,7 +219,7 @@ export default class Routes extends Component {
               )}
             />
             <Route
-              path="/workpackageDetail"
+              path="/workpackageDetail/:id"
               exact
               render={props => (
                 <WorkpackageDetail

@@ -27,7 +27,7 @@ class CustomToolbar extends React.Component {
     this.state = {
       data: this.props.data,
       wp: this.props.wp,
-      sumbitAlert: false,
+      submitAlert: false,
       successAlert: false,
     };
 
@@ -95,19 +95,26 @@ class CustomToolbar extends React.Component {
     } catch (e) {
       console.error(e);
       this.setState({
-        sumbitAlert: true,
+        submitAlert: true,
       })
     }
+    
+    this.props.history.push('/dashboard/lead')
+    setTimeout(() => {
+      this.setState({
+        successAlert: false,
+        submitAlert: false,
+      });
+    }, 1000);
   }
   /**
-   * Will be used to sumbit the iteration plan
+   * Will be used to submit the iteration plan
    */
   render() {
     const { classes } = this.props;
 
     return (
       <>
-
         <Tooltip title={"Submit the plan"}>
           <Button
             className={classes.iconButton}
@@ -118,8 +125,7 @@ class CustomToolbar extends React.Component {
             Submit
           </Button>
         </Tooltip>
-        {this.state.sumbitAlert ? <Alert config={{ message: "Submission Failed!", variant: "error" }} /> : null}
-        {this.state.successAlert ? <Alert config={{ message: "Submission Successful!", variant: "success" }} /> : null}
+     
       </>
     );
   }
