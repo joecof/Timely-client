@@ -178,7 +178,6 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <CheckTimesheet
-                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -188,7 +187,6 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <Projects
-                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}
@@ -221,7 +219,7 @@ export default class Routes extends Component {
               )}
             />
             <Route
-              path="/workpackageDetail"
+              path="/workpackageDetail/:id"
               exact
               render={props => (
                 <WorkpackageDetail
@@ -234,7 +232,6 @@ export default class Routes extends Component {
               exact
               render={props => (
                 <IterationPlanCreate
-                  sessionLogoutHandler = {this.props.config.sessionLogoutHandler}
                   {...props}
                 />
               )}

@@ -86,7 +86,7 @@ class WorkpackageTree extends React.Component {
             }
           });
           this.props.history.push({
-            pathname: `/workpackageDetail`,
+            pathname: `/workpackageDetail/${wp.work_package_id}`,
             state: { wp: wp, isPM: true }
           });
           event.stopPropagation();
