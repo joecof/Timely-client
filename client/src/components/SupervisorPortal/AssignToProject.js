@@ -64,6 +64,7 @@ const AssignToProject = (props) => {
   const [employees, setEmployees] = React.useState([]);
 
   const [projectsData, setProjectsData] = React.useState([]);
+  const [employeeList, setEmployeeList] = React.useState([]);
   const [employeesData, setEmployeesData] = React.useState([]);
 
   const [successAlert, setSuccessAlert] = React.useState(false);
@@ -110,10 +111,29 @@ const AssignToProject = (props) => {
   useEffect(() => {
     async function fetchData() {
       setProjectsData(await fetchProjectsData());
-      setEmployeesData(await fetchEmployeesData());
+      setEmployeeList(await fetchEmployeesData());
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (project == null) {
+      return;
+    }
+    var empNotInProj = [];
+    for (var i = 0; i < employeeList.length; i++) {
+      var inProj = false;
+      for (var j = 0; j < project.employees.length; j++) {
+        if (employeeList[i].employee_id == project.employees[j].employee_id) {
+          var inProj = true;
+        }
+      }
+      if (!inProj) {
+        empNotInProj.push(employeeList[i]);
+      }
+    }
+    setEmployeesData(empNotInProj);
+  }, [project]);
 
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
