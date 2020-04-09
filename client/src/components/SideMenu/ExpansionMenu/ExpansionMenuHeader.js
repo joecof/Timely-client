@@ -6,6 +6,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Face from '../../Icon/Face'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import LayersIcon from '@material-ui/icons/Layers';
 import '../SideMenu.css'
 import { Link } from "react-router-dom";
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -43,6 +44,7 @@ const styles = () => ({
   text: {
     marginLeft: 50,
     color: 'white',
+    letterSpacing: "1.5px"
     // font: '14px, Roboto, Helvetica, Arial, sans-serif',
   }, 
   link: {
@@ -71,8 +73,10 @@ class ExpansionMenuHeader extends Component {
             <Grid item >
               {/* {this.props.isMenuLogo ? 
                 <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>} */}
-              
-              <WidgetsIcon className="itemIcon"/>
+                
+                <LayersIcon className="itemIcon"/>
+
+              {/* <WidgetsIcon className="itemIcon"/> */}
               
             </Grid>
             <Grid item onClick = {this.props.handleClick}>

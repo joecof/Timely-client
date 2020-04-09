@@ -91,8 +91,6 @@ class SideMenu extends Component {
             })
           }}
         >
-
-
           {/* Top Section */}
           <p className="side-title"> <b>Timely</b></p>
           <Divider className={classes.divider} />
@@ -104,10 +102,9 @@ class SideMenu extends Component {
             resize={this.props.resize}
           />
 
-          <Divider className={classes.divider} />
- 
         
           <div className="menuItems-sections">
+          <Divider className={classes.divider} />
             <MenuItem
               text="Dashboard"
               resize={this.props.resize}

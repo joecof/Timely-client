@@ -88,7 +88,7 @@ class WorkpackageDetail extends React.Component {
       timesheets: response
     });
 
-    console.log(response);
+    console.log("TS", response);
   }
 
   handleTagsChange = e => {
@@ -239,7 +239,7 @@ class WorkpackageDetail extends React.Component {
                 <br />
               </>
             )}
-          {this.state.isRE && (
+          {this.state.isRE && this.state.emps.length > 0 &&(
             <>
               <BudgetVsActual
                 tsheets={this.state.timesheets}

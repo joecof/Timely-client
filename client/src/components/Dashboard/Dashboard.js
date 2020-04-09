@@ -66,7 +66,7 @@ class Dashboard extends Component {
       <BrowserRouter>
         <div className={classes.root}>
           <Navbar {...this.props.location } loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize} logoutHandler = {this.props.logoutHandler}/>
-          <SideMenu  loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize}/>
+          <SideMenu  {...this.props.location } loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize}/>
           <Container routes = {routes} />
         </div>   
       </BrowserRouter>
