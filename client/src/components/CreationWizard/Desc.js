@@ -28,7 +28,7 @@ const Desc = (props) => {
       <TextValidator
         className={classes.projDesc}
         id="outlined-multiline-static"
-        label="Project Description"
+        label="Description"
         multiline
         rows="8"
         variant="outlined"

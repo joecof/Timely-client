@@ -16,6 +16,9 @@ const styles = () => ({
     alignItems: "center",
     padding: "45px",
   },
+  formContainer: {
+    width: "100%"
+  },
   title: {
     fontSize: "16px",
     fontWeight: "bold",
@@ -24,7 +27,7 @@ const styles = () => ({
   input: {
     display: "block",
     width: "100%",
-    margin: "10px 0 0 0",
+    margin: "5px 0 0 0",
   },
   field: {
     marginTop: "50px",
@@ -51,7 +54,7 @@ class CreateEmployeePassword extends Component {
 
     return (
       <div className={classes.container}>
-        <ValidatorForm onSubmit = {this.props.handleSubmit}>
+        <ValidatorForm onSubmit = {this.props.handleSubmit} className={classes.formContainer}>
           <div className={classes.field}>
             <div className={classes.title}>Password</div>
             <TextValidator

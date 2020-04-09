@@ -32,7 +32,8 @@ class BreadCrumb extends Component {
                   <Typography color="textPrimary"> {item.split('/')[i + 1]} </Typography>
                 </Link> 
                 : 
-                <Link key = {i} to = {`${item}/${loadedUser.employee_id}`}> {item.split('/')[i + 1]} </Link>}
+                i === 0 ? <Link key = {i} to = {`${item}/${loadedUser.employee_id}`}> {item.split('/')[i + 1]} </Link> : 
+                <Link key = {i} to = {`${item}`}> {item.split('/')[i + 1]} </Link>}
             </div>
           ))}
         </Breadcrumbs>

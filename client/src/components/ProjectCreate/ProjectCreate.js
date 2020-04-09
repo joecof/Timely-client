@@ -136,17 +136,13 @@ export default function ProjectCreate() {
 
   useEffect(() => {
     ValidatorForm.addValidationRule('isRequired', (value) => {
-      
       if(value.length === 0) {
-        console.log(valid)
-
         setValid(false);
         return false;
       } else {
         setValid(true);
         return true;
       }
-
     });    
   }, []);
 
@@ -210,6 +206,8 @@ export default function ProjectCreate() {
 
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setValid(true);
+
   };
 
   const handleReset = () => {

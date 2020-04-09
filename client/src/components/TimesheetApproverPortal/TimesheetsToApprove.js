@@ -3,8 +3,6 @@ import MUIDatatable from "mui-datatables";
 import agent from "../../api/agent";
 import Alert from "../Alert/Alert";
 import {
-  withStyles,
-  ThemeProvider,
   createMuiTheme,
   MuiThemeProvider,
 } from "@material-ui/core/styles";
@@ -41,7 +39,7 @@ const columns = [
 ];
 
 // static options
-const options = (props, states, fetchTimesheets) => {
+const options = (props) => {
   const data = {
     selectableRows: false,
     search: true,
@@ -113,7 +111,7 @@ export default class TimesheetPortal extends Component {
   // Fetching Timesheets
   async fetchTimesheets() {
     // fetch logined user
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");                                     
     const userId = this.props.match.params.id;
     try {
       var response = await agent.timesheetsInfo.getAllCloseTimesheetsByEmp(
@@ -133,7 +131,7 @@ export default class TimesheetPortal extends Component {
       return [];
     }
 
-    if (response.length != 0) {
+    if (response.length !== 0) {
       // fetching timesheets
       var timesheetList = [];
 

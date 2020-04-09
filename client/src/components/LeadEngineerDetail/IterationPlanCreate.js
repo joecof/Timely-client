@@ -12,7 +12,8 @@ import "./iterationPlanCreate.css";
 
 /**
  * Author : Lawrence , Prabh
- *
+ * Version: 1.0
+ * Iteration plan component for RE to create new iteration plan.
  * @param {JSON} } self
  */
 
@@ -159,7 +160,7 @@ class IterationPlanCreate extends React.Component {
         console.log("WP!");
         if (plan.type === "ESTIMATE") {
           found = true;
-          if (plan.revision > revisionA) {
+          if (plan.revision >= revisionA) {
             revisionA = plan.revision;
             data.forEach((d) => {
               console.log("in here");
@@ -178,7 +179,7 @@ class IterationPlanCreate extends React.Component {
         console.log("BUDGET");
         var revisionB = 0;
         this.state.wp.workPackagePlanCollection.forEach((plan) => {
-          if (plan.revision > revisionB) {
+          if (plan.revision >= revisionB) {
             console.log("Found Revision");
             revisionB = plan.revision;
             data.forEach((d) => {
@@ -205,7 +206,6 @@ class IterationPlanCreate extends React.Component {
       this.setState({
         errorAlert: true,
       });
-      this.props.sessionLogoutHandler();
     }
   }
 
@@ -213,14 +213,6 @@ class IterationPlanCreate extends React.Component {
     return (
       <div className="iterationPlanCreate-container">
         <MuiThemeProvider theme={this.getCustomTheme()}>
-          {this.state.errorAlert ? (
-            <Alert
-              config={{
-                message: "WorkPackage API Call Failed",
-                variant: "error",
-              }}
-            />
-          ) : null}
           <MUIDatatable
             className="datatable"
             title={<div className="iteration-tableTitle"> Iteration Progress</div>}

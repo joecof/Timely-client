@@ -118,7 +118,6 @@ class TimesheetDetail extends Component {
   }
   // Fetching Timesheet Rows
   async fetchTimesheetRows() {
-    console.log("fuck")
     // check if its dash board timesheet
     const ifDashboardTs = this.props.dashboardTimesheet;
     var userId, token, tsId;
@@ -150,7 +149,7 @@ class TimesheetDetail extends Component {
           loadUser: curEmp,
         });
       } catch (e) {
-        console.log(this.props);
+        
       }
 
       // looking for the most recent timesheet

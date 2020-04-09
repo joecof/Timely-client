@@ -10,6 +10,7 @@ import EstimationRE from "../Charts/EstimationRE";
 import { Link } from "react-router-dom";
 import SelectEmployees from "../WorkpackageCreate/SelectEmployees";
 import "./ProjectDetail.css";
+import Typography from "@material-ui/core/typography";
 
 /**
  * Author: Prabh
@@ -30,7 +31,7 @@ class WorkpackageDetail extends React.Component {
       week: 0,
       openModal: false,
       selectDisabled: true,
-      selectEmps: [],
+      selectEmps: []
     };
 
     this.openModal = this.openModal.bind(this);
@@ -43,16 +44,19 @@ class WorkpackageDetail extends React.Component {
   closeWP() {
     console.log(this.state.wp);
     const token = localStorage.getItem("token");
+    const user = JSON.parse(sessionStorage.getItem('user'));
+
     var wp = this.state.wp;
     wp.is_open = 0;
-    const response = agent.workpackages.closeWorkpackage(wp, token)
-    
-    window.location.href = window.location.href;
+    const response = agent.workpackages.closeWorkpackage(wp, token);
+
+
+    this.props.history.push(`/dashboard/${user.employee_id}`);
   }
 
   openModal() {
     this.setState({
-      openModal: true,
+      openModal: true
     });
   }
 
@@ -66,7 +70,7 @@ class WorkpackageDetail extends React.Component {
   async calcValuesEmpHours() {
     const token = localStorage.getItem("token");
     var emps = [];
-    this.state.wp.employees.forEach((x) => {
+    this.state.wp.employees.forEach(x => {
       emps.push(x.employee_id);
     });
     // console.log(emps);
@@ -84,18 +88,18 @@ class WorkpackageDetail extends React.Component {
     this.setState({
       emps: this.state.wp.employees,
       week: week,
-      timesheets: response,
+      timesheets: response
     });
 
-    console.log(response);
+    console.log("TS", response);
   }
 
-  handleTagsChange = (e) => {
+  handleTagsChange = e => {
     console.log(e);
     // console.log(this.state.selectEmps);
     this.setState(
       {
-        selectEmps: e,
+        selectEmps: e
       },
       console.log(this.state.selectEmps)
     );
@@ -105,12 +109,12 @@ class WorkpackageDetail extends React.Component {
     console.log("SUbmit");
     // console.log(this.state.wp);
     var wp = this.state.wp;
-    this.state.selectEmps.forEach((x) => wp.employees.push(x));
+    this.state.selectEmps.forEach(x => wp.employees.push(x));
     console.log(wp);
     this.setState(
       {
         wp: wp,
-        selectDisabled: true,
+        selectDisabled: true
       },
       console.log(this.state.wp)
     );
@@ -120,6 +124,7 @@ class WorkpackageDetail extends React.Component {
   }
 
   render() {
+
     return (
       <div className="projectDetailContainer">
         <div className="wpDetail-innerContainer">
@@ -161,7 +166,7 @@ class WorkpackageDetail extends React.Component {
               <div className="wpDetail-teamTitleAvatar-container">
                 <div className="wpDetail-teamTitle">Team:</div>
                 <div className="wpDetail-teamMemberAvatar-container">
-                  {this.state.wp.employees.slice(0, 5).map((e) => (
+                  {this.state.wp.employees.slice(0, 5).map(e => (
                     <div className="wpDetail-avatar-container">
                       <Tooltip title={e.first_name + " " + e.last_name}>
                         <Avatar
@@ -184,72 +189,95 @@ class WorkpackageDetail extends React.Component {
                       />
                     </>
                   )}
-                {(this.state.selectDisabled && this.state.isProjManager && this.state.wp.work_package_id.includes("L") && this.state.wp.project.status === 'OPEN' && this.state.wp.is_open) && (
-                  <Button
-                    onClick={() => {
-                      console.log("clicked");
-                      this.setState({ selectDisabled: false });
-                    }}
-                  >
-                    Assign Employees
-                  </Button>
-                )}
-                {(!this.state.selectDisabled && this.state.isProjManager && this.state.wp.work_package_id.includes("L")) && (
-                  <>
-                  <SelectEmployees
-                    handleTagsChange={this.handleTagsChange}
-                    project={this.state.wp.project}
-                    isDisabled={false}
-                    emps={this.state.emps}
-                  />
-                  <Button onClick={this.submitNewEmployees}>Add</Button>
-                  </>
-                )}
+                  {this.state.selectDisabled &&
+                    this.state.isProjManager &&
+                    this.state.wp.work_package_id.includes("L") &&
+                    this.state.wp.project.status === "OPEN" &&
+                    this.state.wp.is_open && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginLeft: "5%" }}
+                        onClick={() => {
+                          console.log("clicked");
+                          this.setState({ selectDisabled: false });
+                        }}
+                      >
+                        Assign Employees
+                      </Button>
+                    )}
+                  {!this.state.selectDisabled &&
+                    this.state.isProjManager &&
+                    this.state.wp.work_package_id.includes("L") && (
+                      <>
+                        <SelectEmployees
+                          handleTagsChange={this.handleTagsChange}
+                          project={this.state.wp.project}
+                          isDisabled={false}
+                          emps={this.state.emps}
+                        />
+                        <Button onClick={this.submitNewEmployees}>Add</Button>
+                      </>
+                    )}
                 </div>
               </div>
             </div>
           </div>
-        {this.state.isProjManager && this.state.emps.length > 0 && this.state.wp.work_package_id.includes("L") && (
-          //NOTE: chagne week
-          <>
-            <EmpHours
-              EmpsX={this.state.emps}
-              week={this.state.week}
-              EmpsY={this.state.timesheets}
-              wp={this.state.wp}
-            />
-            <br />
-            <BudgetVsActual
-              tsheets={this.state.timesheets}
-              wp={this.state.wp}
-            />
-            <br />
-          </>
-        )}
-        {this.state.isRE && (
-          <>
-            <BudgetVsActual
-              tsheets={this.state.timesheets}
-              wp={this.state.wp}
-            />
-            <br />
-            <EstimationRE wp={this.state.wp} />
-            <br />
-            <Button
-              color="primary"
-              component={Link}
-              to={{
-                pathname: "/newIterationPlan",
-                wp: this.state.wp
-              }}
-            >
-              New Plan
-            </Button>
-          </>
-        )}
-        {(this.state.isProjManager && this.state.wp.project.status === 'OPEN' && this.state.wp.is_open) && (
-          <Button style={{background: 'red', color: "white"}} onClick={this.closeWP}>Close</Button>
-        )}
+          <Typography style={{fontWeight: "bold"}}>Status: {this.state.wp.is_open ? <span style={{color: "green"}}>OPEN</span> : <span style={{color: "red"}}>CLOSED</span>}</Typography>
+          {this.state.isProjManager &&
+            this.state.emps.length > 0 &&
+            this.state.wp.work_package_id.includes("L") && (
+              //NOTE: chagne week
+              <>
+                <EmpHours
+                  EmpsX={this.state.emps}
+                  week={this.state.week}
+                  EmpsY={this.state.timesheets}
+                  wp={this.state.wp}
+                />
+                <br />
+                <BudgetVsActual
+                  tsheets={this.state.timesheets}
+                  wp={this.state.wp}
+                />
+                <br />
+              </>
+            )}
+          {this.state.isRE && this.state.emps.length > 0 &&(
+            <>
+              <BudgetVsActual
+                tsheets={this.state.timesheets}
+                wp={this.state.wp}
+              />
+              <br />
+              <EstimationRE wp={this.state.wp} />
+              <br />
+              {this.state.wp.is_open && (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to={{
+                    pathname: "/newIterationPlan",
+                    wp: this.state.wp
+                  }}
+                >
+                  New Plan
+                </Button>
+              )}
+            </>
+          )}
+          {this.state.isProjManager &&
+            this.state.wp.project.status === "OPEN" &&
+            this.state.wp.is_open && (
+              <Button
+                style={{ background: "red", color: "white" }}
+                onClick={this.closeWP}
+              >
+                Close Work Package
+              </Button>
+            )}
         </div>
       </div>
     );

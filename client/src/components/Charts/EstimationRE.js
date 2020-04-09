@@ -98,7 +98,7 @@ class EstimationRE extends React.Component {
     valuesDetails.forEach((x) => {
       var string = "";
       x.forEach((thisX) => {
-        string += thisX.id + ": " + thisX.hours;
+        string += thisX.id + ":" + thisX.hours + " ";
       });
       graphValueObj.push(string);
     });

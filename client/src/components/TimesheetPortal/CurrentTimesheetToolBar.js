@@ -103,7 +103,6 @@ class CurrentTimesheetToolBar extends React.Component {
           errorAlert: false
         });
       }, 1000);
-      this.props.sessionLogoutHandler();
     }
     
 
@@ -154,7 +153,6 @@ class CurrentTimesheetToolBar extends React.Component {
           errorAlert: false
         });
       }, 1000);
-      this.props.sessionLogoutHandler();
     }
   }
   

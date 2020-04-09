@@ -3,6 +3,9 @@
  * Desc: Dashboard Portal CSS
  */
 
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,300&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Muli:ital,wght@0,400;1,800&display=swap');
+ 
  /* CSS for timesheet container */
 .container {
     height: 495px;
@@ -13,4 +16,32 @@
 ::-webkit-scrollbar {
     width: 0px;
     background: transparent; /* make scrollbar transparent */
+}
+
+/* Box Wrapping Information
+    - flextime, overtime vacation days
+
+*/
+.boxWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;   
+}
+
+.boxInfo {
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: .4px;
+    font-weight: 500;
+    color: #737373;
+    margin-top: 30px;
+}
+
+.boxNumber {
+    font-size: 40px;
+    color: #575e91;
+    font-family: 'Muli', sans-serif;
+    font-weight: 700;
 }
