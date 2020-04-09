@@ -54,20 +54,19 @@ class Dashboard extends Component {
         option: name,
         loadedUser: this.props.loadedUser,
         logoutHandler: this.props.logoutHandler,
-        sessionLogoutHandler: this.props.sessionLogoutHandler
       })
     }
     
     /**
      * Defines all routes available to the dashboard.
      */
-    let routes = <Routes { ...this.props} config = {config('dashboard')} logoutHandler = {this.props.logoutHandler} sessionLogoutHandler = {this.props.sessionLogoutHandler} token={this.props.token}/>
+    let routes = <Routes { ...this.props} config = {config('dashboard')} logoutHandler = {this.props.logoutHandler}  token={this.props.token}/>
     
     return (
       <BrowserRouter>
         <div className={classes.root}>
           <Navbar {...this.props.location } loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize} logoutHandler = {this.props.logoutHandler}/>
-          <SideMenu  loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize}/>
+          <SideMenu  {...this.props.location } loadedUser = {this.props.loadedUser} resizeDashboard = {this.resizeDashboard} resize = {this.state.resize}/>
           <Container routes = {routes} />
         </div>   
       </BrowserRouter>

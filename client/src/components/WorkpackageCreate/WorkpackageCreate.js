@@ -381,6 +381,7 @@ export default function WorkpackageCreate(props) {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setValid(true);
   };
 
   const handleReset = () => {
@@ -448,26 +449,6 @@ export default function WorkpackageCreate(props) {
                       variant="contained"
                       color="primary"
                       onClick={handleSubmit}
-                      disabled={!valid}
-                    >
-                      Finish
-                    </Button>
-                  )}
-                  {activeStep != steps.length - 1 && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                      disabled={!valid}
-                    >
-                      Back
-                    </Button>
-                  )}
-                  {activeStep === steps.length - 1 && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleSubmit}
                     >
                       Finish
                     </Button>
@@ -481,6 +462,24 @@ export default function WorkpackageCreate(props) {
                       Next
                     </Button>
                   )}
+                  {/* {activeStep === steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmit}
+                    >
+                      Finish
+                    </Button>
+                  )} */}
+                  {/* {activeStep != steps.length - 1 && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                    >
+                      Next
+                    </Button>
+                  )} */}
                 </div>
               </div>
             )}

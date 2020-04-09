@@ -6,16 +6,16 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Face from '../../Icon/Face'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import LayersIcon from '@material-ui/icons/Layers';
 import '../SideMenu.css'
+import { Link } from "react-router-dom";
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import WidgetsIcon from '@material-ui/icons/Widgets';
 
 /**
  * Material UI styling JSON object.
  */
 const styles = () => ({
-  text: {
-    marginLeft: 30,
-    color: "black"
-  },
   expansionPanelSummary: {
     height: "180px",
     margin: "25px 0 0 0",
@@ -40,7 +40,16 @@ const styles = () => ({
   },
   materialIconLight: {
     // margin: "0 12px 0 0"
-  }
+  },
+  text: {
+    marginLeft: 50,
+    color: 'white',
+    letterSpacing: "1.5px"
+    // font: '14px, Roboto, Helvetica, Arial, sans-serif',
+  }, 
+  link: {
+    textDecoration: 'none',
+  },
 });
 
 /**
@@ -53,28 +62,34 @@ class ExpansionMenuHeader extends Component {
     const { classes } = this.props;
 
     return (
-      <ExpansionPanelSummary
-        // expandIcon={
-        //       <ArrowDropDownIcon className={classes.materialIconLight} className="dropDown-arrow"/>
-        // }
-        aria-controls="panel1d-content"
-        id="panel1d-header"
-        className={classes.expansionPanelSummary}
-      >
-        <div className={classes.expansionMenuHeaderContainer}>
-          <div className={classes.expansionMenuHeaderAvatar}>
-            <Avatar variant="circle" className={classes.avatar} />
-          </div>
-          {/* {this.props.resize ? (
-            <div className={classes.expansionMenuHeaderProfileName}>
-              {" "}
-              {this.props.loadedUser.first_name +
-                " " +
-                this.props.loadedUser.last_name}{" "}
-            </div>
-          ) : null} */}
-        </div>
-      </ExpansionPanelSummary>
+
+    <ExpansionPanelSummary
+      className="expansionHeader-menuItem"
+    >
+    
+      <div className="menuItems" id="menuItems-expansionHeader">
+        <Link className = {classes.link} to = { this.props.link }>
+          <Grid container direction="row" alignItems="center" className = {classes.menuItem} >
+            <Grid item >
+              {/* {this.props.isMenuLogo ? 
+                <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>} */}
+                
+                <LayersIcon className="itemIcon"/>
+
+              {/* <WidgetsIcon className="itemIcon"/> */}
+              
+            </Grid>
+            <Grid item onClick = {this.props.handleClick}>
+                <p className = {classes.text}>Portals </p>
+            </Grid>
+            <Grid item className="gridIcon">
+              <ArrowDropDownIcon className={classes.materialIconLight} className="dropDown-arrow"/>
+            </Grid>
+          </Grid>
+        </Link>
+      </div>
+     </ExpansionPanelSummary>
+
     );
   }
 }

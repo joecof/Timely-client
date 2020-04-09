@@ -50,7 +50,7 @@ class ExpansionMenu extends Component {
         this.props.loadedUser.is_secondary_approver ||
         this.props.loadedUser.is_super_timesheet_approver ? (
           <ExpansionMenuItem
-            text="Timesheet Approver"
+            text="Approver"
             resize={this.props.resize}
             link="/dashboard/tsapprover"
           />

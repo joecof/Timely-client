@@ -195,7 +195,7 @@ class TimesheetApproverPortal extends Component {
           ) : null}
           <MUIDatatable
             className="datatable"
-            title={<div className="tsApproverPortal-employeesTitle">Employees</div>}
+            title={<div className="tsApproverPortal-employeesTitle">Timesheet Approver Portal</div>}
             options={options(this.props)}
             columns={columns}
             data={this.state.data}

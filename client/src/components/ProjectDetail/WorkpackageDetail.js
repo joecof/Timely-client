@@ -10,6 +10,7 @@ import EstimationRE from "../Charts/EstimationRE";
 import { Link } from "react-router-dom";
 import SelectEmployees from "../WorkpackageCreate/SelectEmployees";
 import "./ProjectDetail.css";
+import Typography from "@material-ui/core/typography";
 
 /**
  * Author: Prabh
@@ -30,18 +31,29 @@ class WorkpackageDetail extends React.Component {
       week: 0,
       openModal: false,
       selectDisabled: true,
-      selectEmps: [],
+      selectEmps: []
     };
 
     this.openModal = this.openModal.bind(this);
     this.calcValuesEmpHours = this.calcValuesEmpHours.bind(this);
     this.handleTagsChange = this.handleTagsChange.bind(this);
     this.submitNewEmployees = this.submitNewEmployees.bind(this);
+    this.closeWP = this.closeWP.bind(this);
+  }
+
+  closeWP() {
+    console.log(this.state.wp);
+    const token = localStorage.getItem("token");
+    var wp = this.state.wp;
+    wp.is_open = 0;
+    const response = agent.workpackages.closeWorkpackage(wp, token);
+
+    window.location.href = window.location.href;
   }
 
   openModal() {
     this.setState({
-      openModal: true,
+      openModal: true
     });
   }
 
@@ -55,7 +67,7 @@ class WorkpackageDetail extends React.Component {
   async calcValuesEmpHours() {
     const token = localStorage.getItem("token");
     var emps = [];
-    this.state.wp.employees.forEach((x) => {
+    this.state.wp.employees.forEach(x => {
       emps.push(x.employee_id);
     });
     // console.log(emps);
@@ -73,18 +85,18 @@ class WorkpackageDetail extends React.Component {
     this.setState({
       emps: this.state.wp.employees,
       week: week,
-      timesheets: response,
+      timesheets: response
     });
 
-    console.log(response);
+    console.log("TS", response);
   }
 
-  handleTagsChange = (e) => {
+  handleTagsChange = e => {
     console.log(e);
     // console.log(this.state.selectEmps);
     this.setState(
       {
-        selectEmps: e,
+        selectEmps: e
       },
       console.log(this.state.selectEmps)
     );
@@ -94,12 +106,12 @@ class WorkpackageDetail extends React.Component {
     console.log("SUbmit");
     // console.log(this.state.wp);
     var wp = this.state.wp;
-    this.state.selectEmps.forEach((x) => wp.employees.push(x));
+    this.state.selectEmps.forEach(x => wp.employees.push(x));
     console.log(wp);
     this.setState(
       {
         wp: wp,
-        selectDisabled: true,
+        selectDisabled: true
       },
       console.log(this.state.wp)
     );
@@ -150,7 +162,7 @@ class WorkpackageDetail extends React.Component {
               <div className="wpDetail-teamTitleAvatar-container">
                 <div className="wpDetail-teamTitle">Team:</div>
                 <div className="wpDetail-teamMemberAvatar-container">
-                  {this.state.wp.employees.slice(0, 5).map((e) => (
+                  {this.state.wp.employees.slice(0, 5).map(e => (
                     <div className="wpDetail-avatar-container">
                       <Tooltip title={e.first_name + " " + e.last_name}>
                         <Avatar
@@ -175,8 +187,13 @@ class WorkpackageDetail extends React.Component {
                   )}
                   {this.state.selectDisabled &&
                     this.state.isProjManager &&
-                    this.state.wp.work_package_id.includes("L") && (
+                    this.state.wp.work_package_id.includes("L") &&
+                    this.state.wp.project.status === "OPEN" &&
+                    this.state.wp.is_open && (
                       <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginLeft: "5%" }}
                         onClick={() => {
                           console.log("clicked");
                           this.setState({ selectDisabled: false });
@@ -202,6 +219,7 @@ class WorkpackageDetail extends React.Component {
               </div>
             </div>
           </div>
+          <Typography style={{fontWeight: "bold"}}>Status: {this.state.wp.is_open ? <span style={{color: "green"}}>OPEN</span> : <span style={{color: "red"}}>CLOSED</span>}</Typography>
           {this.state.isProjManager &&
             this.state.emps.length > 0 &&
             this.state.wp.work_package_id.includes("L") && (
@@ -221,7 +239,7 @@ class WorkpackageDetail extends React.Component {
                 <br />
               </>
             )}
-          {this.state.isRE && (
+          {this.state.isRE && this.state.emps.length > 0 &&(
             <>
               <BudgetVsActual
                 tsheets={this.state.timesheets}
@@ -230,21 +248,32 @@ class WorkpackageDetail extends React.Component {
               <br />
               <EstimationRE wp={this.state.wp} />
               <br />
-              <div className="wpDetail-newPlan-container">
+              {this.state.wp.is_open && (
                 <Button
+                  color="primary"
                   variant="contained"
                   color="primary"
                   component={Link}
                   to={{
                     pathname: "/newIterationPlan",
-                    wp: this.state.wp,
+                    wp: this.state.wp
                   }}
                 >
-                  Make New Estimation
+                  New Plan
                 </Button>
-              </div>
+              )}
             </>
           )}
+          {this.state.isProjManager &&
+            this.state.wp.project.status === "OPEN" &&
+            this.state.wp.is_open && (
+              <Button
+                style={{ background: "red", color: "white" }}
+                onClick={this.closeWP}
+              >
+                Close Work Package
+              </Button>
+            )}
         </div>
       </div>
     );

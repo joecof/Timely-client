@@ -38,12 +38,13 @@ const styles = theme => ({
   divider: {
     backgroundColor: "white",
     width: "90%",
-    margin: "0 auto"
+    margin: "0 auto",
+    marginTop: -13
   },
   btnDivider: {
     backgroundColor: "white",
     width: "90%",
-    margin: "20px auto 0 auto"
+    // margin: "20px auto 0 auto"
   },
   drawerOpen: {
     backgroundColor: "transparent !important",
@@ -70,8 +71,16 @@ const styles = theme => ({
  * Description: SideMenu component for dashboard navigation.
  */
 class SideMenu extends Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
   render() {
-    const { classes, loadedUser } = this.props;
+    const { classes, loadedUser, pathname } = this.props;
+
+    console.log(pathname);
 
     return (
       <div className={classes.root} className="side-root">
@@ -90,8 +99,6 @@ class SideMenu extends Component {
             })
           }}
         >
-
-
           {/* Top Section */}
           <p className="side-title"> <b>Timely</b></p>
           <Divider className={classes.divider} />
@@ -103,14 +110,13 @@ class SideMenu extends Component {
             resize={this.props.resize}
           />
 
-          <Divider className={classes.btnDivider} />
- 
-        
           <div className="menuItems-sections">
+          <Divider className={classes.divider} />
             <MenuItem
               text="Dashboard"
               resize={this.props.resize}
               link={`/dashboard/${loadedUser.employee_id}`}
+
             />
             <MenuItem
               text="Timesheet"
