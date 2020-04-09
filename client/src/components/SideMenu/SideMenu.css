@@ -63,9 +63,9 @@
     border-radius: 3px !important;
     width: 90%;
     padding: 8px 15px;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-size: 14px;
-    font-weight: 300;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 300 !important;
     line-height: 1.5em;
     position: relative;
     margin: 0 auto;
@@ -106,4 +106,33 @@
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     font-size: 28px !important;
+}
+
+/* Expansion Header Menu Item */
+.expansionHeader-menuItem {
+    padding: 0 !important;
+    margin: 0 !important;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+
+#menuItems-expansionHeader {
+    margin-top: 0px !important;
+    display: block;
+}
+
+.MuiExpansionPanelSummary-content {
+    margin: 0 !important;
+}
+
+.MuiCollapse-entered {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.gridIcon {
+    display: inline-grid;
+    position: relative;
+    justify-self: end;
+    padding-left: 30px;
 }

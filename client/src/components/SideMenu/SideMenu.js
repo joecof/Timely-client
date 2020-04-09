@@ -44,7 +44,7 @@ const styles = theme => ({
   btnDivider: {
     backgroundColor: "white",
     width: "90%",
-    margin: "20px auto 0 auto"
+    // margin: "20px auto 0 auto"
   },
   drawerOpen: {
     backgroundColor: "transparent !important",
@@ -104,10 +104,10 @@ class SideMenu extends Component {
             resize={this.props.resize}
           />
 
-          <Divider className={classes.btnDivider} />
- 
+         
         
           <div className="menuItems-sections">
+          <Divider className={classes.divider} />
             <MenuItem
               text="Dashboard"
               resize={this.props.resize}

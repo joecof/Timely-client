@@ -205,23 +205,47 @@ class DashBoardPortal extends Component {
               <TimesheetDetail fetchProject={this.getProject} history={this.props.history} dashboardTimesheet={true} userId={this.props.match.params.id} token={this.props.token}/>
             </div>
             <div className={classes.flexVancationContainer}>
+              
+              {/* Overtime */}
               <Paper className={classes.bottomLeftPaper} elevation={2}>
                 {/* flex time allocated */}
                 <div className={classes.title}>Overtime</div>
                 <hr className={classes.seperator} />
-                <div className={classes.vacDays}>{this.state.overTime}</div>
+              
+                <div>
+                  <div className="boxInfo">Taken</div>
+                  <div className="boxNumber">
+                    {this.state.overTime} Hours
+                  </div>
+                </div>
               </Paper>
+              
+              {/* Vacation Days */}
               <Paper className={classes.bottomMidPaper} elevation={2}>
                 {/* vacation days taken */}
                 <div className={classes.title}>Vacation Days</div>
                 <hr className={classes.seperator} />
-                <div className={classes.vacDays}>{this.state.loadedUser.vacation}</div>
+
+                <div>
+                  <div className="boxInfo">Available</div>
+                  <div className="boxNumber">
+                    {this.state.loadedUser.vacation} Days
+                  </div>
+                </div>
               </Paper>
+
+              {/* Flex Time */}
               <Paper className={classes.bottomRightPaper} elevation={2}>
                 {/* vacation days taken */}
                 <div className={classes.title}>Flextime</div>
                 <hr className={classes.seperator} />
-                <div className={classes.vacDays}>{this.state.flexTime}</div>
+                
+                <div>
+                  <div className="boxInfo">Taken</div>
+                  <div className="boxNumber">
+                    {this.state.flexTime} Hours
+                  </div>
+                </div>
               </Paper>
             </div>
           </div>
