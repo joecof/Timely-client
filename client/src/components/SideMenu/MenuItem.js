@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Grid, Icon } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import logo from "../../images/logo.png";
+import { Grid } from "@material-ui/core";
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import { Link } from "react-router-dom";
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import "./SideMenu.css";
 
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -36,8 +36,28 @@ const styles = (theme) => ({
  * Description: MenuItem Component. Component for each menu item.
  */
 class MenuItem extends Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
+
   render() {
     const { classes } = this.props;
+
+    const iconFilter = (icon) => {
+      switch(icon) {
+        case "Dashboard":
+          return (<DashboardIcon className="itemIcon"/>)
+        case "Timesheet": 
+          return (<ListAltIcon className="itemIcon"/>)
+        case "Projects":
+          return (<AssignmentIcon className="itemIcon"/>)
+        default:
+          return (<DashboardIcon className="itemIcon"/>)
+      }
+    }
 
     return (
       <div className="menuItems">
@@ -49,10 +69,7 @@ class MenuItem extends Component {
             className={classes.menuItem}
           >
             <Grid item>
-              {/* {this.props.isMenuLogo ? 
-                <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>} */}
-
-              <DashboardIcon className="itemIcon"/>
+              {iconFilter(this.props.text)}
             </Grid>
             <Grid item onClick={this.props.handleClick}>
               <b>

@@ -5,9 +5,12 @@ import Avatar from "@material-ui/core/Avatar";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import { Link } from "react-router-dom";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import classNames from "classnames";
+import EqualizerIcon from '@material-ui/icons/Equalizer';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 
-/**
+/** 
  * Material UI styling JSON object.
  * @param {JSON} theme
  */
@@ -37,6 +40,21 @@ class ExpansionMenuItem extends Component {
   render() {
     const { classes } = this.props;
 
+    const iconFilter = (icon) => {
+      switch(icon) {
+        case "Lead Engineer":
+          return (<EqualizerIcon className="itemIcon"/>)
+        case "HR": 
+          return (<PeopleAltIcon className="itemIcon"/>)
+        case "Supervisor":
+          return (<AssignmentIndIcon className="itemIcon"/>)
+        case "Approver":
+          return (<PlaylistAddCheckIcon className = "itemIcon"/>)
+        default:
+          return (<DashboardIcon className="itemIcon"/>)
+      }
+    }
+
     return (
       <div className="menuItems" id="menuItems-expansion">
         <Link className={classes.link} to={this.props.link}>
@@ -50,7 +68,8 @@ class ExpansionMenuItem extends Component {
               {/* {this.props.isMenuLogo ? 
               <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>} */}
 
-              <DashboardIcon className="itemIcon" />
+              {/* <DashboardIcon className="itemIcon" /> */}
+              {iconFilter(this.props.text)}
             </Grid>
             <Grid item onClick={this.props.handleClick}>
                 {this.props.text && this.props.resize ? (

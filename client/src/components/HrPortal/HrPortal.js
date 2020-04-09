@@ -189,6 +189,8 @@ class HrPortal extends Component {
           />);
         resultData.push(row);
       })
+
+      
       
       this.setState({
         data: resultData

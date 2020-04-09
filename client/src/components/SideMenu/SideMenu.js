@@ -106,7 +106,6 @@ class SideMenu extends Component {
 
           <Divider className={classes.divider} />
  
-        
           <div className="menuItems-sections">
             <MenuItem
               text="Dashboard"
