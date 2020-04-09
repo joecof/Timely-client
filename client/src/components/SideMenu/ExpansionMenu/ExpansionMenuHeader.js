@@ -44,6 +44,7 @@ const styles = () => ({
   text: {
     marginLeft: 50,
     color: 'white',
+    letterSpacing: "1.5px"
     // font: '14px, Roboto, Helvetica, Arial, sans-serif',
   }, 
   link: {

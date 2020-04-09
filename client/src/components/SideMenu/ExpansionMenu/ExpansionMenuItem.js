@@ -23,7 +23,8 @@ const styles = (theme) => ({
   text: {
     marginLeft: 50,
     color: "white",
-    fontWeight: "400"
+    letterSpacing: "1.5px"
+    // fontWeight: "400"
     // font: '14px, Roboto, Helvetica, Arial, sans-serif',
   },
   link: {

@@ -229,7 +229,7 @@ class DashBoardPortal extends Component {
                 <div>
                   <div className="boxInfo">Available</div>
                   <div className="boxNumber">
-                    {this.state.vacDays} Days
+                    {this.state.loadedUser.vacation} Days
                   </div>
                 </div>
               </Paper>
