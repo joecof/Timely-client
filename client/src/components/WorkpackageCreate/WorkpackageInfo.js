@@ -39,11 +39,11 @@ const WorkpackageInfo = (props) => {
 
   return (
     <form autoComplete="off">
-      <div className="WPInfoContainer">
+      <div className="wpInfo-container">
         <div>
           <TextValidator
             component={"span"}
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             label="Work Package ID"
             name="wpID"
             value={"WP" + props.wpID}
@@ -70,7 +70,7 @@ const WorkpackageInfo = (props) => {
         <div>
           <TextValidator
             component={"span"}
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             label="Work Package Name"
             name="wpName"
             value={props.wpName}
@@ -84,7 +84,7 @@ const WorkpackageInfo = (props) => {
           <TextValidator
             select
             label="Responsible Engineer"
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             name="wpRE"
             value={props.wpRE}
             onChange={props.handleChange}
@@ -94,7 +94,7 @@ const WorkpackageInfo = (props) => {
             {/* <TextField
             select
             label="Responsible Engineer"
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             name="wpRE"
             value={props.wpRE}
             onChange={props.handleChange}
@@ -111,7 +111,7 @@ const WorkpackageInfo = (props) => {
         <div>
           <TextValidator
             component={"span"}
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             label="Parent Project"
             value={
               props.project.project_code + ": " + props.project.project_name
@@ -127,7 +127,7 @@ const WorkpackageInfo = (props) => {
           <TextValidator
             select
             label="Parent Work Package"
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             name="wpParent"
             value={props.wpParent}
             onChange={props.handleChange}
@@ -137,7 +137,7 @@ const WorkpackageInfo = (props) => {
             {/* <TextField
             select
             label="Parent Work Package"
-            className="WPInfowidth"
+            className="wpInfo-textValidator"
             name="wpParent"
             value={props.wpParent}
             onChange={props.handleChange}

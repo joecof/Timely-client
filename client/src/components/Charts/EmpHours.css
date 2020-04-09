@@ -1,0 +1,18 @@
+.empHours-container {
+    background-color: white;
+    border: 1px solid lightgray;
+    margin: 40px 0 0 0;
+    padding: 45px;
+    display: flex;
+    justify-content: center;
+}
+
+.mixed-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.WPInfowidth {
+    margin: 0 0 40px 0 !important;
+}

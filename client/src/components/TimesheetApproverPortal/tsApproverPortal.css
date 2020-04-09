@@ -1,0 +1,39 @@
+.tsApproverPortal-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.tsApproverPortal-employeesTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 0 16px;
+}
+
+.assignApprover-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.assignApprover-secondaryTsApproverTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 0 16px;
+}
+
+.tsToApprove-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.tsToApprove-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 0 16px;
+}
+
+.tsButton {
+    margin: 15px !important;
+}

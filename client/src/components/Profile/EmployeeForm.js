@@ -16,7 +16,7 @@ const laborData = require("../HrPortal/CreateEmployeeForm/labor");
 
 const styles = () => ({
   container: {
-    width: "1300px",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
   },
@@ -284,9 +284,7 @@ class EmployeeForm extends Component {
         }
       }
     } catch (e) {
-      if (e.response.status === HTTP_STATUS.UNAUTHORIZED) {
-        this.props.sessionLogoutHandler();
-      }
+      console.log(e);
     }
   }
 

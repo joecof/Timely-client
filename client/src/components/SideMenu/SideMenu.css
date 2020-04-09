@@ -13,6 +13,7 @@
     height: "100%" !important;
     min-height: 100vh !important;
     width: "100%" !important;
+    background-size: contain;
 }
 
 .side-root::after, .SideMenu-drawerOpen-131::after {
@@ -25,11 +26,13 @@
     background: black;
     opacity: 0.66;
     z-index: 0;
+    background-size: contain;
 }
 
 .side-root > *, .SideMenu-drawerOpen-131 > * {
     position: relative;
     z-index: 1;
+    background-size: contain;
 }
 
 .side-title {

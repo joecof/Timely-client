@@ -1,4 +1,4 @@
-/* Author: Kang Wang
+/* Author: Kang, Oscar, Jovan
  * Version: 1
  * Desc: Timesheet Detail CSS
  */
@@ -36,11 +36,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 0 10px 0;
 }
 /* employee name */
 .empNumContainer {
   display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 0 0 0 15px;
 }
+
+.tsDetail-empNumContainer {
+  display: flex;
+}
+
 /* employee Number Title */
 .empNumTitle {
   font-weight: bold;
@@ -50,6 +59,27 @@
   margin-left: 10px;
   float: left;
 }
+
+.sDetail-empNumContainer {
+  display: flex;
+}
+
+.weekNumEndingIcon-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.weekNumbEnd-container {
+  display: flex; 
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.tsDetail-iconContainer {
+  margin: 0 15px 0 15px;
+}
+
 /* week number container */
 .weekNumContainer {
   display: flex;
@@ -96,4 +126,8 @@
 /* css for wp id dropdown */
 .wpId {
   width: 4rem;
+}
+
+.content-editable {
+  /* font-size: 16px; */
 }

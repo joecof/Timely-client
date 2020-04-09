@@ -1,5 +1,6 @@
 /**
- * Author: Kang Wang
+ * Author: Backend: Kang Wang
+ *         Frontend: Oscar Au, Jovan Sekon
  * Version: 1
  * Desc: Timesheet Detail Component displaying timesheet details after user click on a row on Timesheet Portal lists
  */
@@ -16,7 +17,6 @@ import "./TimesheetDetail.css";
 import agent from "../../api/agent";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
-import Paper from "@material-ui/core/Paper";
 import ContentEditable from "react-contenteditable";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
@@ -35,15 +35,17 @@ const timesheetStyle = (theme) => ({
   },
   tableTitle: {
     fontWeight: "bold",
-    fontSize: "10pt !important",
+    fontSize: "16px !important",
   },
   updateSubmitButton: {
-    position: "absolute",
     margin: "0 0 0 780px",
   },
   submitButton: {
     marginLeft: 25,
   },
+  projHours: {
+
+  }
 });
 
 // TimesheetDetail Component
@@ -131,70 +133,67 @@ class TimesheetDetail extends Component {
         loadUser: user,
       });
     } else {
-      if (this.props.token != null) {
-        userId = this.props.userId;
-        token = this.props.token;
-        var projects, curEmp;
+      userId = this.props.userId;
+      token = this.props.token;
+      // project and current logged in employee json
+      var projects, curEmp;
+      try {
+        // fetching projects
+        projects = await agent.projects.getProjectsForUser(userId, token);
+        // fetching employee
+        curEmp = await agent.employeeInfo.getCurrentUser(
+          this.props.userId,
+          this.props.token
+        );
+        this.setState({
+          loadUser: curEmp,
+        });
+      } catch (e) {
+        
+      }
 
-        try {
-          // fetching projects
-          projects = await agent.projects.getProjectsForUser(userId, token);
-          // fetching employee
-          curEmp = await agent.employeeInfo.getCurrentUser(
-            this.props.userId,
-            this.props.token
-          );
-          this.setState({
-            loadUser: curEmp,
-          });
-        } catch (e) {
-          console.log(this.props);
-          this.props.sessionLogoutHandler();
-        }
+      // looking for the most recent timesheet
+      try {
+        const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(
+          userId,
+          token
+        );
 
-        // looking for the most recent timesheet
-        try {
-          const tsResponse = await agent.timesheetsInfo.getAllTimesheetsByEmp(
-            userId,
-            token
-          );
+        if (tsResponse.length != 0) {
+          // fetching timesheets
+          var timesheetList = [];
 
-          if (tsResponse.length != 0) {
-            // fetching timesheets
-            var timesheetList = [];
+          for (let i = 0; i < tsResponse.length; i++) {
+            let timesheetid = tsResponse[i].timesheet_id;
+            let weeknumber = tsResponse[i].week;
+            let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
+            let status = tsResponse[i].status;
+            let attribute1 =
+              tsResponse[i].attribute1 == null
+                ? "0|0"
+                : tsResponse[i].attribute1;
 
-            for (let i = 0; i < tsResponse.length; i++) {
-              let timesheetid = tsResponse[i].timesheet_id;
-              let weeknumber = tsResponse[i].week;
-              let weekending = this.formatWeekEnding(tsResponse[i].week_ending);
-              let status = tsResponse[i].status;
-              let attribute1 =
-                tsResponse[i].attribute1 == null
-                  ? "0|0"
-                  : tsResponse[i].attribute1;
-
-              let eachTimesheet = [];
-              eachTimesheet.push(timesheetid);
-              eachTimesheet.push(weeknumber);
-              eachTimesheet.push(weekending);
-              eachTimesheet.push(status);
-              eachTimesheet.push(attribute1);
-              timesheetList.push(eachTimesheet);
-            }
-            // sorting timesheet list by week number
-            timesheetList.sort(function (a, b) {
-              return b[1] - a[1];
-            });
-            tsId = timesheetList[0][0];
-            // returning projects, employee and overFlex time to dashboard
-            this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
-          } else {
-            // returning projects, employee and overFlex time to dashboard
-            this.props.fetchProject(projects, curEmp, "0|0");
+            let eachTimesheet = [];
+            eachTimesheet.push(timesheetid);
+            eachTimesheet.push(weeknumber);
+            eachTimesheet.push(weekending);
+            eachTimesheet.push(status);
+            eachTimesheet.push(attribute1);
+            timesheetList.push(eachTimesheet);
           }
-        } catch (e) {
-          // this.props.sessionLogoutHandler();
+          // sorting timesheet list by week number
+          timesheetList.sort(function (a, b) {
+            return b[1] - a[1];
+          });
+          tsId = timesheetList[0][0];
+          // returning projects, employee and overFlex time to dashboard
+          this.props.fetchProject(projects, curEmp, timesheetList[0][4]);
+        } else {
+          // returning projects, employee and overFlex time to dashboard
+          this.props.fetchProject(projects, curEmp, "0|0");
         }
+      } catch (e) {
+        // this.props.sessionLogoutHandler();
       }
     }
 
@@ -546,7 +545,6 @@ class TimesheetDetail extends Component {
       this.setState({
         errorAlert: true,
       });
-      this.props.sessionLogoutHandler();
     }
     setTimeout(() => {
       this.setState({
@@ -654,7 +652,6 @@ class TimesheetDetail extends Component {
       this.setState({
         errorAlert: true,
       });
-      this.props.sessionLogoutHandler();
     }
     setTimeout(() => {
       this.setState({
@@ -712,7 +709,7 @@ class TimesheetDetail extends Component {
   }
   // has project for submit
   hasProject() {
-    if (this.state.projectCodes.length > 0) {
+    if (this.state.projectCodes.length > 0 && this.state.wpIds.length > 0) {
       return true;
     }
     return false;
@@ -753,7 +750,7 @@ class TimesheetDetail extends Component {
       <TableCell scope="row">
         {!this.state.isEditable ? (
           row[1]
-        ) : this.state.projectCodes.length > 0 ? (
+        ) : this.hasProject() ? (
           <TextField
             select
             className="projCode"
@@ -772,9 +769,9 @@ class TimesheetDetail extends Component {
         )}
       </TableCell>
       <TableCell align="right">
-        {!this.state.isEditable ? (
+        {!this.state.isEditable  ? (
           row[2]
-        ) : this.state.projectCodes.length > 0 ? (
+        ) : this.hasProject() ? (
           <TextField
             select
             className="wpId"
@@ -938,40 +935,50 @@ class TimesheetDetail extends Component {
           <div className="timesheetTitle">
             <div className="attributeRow">
               <div className="empNumContainer">
-                <div className="empNumTitle">Employee Number:</div>
-                <div className="empNum">{this.state.loadUser.employee_id}</div>
-                <div className="weekNumContainer">
-                  <div className="weekNumTitle">Week Number:</div>
-                  <div className="weekNum">
-                    {this.state.loadedTimesheet.week}
+                <div className="tsDetail-empNumContainer">
+                  <div className="empNumTitle">Employee Number:</div>
+                  <div className="empNum">
+                    {this.state.loadUser.employee_id}
                   </div>
                 </div>
-                <div className="weekEndContainer">
-                  <div className="weekEndTitle">Week Ending:</div>
-                  <div className="weekEnd">
-                    {this.formatWeekEnding(
-                      this.state.loadedTimesheet.week_ending
-                    )}
+                {this.props.dashboardTimesheet ? null : (
+                  <div className="empNameAttribute">
+                    <div className="empNameTitle">Name:</div>
+                    <div className="empName">
+                      {this.state.loadUser.first_name}{" "}
+                      {this.state.loadUser.last_name}
+                    </div>
                   </div>
-                </div>
-                {!this.state.isEditable ? null : (
-                  <AddIcon
-                    fontSize="large"
-                    onClick={this.addRow}
-                    color="primary"
-                    variant="contained"
-                  />
                 )}
               </div>
-              {this.props.dashboardTimesheet ? null : (
-                <div className="empNameAttribute">
-                  <div className="empNameTitle">Name:</div>
-                  <div className="empName">
-                    {this.state.loadUser.first_name}{" "}
-                    {this.state.loadUser.last_name}
+              <div className="weekNumEndingIcon-container">
+                <div className="weekNumbEnd-container">
+                  <div className="weekNumContainer">
+                    <div className="weekNumTitle">Week Number:</div>
+                    <div className="weekNum">
+                      {this.state.loadedTimesheet.week}
+                    </div>
+                  </div>
+                  <div className="weekEndContainer">
+                    <div className="weekEndTitle">Week Ending:</div>
+                    <div className="weekEnd">
+                      {this.formatWeekEnding(
+                        this.state.loadedTimesheet.week_ending
+                      )}
+                    </div>
                   </div>
                 </div>
-              )}
+                <div className="tsDetail-iconContainer">
+                  {!this.state.isEditable ? null : (
+                    <AddIcon
+                      fontSize="large"
+                      onClick={this.addRow}
+                      color="primary"
+                      variant="contained"
+                    />
+                  )}
+                </div>
+              </div>
             </div>
             {/* add row button */}
 
@@ -1064,28 +1071,28 @@ class TimesheetDetail extends Component {
                   {/* total span column */}
                   <TableRow>
                     <TableCell className={classes.tableTitle}>Total</TableCell>
-                    <TableCell colSpan={2} align="right">
+                    <TableCell colSpan={2} align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalWeek)}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[0])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[1])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[2])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[3])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[4])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[5])}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="right" className={classes.projHours}>
                       {this.ccyFormat(this.state.totalDay[6])}
                     </TableCell>
                   </TableRow>

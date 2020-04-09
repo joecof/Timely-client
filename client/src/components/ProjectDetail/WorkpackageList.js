@@ -9,7 +9,7 @@ import "./ProjectDetail.css"
  * Desc: List component to list all the workpackages visible to the user
 */
 
-const columns = ["ID", "Name", "Responsible Engineer", "Team"];
+const columns = ["ID", "Name", "Responsible Engineer", "Team", "Status"];
 
 class WorkpackageList extends React.Component {
   constructor(props) {
@@ -53,6 +53,7 @@ class WorkpackageList extends React.Component {
         curData.push(wp.description.split(":",1)[0]);
         curData.push(wp.responsible_person_id.first_name + " " + wp.responsible_person_id.last_name);
         curData.push(wp.employees.length);
+        curData.push(wp.is_open ? <span style={{color: "green"}}>OPEN</span> : <span style={{color: "red"}}>CLOSE</span>)
         data.push(curData);
       });
       this.setState({

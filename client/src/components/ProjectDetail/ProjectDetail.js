@@ -26,7 +26,7 @@ class ProjectDetail extends React.Component {
       project: {},
       wpList: [],
       isProjManager: null,
-      openModal: false,
+      openModal: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -34,7 +34,7 @@ class ProjectDetail extends React.Component {
 
   openModal() {
     this.setState({
-      openModal: true,
+      openModal: true
     });
   }
 
@@ -48,7 +48,7 @@ class ProjectDetail extends React.Component {
     this.setState({
       project: response.project,
       wpList: response.wpList,
-      isProjManager: response.projManager,
+      isProjManager: response.projManager
     });
     console.log(this.state.project.project_manager_id.first_name);
   }
@@ -98,7 +98,7 @@ class ProjectDetail extends React.Component {
                 </div>
                 <div className="projectDetail-teamMemberInfoContainer">
                   <div className="projectDetail-teamTitle">Team:</div>
-                  {this.state.project.employees.slice(0, 5).map((e) => (
+                  {this.state.project.employees.slice(0, 5).map(e => (
                     <Tooltip title={e.first_name + " " + e.last_name}>
                       <Avatar
                         variant="circle"
@@ -166,19 +166,21 @@ class ProjectDetail extends React.Component {
                   </div>
                 </div>
                 <div className="projectDetail-createWPbuttonContainer">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    component={Link}
-                    to={{
-                      pathname: "/createWorkpackage",
-                      project: this.state.project,
-                      wpList: this.state.wpList,
-                    }}
-                    style={{ marginRight: "5%" }}
-                  >
-                    <b>Create Work Package</b>
-                  </Button>
+                  {this.state.project.status === "OPEN" && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component={Link}
+                      to={{
+                        pathname: "/createWorkpackage",
+                        project: this.state.project,
+                        wpList: this.state.wpList
+                      }}
+                      style={{ marginRight: "5%" }}
+                    >
+                      <b>Create Work Package</b>
+                    </Button>
+                  )}
                 </div>
               </div>
             </>
@@ -215,7 +217,7 @@ class ProjectDetail extends React.Component {
                       padding: "10px",
                       color: "#4a4a4a",
                       backgroundColor: "#f2f2f2",
-                      border: "1px solid #4a4a4a",
+                      border: "1px solid #4a4a4a"
                     }}
                   >
                     {({ blob, url, loading, error }) =>

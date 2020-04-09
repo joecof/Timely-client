@@ -25,7 +25,7 @@ import { ValidatorForm } from "react-material-ui-form-validator";
  */
 const useStyles = makeStyles((theme) => ({
   container: {
-    width: "1300px",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
   },
@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
   stepper: {
     padding: "40px 0",
     border: "1px solid lightgray",
+  },
+  bottomContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   instructionContainer: {
     display: "flex",
@@ -376,6 +381,7 @@ export default function WorkpackageCreate(props) {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setValid(true);
   };
 
   const handleReset = () => {
@@ -402,7 +408,7 @@ export default function WorkpackageCreate(props) {
           />
         ) : null}
         <ValidatorForm onSubmit={handleSubmit}>
-          <Stepper activeStep={activeStep} alternativeLabel>
+          <Stepper activeStep={activeStep} className={classes.stepper} alternativeLabel>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -411,14 +417,14 @@ export default function WorkpackageCreate(props) {
           </Stepper>
           <div>
             {activeStep === steps.length ? (
-              <div>
+              <div className={classes.instructionContainer}>
                 <Typography component={"span"} className={classes.instructions}>
                   All steps completed
                 </Typography>
                 <Button onClick={handleReset}>Reset</Button>
               </div>
             ) : (
-              <div>
+              <div className={classes.bottomContainer}>
                 <Typography component={"span"} className={classes.instructions}>
                   {getStepContent(
                     activeStep,

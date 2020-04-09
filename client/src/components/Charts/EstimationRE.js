@@ -1,5 +1,6 @@
 import React from "react";
 import Chart from "react-apexcharts";
+import "./EstimationRE.css";
 
 class EstimationRE extends React.Component {
   constructor(props) {
@@ -11,46 +12,57 @@ class EstimationRE extends React.Component {
           height: 350,
           type: "line",
           zoom: {
-            enabled: false
-          }
+            enabled: false,
+          },
         },
         dataLabels: {
-          enabled: false
+          enabled: false,
         },
         stroke: {
-          curve: "straight"
+          curve: "straight",
         },
         title: {
-          text: "RE estimations",
-          align: "left"
+          text: "Responsibility Engineer Estimation",
+          align: "left",
+          style: {
+            fontSize: "16px",
+            fontWeight: "bold"
+          }
         },
         grid: {
           row: {
             colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
+            opacity: 0.5,
+          },
         },
         xaxis: {
           categories: [],
           title: {
-            text: "Date"
-          }
+            text: "Date",
+            style: {
+              fontSize: "16px"
+            }
+          },
         },
         yaxis: {
           title: {
-            text: "Hours"
-          }
-        },
-        tooltip: {
-            enabled: true,
-            y: {
-              show: true,
-              formatter: (data, index) => data + ' hrs ' + this.state.graphValueObj[index.dataPointIndex]
+            text: "Hours",
+            style: {
+              fontSize: "16px"
             }
           },
+        },
+        tooltip: {
+          enabled: true,
+          y: {
+            show: true,
+            formatter: (data, index) =>
+              data + " hrs " + this.state.graphValueObj[index.dataPointIndex],
+          },
+        },
       },
       wp: this.props.wp,
-      graphValueObj: []
+      graphValueObj: [],
     };
     this.calcGraphValus = this.calcGraphValus.bind(this);
   }
@@ -64,7 +76,7 @@ class EstimationRE extends React.Component {
     var values = [];
     var valuesDetails = [];
     var valueObj = {};
-    this.state.wp.workPackagePlanCollection.forEach(x => {
+    this.state.wp.workPackagePlanCollection.forEach((x) => {
       if (x.type === "ESTIMATE") {
         var thisValues = [];
         valueObj = {};
@@ -83,30 +95,30 @@ class EstimationRE extends React.Component {
     });
 
     var graphValueObj = [];
-    valuesDetails.forEach(x => {
-        var string = "";
-        x.forEach(thisX => {
-            string += thisX.id + ": " + thisX.hours;
-        })
-        graphValueObj.push(string);
-    })
+    valuesDetails.forEach((x) => {
+      var string = "";
+      x.forEach((thisX) => {
+        string += thisX.id + ": " + thisX.hours;
+      });
+      graphValueObj.push(string);
+    });
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       series: [
         ...prevState.series,
         {
           name: "RE estimate",
-          data: values
-        }
+          data: values,
+        },
       ],
       options: {
-          ...prevState.options,
-          xaxis: {
-              ...prevState.options.xaxis,
-              categories: date
-          }
+        ...prevState.options,
+        xaxis: {
+          ...prevState.options.xaxis,
+          categories: date,
+        },
       },
-      graphValueObj: graphValueObj
+      graphValueObj: graphValueObj,
     }));
     console.log(date);
     console.log(values);
@@ -115,13 +127,15 @@ class EstimationRE extends React.Component {
 
   render() {
     return (
-      <Chart
-        options={this.state.options}
-        series={this.state.series}
-        type="line"
-        height="500"
-        width="800"
-      />
+      <div className="estimationRE-container">
+        <Chart
+          options={this.state.options}
+          series={this.state.series}
+          type="line"
+          height="500"
+          width="800"
+        />
+      </div>
     );
   }
 }

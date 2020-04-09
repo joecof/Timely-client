@@ -60,6 +60,7 @@ class ExpansionMenuHeader extends Component {
     const { classes } = this.props;
 
     return (
+
     <ExpansionPanelSummary
       className="expansionHeader-menuItem"
     >
@@ -84,6 +85,7 @@ class ExpansionMenuHeader extends Component {
         </Link>
       </div>
      </ExpansionPanelSummary>
+
     );
   }
 }

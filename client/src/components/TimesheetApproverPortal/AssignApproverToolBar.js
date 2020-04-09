@@ -37,7 +37,7 @@ class AssignApproverToolBar extends React.Component {
             onClick={this.clickAssign} 
             color='primary' 
             variant='contained'> 
-              Assign 
+              Assign / Remove
           </Button> 
         </Tooltip>
       </>

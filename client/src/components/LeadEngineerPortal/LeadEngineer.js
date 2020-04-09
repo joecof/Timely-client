@@ -77,6 +77,11 @@ class LeadEngineer extends Component {
             padding: "0px"
           }
         },
+        MUIDataTableBodyCell: {
+          root: {
+            fontSize: "16px"
+          }
+        }
       },
     });
 
@@ -144,7 +149,6 @@ class LeadEngineer extends Component {
       this.setState({
         errorAlert: true
       })
-      this.props.sessionLogoutHandler();
     }
   }
 

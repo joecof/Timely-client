@@ -1,6 +1,7 @@
 import React from "react";
 import Chart from "react-apexcharts";
 import { TextField, MenuItem } from "@material-ui/core";
+import "./EmpHours.css";
 
 class EmpHours extends React.Component {
   constructor(props) {
@@ -13,13 +14,13 @@ class EmpHours extends React.Component {
         },
         title: {
           text: "Employee hours spent",
-          align: "center",
+          align: "left",
           margin: 10,
           offsetX: 0,
           offsetY: 0,
           floating: false,
           style: {
-            fontSize: "20px",
+            fontSize: "16px",
             color: "#263238"
           }
         },
@@ -38,7 +39,10 @@ class EmpHours extends React.Component {
             height: 1,
             width: "100%",
             offsetX: 0,
-            offsetY: 0
+            offsetY: 0,
+            style: {
+              fontSize: "16px"
+            }
           },
           title: {
             text: "Employees",
@@ -54,7 +58,10 @@ class EmpHours extends React.Component {
             color: "#78909C",
             height: 1,
             offsetX: 0,
-            offsetY: 0
+            offsetY: 0,
+            style: {
+              fontSize: "16px"
+            }
           },
           title: {
             text: "Hours",
@@ -190,8 +197,7 @@ class EmpHours extends React.Component {
     }
 
     return (
-      <div className="app">
-        <div className="row">
+        <div className="empHours-container">
           <div className="mixed-chart">
             <TextField
               select
@@ -211,11 +217,10 @@ class EmpHours extends React.Component {
               options={this.state.options}
               series={this.state.series}
               type="bar"
-              width="500"
+              width="800"
             />
           </div>
         </div>
-      </div>
     );
   }
 }

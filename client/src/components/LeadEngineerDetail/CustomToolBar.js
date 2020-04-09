@@ -97,7 +97,6 @@ class CustomToolbar extends React.Component {
       this.setState({
         sumbitAlert: true,
       })
-      this.props.sessionLogoutHandler();
     }
   }
   /**
