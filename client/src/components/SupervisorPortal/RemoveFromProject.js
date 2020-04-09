@@ -165,7 +165,7 @@ const RemoveFromProject = (props) => {
               <TextField
                 {...params}
                 variant="standard"
-                label="Add employees"
+                label="Remove employees"
                 placeholder="Search for an employee"
               />
             )}

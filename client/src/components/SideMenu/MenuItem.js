@@ -52,7 +52,7 @@ class MenuItem extends Component {
               {/* {this.props.isMenuLogo ? 
                 <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>} */}
 
-              <DashboardIcon className="itemIcon" />
+              <DashboardIcon className="itemIcon"/>
             </Grid>
             <Grid item onClick={this.props.handleClick}>
               <b>

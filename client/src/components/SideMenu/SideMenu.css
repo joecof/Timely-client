@@ -107,3 +107,32 @@
     transform: translateY(-50%);
     font-size: 28px !important;
 }
+
+/* Expansion Header Menu Item */
+.expansionHeader-menuItem {
+    padding: 0 !important;
+    margin: 0 !important;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+
+#menuItems-expansionHeader {
+    margin-top: 0px !important;
+    display: block;
+}
+
+.MuiExpansionPanelSummary-content {
+    margin: 0 !important;
+}
+
+.MuiCollapse-entered {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.gridIcon {
+    display: inline-grid;
+    position: relative;
+    justify-self: end;
+    padding-left: 50px;
+}
