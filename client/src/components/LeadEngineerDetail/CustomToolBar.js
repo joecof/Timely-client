@@ -98,6 +98,8 @@ class CustomToolbar extends React.Component {
         submitAlert: true,
       })
     }
+    
+    this.props.history.push('/dashboard/lead')
     setTimeout(() => {
       this.setState({
         successAlert: false,
