@@ -44,11 +44,14 @@ class WorkpackageDetail extends React.Component {
   closeWP() {
     console.log(this.state.wp);
     const token = localStorage.getItem("token");
+    const user = JSON.parse(sessionStorage.getItem('user'));
+
     var wp = this.state.wp;
     wp.is_open = 0;
     const response = agent.workpackages.closeWorkpackage(wp, token);
 
-    window.location.href = window.location.href;
+
+    this.props.history.push(`/dashboard/${user.employee_id}`);
   }
 
   openModal() {
@@ -121,6 +124,7 @@ class WorkpackageDetail extends React.Component {
   }
 
   render() {
+
     return (
       <div className="projectDetailContainer">
         <div className="wpDetail-innerContainer">

@@ -33,11 +33,17 @@ class CustomSelectProject extends React.Component {
       console.log(response);
       response.status = str;
       const nextResponse = await agent.projects.updateProject(response, token);
-      window.location.href = window.location.href;
+      // window.location.href = window.location.href;
+      this.props.history.push(`/dashboard/${user.employee_id}`);
+
     }
   }
 
   render() {
+
+    console.log(this.props); 
+
+
     return (
       <div className="customSelectProject-container">
         {this.state.type === "Mine" && (
