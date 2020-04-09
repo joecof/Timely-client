@@ -63,9 +63,9 @@
     border-radius: 3px !important;
     width: 90%;
     padding: 8px 15px;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-size: 14px;
-    font-weight: 300;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 300 !important;
     line-height: 1.5em;
     position: relative;
     margin: 0 auto;
@@ -134,5 +134,5 @@
     display: inline-grid;
     position: relative;
     justify-self: end;
-    padding-left: 50px;
+    padding-left: 30px;
 }
