@@ -285,7 +285,7 @@ class ProjectDetail extends React.Component {
               {this.state.wpList.length > 0 && (
                 <Grid item>
                   <PDFDownloadLink
-                    document={this.state.data.length > 0 ?<ProjectReport wpList={this.state.wpList} data={this.state.data} empList={this.state.empList} wpLowerList={this.state.wpLowerList}/> : null}
+                    document={this.state.data.length > 0 ? <ProjectReport wpList={this.state.wpList} data={this.state.data} empList={this.state.empList} wpLowerList={this.state.wpLowerList}/> : null}
                     fileName={this.state.projectID + "_report.pdf"}
                     style={{
                       textDecoration: "none",
