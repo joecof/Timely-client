@@ -71,8 +71,16 @@ const styles = theme => ({
  * Description: SideMenu component for dashboard navigation.
  */
 class SideMenu extends Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
   render() {
-    const { classes, loadedUser } = this.props;
+    const { classes, loadedUser, pathname } = this.props;
+
+    console.log(pathname);
 
     return (
       <div className={classes.root} className="side-root">
@@ -102,13 +110,13 @@ class SideMenu extends Component {
             resize={this.props.resize}
           />
 
-        
           <div className="menuItems-sections">
           <Divider className={classes.divider} />
             <MenuItem
               text="Dashboard"
               resize={this.props.resize}
               link={`/dashboard/${loadedUser.employee_id}`}
+
             />
             <MenuItem
               text="Timesheet"
