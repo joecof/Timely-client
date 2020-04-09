@@ -26,10 +26,14 @@ class ProjectDetail extends React.Component {
       project: {},
       wpList: [],
       isProjManager: null,
-      openModal: false
+      openModal: false,
+      data: [],
+      empList: [],
+      wpLowerList: []
     };
 
     this.openModal = this.openModal.bind(this);
+    this.setData = this.setData.bind(this);
   }
 
   openModal() {
@@ -51,6 +55,77 @@ class ProjectDetail extends React.Component {
       isProjManager: response.projManager
     });
     console.log(this.state.project.project_manager_id.first_name);
+    await this.setData();
+  }
+
+  async setData() {
+    console.log(this.state.wpList);
+    var data = [];
+
+    this.state.wpList.forEach((wp) => {
+      if (wp.work_package_id.includes("L")) {
+        this.state.wpLowerList.push(wp);
+        wp.employees.forEach((e) => {
+          if (this.state.empList.indexOf(e.employee_id) === -1)
+            this.state.empList.push(e.employee_id);
+        });
+      }
+    });
+
+    var response = [];
+    if (this.state.empList.length > 0) {
+      const token = localStorage.getItem("token");
+      response = await agent.timesheetsInfo.getTimesheetsByEmps(
+        this.state.empList.toString(),
+        token
+      );
+    }
+
+    var obj = {};
+    this.state.wpLowerList.forEach((wp) => {
+      obj = {};
+      obj.wp = wp.work_package_id;
+      obj.employees = [];
+
+      var empData = {};
+      wp.employees.forEach((e) => {
+        empData = {};
+        empData.id = e.employee_id;
+        empData.name = e.first_name + " " + e.last_name;
+        empData.hours = 0;
+        response.forEach((ts) => {
+          if (ts.employee.employee_id === e.employee_id) {
+            ts.details.forEach((tsRow) => {
+              if (
+                tsRow.project_wp ===
+                wp.project.project_code + "_" + wp.work_package_id
+              ) {
+                empData.hours +=
+                  tsRow.saturday +
+                  tsRow.sunday +
+                  tsRow.monday +
+                  tsRow.tuesday +
+                  tsRow.wednesday +
+                  tsRow.thursday +
+                  tsRow.friday;
+              }
+            });
+          }
+        });
+        obj.employees.push(empData);
+      });
+      data.push(obj);
+    });
+
+    this.setState({
+      data: data,
+    });
+
+    console.log(response);
+    console.log(this.state.wpLowerList);
+    console.log(this.state.empList);
+    console.log("OUTSIDE");
+    console.log(data);
   }
 
   render() {
@@ -210,7 +285,7 @@ class ProjectDetail extends React.Component {
               {this.state.wpList.length > 0 && (
                 <Grid item>
                   <PDFDownloadLink
-                    document={<ProjectReport wpList={this.state.wpList} />}
+                    document={<ProjectReport wpList={this.state.wpList} data={this.state.data} empList={this.state.empList} wpLowerList={this.state.wpLowerList}/>}
                     fileName={this.state.projectID + "_report.pdf"}
                     style={{
                       textDecoration: "none",
