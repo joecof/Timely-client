@@ -157,10 +157,8 @@ class LeadEngineer extends Component {
   render() {
     return (
       <>
-        {this.state.errorAlert ? <Alert config={{ message: "WorkPackage API Call Failed", variant: "error" }} /> : null}
         <div className="leadEngineer-container">
           <MuiThemeProvider theme={this.getCustomTheme()}>
-
             <MUIDatatable
               className="datatable"
               title={"WorkPackage Reports"}

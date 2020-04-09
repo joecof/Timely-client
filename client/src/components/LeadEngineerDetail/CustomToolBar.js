@@ -113,8 +113,6 @@ class CustomToolbar extends React.Component {
 
     return (
       <>
-        {this.state.submitAlert ? <Alert config={{ message: "Submission Failed!", variant: "error" }} /> : null}
-        {this.state.successAlert ? <Alert config={{ message: "Submission Successful!", variant: "success" }} /> : null}
         <Tooltip title={"Submit the plan"}>
           <Button
             className={classes.iconButton}
