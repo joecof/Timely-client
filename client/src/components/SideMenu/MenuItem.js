@@ -19,9 +19,9 @@ const styles = (theme) => ({
   },
   text: {
     color: "white",
-    marginLeft: "55px",
-    fontSize: "15px",
-    fontWeight: "400",
+    marginLeft: 50,
+    fontSize: "14px",
+    fontWeight: "300",
     letterSpacing: "1.5px"
     // font: '14px, Roboto, Helvetica, Arial, sans-serif',
   },
@@ -53,6 +53,7 @@ class MenuItem extends Component {
                 <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>} */}
 
               <DashboardIcon className="itemIcon"/>
+              
             </Grid>
             <Grid item onClick={this.props.handleClick}>
               <b>
