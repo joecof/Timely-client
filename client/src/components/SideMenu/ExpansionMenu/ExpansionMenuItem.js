@@ -57,7 +57,7 @@ class ExpansionMenuItem extends Component {
     }
 
     return (
-      <div className="menuItems" id=(this.props.text)>
+      <div className="menuItems" id={this.props.text}>
         <Link className={classes.link} to={this.props.link}>
           <Grid
             container
