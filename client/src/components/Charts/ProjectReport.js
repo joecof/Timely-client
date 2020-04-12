@@ -15,86 +15,90 @@ class ProjectReport extends React.Component {
     super(props);
     this.state = {
       wpList: this.props.wpList,
-      data: [],
+      data: this.props.data,
+      empList: this.props.empList,
+      wpLowerList: this.props.wpLowerList,
     };
 
-    this.setData = this.setData.bind(this);
+    // this.setData = this.setData.bind(this);
   }
 
   async componentDidMount() {
-    await this.setData();
+    console.log("DIDMOUNT");
+    console.log(this.state.data);
+    // await this.setData();
   }
 
-  async setData() {
-    console.log(this.props.wpList);
-    var empList = [];
-    var wpLowerList = [];
-    var data = [];
+  // async setData() {
+  //   console.log(this.props.wpList);
+  //   var empList = [];
+  //   var wpLowerList = [];
+  //   var data = [];
 
-    this.props.wpList.forEach((wp) => {
-      if (wp.work_package_id.includes("L")) {
-        wpLowerList.push(wp);
-        wp.employees.forEach((e) => {
-          if (empList.indexOf(e.employee_id) === -1)
-            empList.push(e.employee_id);
-        });
-      }
-    });
+  //   this.props.wpList.forEach((wp) => {
+  //     if (wp.work_package_id.includes("L")) {
+  //       wpLowerList.push(wp);
+  //       wp.employees.forEach((e) => {
+  //         if (empList.indexOf(e.employee_id) === -1)
+  //           empList.push(e.employee_id);
+  //       });
+  //     }
+  //   });
 
-    var response = [];
-    if (empList.length > 0) {
-      const token = localStorage.getItem("token");
-      response = await agent.timesheetsInfo.getTimesheetsByEmps(
-        empList.toString(),
-        token
-      );
-    }
+  //   var response = [];
+  //   if (empList.length > 0) {
+  //     const token = localStorage.getItem("token");
+  //     response = await agent.timesheetsInfo.getTimesheetsByEmps(
+  //       empList.toString(),
+  //       token
+  //     );
+  //   }
 
-    var obj = {};
-    wpLowerList.forEach((wp) => {
-      obj = {};
-      obj.wp = wp.work_package_id;
-      obj.employees = [];
+  //   var obj = {};
+  //   wpLowerList.forEach((wp) => {
+  //     obj = {};
+  //     obj.wp = wp.work_package_id;
+  //     obj.employees = [];
 
-      var empData = {};
-      wp.employees.forEach((e) => {
-        empData = {};
-        empData.id = e.employee_id;
-        empData.name = e.first_name + " " + e.last_name;
-        empData.hours = 0;
-        response.forEach((ts) => {
-          if (ts.employee.employee_id === e.employee_id) {
-            ts.details.forEach((tsRow) => {
-              if (
-                tsRow.project_wp ===
-                wp.project.project_code + "_" + wp.work_package_id
-              ) {
-                empData.hours +=
-                  tsRow.saturday +
-                  tsRow.sunday +
-                  tsRow.monday +
-                  tsRow.tuesday +
-                  tsRow.wednesday +
-                  tsRow.thursday +
-                  tsRow.friday;
-              }
-            });
-          }
-        });
-        obj.employees.push(empData);
-      });
-      data.push(obj);
-    });
+  //     var empData = {};
+  //     wp.employees.forEach((e) => {
+  //       empData = {};
+  //       empData.id = e.employee_id;
+  //       empData.name = e.first_name + " " + e.last_name;
+  //       empData.hours = 0;
+  //       response.forEach((ts) => {
+  //         if (ts.employee.employee_id === e.employee_id) {
+  //           ts.details.forEach((tsRow) => {
+  //             if (
+  //               tsRow.project_wp ===
+  //               wp.project.project_code + "_" + wp.work_package_id
+  //             ) {
+  //               empData.hours +=
+  //                 tsRow.saturday +
+  //                 tsRow.sunday +
+  //                 tsRow.monday +
+  //                 tsRow.tuesday +
+  //                 tsRow.wednesday +
+  //                 tsRow.thursday +
+  //                 tsRow.friday;
+  //             }
+  //           });
+  //         }
+  //       });
+  //       obj.employees.push(empData);
+  //     });
+  //     data.push(obj);
+  //   });
 
-    this.setState({
-      data: data,
-    });
+  //   this.setState({
+  //     data: data,
+  //   });
 
-    console.log(response);
-    console.log(wpLowerList);
-    console.log(empList);
-    console.log(data);
-  }
+  //   console.log(response);
+  //   console.log(wpLowerList);
+  //   console.log(empList);
+  //   console.log(data);
+  // }
 
   render() {
     const styles = StyleSheet.create({
@@ -157,7 +161,7 @@ class ProjectReport extends React.Component {
               </Text>
               <Text style={styles.date}>{new Date().toDateString()}</Text>
             </View>
-            {this.state.data.map((a) => {
+            {this.props.data.map((a) => {
               return (
                 <View key={a.wp} style={styles.dataContainer}>
                   <Text

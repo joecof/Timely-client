@@ -65,6 +65,7 @@ class ExpansionMenuHeader extends Component {
 
     <ExpansionPanelSummary
       className="expansionHeader-menuItem"
+      id="expansionHeader-menuItem"
     >
     
       <div className="menuItems" id="menuItems-expansionHeader">

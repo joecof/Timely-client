@@ -20,9 +20,7 @@ const expansion = {
 class ExpansionMenu extends Component {
   render() {
     return (
-      <ExpansionPanel elevation={0} className="expansion-root">
-        {console.log(this.props)}
-
+      <ExpansionPanel elevation={0} className="expansion-root" id = "expansion-root">
         <ExpansionMenuHeader
           loadedUser={this.props.loadedUser}
           resize={this.props.resize}
