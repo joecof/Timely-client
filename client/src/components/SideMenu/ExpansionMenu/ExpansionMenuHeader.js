@@ -70,7 +70,7 @@ class ExpansionMenuHeader extends Component {
     
       <div className="menuItems" id="menuItems-expansionHeader">
         <Link className = {classes.link} to = { this.props.link }>
-          <Grid container direction="row" alignItems="center" className = {classes.menuItem} >
+          <Grid container direction="row" alignItems="center" id = "expansionMenu" >
             <Grid item >
               {/* {this.props.isMenuLogo ? 
                 <Avatar variant="circle" className={classes.avatar} src = {logo}/> : <Avatar variant="square" className={classes.avatar}/>} */}
